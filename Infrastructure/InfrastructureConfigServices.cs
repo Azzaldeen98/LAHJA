@@ -59,10 +59,12 @@ namespace Infrastructure
         }
         private static void InstallApiClients(this IServiceCollection serviceCollection)
         {
-          
 
-            serviceCollection.AddScoped<BaseApiClient>();
+            serviceCollection.AddScoped(typeof(IBuildApiClient<>), typeof(BuildApiClient<>));
+
+            //serviceCollection.AddScoped<IBuildApiClient, BuildApiClient>();
             serviceCollection.AddScoped<AuthApiClient>();
+            serviceCollection.AddScoped<PriceApiClient>();
             serviceCollection.AddScoped<PlansApiClient>();
             serviceCollection.AddScoped<PaymentApiClient>();
             serviceCollection.AddScoped<ProfileApiClient>();

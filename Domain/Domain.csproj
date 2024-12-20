@@ -7,6 +7,33 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Entities\Product\Request\" />
+    <Folder Include="Entities\Product\Response\" />
+    <Folder Include="Entities\RequestEvent\Request\" />
+    <Folder Include="Entities\RequestEvent\Response\" />
+    <Folder Include="Entities\Request\Request\" />
+    <Folder Include="Entities\Request\Response\" />
+    <Folder Include="Entities\Roles\Request\" />
+    <Folder Include="Entities\Roles\Response\" />
+    <Folder Include="Entities\ServiceMethod\Request\" />
+    <Folder Include="Entities\ServiceMethod\Response\" />
+    <Folder Include="Entities\Service\Request\" />
+    <Folder Include="Entities\Service\Response\" />
+    <Folder Include="Entities\Setting\Request\" />
+    <Folder Include="Entities\Setting\Response\" />
+    <Folder Include="Entities\Subscriptions\Request\" />
+    <Folder Include="Entities\Subscriptions\Response\" />
+    <Folder Include="Entities\User\Request\" />
+    <Folder Include="Entities\User\Response\" />
+    <Folder Include="Repository\Price\" />
+    <Folder Include="Repository\Product\" />
+    <Folder Include="Repository\RequestEvent\" />
+    <Folder Include="Repository\Request\" />
+    <Folder Include="Repository\Roles\" />
+    <Folder Include="Repository\ServiceMethod\" />
+    <Folder Include="Repository\Service\" />
+    <Folder Include="Repository\Setting\" />
+    <Folder Include="Repository\Subscriptions\" />
     <Folder Include="ShareData\Base\Auth\" />
   </ItemGroup>
 

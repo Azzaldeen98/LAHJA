@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Wrapper;
 using Infrastructure.DataSource.ApiClientFactory;
+using Infrastructure.Models.BaseFolder.Response;
 using Infrastructure.Models.Plans;
 using Infrastructure.Models.Plans.Response;
 using Infrastructure.Nswag;
@@ -125,6 +126,29 @@ namespace Infrastructure.DataSource.ApiClient.Plans
             {
 
                 return Result<PlanResponseModel>.Fail(e.Response, httpCode: e.StatusCode);
+
+            }
+
+
+
+        } 
+        public async Task<Result<DeletedResponseModel>> DeletePlanAsync(string id)
+        {
+            try
+            {
+              
+                var client = await GetApiClient();
+                var response = await client.PlansDeleteAsync(id);
+
+
+                var resModel = _mapper.Map<DeletedResponseModel>(response);
+                return Result<DeletedResponseModel>.Success();
+
+            }
+            catch (ApiException e)
+            {
+
+                return Result<DeletedResponseModel>.Fail(e.Response, httpCode: e.StatusCode);
 
             }
 

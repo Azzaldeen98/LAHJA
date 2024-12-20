@@ -6,11 +6,13 @@ using Domain.ShareData.Base;
 using Domain.Wrapper;
 using Infrastructure.DataSource.ApiClient.Plans;
 using Infrastructure.DataSource.Seeds;
+using Infrastructure.Models.BaseFolder.Response;
 using Infrastructure.Models.Plans;
 using Infrastructure.Models.Plans.Response;
 using Shared.Settings;
 using System.ComponentModel;
 using System.Net.Http.Headers;
+using System.Reflection;
 
 namespace Infrastructure.Repository.Plans
 {
@@ -125,6 +127,22 @@ namespace Infrastructure.Repository.Plans
 
         }
 
+
+        public async Task<Result<DeleteResponse>> DeletePlanAsync(string id)
+        {
+            var response = await plansApiClient.DeletePlanAsync(id);
+
+            if (response.Succeeded)
+            {
+                var resModel = _mapper.Map<DeleteResponse>(response);
+
+                return Result<DeleteResponse>.Success(resModel);
+            }
+            else
+            {
+                return Result<DeleteResponse>.Fail(response.Messages);
+            }
+        }
         public async Task<Result<IEnumerable<PlansContainerResponse>>> getAllPlansContainerAsync()
         {
 

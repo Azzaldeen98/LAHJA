@@ -3,9 +3,12 @@ using Domain.Entities.Payment;
 using Domain.Entities.Payment.Response;
 using Domain.ShareData.Base;
 using Domain.ShareData.Base.Auth;
+using Infrastructure.Models.BaseFolder.Response;
 using Infrastructure.Models.Payment.Request;
 using Infrastructure.Models.Payment.Response;
 using Infrastructure.Models.Plans;
+using Infrastructure.Models.Price.Request;
+using Infrastructure.Models.Price.Response;
 using Infrastructure.Nswag;
 
 
@@ -35,13 +38,19 @@ namespace Infrastructure.Mappings.Plans
                 .ReverseMap();
 
             CreateMap<LoginResponseModel, AccessTokenResponse>().ReverseMap();
-            CreateMap<PlansGroupModel, PlanGrouping>()
-                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id))
-                //.ForMember(dest => dest., opt => opt.MapFrom(src => src.))
-                .ForMember(dest => dest.Services, opt => opt.Ignore())
-                .ReverseMap();
+
+            CreateMap<ConfirmationEmailModel, ConfirmEmailRequest>().ReverseMap();
 
             CreateMap<ForgotPasswordRequest, ForgetPasswordRequestModel>().ReverseMap();
+
+
+
+            CreateMap<DeletedResponse, DeletedResponseModel>().ReverseMap();
+
+            /// Price
+            CreateMap<PriceCreate, PriceCreateRequestModel>().ReverseMap();
+            CreateMap<PriceUpdate, PriceUpdateRequestModel>().ReverseMap();
+            CreateMap<PriceResponse, PriceResponseModel>().ReverseMap();
 
 
             /// Plans
@@ -54,6 +63,7 @@ namespace Infrastructure.Mappings.Plans
             /// Payment
             CreateMap<PaymentCheckoutRequestModel, CheckoutOptions>().ReverseMap();
             CreateMap<PaymentCheckoutResponseModel, CheckoutResponse>().ReverseMap();
+            CreateMap<SessionCreateModel, SessionCreate>().ReverseMap();
 
 
 

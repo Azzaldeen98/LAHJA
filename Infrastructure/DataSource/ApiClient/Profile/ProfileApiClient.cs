@@ -14,39 +14,33 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.DataSource.ApiClient.Profile
 {
-    public class ProfileApiClient: BaseApiClient
+    public class ProfileApiClient
     {
 
-        public ProfileApiClient(ClientFactory clientFactory,IMapper mapper,IConfiguration config)
-            :base(clientFactory, mapper, config) { 
-        }
+        //public ProfileApiClient(ClientFactory clientFactory,IMapper mapper,IConfiguration config)
+        //    :base(clientFactory, mapper, config) { 
+        //}
 
-        public async Task<object> getApiClient()
-        {
-            
-            //var client = await _clientFactory.CreateClientWithAuthAsync<ProfileClient>("ApiClient");
-            return null;
-        }
-        public async Task<Result<ProfileResponseModel>> getProfileAsync()
-        {
-            try
-            {
+        //public async Task<Result<ProfileResponseModel>> getProfileAsync()
+        //{
+        //    try
+        //    {
 
-                var client = await getApiClient();
-                //var response = await client.PlansGetAsync(id);
-                //var resModel = _mapper.Map<ProfileResponseModel>(response);
-                return Result<ProfileResponseModel>.Success();
+        //        var client = await getApiClient();
+        //        //var response = await client.PlansGetAsync(id);
+        //        //var resModel = _mapper.Map<ProfileResponseModel>(response);
+        //        return Result<ProfileResponseModel>.Success();
 
-            }
-            catch (ApiException e)
-            {
+        //    }
+        //    catch (ApiException e)
+        //    {
 
-                return Result<ProfileResponseModel>.Fail(e.Response);
+        //        return Result<ProfileResponseModel>.Fail(e.Response);
 
-            }
+        //    }
 
 
 
-        }
+        //}
     }
 }

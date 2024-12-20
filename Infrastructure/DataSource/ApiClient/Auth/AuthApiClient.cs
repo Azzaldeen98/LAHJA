@@ -106,6 +106,7 @@ namespace Infrastructure.DataSource.ApiClient.Auth
             try
             {
                 var model = _mapper.Map<ResendConfirmationEmailRequest>(request);
+               
                 var client = await GetApiClient();
                 await client.ResendConfirmationEmailAsync(model);
               
@@ -124,9 +125,9 @@ namespace Infrastructure.DataSource.ApiClient.Auth
         {
             try
             {
-             
+                var model = _mapper.Map<ConfirmEmailRequest>(request);
                 var client = await GetApiClient();
-                await client.ConfirmEmailAsync(request.UserId, request.Code, request.ChangedEmail);
+                await client.ConfirmEmailAsync(model);
 
                 return Result<string>.Success();
 

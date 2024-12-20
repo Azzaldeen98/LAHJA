@@ -15,4 +15,25 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Price\" />
+    <Folder Include="Services\Product\" />
+    <Folder Include="Services\RequestEvent\" />
+    <Folder Include="Services\Request\" />
+    <Folder Include="Services\Roles\" />
+    <Folder Include="Services\ServiceMethod\" />
+    <Folder Include="Services\Service\" />
+    <Folder Include="Services\Setting\" />
+    <Folder Include="Services\Subscriptions\" />
+    <Folder Include="UseCase\Price\" />
+    <Folder Include="UseCase\Product\" />
+    <Folder Include="UseCase\RequestEvent\" />
+    <Folder Include="UseCase\Request\" />
+    <Folder Include="UseCase\Roles\" />
+    <Folder Include="UseCase\ServiceMethod\" />
+    <Folder Include="UseCase\Service\" />
+    <Folder Include="UseCase\Setting\" />
+    <Folder Include="UseCase\Subscriptions\" />
+  </ItemGroup>
+
 </Project>

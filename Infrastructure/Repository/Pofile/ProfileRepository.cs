@@ -33,7 +33,7 @@ public class ProfileRepository :IProfileRepository
     {
 
         var response = await ExecutorAppMode.ExecuteAsync<Result<ProfileResponseModel>>(
-             async () => await profileApiClient.getProfileAsync(),
+             async () => Result<ProfileResponseModel>.Success(),//await profileApiClient.getProfileAsync(),
               async () => Result<ProfileResponseModel>.Success(await seedsProfile.getProfileAsync()));
 
         if (response.Succeeded)

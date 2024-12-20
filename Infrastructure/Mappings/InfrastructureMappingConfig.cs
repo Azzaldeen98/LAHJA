@@ -11,6 +11,12 @@ using Domain.Entities.Payment;
 using Infrastructure.Models.Payment.Request;
 using Infrastructure.Models.Payment.Response;
 using Domain.Entities.Payment.Response;
+using Infrastructure.Models.BaseFolder.Response;
+using Domain.ShareData.Base;
+using Infrastructure.Models.Price.Response;
+using Domain.Entities.Price.Response;
+using Infrastructure.Models.Price.Request;
+using Domain.Entities.Price.Request;
 
 
 namespace Infrastructure.Mappings.Plans
@@ -51,12 +57,23 @@ namespace Infrastructure.Mappings.Plans
 
             /// Profile 
             CreateMap<ProfileResponseModel, UserApp>().ReverseMap();
+           
 
             /// Payment
             CreateMap<PaymentCheckoutRequestModel, PaymentCheckoutRequest>().ReverseMap();
             CreateMap<PaymentCheckoutResponseModel, PaymentCheckoutResponse>().ReverseMap();
 
+            CreateMap<DeletedResponseModel, DeleteResponse>().ReverseMap();
 
+
+
+            CreateMap<PriceResponseModel, PriceResponse>().ReverseMap();
+
+
+            CreateMap<PriceResponseModel, PriceResponse>().ReverseMap();
+            CreateMap<PriceCreateRequestModel,PriceCreate>().ReverseMap();
+            CreateMap<PriceUpdateRequestModel,PriceUpdate>().ReverseMap();
+         
 
         }
     }
