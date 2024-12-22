@@ -1,21 +1,16 @@
 ﻿
 using AutoMapper;
 using Domain.Entities.Payment;
+using Domain.Entities.Payment.Request;
 using Domain.Entities.Payment.Response;
-using Domain.Entities.Plans.Response;
 using Domain.Repository.Payment;
-using Domain.ShareData.Base;
 using Domain.Wrapper;
 using Infrastructure.DataSource.ApiClient.Payment;
 using Infrastructure.DataSource.Seeds;
 using Infrastructure.Models.Payment.Request;
 using Infrastructure.Models.Payment.Response;
-using Infrastructure.Models.Plans;
-using Infrastructure.Models.Plans.Response;
-using Infrastructure.Nswag;
+
 using Shared.Settings;
-using System.ComponentModel;
-using System.Net.Http.Headers;
 
 namespace Infrastructure.Repository.Plans
 {
@@ -63,7 +58,7 @@ namespace Infrastructure.Repository.Plans
 
         }
 
-        public async Task<Result<PaymentCheckoutResponse>> getPaymentCheckOut(SessionCreate request)
+        public async Task<Result<PaymentCheckoutResponse>> getPaymentCheckOutManage(SessionCreate request)
         {
 
             {

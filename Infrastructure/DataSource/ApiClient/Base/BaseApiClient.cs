@@ -1,20 +1,21 @@
 ﻿using AutoMapper;
 using Infrastructure.DataSource.ApiClientFactory;
-using Infrastructure.Nswag;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.DataSource.ApiClient.Base
 {
+
+
+
     public interface IBuildApiClient<T> {
-       public  Task<T> GetApiClient();
+
+        public string DevelopmentMessage { get; }
+        public  Task<T> GetApiClient();
     }
     public class BuildApiClient<T>: IBuildApiClient<T> where T : class
     {
+
+        public  string DevelopmentMessage => "The service is still under development From  Api !! ";
 
         protected readonly ClientFactory _clientFactory;
         protected readonly IMapper _mapper;
@@ -31,6 +32,8 @@ namespace Infrastructure.DataSource.ApiClient.Base
 
      
 
+
+        
         public  async Task<T>  GetApiClient()
         {
             var client = await _clientFactory.CreateClientWithAuthAsync<T>("ApiClient");

@@ -5,7 +5,7 @@
 
 @using Microsoft.Extensions.Options
 @using global::Shared.Wrapper
-
+@using LAHJA.Them
 
 @inherits CardAuth<DataBuildAuthBase>
 @inject IJSRuntime JSRuntime
@@ -42,14 +42,14 @@
     }
 
     <div class="row mb-3">
-        <div class="offset-sm-4 col-sm-8">
+        <div class="offset-sm-4 col-sm-6">
             <div id="html_element"></div>
         </div>
     </div>
     <br />
     <div class="d-flex align-center justify-space-between">
         <MudCheckBox T="bool" Required="true" RequiredError="You must agree" Label="I agree!" />
-        <MudButton id="submitButton" Variant="Variant.Filled" Color="Color.Primary" OnClick="Submit" Disabled="@(!success)" Class="ml-auto">@(IsLogin ? "Login" : "Register")</MudButton>
+        <MudButton id="submitButton" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM" OnClick="Submit" Disabled="@(!success)" Class="ml-auto">@(IsLogin ? "Login" : "Register")</MudButton>
 
     </div>
 
@@ -57,17 +57,22 @@
 
 
     @if (IsLogin)
+
     {
+
         <div class="d-flex align-center justify-space-between">
 
-            <MudButton OnClick="onClickForgetPassword" Color="Color.Primary">Forgot Password?</MudButton>
+            <MudButton OnClick="onClickForgetPassword" Color="@AppColors.BASE_COLOR_ENUM">Forgot Password?</MudButton>
         </div>
-    }
-    <div class="d-flex align-center justify-space-between">
 
-        <MudButton OnClick="showConfirmationEmail" Color="Color.Primary">Confirm Email</MudButton>
-        <MudButton OnClick="showResetPassword" Color="Color.Primary">Reset Password</MudButton>
+        <div class="d-flex align-center justify-space-between">
+
+        @* <MudButton OnClick="showConfirmationEmail" Color="Color.Primary">Confirm Email</MudButton> *@
+
+        <MudButton OnClick="showResetPassword" Color="@AppColors.BASE_COLOR_ENUM">Reset Password</MudButton>
+    
     </div>
+    }
 
     @if (errors != null && errors.Count() > 0)
     {
@@ -85,7 +90,7 @@
 </MudForm>
 
 
-<ForgetPasswordForm IsDisplay="visibleForgetPassword" OnSubmited=OnSubmitedForgetPassword />
+@* <ForgetPasswordForm IsDisplay="visibleForgetPassword" OnSubmited=OnSubmitedForgetPassword /> *@
 
 @code{
 
@@ -139,9 +144,33 @@
                      await OnSubmit.InvokeAsync(data);
                 }
         }
-;
+
         StateHasChanged();
 
 }
 
-}
+
+
+    // async Task OnReSendConfirmationEmail()
+    // {
+
+
+
+    //     if (OnSubmitReSendConfirmEmail.HasDelegate)
+
+
+
+    //     {
+
+
+
+    //         await OnSubmitReSendConfirmEmail.InvokeAsync(new DataBuildAuthBase { Email = email, Code = code });
+
+
+
+    //     }
+
+
+
+    }
+

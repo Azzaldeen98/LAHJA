@@ -1,6 +1,4 @@
-﻿using LAHJA.Data.BlazarComponents.Plans.TemFeturePlans2.Them3.Model;
-using LAHJA.Data.UI.Components.Category;
-using LAHJA.UI.Components.PlanCard.Components;
+﻿
 
 namespace LAHJA.Data.UI.Components.Category.DataModel
 {

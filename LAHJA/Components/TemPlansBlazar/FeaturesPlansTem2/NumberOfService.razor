@@ -7,7 +7,7 @@
 
 
 
-    <MudListItem Style="border:1px !important">
+    <MudListItem  T="string" Style="border:1px !important">
 
         <MudText Typo="Typo.body2">
             @if (auth.Isauth)
@@ -99,7 +99,7 @@ else
 
             var result = await dialog.Result;
 
-            if (!result.Cancelled)
+            if (!result.Canceled)
             {
                 if (OnClickDelete.HasDelegate)
                 {
@@ -134,7 +134,7 @@ else
 
             var result = await dialog.Result;
 
-            if (!result.Cancelled)
+            // if (!result.Cancelled)
             {
                 Params = (Data.BlazarComponents.Plans.TemFeturePlans2.Model.NumberOfService)result.Data;
                 if (OnClickEdit.HasDelegate)

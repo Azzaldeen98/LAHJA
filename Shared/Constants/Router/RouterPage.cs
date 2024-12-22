@@ -13,6 +13,8 @@ namespace Shared.Constants.Router
         public static string LOGOUT = "/LogOut";
         public static string HOME = "/";
         public static string PLANS = "/TemplatePlan";
+        public static string CONFIRM_EMAIL = "/ConfirmEmail";
+        public static string FORGET_PASSWORD = "/ForgetPassword";
     
     }
 }

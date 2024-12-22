@@ -2,23 +2,27 @@
 
   @using LAHJA.Data.UI.Templates.Auth
 
+
   @inject LAHJA.Data.UI.Templates.Plans.TemplatePlans Template 
 
+         
+ 
 
- @*  @if(Template!=null){
 
-           <LAHJA.Components.TemPlansBlazar.Category_Plans_Template.TemListCategorys   Params="Template.Categories" /> 
-
-   } *@
 @code{
 
-    // [Parameter] public bool IsToLoginMode { set; get; }
+    [Parameter] public bool IsToLoginMode { set; get; }
+
+    // IEnumerable<CategoryComponent> DataBuild { get; set; }
+
+
+
 
 
     protected override async Task OnInitializedAsync()
     {
 
-        // await Template.OnInitialize();
+        await Template.OnInitialize();
         StateHasChanged();
         // var temp= Template.BuilderComponents.Categories;
     }

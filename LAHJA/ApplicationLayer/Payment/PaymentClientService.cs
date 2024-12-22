@@ -4,6 +4,7 @@ using Domain.Wrapper;
 using LAHJA.Helpers.Services;
 using Domain.Entities.Payment.Response;
 using Domain.Entities.Payment;
+using Domain.Entities.Payment.Request;
 
 namespace LAHJA.ApplicationLayer.Payment
 {
@@ -29,11 +30,20 @@ namespace LAHJA.ApplicationLayer.Payment
         public async Task<Result<PaymentCheckoutResponse>> getPaymentCheckOutPage(PaymentCheckoutRequest request)
         {
 
-            var result=await paymentService.getPaymentCheckOutPage(request);
+            var result=await paymentService.getPaymentCheckOut(request);
             return result;
 
        
 
+        }     
+        
+        public async Task<Result<PaymentCheckoutResponse>> getPaymentCheckOutManage(SessionCreate request)
+        {
+
+            var result=await paymentService.getPaymentCheckOutManage(request);
+            return result;
+
+       
         }
 
     }

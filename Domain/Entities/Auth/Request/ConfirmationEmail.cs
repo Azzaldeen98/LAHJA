@@ -1,11 +1,11 @@
-﻿namespace Domain.Entities.Auth.Request
-{
-    public class ConfirmationEmail
-    {
-        public  string UserId { get; set; }
-        public  string Code { get; set; }
+﻿using Domain.ShareData.Base.Request;
+using Infrastructure.Models.Setting.Response;
 
-        public  string ChangedEmail { get; set; }
+namespace Domain.Entities.Auth.Request
+{
+    public class ConfirmationEmail: BaseConfirmEmailRequest
+    {
+
     }
 
 

@@ -1,6 +1,6 @@
 ﻿namespace Infrastructure.Models.BaseFolder.Response
 {
-    public partial class DeletedResponseModel
+    public partial class DeleteResponseModel
     {
 
         public string Id { get; set; }

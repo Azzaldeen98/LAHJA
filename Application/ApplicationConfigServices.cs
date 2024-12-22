@@ -1,18 +1,14 @@
 ﻿using Application.Services.Auth;
 using Application.Services.Plans;
 using Application.Services.Profile;
+using Application.Services.Prroduct;
+using Application.Services.Subscriptions;
 using Application.UseCase;
 using Application.UseCase.Auth;
 using Application.UseCase.Plans;
 using Application.UseCase.Plans.Get;
 using Infrastructure.Mappings.Plans;
-using Infrastructure.Repository.Plans;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure
 {
@@ -64,18 +60,54 @@ namespace Infrastructure
             /// Profile
             serviceCollection.AddScoped<GetProfileUseCase>();
 
+
             /// Payment
             serviceCollection.AddScoped<GetPaymentCheckOutUseCase>();
+            serviceCollection.AddScoped<GetPaymentCheckOutManageUseCase>();
+
+               
+            /// Price
+            serviceCollection.AddScoped<SearchPriceUseCase>();
+            serviceCollection.AddScoped<DeletePriceUseCase>();
+            serviceCollection.AddScoped<CreatePriceUseCase>();
+            serviceCollection.AddScoped<UpdatePriceUseCase>();
+
+
+            /// Product
+            serviceCollection.AddScoped<CreateProductUseCase>();
+            serviceCollection.AddScoped<UpdateProductUseCase>();
+            serviceCollection.AddScoped<DeleteProductUseCase>();
+            serviceCollection.AddScoped<GetAllProductsUseCase>();
+            serviceCollection.AddScoped<SearchProductUseCase>();
+
+
+
+
+            /// Settings
+            //serviceCollection.AddScoped<SearchPriceUseCase>();
+
+
+            /// Subscription
+            serviceCollection.AddScoped<PauseSubscriptionUseCase>();
+            serviceCollection.AddScoped<DeleteSubscriptionUseCase>();
+            serviceCollection.AddScoped<ResumeSubscriptionUseCase>();
+            serviceCollection.AddScoped<GetAllSubscriptionsUseCase>();
+
 
 
         }
 
         private static void InstallServices(this IServiceCollection serviceCollection)
         {
+           
             serviceCollection.AddScoped<PlansService>();
             serviceCollection.AddScoped<WebAuthService>();
             serviceCollection.AddScoped<ProfileService>();
             serviceCollection.AddScoped<PaymentService>();
+            serviceCollection.AddScoped<PriceService>();
+            serviceCollection.AddScoped<ProductService>();
+            serviceCollection.AddScoped<SubscriptionService>();
+
         }
 
     }

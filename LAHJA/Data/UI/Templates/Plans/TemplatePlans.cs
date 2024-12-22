@@ -166,7 +166,7 @@ namespace LAHJA.Data.UI.Templates.Plans
             if (res.Succeeded)
             {
                 try
-                {
+                {   
                     var map = Mapper.Map<List<CategoryComponent>>(res.Data);
                     return Result<List<CategoryComponent>>.Success(map);
 
@@ -285,12 +285,13 @@ namespace LAHJA.Data.UI.Templates.Plans
         private SubscriptionPlanInfo _plan = new SubscriptionPlanInfo();
 
         //public  IBuilderPlansComponent<DataBuildPlansBase, DataBuildPlansBase> BuilderPlansComponent { get => builderPlansComponents; }
-        private async Task OnInitialize()
+        public async Task OnInitialize()
         {
                 var response = await builderApi.GetAllCategories();
                 if (response.Succeeded)
                 {
                    _categories = response.Data;
+                    //_plan=response.Data.
                 }
                 else
                 {
@@ -340,14 +341,14 @@ namespace LAHJA.Data.UI.Templates.Plans
 
             if (dataBuildPlansBase != null)
             {
-                var response = await builderApi.getSubscriptionsPlansAsync(dataBuildPlansBase);
-                if (response.Succeeded)
+                var response = _categories.FirstOrDefault();// await builderApi.getSubscriptionsPlansAsync(dataBuildPlansBase);
+                if (response!=null)
                 {
-                    _plans = response.Data;
+                    _plans = response.SubscriptionsPlans;
                 }
                 else
                 {
-                    _errors = response.Messages;
+                    //_errors = response.Messages;
                 }
             }
 

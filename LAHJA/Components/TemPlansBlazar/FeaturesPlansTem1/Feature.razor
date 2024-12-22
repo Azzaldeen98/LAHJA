@@ -15,7 +15,7 @@
                 <MudText Typo="Typo.body1" Class="mb-1"><strong>Number of Requests:</strong>@Params.NumberRequests</MudText>
                 <MudText Typo="Typo.body1" Class="mb-1"><strong>Status:</strong>
 
-                    <MudChip Color="@GetChipColor(@Params.Active)">
+                    <MudChip  T="bool" Color="@GetChipColor(@Params.Active)">
 
                                                       @Params.Active
                                                 </MudChip>

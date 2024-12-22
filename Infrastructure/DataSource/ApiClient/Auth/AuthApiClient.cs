@@ -26,9 +26,9 @@ namespace Infrastructure.DataSource.ApiClient.Auth
 {
 
 
+  
 
-
-     public class AuthApiClient
+    public class AuthApiClient
     {
 
 
@@ -87,14 +87,14 @@ namespace Infrastructure.DataSource.ApiClient.Auth
             {
                 var model = _mapper.Map<LoginRequest>(request);
                 var client = await GetApiClient();
-                var response =await client.LoginAsync(false, false, model);
+                var response =await client.LoginAsync(model);
                 var resModel = _mapper.Map<LoginResponseModel>(response);
                 return Result<LoginResponseModel>.Success(resModel);
 
             }catch(ApiException e)
             {
 
-                return Result<LoginResponseModel>.Fail(e.Response);
+                return Result<LoginResponseModel>.Fail(e.Message);
                
             }
   
@@ -127,7 +127,7 @@ namespace Infrastructure.DataSource.ApiClient.Auth
             {
                 var model = _mapper.Map<ConfirmEmailRequest>(request);
                 var client = await GetApiClient();
-                await client.ConfirmEmailAsync(model);
+                await client.CustomMapIdentityApiApi_confirmEmailAsync(model);
 
                 return Result<string>.Success();
 
@@ -147,6 +147,8 @@ namespace Infrastructure.DataSource.ApiClient.Auth
             try
             {
                 var model = _mapper.Map<RegisterRequest>(request);
+                if (model.ReturnUrl==null)
+                    model.ReturnUrl = "https://asg.tryasp.net/swagger/index.html"; 
 
                 var client = await GetApiClient();
                await client.RegisterAsync(model);

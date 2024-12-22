@@ -17,6 +17,17 @@ using Infrastructure.Models.Price.Response;
 using Domain.Entities.Price.Response;
 using Infrastructure.Models.Price.Request;
 using Domain.Entities.Price.Request;
+using Infrastructure.Models.Product.Response;
+using Domain.Entities.Product.Response;
+using Domain.Entities.Product.Request;
+using Infrastructure.Models.Product.Request;
+using Infrastructure.Models.Subscriptions.Request;
+using Domain.Entities.Subscriptions.Response;
+using Domain.Entities.Plans.Response;
+using Infrastructure.Models.Setting.Request;
+using Domain.Entities.Setting.Request;
+using Infrastructure.Models.Setting.Response;
+using Domain.Entities.Setting.Response;
 
 
 namespace Infrastructure.Mappings.Plans
@@ -63,17 +74,38 @@ namespace Infrastructure.Mappings.Plans
             CreateMap<PaymentCheckoutRequestModel, PaymentCheckoutRequest>().ReverseMap();
             CreateMap<PaymentCheckoutResponseModel, PaymentCheckoutResponse>().ReverseMap();
 
-            CreateMap<DeletedResponseModel, DeleteResponse>().ReverseMap();
+            CreateMap<DeleteResponseModel, DeleteResponse>().ReverseMap();
 
 
 
-            CreateMap<PriceResponseModel, PriceResponse>().ReverseMap();
 
 
+            /// Price
             CreateMap<PriceResponseModel, PriceResponse>().ReverseMap();
             CreateMap<PriceCreateRequestModel,PriceCreate>().ReverseMap();
             CreateMap<PriceUpdateRequestModel,PriceUpdate>().ReverseMap();
-         
+
+
+            //// Product 
+
+            CreateMap<ProductResponseModel, ProductResponse>().ReverseMap();
+            CreateMap<ProductCreateModel, ProductCreate>().ReverseMap();
+            CreateMap<ProductUpdateModel, ProductUpdate>().ReverseMap();
+            CreateMap<ProductSearchRequestModel, ProductSearchRequest>().ReverseMap();
+
+
+            //// Subscriptions 
+            CreateMap<SubscriptionResponseModel, SubscriptionResponse>().ReverseMap();  
+            
+
+            //// Settings 
+            CreateMap<SettingResponseModel,SettingResponse>().ReverseMap();
+            CreateMap<SettingUpdateModel, SettingUpdate>().ReverseMap();
+            CreateMap<SettingCreateModel, SettingCreate>().ReverseMap();
+           
+
+           
+
 
         }
     }

@@ -11,6 +11,7 @@ using Infrastructure.Models.Plans;
 using Domain.Entities.Plans;
 using Infrastructure.Models.Plans.Response;
 using Infrastructure.Nswag;
+using Infrastructure.DataSource.ApiClient.Plans;
 
 namespace Infrastructure.Mappings.Plans
 {
@@ -71,8 +72,25 @@ namespace Infrastructure.Mappings.Plans
             
             CreateMap<ContainerPlansModel, PlanGrouping>()
                 .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id))
-                .ReverseMap();
+                .ReverseMap();   
 
+            //////////////////////////////////////////
+            
+            CreateMap<Product,ContainerPlansModel>()
+                .ForMember(dest => dest.SubscriptionsPlans, opt => opt.MapFrom(src => src.Plans))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.ProductName))
+                .ReverseMap();
+           
+            CreateMap<Plan, SubscriptionPlanModel>()
+             .ForMember(dest => dest.Features, opt => opt.MapFrom(src => src.Services))
+             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ProductId))
+             .ReverseMap();   
+            
+            CreateMap<Service, PlanFeatureModel>()
+             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ServiceId))
+             .ReverseMap();
+
+            /////////////////////////////////////////////////////////////////////////////
 
             CreateMap<PlanCreateModel, PlanServicesCreate>().ReverseMap();
             CreateMap<PlanServicesUpdateModel, PlanServicesUpdate>().ReverseMap();
@@ -82,7 +100,7 @@ namespace Infrastructure.Mappings.Plans
             CreateMap<PlansGroupModel, PlanGrouping>()
                 .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id))
                 //.ForMember(dest => dest., opt => opt.MapFrom(src => src.))
-                .ForMember(dest => dest.Services, opt => opt.Ignore())
+                //.ForMember(dest => dest.Services, opt => opt.Ignore())
                 .ReverseMap();
 
             //CreateMap<PlanModel, Plan>().ReverseMap();

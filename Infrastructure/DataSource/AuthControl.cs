@@ -39,14 +39,7 @@ namespace Infrastructure.DataSource
             //var user = await seedsUsers.loginAsync(model);
 
             var response = await ExecutorAppMode.ExecuteAsync<Result<LoginResponseModel>>(
-                async () =>
-                {
-                   return await authApiClient.loginAsync(model);
-                    //if (response == null)
-                    //    return Result<LoginResponseModel>.Fail(" ");
-                    //else
-                    //    return response;
-                },
+                async () => await authApiClient.loginAsync(model),
                  async () => {
                       var user=await seedsUsers.loginAsync(model);
                       if (user != null)

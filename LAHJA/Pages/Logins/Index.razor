@@ -1,19 +1,18 @@
 ﻿@page "/Login"
 @using LAHJA.ApplicationLayer.Auth
-@using LAHJA.Components
 @using LAHJA.UI.Templates.Auth
 @using LAHJA.VitsModel.Auth
 @inject NavigationManager Navigation
 @inject ClientAuthService ClientAuthService
 @inject AppCustomAuthenticationStateProvider AppCustomAuthenticationStateProvider
-
+@using LAHJA.UI.Components
 
 @inherits BaseInitializationComponent
 
 @inject ISnackbar Snackbar
 
 
-<div style="padding:10%!important">
+<div style="" class="auth-them">
 
     @if (!_isLoaded)
     {

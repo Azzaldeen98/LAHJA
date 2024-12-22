@@ -28,11 +28,6 @@
     <Folder Include="DataSource\ApiClient\Roles\" />
     <Folder Include="DataSource\ApiClient\Service\" />
     <Folder Include="DataSource\ApiClient\ServiceMethod\" />
-    <Folder Include="DataSource\ApiClient\Setting\" />
-    <Folder Include="DataSource\ApiClient\Subscriptions\" />
-    <Folder Include="DataSource\ApiClient\Product\" />
-    <Folder Include="Models\Product\Request\" />
-    <Folder Include="Models\Product\Response\" />
     <Folder Include="Models\RequestEvent\Request\" />
     <Folder Include="Models\RequestEvent\Response\" />
     <Folder Include="Models\Request\Request\" />
@@ -43,21 +38,14 @@
     <Folder Include="Models\ServiceMethod\Response\" />
     <Folder Include="Models\Service\Request\" />
     <Folder Include="Models\Service\Response\" />
-    <Folder Include="Models\Setting\Request\" />
-    <Folder Include="Models\Setting\Response\" />
-    <Folder Include="Models\Subscriptions\Request\" />
     <Folder Include="Models\Subscriptions\Response\" />
     <Folder Include="Models\User\Request\" />
     <Folder Include="Models\User\Response\" />
-    <Folder Include="Repository\Price\" />
-    <Folder Include="Repository\Product\" />
     <Folder Include="Repository\RequestEvent\" />
     <Folder Include="Repository\Request\" />
     <Folder Include="Repository\Roles\" />
     <Folder Include="Repository\ServiceMethod\" />
     <Folder Include="Repository\Service\" />
-    <Folder Include="Repository\Setting\" />
-    <Folder Include="Repository\Subscriptions\" />
     <Folder Include="Repository\User\" />
   </ItemGroup>
 

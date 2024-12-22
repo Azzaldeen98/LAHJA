@@ -1,7 +1,11 @@
 ﻿using Domain.Repository.Auth;
 using Domain.Repository.Payment;
 using Domain.Repository.Plans;
+using Domain.Repository.Price;
+using Domain.Repository.Product;
 using Domain.Repository.Profile;
+using Domain.Repository.Setting;
+using Domain.Repository.Subscriptions;
 using Domain.Repository.Users;
 using Infrastructure.DataSource;
 using Infrastructure.DataSource.ApiClient.Auth;
@@ -14,6 +18,10 @@ using Infrastructure.DataSource.Seeds;
 using Infrastructure.Mappings.Plans;
 using Infrastructure.Repository.Auth;
 using Infrastructure.Repository.Plans;
+using Infrastructure.Repository.Price;
+using Infrastructure.Repository.Product;
+using Infrastructure.Repository.Setting;
+using Infrastructure.Repository.Subscription;
 using Infrastructure.Repository.Users;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,15 +38,12 @@ namespace Infrastructure
         public static void InstallInfrastructureConfigServices(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
 
-
-
             InstallConfiguration(serviceCollection,configuration);
             InstallApiClients(serviceCollection);
             InstallSeeds(serviceCollection);
             InstallMapping(serviceCollection);
             InstallRepositories(serviceCollection);
             InstallControls(serviceCollection);
-
         
         }
 
@@ -61,12 +66,13 @@ namespace Infrastructure
         {
 
             serviceCollection.AddScoped(typeof(IBuildApiClient<>), typeof(BuildApiClient<>));
-
-            //serviceCollection.AddScoped<IBuildApiClient, BuildApiClient>();
             serviceCollection.AddScoped<AuthApiClient>();
-            serviceCollection.AddScoped<PriceApiClient>();
             serviceCollection.AddScoped<PlansApiClient>();
             serviceCollection.AddScoped<PaymentApiClient>();
+            serviceCollection.AddScoped<PriceApiClient>();
+            serviceCollection.AddScoped<ProductApiClient>();
+            serviceCollection.AddScoped<SubscriptionsApiClient>();
+            serviceCollection.AddScoped<SettingsApiClient>();
             serviceCollection.AddScoped<ProfileApiClient>();
         }
         private static void InstallSeeds(this IServiceCollection serviceCollection)
@@ -96,6 +102,10 @@ namespace Infrastructure
             serviceCollection.AddScoped<IUsersRepository,UsersRepository>();
             serviceCollection.AddScoped<IAuthRepository,AuthRepository>();
             serviceCollection.AddScoped<IProfileRepository, ProfileRepository>();
+            serviceCollection.AddScoped<IPriceRepository, PriceRepository>();
+            serviceCollection.AddScoped<IProductRepository, ProductRepository>();
+            serviceCollection.AddScoped<ISubscriptionsRepository, SubscriptionsRepository>();
+            serviceCollection.AddScoped<ISettingRepository, SettingRepository>();
         }    
       
     }

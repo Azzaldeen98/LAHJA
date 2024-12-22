@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 using MudBlazor;
+using Shared.Constants.Router;
 using Shared.Enums;
 using Shared.Models;
 using Shared.Wrapper;
@@ -32,7 +33,7 @@ namespace LAHJA.Data.UI.Components.Base
     public class DataBuildAuth
     {
 
-        private string email = "test@gmail.com";
+        private string email = "azzaldeenalqashaei@gmail.com";
         private string password = "Test@123";
 
       
@@ -42,13 +43,13 @@ namespace LAHJA.Data.UI.Components.Base
 
     public class DataBuildAuthBase
     {
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
+        public string? FirstName { get; set; } = "ASG";
+        public string? LastName { get; set; } = "USER";
         public int? Age { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
-        public string? ConfirmPassword { get; set; }
+        public string? ConfirmPassword { get; set; } 
         public string? Address { get; set; }
         public string? Gender { get; set; }
         public string? Nationality { get; set; }
@@ -60,7 +61,7 @@ namespace LAHJA.Data.UI.Components.Base
 
     public class CardAuth<T> : ComponentBaseCard<T>
     {
-
+        [Inject] NavigationManager Navigation { get; set; }
         [Inject] IDialogService DialogService { get; set; }
 
         public override TypeComponentCard Type => throw new NotImplementedException();
@@ -144,7 +145,7 @@ namespace LAHJA.Data.UI.Components.Base
         protected async Task showResetPassword()
         {
             var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
-            var dialog = DialogService.Show<ResetPassword>("", new DialogParameters(), options);
+            var dialog = DialogService.Show<ResetPasswordComponent>("", new DialogParameters(), options);
             var result = await dialog.Result;
 
             //if (!result.Cancelled)
@@ -154,31 +155,18 @@ namespace LAHJA.Data.UI.Components.Base
         }
         protected async Task onClickForgetPassword()
         {
-          
-            visibleForgetPassword = true;
 
-            StateHasChanged();
-        }
-
-        protected async Task OnSendConfirmationEmail()
-        {
             //visibleForgetPassword = true;
+            Navigation.NavigateTo(RouterPage.FORGET_PASSWORD);
 
             //StateHasChanged();
         }
 
-        protected async Task OnResetPassword()
-        {
-            //visibleForgetPassword = true;
+    
 
-            //StateHasChanged();
-        }
+     
 
-        protected async Task onSubmitConfirmEmail()
-        {
-
-            //MudDialog.Close(DialogResult.Ok(email, code));
-        }
+     
 
         protected  void onCloseDialog()
         {

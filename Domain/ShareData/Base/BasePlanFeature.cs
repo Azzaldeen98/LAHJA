@@ -26,6 +26,9 @@
         public string? AbsolutePath { get; set; }
         public string? Image { get; set; }
         public List<string>? Images { get; set; }
+        public DateTimeOffset? UpdatedAt { get; set; }
+        public DateTimeOffset? CreatedAt { get; set; }
+
     }
 
 }

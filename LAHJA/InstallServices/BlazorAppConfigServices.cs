@@ -8,6 +8,12 @@ using LAHJA.Data.UI.Components.Base;
 using LAHJA.Data.UI.Components.Category;
 using LAHJA.Data.UI.Templates.Payment;
 using LAHJA.ApplicationLayer.Payment;
+using LAHJA.ApplicationLayer.Product;
+using LAHJA.ApplicationLayer.Subscription;
+using LAHJA.ApplicationLayer.Price;
+using LAHJA.Data.UI.Templates.Price;
+using LAHJA.Data.UI.Templates.Product;
+using LAHJA.Data.UI.Templates.Subscription;
 
 namespace Infrastructure
 {
@@ -67,17 +73,40 @@ namespace Infrastructure
             serviceCollection.AddScoped<IBuilderPaymentComponent<DataBuildPaymentBase>, BuilderPaymentComponent<DataBuildPaymentBase>>();
             serviceCollection.AddScoped<TemplatePaymentShare<PaymentClientService, DataBuildPaymentBase>>();
             serviceCollection.AddScoped<TemplatePayment>();
-            serviceCollection.AddScoped<TemplatePlans>();
+          
+
+            //// Price
+            serviceCollection.AddScoped<IBuilderPriceApi<DataBuildPriceBase>, BuilderPriceApiClient>();
+            serviceCollection.AddScoped<IBuilderPriceComponent<DataBuildPriceBase>, BuilderPriceComponent<DataBuildPriceBase>>();
+            serviceCollection.AddScoped<TemplatePriceShare<PriceClientService, DataBuildPriceBase>>();
+            serviceCollection.AddScoped<TemplatePrice>();
+         
+
+            ///Product
+            serviceCollection.AddScoped<IBuilderProductApi<DataBuildProductBase>, BuilderProductApiClient>();
+            serviceCollection.AddScoped<IBuilderProductComponent<DataBuildProductBase>, BuilderProductComponent<DataBuildProductBase>>();
+            serviceCollection.AddScoped<TemplateProductShare<ProductClientService, DataBuildProductBase>>();
+            serviceCollection.AddScoped<TemplateProduct>();
+
+
+            ///Subscription
+            serviceCollection.AddScoped<IBuilderSubscriptionApi<DataBuildSubscriptionBase>, BuilderSubscriptionApiClient>();
+            serviceCollection.AddScoped<IBuilderSubscriptionComponent<DataBuildSubscriptionBase>, BuilderSubscriptionComponent<DataBuildSubscriptionBase>>();
+            serviceCollection.AddScoped<TemplateSubscriptionShare<SubscriptionClientService, DataBuildSubscriptionBase>>();
+            serviceCollection.AddScoped<TemplateSubscription>();
 
         }
         private static void InstallServices(this IServiceCollection serviceCollection)
         {
-     
-            serviceCollection.AddScoped<ClientAuthService>();
             serviceCollection.AddTransient<LAHJA.Helpers.Services.AuthService>();
+
+            serviceCollection.AddScoped<ClientAuthService>();
             serviceCollection.AddScoped<PlansClientService>();
             serviceCollection.AddScoped<ClientProfileService>();
             serviceCollection.AddScoped<PaymentClientService>();
+            serviceCollection.AddScoped<PriceClientService>();
+            serviceCollection.AddScoped<SubscriptionClientService>();
+            serviceCollection.AddScoped<ProductClientService>();
            
            
         }

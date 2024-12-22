@@ -6,28 +6,29 @@ namespace Domain.Entities.Auth.Request
     public class RegisterRequest
     {
 
-        //[Required]
-        [DataType(DataType.Text)]
-        [MaxLength(20)]
-        public string? name { get; set; } = "Name";
 
-        [Required]
-        [DataType(DataType.EmailAddress)]
-        [MaxLength(50)]
-        public required string email { get; set; }
+        public string? FirstName { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
-        [MaxLength(50)]
-        public required string password { get; set; }
+        public string? LastName { get; set; }
+
+        public string? FullName { get; set; }
+
+        public string? PhoneNumber { get; set; }
+
+        public string? Email { get; set; }
+
+        public string? Password { get; set; }
 
 
-        [Required]
-        [DataType(DataType.PhoneNumber)]
-        [MaxLength(20)]
-        public required string phoneNumber { get; set; }   
-        
-        public required string userRole { get; set; }
+        public string? ConfirmPassword { get; set; }
+
+
+        public string? Avatar { get; set; }
+
+
+        public string? ReturnUrl { get; set; } = "https://asg.tryasp.net/swagger/index.html";
+
+        public  string? UserRole { get; set; }
 
     }
 

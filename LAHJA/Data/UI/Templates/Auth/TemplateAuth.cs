@@ -169,7 +169,9 @@ public class BuilderAuthApiClient : BuilderAuthApi<ClientAuthService, DataBuildA
     public override async Task<Result<RegisterResponse>> Register(DataBuildAuthBase data)
     {
         var model = Mapper.Map<RegisterRequest>(data);
-
+        model.Avatar = "string";
+   
+     
         return await Service.registerAsync(model);
     }
 
@@ -253,7 +255,7 @@ public class TemplateAuth: TemplateAuthShare<ClientAuthService, DataBuildAuthBas
         if (response.Succeeded)
         {
 
-            navigation.NavigateTo(RouterPage.HOME, forceLoad: true);
+            navigation.NavigateTo(RouterPage.LOGIN, forceLoad: true);
 
         }
         else
@@ -316,8 +318,8 @@ public class TemplateAuth: TemplateAuthShare<ClientAuthService, DataBuildAuthBas
         var response = await builderApi.ForgetPassword(data);
         if (response.Succeeded)
         {
-
-            navigation.NavigateTo("/ForgetPassword", forceLoad: true);
+           
+            navigation.NavigateTo(RouterPage.FORGET_PASSWORD+"/Message=jlkjlkjkljlkjlkjkljljlk", forceLoad: true);
 
         }
         else
@@ -370,7 +372,7 @@ public class TemplateAuth: TemplateAuthShare<ClientAuthService, DataBuildAuthBas
         var response = await builderApi.Register(data);
         if (response.Succeeded)
         {
-            navigation.NavigateTo(RouterPage.LOGIN, forceLoad: true);
+            navigation.NavigateTo(RouterPage.CONFIRM_EMAIL, forceLoad: true);
 
         }
         else

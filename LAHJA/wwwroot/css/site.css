@@ -10,10 +10,22 @@
     unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 }
 
+.mud-typography {
+    margin: 10px !important;
+}
 
+.c-auth-main{
 
+/*    background:#fff;*/
+/*    margin:0% 25%;*/
+    width:400px;
 
+}
 
+.auth-them {
+/*    background: radial-gradient(#40404b, #111118) rgba(34,34,40,0.94);*/
+   
+}
 /* cyrillic */
 @font-face {
     font-family: 'Inter';
@@ -781,13 +793,20 @@ a, .btn-link {
     width: 450px;
 }
 
+.fsing {
+    width: 100%
+}
 @media only screen and (max-width:700px) {
     .Home {
         font-size: 11px !important
     }
-    .imbost{
-        width:100%;
-       
+    .auth-them{padding:2% 10%}
+    .c-auth-main {
+        width: 100%;
+        padding: 0% 15%
+    }
+    .imbost {
+        width: 100%;
     }
     .wimrepot {
         width: 100%;

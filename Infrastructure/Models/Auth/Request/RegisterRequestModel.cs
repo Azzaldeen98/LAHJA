@@ -12,13 +12,28 @@ namespace Infrastructure.Models.Plans
     {
 
 
-        public string? name { get; set; } = "";
+        public string? FirstName { get; set; }
 
-        public required string email { get; set; }
-     
-        public required string password { get; set; }
 
-        public required string phoneNumber { get; set; }
+        public string? LastName { get; set; } 
+        public string? FullName { get; set; }
+
+        public string? PhoneNumber { get; set; }
+
+        public string? Email { get; set; }
+
+        public string? Password { get; set; }
+
+
+        public string? ConfirmPassword { get; set; }
+
+
+        public string? Avatar { get; set; } 
+
+
+        public string? ReturnUrl { get; set; } = "https://asg.tryasp.net/swagger/index.html";
+
+        public string? UserRole { get; set; }
 
     }
 

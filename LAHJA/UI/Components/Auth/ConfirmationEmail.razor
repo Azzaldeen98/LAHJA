@@ -5,20 +5,22 @@
 @using System.ComponentModel.DataAnnotations
 @* @inherits LayoutComponentBase *@
 
- @inherits CardAuth<DataBuildAuthBase>
+@inherits CardAuth<DataBuildAuthBase>
 
-<MudDialog Class="col-5"  DefaultFocus="DefaultFocus.LastChild">
+<MudText Typo="Typo.h6">
+    <h4 class="d-flex align-center justify-content-center flex-column">
+        Confirmation  Email
+    </h4>
+</MudText>
+
+@* <MudDialog Class="col-5"  DefaultFocus="DefaultFocus.LastChild">
     <TitleContent>
-        <MudText Typo="Typo.h6">
-            <h4 class="d-flex align-center justify-content-center flex-column">
-               Confirmation  Email
-            </h4>
-        </MudText>
+    
     </TitleContent>
     <DialogActions>
 
     </DialogActions>
-    <DialogContent>
+    <DialogContent> *@
         <MudContainer Style="width:100% !important" class="w-100 border  d-flex align-center justify-content-center flex-column">
 
 
@@ -34,7 +36,7 @@
                  
 
                     <MudCardActions Class="col-12 mt-5 row d-flex flex-wrap justify-content-around align-content-around">
-                        <MudButton Variant="Variant.Filled" Color="@Color.Primary" Class="col-lg-4 col-md-7 col-sm-12" OnClick="OnSendConfirmationEmail" Disabled="isLoading">
+                <MudButton Variant="Variant.Filled" Color="@Color.Primary" Class="col-lg-4 col-md-7 col-sm-12" OnClick="onSubmitConfirmEmail" Disabled="isLoading">
                             Confirm Email
                         </MudButton>
                         <MudButton OnClick="onCloseDialog" Variant="Variant.Text" Class="col-lg-4 col-md-7 col-sm-12" Color="Color.Secondary">Cancel</MudButton>
@@ -44,37 +46,72 @@
             </MudForm>
 
         </MudContainer>
-    </DialogContent>
 
-</MudDialog>
+   
 
-
- @* <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4">
-    <MudPaper Class="pa-4">
+@code{
 
 
-        <MudText Typo="Typo.h6">
-            <h4 class="d-flex align-center justify-content-center flex-column">  </h4>
-        </MudText>
-        
-        @if (isLoading)
+
+    [Parameter] public string Email { get; set; }
+    [Parameter] public string Code{ get; set; }
+    protected override void OnInitialized()
+    {
+
+        if (Email != null)
         {
-            <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
-        }
-
-        @if (!isLoading && errors != null)
-        {
-            @foreach (var messsage in errors)
-            {
-                  <MudAlert Severity="Severity.Error">@messsage</MudAlert>
+           
+            if (Code!=null){
+                email = Email;
+                code = Code;
+                StateHasChanged();
+                
+            
             }
         }
-        <MudForm Style="width:100% !important" @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
-            
-        </MudForm>
+        base.OnInitialized();
+    }
+    async Task onSubmitConfirmEmail()
+    {
 
-    </MudPaper>
-</MudContainer>  *@
+        if (OnSubmitConfirmEmail.HasDelegate)
+        {
+
+            await OnSubmitConfirmEmail.InvokeAsync(new DataBuildAuthBase { Email = email, Code = code });
+        }
+    }
+        }
+@*     </DialogContent>
+
+</MudDialog> *@
+
+
+  @* <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4">
+     <MudPaper Class="pa-4">
+
+
+         <MudText Typo="Typo.h6">
+             <h4 class="d-flex align-center justify-content-center flex-column">  </h4>
+         </MudText>
+        
+         @if (isLoading)
+         {
+             <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+         }
+
+         @if (!isLoading && errors != null)
+         {
+             @foreach (var messsage in errors)
+             {
+                   <MudAlert Severity="Severity.Error">@messsage</MudAlert>
+             }
+         }
+         <MudForm Style="width:100% !important" @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+            
+         </MudForm>
+
+     </MudPaper>
+ </MudContainer>  *@
 
 
 

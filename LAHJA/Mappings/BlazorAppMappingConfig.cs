@@ -76,6 +76,7 @@ namespace LAHJA.Mappings
             CreateMap<DataBuildAuthBase, ResendConfirmationEmail>().ReverseMap();
             CreateMap<DataBuildAuthBase, ResetPasswordRequest>()
                  .ForMember(dest => dest.NewPassword, opt => opt.MapFrom(src => src.Password))
+                 .ForMember(dest => dest.ResetCode, opt => opt.MapFrom(src => src.Code))
                 .ReverseMap();
             CreateMap<DataBuildAuthBase, ConfirmationEmail>()
                 .ForMember(dest => dest.ChangedEmail, opt => opt.MapFrom(src => src.Email))
@@ -86,7 +87,9 @@ namespace LAHJA.Mappings
             CreateMap<ContainerPlans, InputCategory>().ReverseMap();
 
             /// Plans
-            CreateMap<ContainerPlans, CategoryComponent>().ReverseMap();
+            CreateMap<ContainerPlans, CategoryComponent>()
+                  .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                  .ReverseMap();
 
 
             CreateMap<PlanFeature, DigitalService>()
