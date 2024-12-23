@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.User;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.JSInterop;
 using Shared.Constants;
 using Shared.Helpers;
@@ -8,11 +9,39 @@ namespace LAHJA.Helpers.Services
     public class TokenService : ITokenService
     {
         private readonly IJSRuntime _jsRuntime;
-
-        public TokenService(IJSRuntime jsRuntime)
+        private readonly ProtectedSessionStorage PSession;
+        public TokenService(IJSRuntime jsRuntime, ProtectedSessionStorage pSession)
         {
             _jsRuntime = jsRuntime;
+            PSession = pSession;
         }
+
+        public async Task SaveTokenInSessionAsync(string token)
+        {
+
+            try
+            {
+                await PSession.SetAsync(ConstantsApp.ACCESS_TOKEN, token);
+
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        public async Task DeleteTokenFromSessionAsync()
+        {
+            try
+            {
+                await PSession.DeleteAsync(ConstantsApp.ACCESS_TOKEN);
+
+            }catch(Exception e)
+            {
+
+            }
+        }
+   
 
         public async Task SaveTokenAsync(string token)
         {

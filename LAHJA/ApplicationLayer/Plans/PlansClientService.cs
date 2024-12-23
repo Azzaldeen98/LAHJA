@@ -1,16 +1,8 @@
 ﻿using Application.Services.Plans;
-using Application.UseCase.Plans;
 using AutoMapper;
-using LAHJA.Data.BlazarComponents.Plans.Category.Model;
-using LAHJA.Data.BlazarComponents.Plans.TemFeturePlans2.Model;
-using Domain.Entities.Plans;
 using Domain.Wrapper;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using LAHJA.Helpers.Services;
-using LAHJA.Data.BlazarComponents.Plans.TemFeturePlans2.Them3.Model;
 using Domain.Entities.Plans.Response;
-using System;
-using Application.UseCase.Plans.Get;
 
 namespace LAHJA.ApplicationLayer.Plans
 {

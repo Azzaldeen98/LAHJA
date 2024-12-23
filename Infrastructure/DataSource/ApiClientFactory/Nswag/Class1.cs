@@ -10190,7 +10190,7 @@ namespace Infrastructure.Nswag
         public string Email { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("returnUrl")]
-        public string ReturnUrl { get; set; } = "https://localhost:7584/confirm-email";
+        public string ReturnUrl { get; set; } = "https://localhost:7121//ConfirmEmail";
 
     }
 

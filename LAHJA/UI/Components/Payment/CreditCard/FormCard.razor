@@ -1,0 +1,119 @@
+﻿@using LAHJA.Data.UI.Components.Base
+@using LAHJA.Data.UI.Components.Payment.CreditCard
+
+
+
+@inherits PaymentCard<CardDetails>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<MudPaper Class="pa-4"  >
+    <MudForm Model="@newCard" @ref="form"  >
+        <MudGrid Class="justify-space-between">
+          
+
+            <MudItem xs="12">
+                <MudTextField Label="Card Number"
+                              Mask="@(new PatternMask("0000 0000 0000 0000"))"
+                              @bind-Value="newCard.CardNumber"
+                              Variant="Variant.Text"
+                              />
+            </MudItem>
+
+            <MudItem xs="6">
+                <MudTextField Label="Expiration Date (MM/YY)"
+                              Mask="@(new DateMask("MM/YY", 'Y', 'M'))"
+                              @bind-Value="newCard.ExpirationDate"
+                              Variant="Variant.Text"
+                               />
+            </MudItem>
+
+            
+            <MudItem xs="6">
+                <MudTextField Label="CVC"
+                              Mask="@(new PatternMask("000"))"
+                              @bind-Value="newCard.Cvc"
+                              Variant="Variant.Text"
+                              InputType="InputType.Password"
+                              
+                               />
+            </MudItem>
+
+            
+            <MudItem xs="12">
+                <MudSelect @bind-Value="newCard.CardType" Label="Card Type">
+                    <MudSelectItem Value=@("MasterCard")>MasterCard</MudSelectItem>
+                    <MudSelectItem Value=@("Visa")>Visa</MudSelectItem>
+                    <MudSelectItem Value=@("Visa")>Amex</MudSelectItem>
+                </MudSelect>
+            </MudItem>
+
+
+
+           
+
+         
+            <MudItem xs="12" Class="mt-2">
+                <MudButton Color="Color.Primary" OnClick="AddCard">Add Card</MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudForm>
+    </MudPaper>
+ 
+
+@code
+{
+
+
+    private CardDetails newCard = new CardDetails();
+    private MudForm form;
+
+    private async Task AddCard()
+    {
+
+        try
+        {
+            newCard.IsSelected = true ;
+            if (OnClickSave.HasDelegate)
+            {
+                await OnClickSave.InvokeAsync(newCard);
+
+            }
+        }
+        catch(Exception ex)
+        {
+            
+        }
+
+       
+
+     
+    }
+}

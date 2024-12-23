@@ -1,7 +1,4 @@
-﻿using LAHJA.Data.TItem;
-using LAHJA.UI.Components.Base;
-using Microsoft.AspNetCore.Components;
-using MudBlazor;
+﻿using MudBlazor;
 namespace LAHJA.Data.UI.Components.Base
 {
 
@@ -39,10 +36,7 @@ namespace LAHJA.Data.UI.Components.Base
 
 
 
-    public  class CardIconServics : CardIcon
-    {
-        public new string? ClassContanier { set; get; } = "list-inline-item me-0";
-    }
+   
 
    
     public interface ICardText

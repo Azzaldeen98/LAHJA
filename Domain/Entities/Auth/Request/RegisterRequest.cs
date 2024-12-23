@@ -26,7 +26,7 @@ namespace Domain.Entities.Auth.Request
         public string? Avatar { get; set; }
 
 
-        public string? ReturnUrl { get; set; } = "https://asg.tryasp.net/swagger/index.html";
+        public string? ReturnUrl { get; set; } = "https://localhost:7121/ConfirmEmail";
 
         public  string? UserRole { get; set; }
 

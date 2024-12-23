@@ -14,6 +14,7 @@ using LAHJA.ApplicationLayer.Price;
 using LAHJA.Data.UI.Templates.Price;
 using LAHJA.Data.UI.Templates.Product;
 using LAHJA.Data.UI.Templates.Subscription;
+using LAHJA.Data.UI.Components;
 
 namespace Infrastructure
 {

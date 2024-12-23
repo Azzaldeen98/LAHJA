@@ -50,16 +50,6 @@ namespace LAHJA.ApplicationLayer.Auth
 
 
             var response = await service.loginAsync(model);
-            if (response.Succeeded)
-            {
-                await tokenService.RemoveAllTokensAsync();
-                await tokenService.SaveAllTokensAsync(response.Data.accessToken,
-                                                    response.Data.refreshToken,
-                                                    response.Data.expiresIn,
-                                                    response.Data.tokenType);
-            }
-
-
             return response;
         }
 

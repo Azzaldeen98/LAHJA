@@ -1,0 +1,101 @@
+﻿@using LAHJA.Data.UI.Components.Base
+@using LAHJA.Data.UI.Components.Category
+@inject NavigationManager Navigation
+@inherits CardCategory<CategoryComponent>
+@inject ISnackbar Snackbar
+<style>
+
+    .card-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .card-hover:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+    .card:hover {
+        transform: scale(3.7);
+    }
+
+
+
+
+
+</style>
+
+
+ @if (Params != null)
+{
+
+    @foreach (var item in Params)
+    {
+        <MudItem xs="12" sm="12" md="4">
+            
+                <MudCard Elevation="25" Class="rounded-lg pb-4 card-hover">
+
+                <MudTooltip Text="@item.Description" Color="Color.Primary" Placement="Placement.Top">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h5" Align="Align.Center">@item.Name</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    
+                    @if (!string.IsNullOrEmpty(@item.ImageUrl))
+                    {
+                        <MudCardMedia Image="@item.ImageUrl" Height=400 />
+                    }
+
+                    @if (!string.IsNullOrEmpty(@item.Name))
+                    {
+                        <MudText Typo="Typo.h6" Class="@TemplateCategoryStyle.MudText">@item.Description</MudText>
+                    }
+
+                </MudCardContent>
+                <MudCardActions Class="d-flex justify-center">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;" OnClick="@(()=>Submit(@item))">Start Now</MudButton>
+                </MudCardActions>
+                </MudTooltip>
+            </MudCard>
+         
+        </MudItem>
+
+    }
+
+   
+    
+
+}
+else
+{
+    
+
+
+}
+
+
+
+
+@code 
+{
+
+
+
+
+    private async Task Submit(CategoryComponent inputCategory)
+    {
+        try
+        {
+
+            if (OnSubmit.HasDelegate)
+            {
+                await OnSubmit.InvokeAsync(inputCategory);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+    }
+}

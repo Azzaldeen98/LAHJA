@@ -3,6 +3,7 @@ using LAHJA.ApplicationLayer.Auth;
 using LAHJA.Data.UI.Components.Base;
 using LAHJA.Helpers.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using MudBlazor;
 using System.Collections;
 
@@ -67,19 +68,22 @@ public abstract class TemplateBase<T,E> : ITemplateBase<T, E>
 
     protected readonly IMapper mapper;
     protected readonly AuthService authService;
+    //protected readonly ProtectedSessionStorage PSession;
     protected readonly T client;
     protected List<string> _errors;
 
 
     public TemplateBase(IMapper mapper,
         AuthService authService,
-        T client)
+        //ProtectedSessionStorage PSession,
+    T client)
     {
 
         this.mapper = mapper;
         _errors = new List<string>();
         this.authService = authService;
         this.client = client;
+        //this.PSession = PSession;
         //_isAuth = authService.isAuth().Result;
         //this.customAuthenticationStateProvider = customAuthenticationStateProvider;
     }

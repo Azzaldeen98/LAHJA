@@ -64,7 +64,7 @@ namespace Infrastructure.DataSource.ApiClient.Auth
         public async Task<Result<ForgetPasswordResponseModel>> forgetPasswordAsync(ForgetPasswordRequestModel requestModel)
         {
             try
-            {
+            {   
                 var model = _mapper.Map<ForgotPasswordRequest>(requestModel);
                 var client = await GetApiClient();
                 await client.ForgotPasswordAsync(model);

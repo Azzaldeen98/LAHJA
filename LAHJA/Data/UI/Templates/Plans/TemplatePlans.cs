@@ -2,12 +2,14 @@
 using Domain.Entities.Plans.Response;
 using Domain.Wrapper;
 using LAHJA.ApplicationLayer.Plans;
-using LAHJA.Data.BlazarComponents.Plans.TemFeturePlans2.Them3.Model;
+using LAHJA.Data.UI.Components;
 using LAHJA.Data.UI.Components.Category;
+using LAHJA.Data.UI.Components.Plan;
 using LAHJA.Data.UI.Templates.Base;
 using LAHJA.Helpers.Services;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Shared.Constants.Router;
 
 namespace LAHJA.Data.UI.Templates.Plans
 {
@@ -30,7 +32,7 @@ namespace LAHJA.Data.UI.Templates.Plans
 
         Task<Result<List<CategoryComponent>>> GetAllCategories();
         Task<Result<List<SubscriptionPlanInfo>>> getSubscriptionsPlansAsync(T data);
-        Task<Result<List<SubscriptionPlan>>> getAllSubscriptionsPlansAsync();
+        Task<Result<List<SubscriptionPlanInfo>>> getAllSubscriptionsPlansAsync();
         Task<Result<SubscriptionPlanInfo>> getOneSubscriptionPlanAsync(T data);
         Task<Result<List<PlanFeature>>> getSubscriptionPlanFeaturesAsync(T data);
 
@@ -52,7 +54,7 @@ namespace LAHJA.Data.UI.Templates.Plans
 
         public abstract Task<Result<List<SubscriptionPlanInfo>>> getSubscriptionsPlansAsync(E data);  
         
-        public abstract Task<Result<List<SubscriptionPlan>>> getAllSubscriptionsPlansAsync();
+        public abstract Task<Result<List<SubscriptionPlanInfo>>> getAllSubscriptionsPlansAsync();
         public abstract Task<Result<SubscriptionPlanInfo>> getOneSubscriptionPlanAsync(E data);
 
         public abstract Task<Result<List<PlanFeature>>> getSubscriptionPlanFeaturesAsync(E data);
@@ -182,18 +184,18 @@ namespace LAHJA.Data.UI.Templates.Plans
         }
 
  
-        public override async Task<Result<List<SubscriptionPlan>>> getAllSubscriptionsPlansAsync()
+        public override async Task<Result<List<SubscriptionPlanInfo>>> getAllSubscriptionsPlansAsync()
         {
            
             var res = await Service.getAllSubscriptionPlansAsync();
             if (res.Succeeded)
             {
-                var map = Mapper.Map<List<SubscriptionPlan>>(res.Data);
-                return Result<List<SubscriptionPlan>>.Success(map);
+                var map = Mapper.Map<List<SubscriptionPlanInfo>>(res.Data);
+                return Result<List<SubscriptionPlanInfo>>.Success(map);
             }
             else
             {
-                return Result<List<SubscriptionPlan>>.Fail(res.Messages);
+                return Result<List<SubscriptionPlanInfo>>.Fail(res.Messages);
             }
         }
 
@@ -232,6 +234,7 @@ namespace LAHJA.Data.UI.Templates.Plans
 
         public override async Task<Result<SubscriptionPlanInfo>> getOneSubscriptionPlanAsync(DataBuildPlansBase data)
         {
+
             var res = await Service.getOneSubscriptionPlanAsync(data.PlanId);
             if (res.Succeeded)
             {
@@ -251,8 +254,10 @@ namespace LAHJA.Data.UI.Templates.Plans
     {
         public List<CategoryComponent> Categories { get=> _categories; }
         public List<SubscriptionPlanInfo> SubscriptionPlans { get => _plans; }
+        public List<SubscriptionPlanInfo> AllSubscriptionPlans { get => _allPlans; }
         public SubscriptionPlanInfo SubscriptionPlan { get => _plan; }
         public List<string> Errors { get => _errors; }
+  
 
      
 
@@ -282,6 +287,7 @@ namespace LAHJA.Data.UI.Templates.Plans
       
         private List<CategoryComponent> _categories = new List<CategoryComponent>();
         private List<SubscriptionPlanInfo> _plans = new List<SubscriptionPlanInfo>();
+        private List<SubscriptionPlanInfo> _allPlans = new List<SubscriptionPlanInfo>();
         private SubscriptionPlanInfo _plan = new SubscriptionPlanInfo();
 
         //public  IBuilderPlansComponent<DataBuildPlansBase, DataBuildPlansBase> BuilderPlansComponent { get => builderPlansComponents; }
@@ -301,6 +307,21 @@ namespace LAHJA.Data.UI.Templates.Plans
 
         }
 
+        public async Task getAllSubscriptionsPlansAsync()
+        {
+
+                var response = await builderApi.getAllSubscriptionsPlansAsync();
+                if (response.Succeeded)
+                {
+                _allPlans = response.Data;
+                }
+                else
+                {
+                    _errors = response.Messages;
+                }
+            
+
+        }
         private async Task OnSubmitCreatePlans(DataBuildPlansBase dataBuildPlansBase)
         {
 
@@ -341,28 +362,41 @@ namespace LAHJA.Data.UI.Templates.Plans
 
             if (dataBuildPlansBase != null)
             {
-                var response = _categories.FirstOrDefault();// await builderApi.getSubscriptionsPlansAsync(dataBuildPlansBase);
+                var response =  await builderApi.getSubscriptionsPlansAsync(dataBuildPlansBase);
                 if (response!=null)
                 {
-                    _plans = response.SubscriptionsPlans;
+                    _plans = response.Data;
                 }
                 else
                 {
-                    //_errors = response.Messages;
+                    _errors = response.Messages;
                 }
             }
 
         }
 
-        public async Task<Result<SubscriptionPlanInfo>> OnSubmitSubscriptionPlan(DataBuildPlansBase dataBuildPlansBase)
+        public async Task OnSubmitSubscriptionPlan(DataBuildPlansBase dataBuildPlansBase)
         {
-            
-            
-                var response = await builderApi.getOneSubscriptionPlanAsync(dataBuildPlansBase);
+            var isAuth = await authService.isAuth();
+            if (isAuth)
+            {
+                navigation.NavigateTo($"{RouterPage.PAYMENT}/{dataBuildPlansBase.PlanId}");
+            }
+            else
+            {
+                navigation.NavigateTo(RouterPage.LOGIN);
+            }
 
-                return response;
-           
-            
+        }
+        public async Task<Result<SubscriptionPlanInfo>> GetSubmitSubscriptionPlan(DataBuildPlansBase dataBuildPlansBase)
+        {
+         
+
+            var response = await builderApi.getOneSubscriptionPlanAsync(dataBuildPlansBase);
+
+            return response;
+
+
 
         }  
        

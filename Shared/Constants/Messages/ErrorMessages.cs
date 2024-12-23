@@ -15,6 +15,9 @@ namespace Shared.Constants
         public static string IINVALID_EMAIL_AR = "البريد الالكتروني  غير صالح";
 
 
+        public static string PROCESS_IS_FAILED_EN = "Process is Failed !! try anther way ";
+
+
         public static string INVALID_EMAIL_PASSWORD_EN = "Invalid email or password";
         public static string INVALID_EMAIL_PASSWORD_AR = "البريد الالكتروني او كلمة السر غير صالحة";
 

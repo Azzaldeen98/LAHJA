@@ -1,13 +1,10 @@
-﻿using LAHJA.Data.BlazarComponents.Plans.Category.Model;
-using LAHJA.Data.BlazarComponents.Plans.TemFeturePlans1.Model;
-using LAHJA.Data.BlazarComponents.Plans.TemFeturePlans2.Model;
-using Domain.Entities.Plans.Response;
-using LAHJA.Data.BlazarComponents.Plans.TemFeturePlans2.Them3.Model;
+﻿using Domain.Entities.Plans.Response;
 using LAHJA.Data.UI.Components.Base;
 using Domain.Entities.Auth.Request;
 using LAHJA.Data.UI.Components.Category;
 using LAHJA.Data.UI.Templates.Payment;
 using Domain.Entities.Payment;
+using LAHJA.Data.UI.Components.Plan;
 
 namespace LAHJA.Mappings
 {
@@ -17,25 +14,25 @@ namespace LAHJA.Mappings
         public BlazorAppMappingConfig()
         {
 
-            CreateMap<PlansContainerResponse, InputCategory>().ReverseMap();
+        
      
           
             CreateMap<Domain.Entities.Auth.Request.LoginRequest, VitsModel.Auth.LoginRequest>().ReverseMap();
             CreateMap<Domain.Entities.Auth.Request.RegisterRequest, VitsModel.Auth.RegisterRequest>().ReverseMap();
             //CreateMap<PlansContainer, InputCategory>().ReverseMap();
 
-            CreateMap<PlanResponse, FeaturesPlansTem1>().ReverseMap();
+     
 
-            CreateMap<PlansGroupResponse,PlansFeture>()
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src=>src.ProductName))
-                .ForMember(dest => dest.Services, opt => opt.Ignore())
-                .ForMember(dest => dest.numberOfServices, opt => opt.Ignore())
-                .ReverseMap();
+            //CreateMap<PlansGroupResponse,PlansFeture>()
+            //    .ForMember(dest => dest.Name, opt => opt.MapFrom(src=>src.ProductName))
+            //    .ForMember(dest => dest.Services, opt => opt.Ignore())
+            //    .ForMember(dest => dest.numberOfServices, opt => opt.Ignore())
+            //    .ReverseMap();
 
-            CreateMap<PlanSubscriptionFeaturesResponse, Service>()
-                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => (decimal)src.Amount))
-                .ReverseMap();
-            CreateMap<PlanTechnicalFeaturesResponse, NumberOfService>().ReverseMap();
+            //CreateMap<PlanSubscriptionFeaturesResponse, Service>()
+            //    .ForMember(dest => dest.Price, opt => opt.MapFrom(src => (decimal)src.Amount))
+            //    .ReverseMap();
+            //CreateMap<PlanTechnicalFeaturesResponse, NumberOfService>().ReverseMap();
 
             CreateMap<PlansGroupResponse, PlanInfoResponse>()
                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.ProductName))
@@ -83,8 +80,7 @@ namespace LAHJA.Mappings
                 .ReverseMap();
             //CreateMap<DataBuildAuthBase, RegisterRequest>().ReverseMap();
 
-            ////  Temp
-            CreateMap<ContainerPlans, InputCategory>().ReverseMap();
+          
 
             /// Plans
             CreateMap<ContainerPlans, CategoryComponent>()

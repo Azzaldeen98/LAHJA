@@ -71,7 +71,15 @@
 
         <MudButton OnClick="showResetPassword" Color="@AppColors.BASE_COLOR_ENUM">Reset Password</MudButton>
     
-    </div>
+        </div>
+    }
+    else
+    {
+
+        // Re send Confirm email
+
+        <MudButton OnClick="onSubmitResendConfirmEmail" class="@AppTextStyle.TEXT_TRANSFORM_NORMAL" Color="@AppColors.BASE_COLOR_ENUM">Re Send Confirm Email</MudButton>
+        @*<ForgetPasswordForm IsDisplay="visibleForgetPassword" OnSubmited=OnSubmitedForgetPassword /> *@
     }
 
     @if (errors != null && errors.Count() > 0)
@@ -90,10 +98,11 @@
 </MudForm>
 
 
-@* <ForgetPasswordForm IsDisplay="visibleForgetPassword" OnSubmited=OnSubmitedForgetPassword /> *@
+
 
 @code{
 
+    
 
     // bool success { get; set; }
     // bool visibleForgetPassword { get; set; }

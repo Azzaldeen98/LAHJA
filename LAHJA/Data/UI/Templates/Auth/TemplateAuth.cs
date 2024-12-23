@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Blazorise;
 using Domain.Entities.Auth.Request;
 using Domain.Entities.Auth.Response;
 using Domain.Wrapper;
@@ -6,11 +7,16 @@ using LAHJA.ApplicationLayer.Auth;
 using LAHJA.Data.UI.Components.Base;
 using LAHJA.Data.UI.Templates.Base;
 using LAHJA.Helpers.Services;
+using LAHJA.UI.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.AspNetCore.Http;
 using MudBlazor;
 using Shared.Constants;
 using Shared.Constants.Router;
+using Shared.Helpers;
 using Shared.Wrapper;
+using System;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LAHJA.Data.UI.Templates.Auth;
@@ -54,6 +60,7 @@ public interface IBuilderAuthComponent<T>: IBuilderComponents<T>
     public Func<T, Task> SubmitConfirmEmail { get; set; }
     public Func<T, Task> SubmitReSendConfirmEmail { get; set; }
     public Func<T, Task> SubmitResetPassword { get; set; }
+    public Func<T, Task> SubmitLogout { get; set; }
 
 
 }
@@ -64,6 +71,7 @@ public interface IBuilderAuthApi<T> : IBuilderApi<T>
 {
 
      Task<Result<LoginResponse>> Login(T data);
+    Task<Result<string>> Logout();
      Task<Result<RegisterResponse>> Register(T data);
      Task<Result<ResetPasswordResponse>> ResetPassword(T data);
      Task<Result> ReSendConfirmationEmail(T data);
@@ -83,6 +91,7 @@ public abstract class BuilderAuthApi<T,E> : BuilderApi<T,E>, IBuilderAuthApi<E>
     public abstract Task<Result> ForgetPassword(E data);
 
     public abstract Task<Result<LoginResponse>> Login(E data);
+    public abstract Task<Result<string>> Logout();
 
     public abstract Task<Result<RegisterResponse>> Register(E data);
    
@@ -100,6 +109,7 @@ public class BuilderAuthComponent<T> : IBuilderAuthComponent<T>
     public Func<T, Task> SubmitConfirmEmail { get; set; }
     public Func<T, Task> SubmitReSendConfirmEmail { get; set; }
     public Func<T, Task> SubmitResetPassword { get; set; }
+    public Func<T, Task> SubmitLogout { get; set; }
 
 }
 
@@ -111,13 +121,15 @@ public class TemplateAuthShare<T,E> : TemplateBase<T,E>
     protected readonly ISnackbar Snackbar;
     protected IBuilderAuthApi<E> builderApi;
     protected AppCustomAuthenticationStateProvider customAuthenticationStateProvider;
+    //protected readonly ProtectedSessionStorage  PSession;
 
     private readonly IBuilderAuthComponent<E> builderComponents;
     public  IBuilderAuthComponent<E> BuilderComponents { get => builderComponents; }
     public TemplateAuthShare(
         
            IMapper mapper, 
-           AuthService authService, 
+           AuthService authService,
+            //ProtectedSessionStorage PSession,
             T client,
             AppCustomAuthenticationStateProvider customAuthenticationStateProvider,
             IBuilderAuthComponent<E> builderComponents,
@@ -130,7 +142,7 @@ public class TemplateAuthShare<T,E> : TemplateBase<T,E>
     {
 
 
-      
+        
         builderComponents = new BuilderAuthComponent<E>();
         this.navigation = navigation;
         this.dialogService = dialogService;
@@ -154,7 +166,7 @@ public class BuilderAuthApiClient : BuilderAuthApi<ClientAuthService, DataBuildA
     {
         var model = Mapper.Map<ForgetPasswordRequest>(data);
 
-
+        model.ReturnUrl = ConstantsApp.RESET_PASSWORDL_PAGE_URL;
         return await Service.forgetPasswordAsync(model);
     }
 
@@ -164,20 +176,31 @@ public class BuilderAuthApiClient : BuilderAuthApi<ClientAuthService, DataBuildA
 
          return await Service.loginAsync(model);
        
+    } 
+    
+    public override async Task<Result<string>> Logout()
+    {
+        
+
+         return await Service.logoutAsync();
+       
     }
 
     public override async Task<Result<RegisterResponse>> Register(DataBuildAuthBase data)
     {
         var model = Mapper.Map<RegisterRequest>(data);
         model.Avatar = "string";
-   
-     
+        model.ReturnUrl = ConstantsApp.CONFIRM_EMAIL_PAGE_URL;
+
+
         return await Service.registerAsync(model);
     }
 
     public override async Task<Result> ReSendConfirmationEmail(DataBuildAuthBase data)
     {
         var model = Mapper.Map<ResendConfirmationEmail>(data);
+
+        model.ReturnUrl = ConstantsApp.CONFIRM_EMAIL_PAGE_URL;
 
         return await Service.reConfirmationEmailAsync(model);
     }
@@ -192,6 +215,7 @@ public class BuilderAuthApiClient : BuilderAuthApi<ClientAuthService, DataBuildA
     public override async Task<Result> SubmitConfirmEmail(DataBuildAuthBase data)
     {
         var model = Mapper.Map<ConfirmationEmail>(data);
+        model.ReturnUrl = ConstantsApp.CONFIRM_EMAIL_PAGE_URL;
 
         return await Service.confirmationEmailAsync(model);
     }
@@ -201,8 +225,11 @@ public class BuilderAuthApiClient : BuilderAuthApi<ClientAuthService, DataBuildA
 public class TemplateAuth: TemplateAuthShare<ClientAuthService, DataBuildAuthBase>
 {
   
+
+   //[Inject] private DialogService DialogService { get; set; }
+
     public TemplateAuth(IMapper mapper,
-        AuthService authService, 
+        AuthService authService,
         ClientAuthService client,
         AppCustomAuthenticationStateProvider customAuthenticationStateProvider, 
         IBuilderAuthComponent<DataBuildAuthBase> builderComponents, 
@@ -211,6 +238,7 @@ public class TemplateAuth: TemplateAuthShare<ClientAuthService, DataBuildAuthBas
         ISnackbar snackbar) : base(mapper, authService, client, customAuthenticationStateProvider, builderComponents, navigation, dialogService, snackbar)
     {
         this.BuilderComponents.Submit = OnSubmit;
+        this.BuilderComponents.SubmitLogout = OnSubmitLogout;
         this.BuilderComponents.SubmitConfirmEmail = OnSubmitConfirmEmail;
         this.BuilderComponents.SubmitReSendConfirmEmail = OnReSendConfirmationEmail;
         this.BuilderComponents.SubmitResetPassword = OnResetPassword;
@@ -225,27 +253,80 @@ public class TemplateAuth: TemplateAuthShare<ClientAuthService, DataBuildAuthBas
 
 
     //public  IBuilderAuthComponent<DataBuildAuthBase, DataBuildAuthBase> BuilderAuthComponent { get => builderAuthComponents; }
-    
 
 
+    public async Task LogoutAsync()
+    {
+        await OnSubmitLogout();
+    }
+
+
+    protected async Task OnSubmitLogout(DataBuildAuthBase? dataBuildAuthBase = null)
+    {
+        try
+        {
+            var response = await builderApi.Logout();
+            if (response.Succeeded)
+            {
+                await authService.DeleteLoginAsync();
+                navigation.NavigateTo(RouterPage.LOGIN, forceLoad: true);
+
+            }
+            else
+            {
+                await authService.DeleteLoginAsync();
+                navigation.NavigateTo(RouterPage.LOGIN, forceLoad: true);
+
+                //if (response.Messages != null && response.Messages.Count() > 0)
+                //{
+
+                //    _errors?.Clear();
+                //    _errors.Add(MapperMessages.Map(ErrorMessages.INVALID_EMAIL_EN, ErrorMessages.IINVALID_EMAIL_AR));
+
+                //}
+            }
+        }
+        catch(Exception e)
+        {
+            //Snackbar.Add();
+        }
+    }
+ 
+    private async Task<bool> ConfirmAsync(string title ,string message)
+    {
+        var parameters = new DialogParameters<MessageBoxDialog>
+        {
+            { x => x.Title, title },
+            { x => x.Message,message},
+            //{ x => x.Color, Color.Success }
+        };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+        var dialog = dialogService.Show<MessageBoxDialog>(" ", parameters, options);
+
+
+        var result = await dialog.Result;
+        return result.Canceled;
+        
+
+    }
     protected async Task OnReSendConfirmationEmail(DataBuildAuthBase dataBuildAuthBase)
     {
         var response = await builderApi.ReSendConfirmationEmail(dataBuildAuthBase);
         if (response.Succeeded)
         {
 
-            navigation.NavigateTo(RouterPage.HOME, forceLoad: true);
+            var res = await  ConfirmAsync("Confirm Email", SuccessMessages.CONFIRM_EMAIL_MESSAGE_EN);
+             if (res == true)
+            {
+                    navigation.NavigateTo(RouterPage.LOGIN, forceLoad: true);
+            }
+
 
         }
         else
         {
-            if (response.Messages != null && response.Messages.Count() > 0)
-            {
-
-                _errors?.Clear();
-                _errors.Add(MapperMessages.Map(ErrorMessages.INVALID_EMAIL_EN, ErrorMessages.IINVALID_EMAIL_AR));
-
-            }
+            var res = await ConfirmAsync("Error", ErrorMessages.PROCESS_IS_FAILED_EN);
+    
         }
     }
 
@@ -277,18 +358,27 @@ public class TemplateAuth: TemplateAuthShare<ClientAuthService, DataBuildAuthBas
         if (response.Succeeded)
         {
 
-            navigation.NavigateTo(RouterPage.HOME, forceLoad: true);
+            var res = await ConfirmAsync("Confirm Email", SuccessMessages.CONFIRM_EMAIL_MESSAGE_EN);
+            if (res == true)
+            {
+                navigation.NavigateTo(RouterPage.LOGIN, forceLoad: true);
+            }
+            
+            //navigation.NavigateTo(RouterPage.LOGIN, forceLoad: true);
 
         }
         else
         {
-            if (response.Messages != null && response.Messages.Count() > 0)
-            {
 
-                _errors?.Clear();
-                _errors.Add(MapperMessages.Map(ErrorMessages.INVALID_EMAIL_EN, ErrorMessages.IINVALID_EMAIL_AR));
+            var res = await ConfirmAsync("Error", ErrorMessages.PROCESS_IS_FAILED_EN);
 
-            }
+            //if (response.Messages != null && response.Messages.Count() > 0)
+            //{
+
+            //    _errors?.Clear();
+            //    _errors.Add(MapperMessages.Map(ErrorMessages.INVALID_EMAIL_EN, ErrorMessages.IINVALID_EMAIL_AR));
+
+            //}
         }
     }
     private async Task OnSubmit(DataBuildAuthBase dataBuildAuthBase)
@@ -319,7 +409,7 @@ public class TemplateAuth: TemplateAuthShare<ClientAuthService, DataBuildAuthBas
         if (response.Succeeded)
         {
            
-            navigation.NavigateTo(RouterPage.FORGET_PASSWORD+"/Message=jlkjlkjkljlkjlkjkljljlk", forceLoad: true);
+            navigation.NavigateTo(RouterPage.FORGET_PASSWORD+"/Message="+ SuccessMessages.LINK_SENT_SUCCESSFULLY_AR, forceLoad: true);
 
         }
         else
@@ -342,6 +432,7 @@ public class TemplateAuth: TemplateAuthShare<ClientAuthService, DataBuildAuthBas
 
             try
             {
+                await authService.SaveLoginAsync(response.Data);
                 //if(response.Data.accessToken!=null)
                 //    customAuthenticationStateProvider.StoreAuthenticationData(response.Data.accessToken);
             }

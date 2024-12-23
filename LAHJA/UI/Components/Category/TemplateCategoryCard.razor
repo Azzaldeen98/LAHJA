@@ -4,11 +4,13 @@
 @inherits CardCategory<CategoryComponent>
 @inject ISnackbar Snackbar
 
+
 <MudText ></MudText>
 <MudGrid   Class="@TemplateCategoryStyle.Grid" Justify="Justify.SpaceAround" >
 
     @if (Params != null)
     {
+
 
 
 
@@ -57,6 +59,7 @@
 @code 
 
 {
+
     private async Task Submit(CategoryComponent inputCategory)
     {
         try

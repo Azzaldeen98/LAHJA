@@ -15,6 +15,9 @@ namespace Shared.Constants.Router
         public static string PLANS = "/TemplatePlan";
         public static string CONFIRM_EMAIL = "/ConfirmEmail";
         public static string FORGET_PASSWORD = "/ForgetPassword";
-    
+        public static string RE_SEND_CONFIRM_EMAIL = "/ReSendConfirmationEmail";
+        public static string PAYMENT = "/payment";
+        //public static string PAGE_MESSAGE = "/PageMessage";
+
     }
 }

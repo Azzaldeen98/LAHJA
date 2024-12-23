@@ -1,0 +1,41 @@
+﻿
+@using LAHJA.UI.Components.Category
+@using LAHJA.UI.Components.Plan
+@using LAHJA.UI.Templates.Plans
+
+ 
+
+
+@inject LAHJA.Data.UI.Templates.Plans.TemplatePlans Template
+
+@if (Template != null)
+{
+
+    <MainCategory DataBuild="Template.Categories" OnSubmit="Template.BuilderComponents.SubmitContainerPlans" />
+
+
+    @if (Template.SubscriptionPlans != null && Template.SubscriptionPlans.Count()>0)
+
+    {
+
+        <MainPlan DataBuilds="Template.SubscriptionPlans" IsDialog="true"  OnSubmit="Template.BuilderComponents.SubmitSubscriptionPlan" />
+
+    }
+}
+
+ 
+@code
+{
+
+    protected override async Task OnInitializedAsync()
+
+    {
+
+        await Template.OnInitialize();
+
+        StateHasChanged();
+
+        // var temp= Template.BuilderComponents.Categories;
+
+    }
+}

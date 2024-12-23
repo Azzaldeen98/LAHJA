@@ -1,5 +1,7 @@
-﻿@inject NavigationManager NavigationManager
+﻿@using LAHJA.Them
+@inject NavigationManager NavigationManager
 
+ @if (_isLogin){ 
 <MudNavMenu Class="mt-4">
     <MudNavLink Icon="@Icons.Material.Filled.Dashboard" Match="NavLinkMatch.All" Href="/">Dashboard</MudNavLink>
     <MudNavLink Icon="@Icons.Material.Filled.Storage" Href="/dummy" OnClick="NavigateOnlyToHome">Servers</MudNavLink>
@@ -9,19 +11,23 @@
         <MudNavLink Icon="@Icons.Material.Filled.Security" Href="/dummy" OnClick="NavigateOnlyToHome">Security</MudNavLink>
     </MudNavGroup>
     <MudNavLink Href="/dummy" OnClick="NavigateOnlyToHome">About</MudNavLink>
-    @* @if (_isLogin){ *@
-    <MudNavLink>
 
-       <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Logout" 
-        OnClick="OnLogOut">LogOut</MudButton>
+    <MudNavLink>
+         
+       <MudButton Variant="Variant.Filled" class="@AppTextStyle.TEXT_TRANSFORM_NORMAL" StartIcon="@Icons.Material.Filled.Logout" 
+        OnClick="OnLogOut">Logout</MudButton>
     </MudNavLink>
 
 </MudNavMenu>
+ }
 
 @code {
 
     [Parameter] public EventCallback SubmitLogOut { get; set; }
-    [Parameter] public bool IsLogin { set { _isLogin = value; } }
+    [Parameter] public bool IsLogin { set { 
+            _isLogin = value;
+            StateHasChanged();
+        } }
 
 
     private bool _isLogin = false;
@@ -32,8 +38,13 @@
     {
 
         if (SubmitLogOut.HasDelegate)
-              SubmitLogOut.InvokeAsync();
+            SubmitLogOut.InvokeAsync();
 
+    }
+
+    protected override void OnInitialized()
+    {
+       
     }
 
 } 
