@@ -13,5 +13,5 @@ namespace Domain.Repository.Price
         Task<Result<PriceResponse>> CreateAsync(PriceCreate request);
         Task<Result<DeleteResponse>> DeleteAsync(string id);
         Task<Result<PriceResponse>> UpdateAsync(PriceUpdate request);
-    }
+    }  
 }

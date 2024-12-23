@@ -2,20 +2,28 @@
 @page "/payment/{planId}"
 @using LAHJA.Data.UI.Components
 @using LAHJA.Data.UI.Components.Plan
+@using LAHJA.Data.UI.Templates.Payment
+@using LAHJA.Helpers.Services
+@using LAHJA.UI.Components.Billing.Shared
 @using LAHJA.UI.Components.Payment
+@using global::Shared.Constants.Router
 
 
 @inject LAHJA.Data.UI.Templates.Plans.TemplatePlans TemplatePlan
 @inject LAHJA.Data.UI.Templates.Payment.TemplatePayment Template
+@inject LAHJA.Data.UI.Templates.Billing.TemplateBilling TemplateBilling
+@inject LAHJA.Data.UI.Templates.CreditCard.TemplateCreditCard TemplateCreditCard
+@inject AuthService AuthService;
+@inject NavigationManager Navigation;
 
 @if (Template != null)
 {
     <PaymentComponts Params="data" />
+    
 }
 
 
 @code{
-
 
 
     private SubscriptionPlanInfo data;
@@ -27,16 +35,36 @@
 
 
     protected override async void OnInitialized()
-
     {
 
+        // var res2 = await Template.getPaymentCheckoutUrlPage(new DataBuildPaymentBase { PlanId = "price_1Pst3IKMQ7LabgRTZV9VgPex" });
+
+        // if (res2.Data != null)
+
+        //     Navigation.NavigateTo(res2.Data.url ?? RouterPage.HOME);
+
+        var isLogin =await AuthService.isAuth();
+        if (isLogin)
+        {
+           
+            var billings = await TemplateBilling.GetBillingDetails();
+            var credits = await TemplateCreditCard.GetCreditCardDetails();
+            if (billings!=null){
+                
+            }
+        }
 
         if (planId != null)
 
         {
 
-            // var res2 = await Template.getPaymentCheckoutUrlPage(new DataBuildPaymentBase { PlanId = "price_1Pst3IKMQ7LabgRTZV9VgPex" });
 
+
+            var res2 = await Template.getPaymentCheckoutUrlPage(new DataBuildPaymentBase { PlanId = "price_1Pst3IKMQ7LabgRTZV9VgPex" });
+
+            if (res2.Data != null)
+
+                Navigation.NavigateTo(res2.Data.url ?? RouterPage.HOME);
 
 
             var res = await TemplatePlan.GetSubmitSubscriptionPlan(new DataBuildPlansBase { PlanId = planId });
@@ -51,9 +79,6 @@
 
 
 
-                // if (res2.Data != null)
-
-                //     Navigation.NavigateTo(res2.Data.url ?? RouterPage.HOME);
 
                 StateHasChanged();
 

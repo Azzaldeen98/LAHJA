@@ -2,14 +2,18 @@
 /* cyrillic-ext */
 @font-face {
     font-family: AraJozoor-Regular;
-    src: url('fonts/FontAwesome.otf');
+    src: url('fonts//Jozoor_Font///AraJozoor-Regular.otf');
     font-family: Cairo_Medium;
-    src: url(fonts/fontawesome-webfont.ttf);
+    src: url(fonts/Cairo_Medium.ttf);
 }
 
 @font-face {
     font-family: cairo-v2-latin_arabic;
-    src: url('fonts//fontawesome-webfont.woff2');
+    src: url('fonts//cairo-v2-latin_arabic-700[1].woff2');
+}
+
+* {
+    font-family: cairo-v2-latin_arabic !important;
 }
 
 .mud-typography {

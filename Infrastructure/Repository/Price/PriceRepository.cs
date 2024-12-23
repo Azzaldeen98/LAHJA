@@ -105,11 +105,12 @@ namespace Infrastructure.Repository.Price
 
             var response = await ExecutorAppMode.ExecuteAsync<Result<DeleteResponseModel>>(
                  async () => await priceApiClient.DeleteAsync(id),
-                  async () => Result<DeleteResponseModel>.Success());
+                 async () => Result<DeleteResponseModel>.Success());
 
             if (response.Succeeded)
             {
                 var result = (response.Data != null) ? _mapper.Map<DeleteResponse>(response.Data) : null;
+
                 return Result<DeleteResponse>.Success(result);
             }
             else

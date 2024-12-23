@@ -1,8 +1,9 @@
-﻿using Infrastructure.DataSource.Seeds.Models;
+﻿using Domain.ShareData;
+using Infrastructure.DataSource.Seeds.Models;
 using Microsoft.JSInterop;
 namespace LAHJA.Helpers.Services
 {
-    public class SessionUserManager
+    public class SessionUserManager: ISessionUserManager
     {
 
         private readonly IJSRuntime _jsRuntime;
@@ -18,12 +19,22 @@ namespace LAHJA.Helpers.Services
             await _jsRuntime.InvokeVoidAsync("localStorageHelper.setItem", "numberPhone", numberPhone);
         }
 
+        public async Task<string> GetEmailAsync()
+        {
+            return  await _jsRuntime.InvokeAsync<string>("localStorageHelper.getItem", "email") ?? "";
+        }
+        
+        public async Task StoreEmailAsync(string email)
+        {
+            await _jsRuntime.InvokeVoidAsync("localStorageHelper.setItem", "email", email);
+        }
+        
         public async Task<UserApp> GetDataAsync()
         {
             var email = await _jsRuntime.InvokeAsync<string>("localStorageHelper.getItem", "email") ?? "";
-            var password = await _jsRuntime.InvokeAsync<string>("localStorageHelper.getItem", "password") ?? "";
+            //var password = await _jsRuntime.InvokeAsync<string>("localStorageHelper.getItem", "password") ?? "";
             var numberPhone = await _jsRuntime.InvokeAsync<string>("localStorageHelper.getItem", "numberPhone") ?? "";
-            return new UserApp { email = email, phoneNumber = numberPhone };
+            return new UserApp { Email = email, PhoneNumber = numberPhone };
         }
 
         public async Task RemoveDataAsync()

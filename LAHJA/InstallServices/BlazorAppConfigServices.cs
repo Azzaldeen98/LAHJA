@@ -15,6 +15,9 @@ using LAHJA.Data.UI.Templates.Price;
 using LAHJA.Data.UI.Templates.Product;
 using LAHJA.Data.UI.Templates.Subscription;
 using LAHJA.Data.UI.Components;
+using Application.Services.Plans;
+using LAHJA.Data.UI.Templates.CreditCard;
+using LAHJA.Data.UI.Templates.Billing;
 
 namespace Infrastructure
 {
@@ -48,14 +51,6 @@ namespace Infrastructure
         private static void InstallTemplates(this IServiceCollection serviceCollection)
         {
 
-
-
-            //serviceCollection.AddScoped < TemplateBase<IBuilderAuthApi<>, IBuilderAuthComponent<DataBuildAuthBase>>();
-
-
-            //serviceCollection.AddScoped<TemplateBase<IBuilderAuthApi<DataBuildAuthBase>, IBuilderAuthComponent<DataBuildAuthBase>>();
-
-            //serviceCollection.AddScoped<BuilderAuthApiClient>();
 
             ////  Auth
             serviceCollection.AddScoped<IBuilderAuthApi<DataBuildAuthBase>, BuilderAuthApiClient>();
@@ -96,6 +91,20 @@ namespace Infrastructure
             serviceCollection.AddScoped<TemplateSubscriptionShare<SubscriptionClientService, DataBuildSubscriptionBase>>();
             serviceCollection.AddScoped<TemplateSubscription>();
 
+            //// CreditCard
+            serviceCollection.AddScoped<IBuilderCreditCardApi<DataBuildCreditCardBase>, BuilderCreditCardApiClient>();
+            serviceCollection.AddScoped<IBuilderCreditCardComponent<DataBuildCreditCardBase>, BuilderCreditCardComponent<DataBuildCreditCardBase>>();
+            serviceCollection.AddScoped<TemplateCreditCardShare<CreditCardClientService, DataBuildCreditCardBase>>();
+            serviceCollection.AddScoped<TemplateCreditCard>();
+
+            //// Billing
+            serviceCollection.AddScoped<IBuilderBillingApi<DataBuildBillingBase>, BuilderBillingApiClient>();
+            serviceCollection.AddScoped<IBuilderBillingComponent<DataBuildBillingBase>, BuilderBillingComponent<DataBuildBillingBase>>();
+            serviceCollection.AddScoped<TemplateBillingShare<BillingClientService, DataBuildBillingBase>>();
+            serviceCollection.AddScoped<TemplateBilling>();
+
+
+
         }
         private static void InstallServices(this IServiceCollection serviceCollection)
         {
@@ -108,6 +117,8 @@ namespace Infrastructure
             serviceCollection.AddScoped<PriceClientService>();
             serviceCollection.AddScoped<SubscriptionClientService>();
             serviceCollection.AddScoped<ProductClientService>();
+            serviceCollection.AddScoped<CreditCardClientService>();
+            serviceCollection.AddScoped<BillingClientService>();
            
            
         }

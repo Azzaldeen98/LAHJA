@@ -1,5 +1,9 @@
 ﻿using AutoMapper;
+using Domain.Entities.Billing.Request;
+using Domain.ShareData.Base;
+using Domain.Wrapper;
 using Infrastructure.DataSource.ApiClientFactory;
+using Infrastructure.Models.Billing.Response;
 using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.DataSource.ApiClient.Base
@@ -10,7 +14,10 @@ namespace Infrastructure.DataSource.ApiClient.Base
     public interface IBuildApiClient<T> {
 
         public string DevelopmentMessage { get; }
+
+
         public  Task<T> GetApiClient();
+       
     }
     public class BuildApiClient<T>: IBuildApiClient<T> where T : class
     {

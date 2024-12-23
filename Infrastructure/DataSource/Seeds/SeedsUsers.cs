@@ -1,17 +1,7 @@
 ﻿using AutoMapper;
-using Domain.Entities;
-using Domain.Entities.User;
 using Infrastructure.DataSource.Seeds.Models;
-using Infrastructure.Models;
 using Infrastructure.Models.Plans;
 using Infrastructure.Models.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Intrinsics.Arm;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.DataSource.Seeds
 {
@@ -22,9 +12,9 @@ namespace Infrastructure.DataSource.Seeds
 
         private static List<UserApp> db=new List<UserApp>() {
         
-            new UserApp{ id="12345",name="Test User",email="test@gmail.com",password="Test@123",phoneNumber="771211417",active=true },
-            new UserApp{ id="1345678",name="User",email="user@gmail.com",password="Test@2025",phoneNumber="781211417",active=true },
-            new UserApp{ id="1345678",name="Azdeen",email="Azdeenedghg@gmail.com",password="Azdeen2024$$$",phoneNumber="781211417",active=true },
+            new UserApp{ Id="12345",Name="Test User",Email="test@gmail.com",password="Test@123",PhoneNumber="771211417",Active=true },
+            new UserApp{ Id="1345678",Name="User",Email="user@gmail.com",password="Test@2025",PhoneNumber="781211417",Active=true },
+            new UserApp{ Id="1345678",Name="Azdeen",Email="Azdeenedghg@gmail.com",password="Azdeen2024$$$",PhoneNumber="781211417",Active=true },
         
         };
 
@@ -39,7 +29,7 @@ namespace Infrastructure.DataSource.Seeds
 
             if (db != null )
             {
-                var user=db.FirstOrDefault(x => x.email == model.email && x.password == model.password);
+                var user=db.FirstOrDefault(x => x.Email == model.email && x.password == model.password);
                if(user != null) 
                  return user;
             }
@@ -49,10 +39,10 @@ namespace Infrastructure.DataSource.Seeds
         }
         public async Task<bool> createUserAsync(UserApp model) {
 
-            if (db != null && db.FirstOrDefault(x => x.email == model.email) == null)
+            if (db != null && db.FirstOrDefault(x => x.Email == model.Email) == null)
             {
-                model.id = Guid.NewGuid().ToString();
-                model.active = true;
+                model.Id = Guid.NewGuid().ToString();
+                model.Active = true;
                 //var user = _mapper.Map<UserApp>(model);
                 db.Add(model);
                 return true;
@@ -71,7 +61,7 @@ namespace Infrastructure.DataSource.Seeds
 
         public async Task<UserModel?> getUserByIdAsync(string id)
         {
-           var user =  db.FirstOrDefault(x => x.id == id);
+           var user =  db.FirstOrDefault(x => x.Id == id);
            if (user == null)
                 return  _mapper.Map<UserModel>(user);
 

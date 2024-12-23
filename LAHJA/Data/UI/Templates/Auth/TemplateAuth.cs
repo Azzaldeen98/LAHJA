@@ -2,6 +2,7 @@
 using Blazorise;
 using Domain.Entities.Auth.Request;
 using Domain.Entities.Auth.Response;
+using Domain.ShareData;
 using Domain.Wrapper;
 using LAHJA.ApplicationLayer.Auth;
 using LAHJA.Data.UI.Components.Base;
@@ -224,18 +225,19 @@ public class BuilderAuthApiClient : BuilderAuthApi<ClientAuthService, DataBuildA
 
 public class TemplateAuth: TemplateAuthShare<ClientAuthService, DataBuildAuthBase>
 {
-  
 
-   //[Inject] private DialogService DialogService { get; set; }
 
+    private readonly ISessionUserManager sessionUserManager;
+    //private readonly ISessionUserManager sessionUserManager;
     public TemplateAuth(IMapper mapper,
         AuthService authService,
         ClientAuthService client,
-        AppCustomAuthenticationStateProvider customAuthenticationStateProvider, 
-        IBuilderAuthComponent<DataBuildAuthBase> builderComponents, 
-        NavigationManager navigation, 
-        IDialogService dialogService, 
-        ISnackbar snackbar) : base(mapper, authService, client, customAuthenticationStateProvider, builderComponents, navigation, dialogService, snackbar)
+        AppCustomAuthenticationStateProvider customAuthenticationStateProvider,
+        IBuilderAuthComponent<DataBuildAuthBase> builderComponents,
+        NavigationManager navigation,
+        IDialogService dialogService,
+        ISnackbar snackbar,
+        ISessionUserManager sessionUserManager) : base(mapper, authService, client, customAuthenticationStateProvider, builderComponents, navigation, dialogService, snackbar)
     {
         this.BuilderComponents.Submit = OnSubmit;
         this.BuilderComponents.SubmitLogout = OnSubmitLogout;
@@ -243,11 +245,11 @@ public class TemplateAuth: TemplateAuthShare<ClientAuthService, DataBuildAuthBas
         this.BuilderComponents.SubmitReSendConfirmEmail = OnReSendConfirmationEmail;
         this.BuilderComponents.SubmitResetPassword = OnResetPassword;
         this.BuilderComponents.SubmitedForgetPassword = OnSubmitForgetPasswordAsync;
-        this.builderApi = new BuilderAuthApiClient(mapper,client);
-
+        this.builderApi = new BuilderAuthApiClient(mapper, client);
+        this.sessionUserManager = sessionUserManager;
     }
 
-  
+
 
     public List<string> Errors { get => _errors; }
 
@@ -343,10 +345,10 @@ public class TemplateAuth: TemplateAuthShare<ClientAuthService, DataBuildAuthBas
         {
             if (response.Messages != null && response.Messages.Count() > 0)
             {
-
+                var msg = MapperMessages.Map(ErrorMessages.INVALID_EMAIL_EN, ErrorMessages.IINVALID_EMAIL_AR);
                 _errors?.Clear();
-                _errors.Add(MapperMessages.Map(ErrorMessages.INVALID_EMAIL_EN, ErrorMessages.IINVALID_EMAIL_AR));
-
+                _errors.Add(msg);
+                Snackbar.Add(msg, Severity.Error);
             }
         };
     }
@@ -409,7 +411,7 @@ public class TemplateAuth: TemplateAuthShare<ClientAuthService, DataBuildAuthBas
         if (response.Succeeded)
         {
            
-            navigation.NavigateTo(RouterPage.FORGET_PASSWORD+"/Message="+ SuccessMessages.LINK_SENT_SUCCESSFULLY_AR, forceLoad: true);
+            navigation.NavigateTo($"{RouterPage.FORGET_PASSWORD}/{SuccessMessages.LINK_SENT_SUCCESSFULLY_AR}", forceLoad: true);
 
         }
         else
@@ -418,7 +420,9 @@ public class TemplateAuth: TemplateAuthShare<ClientAuthService, DataBuildAuthBas
             {
 
                 _errors?.Clear();
-                _errors.Add(MapperMessages.Map(ErrorMessages.INVALID_EMAIL_EN, ErrorMessages.IINVALID_EMAIL_AR));
+                var msg = MapperMessages.Map(ErrorMessages.INVALID_EMAIL_EN, ErrorMessages.IINVALID_EMAIL_AR); 
+                Snackbar.Add(msg, Severity.Error);
+                _errors.Add(msg);
 
             }
         }
@@ -432,12 +436,14 @@ public class TemplateAuth: TemplateAuthShare<ClientAuthService, DataBuildAuthBas
 
             try
             {
-                await authService.SaveLoginAsync(response.Data);
+                await sessionUserManager.StoreEmailAsync(date.Email);
+              
                 //if(response.Data.accessToken!=null)
                 //    customAuthenticationStateProvider.StoreAuthenticationData(response.Data.accessToken);
             }
             finally
             {
+                await authService.SaveLoginAsync(response.Data);
                 navigation.NavigateTo(RouterPage.HOME, forceLoad: true);
             }
 

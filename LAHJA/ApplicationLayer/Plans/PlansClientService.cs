@@ -9,17 +9,15 @@ namespace LAHJA.ApplicationLayer.Plans
     public class PlansClientService
     {
         private readonly PlansService plansService;
-        private readonly TokenService tokenService;
-        private readonly IMapper _mapper;
 
 
 
-        public PlansClientService(PlansService plansService, IMapper mapper, TokenService tokenService)
+
+        public PlansClientService(PlansService plansService)
         {
 
             this.plansService = plansService;
-            _mapper = mapper;
-            this.tokenService = tokenService;
+
         }
 
         public async Task<Result<PlanResponse>> planCreateAsync(PlanCreate request)

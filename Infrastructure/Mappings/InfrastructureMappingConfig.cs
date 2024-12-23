@@ -28,6 +28,13 @@ using Infrastructure.Models.Setting.Request;
 using Domain.Entities.Setting.Request;
 using Infrastructure.Models.Setting.Response;
 using Domain.Entities.Setting.Response;
+using Infrastructure.Models.Billing.Request;
+using Infrastructure.Models.Billing.Response;
+using Domain.Entities.Billing.Request;
+using Domain.Entities.Billing.Response;
+using Domain.Entities.Profile;
+using Domain.Entities;
+using Infrastructure.Models.Plans.Response;
 
 
 namespace Infrastructure.Mappings.Plans
@@ -50,7 +57,7 @@ namespace Infrastructure.Mappings.Plans
             CreateMap<LoginResponseModel, LoginResponse>().ReverseMap();
             CreateMap<UserModel, User>().ReverseMap();
             CreateMap<LoginResponseModel, UserModel>()
-                .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.userId))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.userId))
             .ReverseMap();
             CreateMap<RegisterRequestModel, Domain.Entities.Auth.Request.RegisterRequest>().ReverseMap();
 
@@ -95,14 +102,28 @@ namespace Infrastructure.Mappings.Plans
 
 
             //// Subscriptions 
-            CreateMap<SubscriptionResponseModel, SubscriptionResponse>().ReverseMap();  
-            
+            CreateMap<SubscriptionResponseModel, SubscriptionResponse>().ReverseMap();
 
+
+            // Billing
+            CreateMap<CardDetailsResponseModel,CardDetailsResponse>().ReverseMap();  
+            CreateMap<BillingDetailsResponseModel,BillingDetailsResponse>().ReverseMap();  
+            CreateMap<BillingDetailsResponseModel, BillingDetailsRequestModel>().ReverseMap();  
+            CreateMap<CardDetailsResponseModel, CardDetailsRequestModel>().ReverseMap();  
+            CreateMap<CardDetailsRequestModel,CardDetailsRequest>().ReverseMap();  
+            CreateMap<BillingDetailsRequestModel,BillingDetailsRequest>().ReverseMap();
+
+            
             //// Settings 
             CreateMap<SettingResponseModel,SettingResponse>().ReverseMap();
             CreateMap<SettingUpdateModel, SettingUpdate>().ReverseMap();
-            CreateMap<SettingCreateModel, SettingCreate>().ReverseMap();
-           
+    
+            
+            
+            
+            //// Profile
+            CreateMap<ProfileResponseModel, ProfileResponse>().ReverseMap();   
+            CreateMap<UserSubscriptionPlanModel, UserSubscriptionPlan>().ReverseMap();   
 
            
 

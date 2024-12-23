@@ -35,7 +35,7 @@ namespace LAHJA.Data.UI.Components.Base
     {
       
 
-        private string email = "gamal333re @gmail.com";
+        private string email = "gamal333re@gmail.com";
         private string password = "Gamal123*";
 
       
@@ -98,8 +98,8 @@ namespace LAHJA.Data.UI.Components.Base
         protected bool isLoading = false;
 
         protected string phoneNumber;
-        protected string email = "gamal333re@gmail.com";
-        protected string password = "Gamal123*";
+        protected string email = "test@gmail.com";
+        protected string password = "Test@123";
         protected string repeatPassword;
         protected string code;
 

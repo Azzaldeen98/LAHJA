@@ -1,18 +1,8 @@
 ﻿using AutoMapper;
-using Domain.Entities;
-using Domain.Entities.User;
+using Domain.ShareData;
 using Infrastructure.DataSource.Seeds.Models;
-using Infrastructure.Models;
-using Infrastructure.Models.Plans;
+using Infrastructure.Models.Billing.Response;
 using Infrastructure.Models.Profile.Response;
-using Infrastructure.Models.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Intrinsics.Arm;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.DataSource.Seeds
 {
@@ -20,20 +10,49 @@ namespace Infrastructure.DataSource.Seeds
     {
         private readonly IMapper _mapper;
         private readonly SeedsUsers seedsUsers;
+        private readonly SeedsBillings seedsBillings;
+        private readonly SeedsCreditCards seedsCreditCards;
+        private readonly SeedsPlans seedsPlans;
+        private readonly ISessionUserManager _sessionUserManager;
         private readonly List<UserApp> userDb;
-        
 
-        public SeedsProfile(IMapper mapper, SeedsUsers seedsUsers)
+
+        public SeedsProfile(
+            IMapper mapper,
+            SeedsUsers seedsUsers,
+            SeedsBillings seedsBillings,
+            SeedsCreditCards seedsCreditCards,
+            SeedsPlans seedsPlans,
+            ISessionUserManager sessionUserManager
+            )
         {
             _mapper = mapper;
             this.seedsUsers = seedsUsers;
-            userDb=seedsUsers.Db;
+            userDb = seedsUsers.Db;
+            this.seedsBillings = seedsBillings;
+            this.seedsCreditCards = seedsCreditCards;
+            this.seedsPlans = seedsPlans;
+            _sessionUserManager = sessionUserManager;
         }
 
         public async Task<ProfileResponseModel> getProfileAsync()
         {
+            var email =await _sessionUserManager.GetEmailAsync();
+            if (email != null)
+            {
+                var billing = seedsBillings.GetBillingDetailsByEmail(email);
+                var cards = seedsCreditCards.GetCardDetailsByEmail(email);
+                //var cards = seedsUsers .GetCardDetailsByEmail(email);
+      
+                var bilRes = _mapper.Map<BillingDetailsResponseModel>(billing);
 
-            
+
+                return new ProfileResponseModel
+                {
+                    BillingDetails = bilRes,
+                };
+            }
+
             return new ProfileResponseModel();
 
         }

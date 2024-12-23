@@ -2,8 +2,12 @@
 
 
 
+using Domain.Entities.Billing.Request;
+using Domain.Entities.Billing.Response;
 using Domain.ShareData.Base.Auth;
 using Infrastructure.Models.BaseFolder.Response;
+using Infrastructure.Models.Billing.Request;
+using Infrastructure.Models.Billing.Response;
 using Infrastructure.Models.Payment.Request;
 using Infrastructure.Models.Payment.Response;
 using Infrastructure.Models.Plans;
@@ -88,6 +92,13 @@ namespace Infrastructure.Mappings.Plans
             //CreateMap<object, SettingResponseModel>().ReverseMap();
             CreateMap<SettingUpdate, SettingUpdateModel>().ReverseMap();
             CreateMap<SettingCreate, SettingCreateModel>().ReverseMap();
+
+
+            //// Billing
+            //CreateMap< ,CardDetailsResponseModel>().ReverseMap();
+            //CreateMap< ,BillingDetailsResponseModel>().ReverseMap();
+            //CreateMap< ,CardDetailsRequestModel>().ReverseMap();
+            //CreateMap< ,BillingDataRequestModel>().ReverseMap();
 
 
         }

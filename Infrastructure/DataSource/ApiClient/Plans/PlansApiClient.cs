@@ -130,12 +130,8 @@ namespace Infrastructure.DataSource.ApiClient.Plans
             try
             {
 
-                //var response= await Main();
-
                 var client = await GetApiClient();
                 var response = await client.GetPlansAsync();
-
-
 
                 var resModel = _mapper.Map<List<ContainerPlansModel>>(response);
                 return Result<IEnumerable<ContainerPlansModel>>.Success(resModel);

@@ -9,7 +9,7 @@ namespace Domain.Entities.Plans.Response
 {
    public  class SubscriptionPlan : BaseSubscriptionPlan  
     {
-        public new List<PlanFeature> Features { get; set; }
+        public new List<PlanFeature>? Features { get; set; }
         public new ContainerPlans? ContainerPlan { get; set; }
 
     }

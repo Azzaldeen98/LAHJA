@@ -7,6 +7,7 @@ using Application.UseCase;
 using Application.UseCase.Auth;
 using Application.UseCase.Plans;
 using Application.UseCase.Plans.Get;
+using Infrastructure.DataSource.ApiClient.Plans;
 using Infrastructure.Mappings.Plans;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -93,7 +94,17 @@ namespace Infrastructure
             serviceCollection.AddScoped<ResumeSubscriptionUseCase>();
             serviceCollection.AddScoped<GetAllSubscriptionsUseCase>();
 
+            //// Credit Card
+            serviceCollection.AddScoped<GetCreditCardsUseCase>();
+            serviceCollection.AddScoped<CreateCreditCardUseCase>();
+            serviceCollection.AddScoped<UpdateCreditCardUseCase>();
+            serviceCollection.AddScoped<DeleteCreditCardUseCase>();
 
+            //// Billing
+            serviceCollection.AddScoped<GetBillingDetailsUseCase>();
+            serviceCollection.AddScoped<CreateBillingDetailsUseCase>();
+            serviceCollection.AddScoped<UpdateBillingDetailsUseCase>();
+            serviceCollection.AddScoped<DeleteBillingDetailsUseCase>();
 
         }
 
@@ -107,6 +118,8 @@ namespace Infrastructure
             serviceCollection.AddScoped<PriceService>();
             serviceCollection.AddScoped<ProductService>();
             serviceCollection.AddScoped<SubscriptionService>();
+            serviceCollection.AddScoped<BillingService>();
+            serviceCollection.AddScoped<CreditCardService>();
 
         }
 

@@ -12,24 +12,19 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
+using Infrastructure.DataSource.ApiClient.Base;
+using Infrastructure.DataSource.ApiClient.Billing;
 
 namespace Infrastructure.DataSource.ApiClient.Payment
 {
-    public class PaymentApiClient
+    public class PaymentApiClient : BuildApiClient<CheckoutClient>
     {
 
 
-        private readonly ClientFactory _clientFactory;
-        private readonly IMapper _mapper;
-        private readonly IConfiguration _config;
-        public PaymentApiClient(
-            ClientFactory clientFactory,
-            IMapper mapper,
-            IConfiguration config)
+
+
+        public PaymentApiClient(ClientFactory clientFactory, IMapper mapper, IConfiguration config) : base(clientFactory, mapper, config)
         {
-            _clientFactory = clientFactory;
-            _mapper = mapper;
-            _config = config;
         }
 
         private async Task<CheckoutClient> GetApiClient()

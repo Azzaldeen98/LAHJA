@@ -104,6 +104,7 @@ else
 
 
 
+    [Parameter] public BillingContact BilledData { get; set => billingContact=value; }
     [Parameter] public EventCallback<BillingContact> OnSelect { get; set; }
     protected override async Task OnInitializedAsync()
     {

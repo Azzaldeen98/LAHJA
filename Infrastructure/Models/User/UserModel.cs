@@ -10,10 +10,11 @@ namespace Infrastructure.Models.User
 
     public class UserModel
     {
-        public string id { get; set; }
-        public string name { get; set; }
-        public string email { get; set; }
-        public bool active { get; set; }
-        public string phoneNumber { get; set; }
+        public string? Id { get; set; }
+        public string? Name { get; set; }
+        public string? Email { get; set; }
+        public bool? Active { get; set; }
+        public bool? Image { get; set; }
+        public string? PhoneNumber { get; set; }
     }
 }

@@ -5,6 +5,8 @@ using LAHJA.Data.UI.Components.Category;
 using LAHJA.Data.UI.Templates.Payment;
 using Domain.Entities.Payment;
 using LAHJA.Data.UI.Components.Plan;
+using LAHJA.Data.UI.Components.Payment.BillingContact;
+using Domain.Entities.Billing.Response;
 
 namespace LAHJA.Mappings
 {
@@ -105,6 +107,9 @@ namespace LAHJA.Mappings
 
              CreateMap<PaymentCheckoutRequest, DataBuildPaymentBase>().ReverseMap();
 
+
+             CreateMap<BillingDetailsResponse, BillingContact>().ReverseMap();
+            
 
             //.ForMember(dest => dest.ServiceDetailsList, opt => opt.MapFrom(src => src.Features
             //    .Where(feature => feature.IsFixed==true) 

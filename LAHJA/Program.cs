@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Shared.Models;
 using LAHJA.Helpers.Services;
+using Domain.ShareData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -103,6 +104,8 @@ builder.Services
 
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<ITokenService,TokenService>();
+builder.Services.AddScoped<ISessionUserManager,SessionUserManager>();
+
 
 builder.Services.AddMudBlazorSnackbar(config =>
 {

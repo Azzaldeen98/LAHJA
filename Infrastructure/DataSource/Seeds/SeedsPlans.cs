@@ -232,4 +232,5 @@ namespace Infrastructure.DataSource.Seeds
             return new PlanInfoResponse();// (db.Quantity > 0) ? db.FirstOrDefault(x => x.Id == id) : null;
         }
     }
+
 }
