@@ -1,6 +1,7 @@
 @inject ISnackbar Snackbar
 @using LAHJA.Data.UI.Components.ServiceCard
 
+
  
 <style>
 
@@ -15,32 +16,35 @@
     </div>
 
 
-    <MudGrid Justify="Justify.Center" class="@carosuelCardCompoentBar.ClassItem">
 
 
-        <TempleteCarouselService Params="@carosuelCardCompoentBar.carosuelCardCompoent" OnClick="@onclick" />
 
 
+    <MudGrid Justify="Justify.Center" class="@carosuelCardCompoentBar.ClassItem" >
+
+
+        <TempleteCarouselService Params="@carosuelCardCompoentBar.carosuelCardCompoent"
+                                 OnClick="@onclick" TypeCarosuelCard="@TypeCarosuelCard" />
 
     </MudGrid>
-
-
 }
 
 @code {
     [Parameter]
     public DataBuildCarosuelCard? dataBuildCarosuelCard { get; set; }
+    [Parameter]
+    public bool TypeCarosuelCard{ get; set;}
 
 
 
 
-    CarosuelCardCompoentBar carosuelCardCompoentBar = null;
-    DataBuildCarosuelCard data = new DataBuildCarosuelCard();
+     CarosuelCardCompoentBar carosuelCardCompoentBar =null;
+     DataBuildCarosuelCard data = new DataBuildCarosuelCard();
 
     protected override void OnInitialized()
     {
-        dataBuildCarosuelCard = data;
 
+        dataBuildCarosuelCard = data;
         carosuelCardCompoentBar = CarosuelCardCompoentBar.GetGenarelCard(dataBuildCarosuelCard);
         StateHasChanged();
     }
