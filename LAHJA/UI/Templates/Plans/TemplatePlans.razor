@@ -15,9 +15,13 @@
 
 
 
-    // [Parameter] public bool IsToLoginMode { set; get; }
 
-    // IEnumerable<CategoryComponent> DataBuild { get; set; }
+
+
+
+    [Parameter] public int CountItemsShow{   set => _countItemsShow = value; get=>_countItemsShow; } 
+
+    private int _countItemsShow = 0;
 
 
 
@@ -25,12 +29,13 @@
     protected override async Task OnInitializedAsync()
     {
 
-        await Template.getAllSubscriptionsPlansAsync();
+        await Template.getAllSubscriptionsPlansAsync(_countItemsShow);
+
         StateHasChanged();
-        // var temp= Template.BuilderComponents.Categories;
+       
     }
 
-      // private LAHJA.Data.UI.Templates.Auth.TemplateAuth template = new LAHJA.Data.UI.Templates.Auth.TemplateAuth();
+    
 
 
 

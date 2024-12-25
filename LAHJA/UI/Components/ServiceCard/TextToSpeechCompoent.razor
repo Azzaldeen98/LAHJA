@@ -2,7 +2,7 @@
  @using LAHJA.Data.UI.Components.ServiceCard
  @using Microsoft.AspNetCore.Components
  @inject IDialogService DialogService
-
+  @inject NavigationManager Navigation
 <MudCard Elevation="25" Class="rounded-lg pb-4 card-hover">
     @if (Param != null)
     {
@@ -16,7 +16,7 @@
             <CardHeaderActions>
 
                 <MudTooltip Text="@Param.DataBuild.TolTabText" Color="Color.Primary" Placement="Placement.Top">
-                    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" OnClick="OpenDialogAsyncS" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" OnClick="testing" />
                 </MudTooltip>
             </CardHeaderActions>
         </MudCardHeader>
@@ -185,6 +185,11 @@
         }
 
 
+    }
+
+    private void testing()
+    {
+        Navigation.NavigateTo("/ShowInSound");
     }
     private Task OpenDialogAsync()
     {

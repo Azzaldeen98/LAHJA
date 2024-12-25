@@ -1,16 +1,16 @@
 ﻿@* <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="/" />
-    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
-    <link rel="stylesheet" href="app.css" />
-    <link rel="stylesheet" href="LAHJA.styles.css" />
-    <link rel="icon" type="image/png" href="favicon.png" />
-    <HeadOutlet />
-</head>
+ <head>
+     <meta charset="utf-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <base href="/" />
+     <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+     <link rel="stylesheet" href="app.css" />
+     <link rel="stylesheet" href="LAHJA.styles.css" />
+     <link rel="icon" type="image/png" href="favicon.png" />
+     <HeadOutlet />
+ </head>
 
 <body>
     <Routes />
@@ -19,6 +19,16 @@
 
 </html>
  *@
+<head>
+ @*    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" /> *@
+     <link rel="stylesheet" href="/css/style1.css" /> 
+@*     <link rel="stylesheet" href="LAHJA.styles.css" />
+    <link rel="icon" type="image/png" href="favicon.png" /> *@
+ @*     <HeadOutlet /> *@
+</head>
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />

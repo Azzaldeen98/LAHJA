@@ -307,13 +307,24 @@ namespace LAHJA.Data.UI.Templates.Plans
 
         }
 
-        public async Task getAllSubscriptionsPlansAsync()
+        public async Task getAllSubscriptionsPlansAsync(int take=0)
         {
 
                 var response = await builderApi.getAllSubscriptionsPlansAsync();
                 if (response.Succeeded)
                 {
-                _allPlans = response.Data;
+                    if (take > 0)
+                    {
+                         _allPlans = response.Data.Take(take).ToList();
+                    _allPlans[1].ClassImport = "plan-import-card";
+                    _allPlans[1].HeaderImport = "textHeader";
+                }
+                    else{
+
+                        _allPlans = response.Data;
+                    }
+                
+            ;
                 }
                 else
                 {
@@ -378,7 +389,7 @@ namespace LAHJA.Data.UI.Templates.Plans
         public async Task OnSubmitSubscriptionPlan(DataBuildPlansBase dataBuildPlansBase)
         {
             var isAuth = await authService.isAuth();
-            if (isAuth)
+            if (isAuth && dataBuildPlansBase!=null)
             {
                 navigation.NavigateTo($"{RouterPage.PAYMENT}/{dataBuildPlansBase.PlanId}");
             }

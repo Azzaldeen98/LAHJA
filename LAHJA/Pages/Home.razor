@@ -6,22 +6,30 @@
 @using LAHJA.UI.Templates.CategoriesPlan
 @using LAHJA.UI.Templates.Plans
 <CardStart />
+<CardShowExperience />
 
  @* <HeroHome /> *@
 <HeroHome/>
-<CardAsgr />
-
-<BoosCard />
+ <CardAsgr /> 
+ 
 
 <AnmCard />
 
 <NumberCard />
-<div class="d-flex flex-wrap">
+
+<br />
+@* <div class="d-flex my-5 flex-wrap">
 <TemplateCategoriesPlan  />
+</div> *@
+
+<br />
+<div class="d-flex my-5  flex-wrap">
+    <TemplatePlans CountItemsShow="3" />
 </div>
+
 <Mainicon/>
 <TestimonialsHome />
-<CardShowExperience />
+
 <VideoSectionHome />
 
 <TestimonialCard />

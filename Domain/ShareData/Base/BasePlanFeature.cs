@@ -24,6 +24,7 @@
         public string? Processor { get; set; }
         public string? ConnectionType { get; set; }
         public string? AbsolutePath { get; set; }
+        public int? NumberRequests { get; set; }
         public string? Image { get; set; }
         public List<string>? Images { get; set; }
         public DateTimeOffset? UpdatedAt { get; set; }

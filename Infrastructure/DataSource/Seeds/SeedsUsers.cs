@@ -12,9 +12,9 @@ namespace Infrastructure.DataSource.Seeds
 
         private static List<UserApp> db=new List<UserApp>() {
         
-            new UserApp{ Id="12345",Name="Test User",Email="test@gmail.com",password="Test@123",PhoneNumber="771211417",Active=true },
-            new UserApp{ Id="1345678",Name="User",Email="user@gmail.com",password="Test@2025",PhoneNumber="781211417",Active=true },
-            new UserApp{ Id="1345678",Name="Azdeen",Email="Azdeenedghg@gmail.com",password="Azdeen2024$$$",PhoneNumber="781211417",Active=true },
+            new UserApp{ Id="12345",Name="Test User",Email="test@gmail.com",password="Test@123",PhoneNumber="771211417",Active=true,Image="" },
+            new UserApp{ Id="1345678",Name="User",Email="user@gmail.com",password="Test@2025",PhoneNumber="781211417",Active=true,Image="" },
+            new UserApp{ Id="1345678",Name="Azdeen",Email="Azdeenedghg@gmail.com",password="Azdeen2024$$$",PhoneNumber="781211417",Active=true,Image="" },
         
         };
 
@@ -64,6 +64,15 @@ namespace Infrastructure.DataSource.Seeds
            var user =  db.FirstOrDefault(x => x.Id == id);
            if (user == null)
                 return  _mapper.Map<UserModel>(user);
+
+            return null;
+        }
+
+        public async Task<UserModel?> getUserByEmailAsync(string email)
+        {
+            var user = db.FirstOrDefault(x => x.Email == email);
+            if (user == null)
+                return _mapper.Map<UserModel>(user);
 
             return null;
         }

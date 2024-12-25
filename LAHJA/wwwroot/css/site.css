@@ -1,4 +1,28 @@
 ﻿
+.nav-item-color-dark{
+    color:#333 !important;
+}
+.nav-item-color-light {
+    color: #fff !important;
+}
+
+.mud-list-item-text {
+    padding: 0 !important;
+    margin: 0 !important
+}
+.plan-all-card {
+    border: 2px solid #ddd !important;
+    border-top: 30px solid #6c757d !important;
+    border-radius: 25px !important;
+    box-shadow:none !important
+}
+.plan-import-card {
+    border: 2px solid #07c922 !important;
+    border-radius: 25px !important;
+    border-top: 30px solid #0eaf67 !important;
+    box-shadow: none !important
+}
+
 /* cyrillic-ext */
 @font-face {
     font-family: AraJozoor-Regular;
@@ -13,11 +37,25 @@
 }
 
 * {
-    font-family: cairo-v2-latin_arabic !important;
+    font-family: AraJozoor-Regular !important;
+}
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 0px solid !important;
+}
+
+.card-hover:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    border: 2px solid green !important;
+}
+
+.card:hover {
+    transform: scale(3.7);
 }
 
 .mud-typography {
-    margin: 10px !important;
+    margin: 10px !important ;
 }
 .text-transform-normal {
     text-transform: none !important;
@@ -361,6 +399,7 @@ a, .btn-link {
     flex-wrap: wrap;
    
 }
+
 .RCardP {
     box-shadow: 0 0 0.875rem 0 rgb(41 48 66 / 5%) !important;
     border-radius: 0% !important
@@ -496,8 +535,10 @@ a, .btn-link {
 .start-0 {
     left: 0 !important;
 }
-.wster{
-    border:none !important
+.wster {
+    border: none !important; padding: 5% !important;
+    box-shadow:none !important;
+
 }
 .tser {
     color: #141727;

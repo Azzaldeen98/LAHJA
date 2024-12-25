@@ -44,7 +44,7 @@ namespace LAHJA.Data.UI.Components.Base
     {
         public abstract TypeComponentCard Type { get; }
         public bool IsActive { get; set; } = true;
-        public bool IsAuth { get; set; } = true;
+        public bool IsAuth { get; set; } = false;
         public T DataBuild { get; set; }
         public string? ClassItem { get; set; } = "";
         public string? ClassContainer { get; set; } = "";

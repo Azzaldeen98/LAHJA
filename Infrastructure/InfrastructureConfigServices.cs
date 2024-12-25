@@ -80,16 +80,16 @@ namespace Infrastructure
         }
         private static void InstallSeeds(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<SeedsProfile>();
+          
             serviceCollection.AddSingleton<SeedsUsers>();
             serviceCollection.AddSingleton<SeedsPlans>();
             serviceCollection.AddSingleton<SeedsPlansContainers>();
             serviceCollection.AddSingleton<SeedsBillings>();
             serviceCollection.AddSingleton<SeedsCreditCards>();
-         
-           
+            serviceCollection.AddSingleton<SeedsProfile>();
 
-       
+
+
         }
 
         private static  void InstallMapping(this IServiceCollection serviceCollection)

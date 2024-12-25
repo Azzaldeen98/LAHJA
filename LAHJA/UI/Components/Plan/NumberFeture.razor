@@ -1,4 +1,5 @@
 ﻿@using LAHJA.Data.UI.Components.Plan
+@using LAHJA.Them
  
  
  
@@ -8,25 +9,29 @@
  
 
 @if (@Params != null)
-{
-    <MudListItem T="Object">
-        <MudText Typo="Typo.body2">
-            @if (IsAuth)
-            {
 
+{
+    <MudTooltip Style="padding:2% !important" Text="@Params.Description" Color="@AppColors.BASE_COLOR_ENUM" Placement="Placement.Bottom">
+        <MudListItem Icon="@Icon" T="Object" style="padding:0 !important;margin:0 !important" IconColor="@AppColors.BASE_COLOR_ENUM">
+            <MudText Typo="Typo.body1" style="padding:0 !important;margin:0 !important">
+
+            @Params.Name: @string.Join(",", Params.Quantity.ToString())
+
+            @if (!IsAuth)
+            {
+                
                 <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Primary" @onclick="DeleteAsync"   />
                 <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Primary"  @onclick="EditAsync" />
             }
-            else
+           @*  else
             {
 
-                <MudIcon Icon="@Icons.Custom.Uncategorized.AlertSuccess" Color="Color.Primary" />
-            }
+                    <MudIcon Icon="@Icon" Color="@AppColors.BASE_COLOR_ENUM" />
+            } *@
 
-            @Params.Name: @string.Join(",", Params.Quantity.ToString())
         </MudText>
     </MudListItem>
-
+    </MudTooltip>
 
 }
 else
@@ -40,9 +45,16 @@ else
 
 
     public string Error { get; set; } = "No Data";
+
+
+
+    [Parameter]  public string Icon { get; set; } = Icons.Material.Sharp.Check;
+
+
+
     private decimal totalPrice;
     [Parameter]
-    public bool IsAuth { get; set; } = false;
+    public bool IsAuth { get; set; } = true;
 
     [Parameter] public FeaturePlanInfo? Params { get; set; }
 
@@ -65,6 +77,24 @@ else
 
 
 
+    protected override void OnInitialized()
+
+    {
+
+     
+
+        if (Params != null)
+
+            Icon = Params.Active ? @Icons.Material.Sharp.Check : @Icons.Material.Sharp.Cancel;
+
+
+
+
+
+    }
+
+
+
     private async Task EditAsync()
     {
         try
@@ -74,7 +104,7 @@ else
         {
 
             { x => x.ButtonText, "Edit" },
-            { x => x.Color, Color.Success },
+            { x => x.Color, @AppColors.BASE_COLOR_ENUM },
             {x => x.Params,Params}
         };
 

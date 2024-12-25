@@ -41,7 +41,6 @@
 	  <Folder Include="ApplicationLayer\ServiceMethod\" />
 	  <Folder Include="ApplicationLayer\Service\" />
 	  <Folder Include="ApplicationLayer\Setting\" />
-	  <Folder Include="Data\UI\Templates\Profile\" />
 	  <Folder Include="Data\UI\Templates\Setting\" />
 	  <Folder Include="UI\Templates\Sections\Profile\" />
 	  <Folder Include="wwwroot\assets\images\Icon\" />

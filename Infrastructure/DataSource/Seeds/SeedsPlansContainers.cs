@@ -50,12 +50,20 @@ namespace Infrastructure.DataSource.Seeds
                             WeeklyPrice = 2.49m,
                             Features = new List<PlanFeatureModel>
                             {
-                                new PlanFeatureModel { Id="1",Name = "Feature 1", Description = "Basic feature description.", },
-                                new PlanFeatureModel { Id="2",Name = "Feature 2", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="3",Name = "Feature 3", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="4",Name = "Feature 4", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="5",Name = "Feature 5", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="6",Name = "Feature 6", Description = "Another basic feature description.",IsFixed=false },
+                                   new PlanFeatureModel { Id = "1", Name = "Text To Speech Service", Description = "Basic text-to-speech service", BillingPeriod = "week", NumberRequests = 250, TotalAmount = 9.99m, Active = true },
+                                    new PlanFeatureModel { Id = "2", Name = "Voice Quality", Description = "Basic text-to-speech service", BillingPeriod = "Monthly", NumberRequests = 3000, TotalAmount = 29.99m, Active = true },
+                                    new PlanFeatureModel { Id = "3", Name = "Voice Type", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true },
+                                    new PlanFeatureModel { Id = "4", Name = "Support Types", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "5", Name = "Server Speeds", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "6", Name = "Server Voice", Description = "Basic Voice-to-Voice service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+
+
+                                //new PlanFeatureModel { Id="1",Name = "Feature 1", Description = "Basic feature description.", },
+                                //new PlanFeatureModel { Id="2",Name = "Feature 2", Description = "Another basic feature description." },
+                                //new PlanFeatureModel { Id="3",Name = "Feature 3", Description = "Another basic feature description." },
+                                //new PlanFeatureModel { Id="4",Name = "Feature 4", Description = "Another basic feature description.",IsFixed=false},
+                                //new PlanFeatureModel { Id="5",Name = "Feature 5", Description = "Another basic feature description.",IsFixed=false},
+                                //new PlanFeatureModel { Id="6",Name = "Feature 6", Description = "Another basic feature description.",IsFixed=false },
                             }
                         },
                         new SubscriptionPlanModel
@@ -78,12 +86,14 @@ namespace Infrastructure.DataSource.Seeds
                             WeeklyPrice = 2.49m,
                             Features = new List<PlanFeatureModel>
                             {
-                                new PlanFeatureModel { Id="1",Name = "Feature 1", Description = "Basic feature description.", },
-                                new PlanFeatureModel { Id="2",Name = "Feature 2", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="3",Name = "Feature 3", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="4",Name = "Feature 4", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="5",Name = "Feature 5", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="6",Name = "Feature 6", Description = "Another basic feature description.",IsFixed=false },
+                                    new PlanFeatureModel { Id = "1", Name = "Text To Speech Service", Description = "Basic text-to-speech service", BillingPeriod = "week", NumberRequests = 250, TotalAmount = 9.99m, Active = true },
+                                    new PlanFeatureModel { Id = "2", Name = "Voice Quality", Description = "Basic text-to-speech service", BillingPeriod = "Monthly", NumberRequests = 3000, TotalAmount = 29.99m, Active = true },
+                                    new PlanFeatureModel { Id = "3", Name = "Voice Type", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true },
+                                    new PlanFeatureModel { Id = "4", Name = "Support Types", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "5", Name = "Server Speeds", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "6", Name = "Server Voice", Description = "Basic Voice-to-Voice service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+
+
                             }
                         },
                         new SubscriptionPlanModel
@@ -106,12 +116,12 @@ namespace Infrastructure.DataSource.Seeds
                             WeeklyPrice = 2.49m,
                             Features = new List<PlanFeatureModel>
                             {
-                                new PlanFeatureModel { Id="1",Name = "Feature 1", Description = "Basic feature description.", },
-                                new PlanFeatureModel { Id="2",Name = "Feature 2", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="3",Name = "Feature 3", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="4",Name = "Feature 4", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="5",Name = "Feature 5", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="6",Name = "Feature 6", Description = "Another basic feature description.",IsFixed=false },
+                                 new PlanFeatureModel { Id = "1", Name = "Text To Speech Service", Description = "Basic text-to-speech service", BillingPeriod = "week", NumberRequests = 250, TotalAmount = 9.99m, Active = true },
+                                    new PlanFeatureModel { Id = "2", Name = "Voice Quality", Description = "Basic text-to-speech service", BillingPeriod = "Monthly", NumberRequests = 3000, TotalAmount = 29.99m, Active = true },
+                                    new PlanFeatureModel { Id = "3", Name = "Voice Type", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true },
+                                    new PlanFeatureModel { Id = "4", Name = "Support Types", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "5", Name = "Server Speeds", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "6", Name = "Server Voice", Description = "Basic Voice-to-Voice service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
                             }
                         }
                     }
@@ -145,19 +155,19 @@ namespace Infrastructure.DataSource.Seeds
                             WeeklyPrice = 2.49m,
                             Features = new List<PlanFeatureModel>
                             {
-                                    new PlanFeatureModel { Id="1",Name = "Feature 1", Description = "Basic feature description.", },
-                                new PlanFeatureModel { Id="2",Name = "Feature 2", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="3",Name = "Feature 3", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="4",Name = "Feature 4", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="5",Name = "Feature 5", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="6",Name = "Feature 6", Description = "Another basic feature description.",IsFixed=false },
+                                     new PlanFeatureModel { Id = "1", Name = "Text To Speech Service", Description = "Basic text-to-speech service", BillingPeriod = "week", NumberRequests = 250, TotalAmount = 9.99m, Active = true },
+                                    new PlanFeatureModel { Id = "2", Name = "Voice Quality", Description = "Basic text-to-speech service", BillingPeriod = "Monthly", NumberRequests = 3000, TotalAmount = 29.99m, Active = true },
+                                    new PlanFeatureModel { Id = "3", Name = "Voice Type", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true },
+                                    new PlanFeatureModel { Id = "4", Name = "Support Types", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "5", Name = "Server Speeds", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "6", Name = "Server Voice", Description = "Basic Voice-to-Voice service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
                             }
                         },   
                         new SubscriptionPlanModel
                         {
                             Id = "2",
-                            Name = "Basic Plan",
-                            Description = "A simple subscription plan.",
+                            Name = "Primum Plan",
+                            Description = "A Primum subscription plan.",
                             Active = true,
                             Price = 9.99m,
                             IsFixed = false,
@@ -173,19 +183,19 @@ namespace Infrastructure.DataSource.Seeds
                             WeeklyPrice = 2.49m,
                             Features = new List<PlanFeatureModel>
                             {
-                                    new PlanFeatureModel { Id="1",Name = "Feature 1", Description = "Basic feature description.", },
-                                new PlanFeatureModel { Id="2",Name = "Feature 2", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="3",Name = "Feature 3", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="4",Name = "Feature 4", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="5",Name = "Feature 5", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="6",Name = "Feature 6", Description = "Another basic feature description.",IsFixed=false },
+                                      new PlanFeatureModel { Id = "1", Name = "Text To Speech Service", Description = "Basic text-to-speech service", BillingPeriod = "week", NumberRequests = 250, TotalAmount = 9.99m, Active = true },
+                                    new PlanFeatureModel { Id = "2", Name = "Voice Quality", Description = "Basic text-to-speech service", BillingPeriod = "Monthly", NumberRequests = 3000, TotalAmount = 29.99m, Active = true },
+                                    new PlanFeatureModel { Id = "3", Name = "Voice Type", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true },
+                                    new PlanFeatureModel { Id = "4", Name = "Support Types", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "5", Name = "Server Speeds", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "6", Name = "Server Voice", Description = "Basic Voice-to-Voice service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
                             }
                         },  
                         new SubscriptionPlanModel
                         {
                             Id = "3",
-                            Name = "Basic Plan",
-                            Description = "A simple subscription plan.",
+                            Name ="Speshial Plan Container",
+                            Description = "A Speshial subscription plan.",
                             Active = true,
                             Price = 9.99m,
                             IsFixed = false,
@@ -201,12 +211,12 @@ namespace Infrastructure.DataSource.Seeds
                             WeeklyPrice = 2.49m,
                             Features = new List<PlanFeatureModel>
                             {
-                                    new PlanFeatureModel { Id="1",Name = "Feature 1", Description = "Basic feature description.", },
-                                new PlanFeatureModel { Id="2",Name = "Feature 2", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="3",Name = "Feature 3", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="4",Name = "Feature 4", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="5",Name = "Feature 5", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="6",Name = "Feature 6", Description = "Another basic feature description.",IsFixed=false },
+                  new PlanFeatureModel { Id = "1", Name = "Text To Speech Service", Description = "Basic text-to-speech service", BillingPeriod = "week", NumberRequests = 250, TotalAmount = 9.99m, Active = true },
+                                    new PlanFeatureModel { Id = "2", Name = "Voice Quality", Description = "Basic text-to-speech service", BillingPeriod = "Monthly", NumberRequests = 3000, TotalAmount = 29.99m, Active = true },
+                                    new PlanFeatureModel { Id = "3", Name = "Voice Type", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true },
+                                    new PlanFeatureModel { Id = "4", Name = "Support Types", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "5", Name = "Server Speeds", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "6", Name = "Server Voice", Description = "Basic Voice-to-Voice service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
                             }
                         }
                     }
@@ -214,7 +224,7 @@ namespace Infrastructure.DataSource.Seeds
                 new ContainerPlansModel
                 {
                     Id = "3",
-                    Name = "Speshial Plan Container",
+                    Name = "Premim Plan Container",
                     Description = "A container for basic subscription plans.",
                     Active = true,
                     Image = "basic-plan-container.png",
@@ -240,18 +250,18 @@ namespace Infrastructure.DataSource.Seeds
                             WeeklyPrice = 2.49m,
                             Features = new List<PlanFeatureModel>
                             {
-                                new PlanFeatureModel { Id="1",Name = "Feature 1", Description = "Basic feature description.", },
-                                new PlanFeatureModel { Id="2",Name = "Feature 2", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="3",Name = "Feature 3", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="4",Name = "Feature 4", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="5",Name = "Feature 5", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="6",Name = "Feature 6", Description = "Another basic feature description.",IsFixed=false },
+                    new PlanFeatureModel { Id = "1", Name = "Text To Speech Service", Description = "Basic text-to-speech service", BillingPeriod = "week", NumberRequests = 250, TotalAmount = 9.99m, Active = true },
+                                    new PlanFeatureModel { Id = "2", Name = "Voice Quality", Description = "Basic text-to-speech service", BillingPeriod = "Monthly", NumberRequests = 3000, TotalAmount = 29.99m, Active = true },
+                                    new PlanFeatureModel { Id = "3", Name = "Voice Type", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true },
+                                    new PlanFeatureModel { Id = "4", Name = "Support Types", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "5", Name = "Server Speeds", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "6", Name = "Server Voice", Description = "Basic Voice-to-Voice service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
                             }
                         },
                         new SubscriptionPlanModel
                         {
                             Id = "2",
-                            Name = "Basic Plan",
+                            Name = "Primum Plan",
                             Description = "A simple subscription plan.",
                             Active = true,
                             Price = 9.99m,
@@ -262,24 +272,24 @@ namespace Infrastructure.DataSource.Seeds
                             TotalAmount = 9.99m,
                             ContainerId = "1",
                             TotalBilling = 119.88m,
-                            Image = "basic-plan.png",
+                            Image = "Primum-plan.png",
                             MonthlyPrice = 9.99m,
                             AnnualPrice = 99.99m,
                             WeeklyPrice = 2.49m,
                             Features = new List<PlanFeatureModel>
                             {
-                                    new PlanFeatureModel { Id="1",Name = "Feature 1", Description = "Basic feature description.", },
-                                new PlanFeatureModel { Id="2",Name = "Feature 2", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="3",Name = "Feature 3", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="4",Name = "Feature 4", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="5",Name = "Feature 5", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="6",Name = "Feature 6", Description = "Another basic feature description.",IsFixed=false },
+                                   new PlanFeatureModel { Id = "1", Name = "Text To Speech Service", Description = "Basic text-to-speech service", BillingPeriod = "week", NumberRequests = 250, TotalAmount = 9.99m, Active = true },
+                                    new PlanFeatureModel { Id = "2", Name = "Voice Quality", Description = "Basic text-to-speech service", BillingPeriod = "Monthly", NumberRequests = 3000, TotalAmount = 29.99m, Active = true },
+                                    new PlanFeatureModel { Id = "3", Name = "Voice Type", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true },
+                                    new PlanFeatureModel { Id = "4", Name = "Support Types", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "5", Name = "Server Speeds", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "6", Name = "Server Voice", Description = "Basic Voice-to-Voice service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
                             }
                         },
                         new SubscriptionPlanModel
                         {
                             Id = "3",
-                            Name = "Basic Plan",
+                            Name = "Professional Plan",
                             Description = "A simple subscription plan.",
                             Active = true,
                             Price = 9.99m,
@@ -296,12 +306,12 @@ namespace Infrastructure.DataSource.Seeds
                             WeeklyPrice = 2.49m,
                             Features = new List<PlanFeatureModel>
                             {
-                                    new PlanFeatureModel { Id="1",Name = "Feature 1", Description = "Basic feature description.", },
-                                new PlanFeatureModel { Id="2",Name = "Feature 2", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="3",Name = "Feature 3", Description = "Another basic feature description." },
-                                new PlanFeatureModel { Id="4",Name = "Feature 4", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="5",Name = "Feature 5", Description = "Another basic feature description.",IsFixed=false},
-                                new PlanFeatureModel { Id="6",Name = "Feature 6", Description = "Another basic feature description.",IsFixed=false },
+                           new PlanFeatureModel { Id = "1", Name = "Text To Speech Service", Description = "Basic text-to-speech service", BillingPeriod = "week", NumberRequests = 250, TotalAmount = 9.99m, Active = true },
+                                    new PlanFeatureModel { Id = "2", Name = "Voice Quality", Description = "Basic text-to-speech service", BillingPeriod = "Monthly", NumberRequests = 3000, TotalAmount = 29.99m, Active = true },
+                                    new PlanFeatureModel { Id = "3", Name = "Voice Type", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true },
+                                    new PlanFeatureModel { Id = "4", Name = "Support Types", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "5", Name = "Server Speeds", Description = "Basic text-to-speech service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
+                                    new PlanFeatureModel { Id = "6", Name = "Server Voice", Description = "Basic Voice-to-Voice service", BillingPeriod = "Yearly", NumberRequests = 36000, TotalAmount = 299.99m, Active = true,IsFixed=false  },
                             }
                         }
                     }

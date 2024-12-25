@@ -1,11 +1,12 @@
 ﻿@using LAHJA.Data.UI.Components.Base
 @using LAHJA.Data.UI.Components.Category
+@using LAHJA.Data.UI.Components.Plan.Css
 @inject NavigationManager Navigation
 @inherits CardCategory<CategoryComponent>
 @inject ISnackbar Snackbar
 <style>
 
-    .card-hover {
+  /*   .card-hover {
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
@@ -16,7 +17,7 @@
 
     .card:hover {
         transform: scale(3.7);
-    }
+    } */
 
 
 
@@ -24,15 +25,17 @@
 
 </style>
 
+  
 
  @if (Params != null)
 {
+    <MudGrid Class="@MainPlanStyle.MainPlanGrid" Justify="Justify.SpaceAround">
 
     @foreach (var item in Params)
     {
-        <MudItem xs="12" sm="12" md="4">
-            
-                <MudCard Elevation="25" Class="rounded-lg pb-4 card-hover">
+        <MudItem xs="12" sm="12" md="4" > 
+
+            <MudCard Elevation="25" Class="rounded-lg pb-4 card-hover m-1">
 
                 <MudTooltip Text="@item.Description" Color="Color.Primary" Placement="Placement.Top">
                 <MudCardHeader>
@@ -64,15 +67,11 @@
     }
 
    
-    
+   </MudGrid> 
 
 }
-else
-{
-    
 
 
-}
 
 
 

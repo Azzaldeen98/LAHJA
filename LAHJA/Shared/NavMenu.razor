@@ -5,7 +5,7 @@
 <MudNavMenu Class="mt-4">
         <MudNavLink Icon="@Icons.Material.Filled.Dashboard" Match="NavLinkMatch.All" Href="/settings">Dashboard</MudNavLink>
     <MudNavLink Icon="@Icons.Material.Filled.Storage" Href="/dummy" OnClick="NavigateOnlyToHome">Servers</MudNavLink>
-    <MudNavLink Icon="@Icons.Material.Filled.AccountBalance" Href="/dummy" OnClick="NavigateOnlyToHome" Disabled="true">Billing</MudNavLink>
+    <MudNavLink Icon="@Icons.Material.Filled.AccountBalance" Href="/billing" OnClick="NavigateOnlyToHome" >Billing</MudNavLink>
     <MudNavGroup Title="Settings" Expanded="true">
         <MudNavLink Icon="@Icons.Material.Filled.People" Href="/dummy" OnClick="NavigateOnlyToHome">Users</MudNavLink>
         <MudNavLink Icon="@Icons.Material.Filled.Security" Href="/dummy" OnClick="NavigateOnlyToHome">Security</MudNavLink>
@@ -13,7 +13,6 @@
     <MudNavLink Href="/dummy" OnClick="NavigateOnlyToHome">About</MudNavLink>
 
     <MudNavLink>
-         
        <MudButton Variant="Variant.Filled" class="@AppTextStyle.TEXT_TRANSFORM_NORMAL" StartIcon="@Icons.Material.Filled.Logout" 
         OnClick="OnLogOut">Logout</MudButton>
     </MudNavLink>
@@ -26,8 +25,7 @@
     [Parameter] public EventCallback SubmitLogOut { get; set; }
     [Parameter] public bool IsLogin { set { 
             _isLogin = value;
-            StateHasChanged();
-        } }
+            StateHasChanged(); } }
 
 
     private bool _isLogin = false;
@@ -44,7 +42,9 @@
 
     protected override void OnInitialized()
     {
-       
+  
+
+
     }
 
 } 

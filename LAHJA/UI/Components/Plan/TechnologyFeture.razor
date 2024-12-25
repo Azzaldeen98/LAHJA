@@ -1,4 +1,5 @@
 ﻿@using LAHJA.Data.UI.Components.Plan
+@using LAHJA.Them
  
  
 @inject ISnackbar Snackbar
@@ -6,21 +7,22 @@
 {
 
 
-    
 
 
 
 
-        <MudText Typo="Typo.body2">
-            <MudIcon Icon="@Icons.Custom.Uncategorized.AlertSuccess" Color="Color.Primary" />
-        @string.Join(",", Params.Name)
-        </MudText>
-        <MudText Typo="Typo.body2">
+
+    <MudTooltip Text="@Params.Description" style="padding:2% !important" Color="@AppColors.BASE_COLOR_ENUM" Placement="Placement.Bottom">
+            <MudText Typo="Typo.body2" style="padding:0 !important;margin:0 !important">
+            <MudIcon Icon="@Icon" Color="@AppColors.BASE_COLOR_ENUM" />
+            @string.Join(",", Params.Name)
+            </MudText>
+        </MudTooltip>
+      @*   <MudText Typo="Typo.body2">
             <MudIcon Icon="@Icons.Custom.Uncategorized.AlertSuccess" Color="Color.Primary" />
         @Params.Price
-        </MudText>
-    
-
+        </MudText> *@
+   
 
 
 }
@@ -33,10 +35,13 @@ else
 
 @code
 {
+
     [Parameter]
     public bool flagTypeService { get; set; }
     public string Error { get; set; } = "No Data";
-  
+
+
+    [Parameter] public string Icon { get; set; } = Icons.Material.Sharp.Check;
 
 
 
@@ -45,6 +50,14 @@ else
 
 
 
+    protected override void OnInitialized()
+    {
+
+        if (Params!=null)
+            Icon = Params.Active ? @Icons.Material.Sharp.Check : @Icons.Material.Sharp.Cancel;
+
+
+    }
 
 
 

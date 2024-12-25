@@ -1,0 +1,100 @@
+﻿@using LAHJA.Data.UI.Billing
+@using MudBlazor
+
+
+
+@if (DataBuild != null)
+{
+
+    <MudPaper Class="pa-4" Elevation="1">
+        <MudText Typo="Typo.h6" Class="mb-2">Invoices</MudText>
+        <MudTable Items="@DataBuild">
+            <HeaderContent>
+                <MudTh>Invoice Date</MudTh>
+                <MudTh>Payment Date</MudTh>
+                <MudTh>Invoice Amount</MudTh>
+                <MudTh>Plan Name</MudTh>
+                <MudTh>Billing Cycle</MudTh>
+                <MudTh>*</MudTh>
+                <MudTh>*</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context.InvoiceDate</MudTd>
+                <MudTd>@context.PaymentDate</MudTd>
+                <MudTd>@context.InvoiceAmount</MudTd>
+                <MudTd>@context.PlanName</MudTd>
+                <MudTd>@context.BillingCycle</MudTd>
+                <MudTd>
+                    <MudLink Href="#" Color="Color.Primary">View details</MudLink>
+                    <MudButton StartIcon="@Icons.Material.Outlined.Download"></MudButton>
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudPaper>
+}
+else
+{
+    <h1>No Data</h1>
+
+}
+
+
+
+@code {
+    [Parameter]
+    public List<InvoiceBilling> DataBuild { get; set; } = null;
+
+    List<InvoiceBilling> dd = null;
+
+    protected override void OnInitialized()
+    {
+
+
+
+
+
+
+
+
+        dd = new List<InvoiceBilling>
+        {
+            new  InvoiceBilling
+            {
+                InvoiceNumber = "INV001",
+                InvoiceDate = new DateTime(2024, 1, 15),
+                InvoiceAmount = 100.00m,
+                Currency = "USD",
+                Status = "Paid",
+                PaymentDate = new DateTime(2024, 1, 16),
+                PaymentMethod = "Credit Card",
+                SubscriptionName = "John Doe",
+                Address = "123 Main St",
+                City = "New York",
+                State = "NY",
+                ZipCode = "10001",
+                Country = "United States",
+                PlanName = "Pro Plan",
+                PlanDescription = "Access to all advanced features including unlimited reports.",
+                BillingCycle = "Monthly",
+                PlanPrice = 100.00m,
+                PlanStartDate = new DateTime(2024, 1, 1),
+                PlanEndDate = new DateTime(2024, 1, 31)
+            }
+        };
+
+        DataBuild = dd;
+        StateHasChanged();
+    }
+
+
+
+
+
+    private async Task DownloadInvoiceImage(InvoiceBilling invoice)
+
+    {
+
+         
+    }
+   
+}

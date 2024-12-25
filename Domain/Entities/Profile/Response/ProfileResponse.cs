@@ -13,7 +13,7 @@ namespace Domain.Entities.Profile
     public class ProfileResponse : BaseProfile
     {
 
-            //public UserModel? User { get; set; }
+        
             public new BillingDetailsResponse? BillingDetails { get; set; }
             public new IEnumerable<SubscriptionPlan>? SubscriptionsPlans { get; set; }
             public new IEnumerable<CardDetailsResponse>? CreditCards { get; set; }
