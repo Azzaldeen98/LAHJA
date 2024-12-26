@@ -1,4 +1,5 @@
 ﻿using Application.Services.Profile;
+using Application.UseCase.Plans;
 using AutoMapper;
 using Domain.Entities.Profile;
 using Domain.Wrapper;
@@ -6,13 +7,13 @@ using LAHJA.Helpers.Services;
 
 namespace LAHJA.ApplicationLayer.Profile
 {
-    public class ClientProfileService
+    public class ProfileClientService
     {
         private readonly ProfileService profileService;
         private readonly TokenService tokenService;
         private readonly IMapper _mapper;
 
-        public ClientProfileService(ProfileService profileService,
+        public ProfileClientService(ProfileService profileService,
             IMapper mapper,
             TokenService tokenService)
         {
@@ -22,7 +23,7 @@ namespace LAHJA.ApplicationLayer.Profile
             this.tokenService = tokenService;
         }
 
-        public async Task<Result<ProfileResponse>> GetPlansGroupAsync()
+        public async Task<Result<ProfileResponse>> GetProfileAsync()
         {
 
             return await profileService.getProfileAsync();
@@ -43,6 +44,23 @@ namespace LAHJA.ApplicationLayer.Profile
             //{
             //    return Result<List<PlansFeture>>.Fail();
             //}
+
+        }
+
+        public async Task<Result<ProfileResponse>> CreateAsync(ProfileRequest request)
+        {
+            return await profileService.CreateAsync(request);
+
+        }
+        public async Task<Result<ProfileResponse>> UpdateAsync(ProfileRequest request)
+        {
+            return await profileService.UpdateAsync(request);
+
+        }
+
+        public async Task<Result<bool>> DeleteAsync(string profileId)
+        {
+            return await profileService.DeleteAsync(profileId);
 
         }
 

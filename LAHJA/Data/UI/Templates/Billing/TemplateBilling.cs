@@ -255,10 +255,27 @@ namespace LAHJA.Data.UI.Templates.Billing
 
 
 
-        public async Task<Result<BillingDetailsResponse>> GetBillingDetails()
+        public async Task<Result<BillingContact>> GetBillingDetails()
         {
             //var email = await sessionUserManager.GetEmailAsync();
-               return await builderApi.GetBillingDetails(new DataBuildBillingBase { });
+          var  res = await builderApi.GetBillingDetails(new DataBuildBillingBase { });
+            if (res.Succeeded)
+            {
+                try
+                {
+                    var map = mapper.Map<BillingContact>(res.Data);
+                    return Result<BillingContact>.Success(map);
+
+                }
+                catch (Exception e)
+                {
+                    return Result<BillingContact>.Fail();
+                }
+            }
+            else
+            {
+                return Result<BillingContact>.Fail(res.Messages);
+            }
 
         }
 

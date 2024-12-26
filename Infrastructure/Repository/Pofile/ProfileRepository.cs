@@ -8,6 +8,7 @@ using Domain.Wrapper;
 using Infrastructure.DataSource.ApiClient.Plans;
 using Infrastructure.DataSource.ApiClient.Profile;
 using Infrastructure.DataSource.Seeds;
+using Infrastructure.Models.Billing.Request;
 using Infrastructure.Models.Billing.Response;
 using Infrastructure.Models.Plans;
 using Infrastructure.Models.Profile.Response;
@@ -50,6 +51,16 @@ public class ProfileRepository :IProfileRepository
         this.seedsPlans = seedsPlans;
     }
 
+    public Task<Result<ProfileResponse>> CreateProfileAsync(ProfileRequest profileRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result<bool>> DeleteProfileAsync(string profileId)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<Result<ProfileResponse>> getProfileAsync()
     {
 
@@ -58,38 +69,48 @@ public class ProfileRepository :IProfileRepository
               async () =>
               {
 
-                  var email = await _sessionUserManager.GetEmailAsync();
-                  if (email != null)
+                  try
                   {
-                      var billing =  seedsBillings.GetBillingDetailsByEmail(email);
-                      var cards =  seedsCreditCards.GetCardDetailsByEmail(email);
-                      var user =await seedsUsers.getUserByEmailAsync(email);
-                     
-
-                      var bilRes = _mapper.Map<BillingDetailsResponseModel>(billing);
-                      var billingData = _mapper.Map<BillingDetailsResponse>(bilRes);
-                      var cardsData = _mapper.Map<List<CardDetailsResponse>>(cards);
-
-                      if (user != null)
+                      var email = await _sessionUserManager.GetEmailAsync();
+                      if (email != null)
                       {
-                          var profile = new ProfileResponse
+                          var billing = seedsBillings.GetBillingDetailsByEmail(email);
+                          var cards = seedsCreditCards.GetCardDetailsByEmail(email);
+                          var user = await seedsUsers.getUserByEmailAsync(email);
+
+
+                          var bilRes = _mapper.Map<BillingDetailsResponseModel>(billing);
+                          var billingData = _mapper.Map<BillingDetailsResponse>(bilRes);
+
+                          var cardsRes = _mapper.Map<List<CardDetailsResponseModel>>(cards);
+                          var cardsData = _mapper.Map<List<CardDetailsResponse>>(cardsRes);
+
+                          if (user != null)
                           {
-                              Name = user?.Name?? "",
-                              Email = user?.Email ?? "",
-                              PhoneNumber = user?.PhoneNumber ??  "",
-                              Image = user?.Image?? "",
-                              Active = user?.Active,
-                              CreditCards = cardsData,
-                              BillingDetails = billingData,
-                              SubscriptionsPlans = new List<SubscriptionPlan> { },
-                          };
-                          return Result<ProfileResponse>.Success(profile);
+                              var profile = new ProfileResponse
+                              {
+                                  Name = user?.Name ?? "",
+                                  Email = user?.Email ?? "",
+                                  PhoneNumber = user?.PhoneNumber ?? "",
+                                  Image = user?.Image ?? "",
+                                  Active = user?.Active,
+                                  CreditCards = cardsData,
+                                  BillingDetails = billingData,
+                                  SubscriptionsPlans = new List<SubscriptionPlan> { },
+                              };
+                              return Result<ProfileResponse>.Success(profile);
+                          }
+
                       }
-                     
+
+                      return Result<ProfileResponse>.Success();
+                  }
+                  catch(Exception e)
+                  {
+                      return Result<ProfileResponse>.Fail(e.Message);
                   }
 
-
-                  return Result<ProfileResponse>.Success();
+                      
               });
 
         if (response.Succeeded)
@@ -101,5 +122,10 @@ public class ProfileRepository :IProfileRepository
         {
             return Result<ProfileResponse>.Fail(response.Messages);
         }
+    }
+
+    public Task<Result<ProfileResponse>> UpdateProfileAsync(ProfileRequest profileRequest)
+    {
+        throw new NotImplementedException();
     }
 }

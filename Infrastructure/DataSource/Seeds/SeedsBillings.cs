@@ -18,7 +18,7 @@ namespace Infrastructure.DataSource.Seeds
         {
             new BillingDetailsRequestModel
             {
-                FullName = "John Doe",
+                FullName = "test Doe",
                 Email = "test@gmail.com",
                 MobilePhoneNumber = "123-456-7890",
                 Address1 = "123 Main St",

@@ -51,11 +51,7 @@
 
             @if (!@flagauth && @NavigationManager.Uri == @NavigationManager.BaseUri)
             {
-                <MudNavLink>
-                    <MudButton Variant="Variant.Filled"  Class="@AppTextStyle.TEXT_TRANSFORM_NORMAL" 
-                    StartIcon="@Icons.Material.Filled.Logout"
-                           OnClick="@(() => logout(true))">Logout</MudButton>
-                 </MudNavLink>
+          
 
                 <Logout OnClickLogout="@(() => logout(true))" />
             }
@@ -164,9 +160,6 @@
             try
 
             {
-
-
-
                 tokenn = await _tokenService.GetTokenAsync();
 
                 if (!string.IsNullOrEmpty(tokenn))

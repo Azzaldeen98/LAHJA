@@ -1,6 +1,8 @@
 ﻿
 
 
+@using LAHJA.Data.UI.Components.Payment.BillingContact
+@using LAHJA.Data.UI.Components.Payment.CreditCard
 @using LAHJA.Data.UI.Components.Plan
 @using LAHJA.Helpers
 @using LAHJA.Helpers.Services
@@ -19,10 +21,10 @@
         <UpgradePlan  Params="@Params" />
         <MudDivider Class="my-4" />
 
-         <BillingMethodsSection   /> 
+        <BillingMethodsSection BilledData="BuildBillingData" />
         <MudDivider Class="my-4" />
-        <PaymentMethodsSection/>
-        <MudButton OnClick="Payment"> ddddddddddd </MudButton>
+        <PaymentMethodsSection BuildData="BuildCreditCardData" />
+        <MudButton OnClick="Payment">  </MudButton>
     </MudContainer>
   
 </MudLayout>
@@ -33,10 +35,12 @@
 
 
 
-
+    [Parameter] public EventCallback<CardDetails> OnSelect { get; set; }
 
 
     [Parameter] public SubscriptionPlanInfo? Params { get; set; } = null;
+    [Parameter] public BillingContact? BuildBillingData { get; set; } = null;
+    [Parameter] public List<CardDetails>? BuildCreditCardData { get; set; } = null;
     
     [Parameter] public string planId { get; set; }
 

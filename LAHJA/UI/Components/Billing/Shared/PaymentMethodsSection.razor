@@ -73,11 +73,9 @@
 
     [Parameter] public EventCallback<CardDetails> OnSelect { get; set; }
 
-    private List<CardDetails> creditCards = new List<CardDetails>
+    [Parameter] public List<CardDetails> BuildData { get => creditCards; set => creditCards=value; }
 
-    {
-
-    };
+    private List<CardDetails> creditCards = new List<CardDetails>{ };
     bool open;
     private async  void AddCard(CardDetails newCard)
 

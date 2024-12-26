@@ -60,6 +60,9 @@ namespace Infrastructure
 
             /// Profile
             serviceCollection.AddScoped<GetProfileUseCase>();
+            serviceCollection.AddScoped<CreateProfileUseCase>();
+            serviceCollection.AddScoped<UpdateProfileUseCase>();
+            serviceCollection.AddScoped<DeleteProfileUseCase>();
 
 
             /// Payment

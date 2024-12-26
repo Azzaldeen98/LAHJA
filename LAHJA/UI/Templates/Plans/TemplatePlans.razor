@@ -25,15 +25,17 @@
 
 
 
-
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (firstRender)
+        {
+            await Template.getAllSubscriptionsPlansAsync(_countItemsShow);
 
-        await Template.getAllSubscriptionsPlansAsync(_countItemsShow);
-
-        StateHasChanged();
-       
+            StateHasChanged();
+        }
     }
+
+
 
     
 

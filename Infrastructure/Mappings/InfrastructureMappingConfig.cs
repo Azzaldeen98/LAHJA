@@ -35,6 +35,7 @@ using Domain.Entities.Billing.Response;
 using Domain.Entities.Profile;
 using Domain.Entities;
 using Infrastructure.Models.Plans.Response;
+using Infrastructure.Models.Profile.Request;
 
 
 namespace Infrastructure.Mappings.Plans
@@ -108,10 +109,14 @@ namespace Infrastructure.Mappings.Plans
             // Billing
             CreateMap<CardDetailsResponseModel,CardDetailsResponse>().ReverseMap();  
             CreateMap<BillingDetailsResponseModel,BillingDetailsResponse>().ReverseMap();  
-            CreateMap<BillingDetailsResponseModel, BillingDetailsRequestModel>().ReverseMap();  
+            CreateMap<BillingDetailsResponseModel, BillingDetailsRequestModel>().ReverseMap();
+            CreateMap<BillingDetailsRequestModel, BillingDetailsRequest>().ReverseMap();
+
+            CreateMap<CardDetailsRequestModel, CardDetailsRequest>().ReverseMap();
             CreateMap<CardDetailsResponseModel, CardDetailsRequestModel>().ReverseMap();  
-            CreateMap<CardDetailsRequestModel,CardDetailsRequest>().ReverseMap();  
-            CreateMap<BillingDetailsRequestModel,BillingDetailsRequest>().ReverseMap();
+            CreateMap<CardDetailsResponseModel, CardDetailsResponse>().ReverseMap();  
+  
+        
 
             
             //// Settings 
@@ -122,8 +127,13 @@ namespace Infrastructure.Mappings.Plans
             
             
             //// Profile
-            CreateMap<ProfileResponseModel, ProfileResponse>().ReverseMap();   
+            CreateMap<ProfileResponseModel, ProfileResponse>()
+                 .ForMember(dest => dest.CreditCards, opt => opt.Ignore())
+                 .ForMember(dest => dest.SubscriptionsPlans, opt => opt.Ignore())
+                 .ForMember(dest => dest.BillingDetails, opt => opt.Ignore())
+                 .ReverseMap();   
             CreateMap<UserSubscriptionPlanModel, UserSubscriptionPlan>().ReverseMap();   
+            CreateMap<ProfileRequestModel, ProfileRequest>().ReverseMap();   
 
            
 

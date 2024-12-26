@@ -18,6 +18,8 @@ using LAHJA.Data.UI.Components;
 using Application.Services.Plans;
 using LAHJA.Data.UI.Templates.CreditCard;
 using LAHJA.Data.UI.Templates.Billing;
+using LAHJA.Data.UI.Templates.Profile;
+using LAHJA.Data.UI.Components.ProFileModel;
 
 namespace Infrastructure
 {
@@ -103,7 +105,11 @@ namespace Infrastructure
             serviceCollection.AddScoped<TemplateBillingShare<BillingClientService, DataBuildBillingBase>>();
             serviceCollection.AddScoped<TemplateBilling>();
 
-
+            //// Profile
+            serviceCollection.AddScoped<IBuilderProfileApi<DataBuildUserProfile>, BuilderProfileApiClient>();
+            serviceCollection.AddScoped<IBuilderProfileComponent<DataBuildUserProfile>, BuilderProfileComponent<DataBuildUserProfile>>();
+            serviceCollection.AddScoped<TemplateProfileShare<ProfileClientService, DataBuildUserProfile>>();
+            serviceCollection.AddScoped<TemplateProfile>();
 
         }
         private static void InstallServices(this IServiceCollection serviceCollection)
@@ -112,13 +118,13 @@ namespace Infrastructure
 
             serviceCollection.AddScoped<ClientAuthService>();
             serviceCollection.AddScoped<PlansClientService>();
-            serviceCollection.AddScoped<ClientProfileService>();
             serviceCollection.AddScoped<PaymentClientService>();
             serviceCollection.AddScoped<PriceClientService>();
             serviceCollection.AddScoped<SubscriptionClientService>();
             serviceCollection.AddScoped<ProductClientService>();
             serviceCollection.AddScoped<CreditCardClientService>();
             serviceCollection.AddScoped<BillingClientService>();
+            serviceCollection.AddScoped<ProfileClientService>();
            
            
         }

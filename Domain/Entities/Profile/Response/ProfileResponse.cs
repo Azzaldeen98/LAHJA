@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.Profile
 {
+
     public class ProfileResponse : BaseProfile
     {
 

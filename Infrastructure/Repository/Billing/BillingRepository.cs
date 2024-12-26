@@ -60,8 +60,8 @@ namespace Infrastructure.Repository.Price
 
             if (response.Succeeded)
             {
-                //var result = (response.Data != null) ? _mapper.Map<List<CardDetailsResponse>>(response.Data) : null;
-                return Result<List<CardDetailsResponse>>.Success();
+                var result = (response.Data != null) ? _mapper.Map<List<CardDetailsResponse>>(response.Data) : null;
+                return Result<List<CardDetailsResponse>>.Success(result);
             }
             else
             {

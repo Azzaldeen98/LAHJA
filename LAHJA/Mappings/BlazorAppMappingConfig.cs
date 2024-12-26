@@ -7,6 +7,9 @@ using Domain.Entities.Payment;
 using LAHJA.Data.UI.Components.Plan;
 using LAHJA.Data.UI.Components.Payment.BillingContact;
 using Domain.Entities.Billing.Response;
+using LAHJA.Data.UI.Components.ProFileModel;
+using Domain.Entities.Profile;
+using LAHJA.Data.UI.Components.Payment.CreditCard;
 
 namespace LAHJA.Mappings
 {
@@ -19,8 +22,8 @@ namespace LAHJA.Mappings
         
      
           
-            CreateMap<Domain.Entities.Auth.Request.LoginRequest, VitsModel.Auth.LoginRequest>().ReverseMap();
-            CreateMap<Domain.Entities.Auth.Request.RegisterRequest, VitsModel.Auth.RegisterRequest>().ReverseMap();
+            CreateMap<LoginRequest, VitsModel.Auth.LoginRequest>().ReverseMap();
+            CreateMap<RegisterRequest, VitsModel.Auth.RegisterRequest>().ReverseMap();
             //CreateMap<PlansContainer, InputCategory>().ReverseMap();
 
      
@@ -64,12 +67,10 @@ namespace LAHJA.Mappings
             CreateMap<PlanQuantitativeFeatureResponse, DigitalService>()
              .ForMember(dest => dest.ServiceType, opt => opt.MapFrom(src => src.Name))
              .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.Price))
-             //.ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
            .ReverseMap();
             
             
             CreateMap<DataBuildAuthBase, LoginRequest>().ReverseMap();
-
             CreateMap<DataBuildAuthBase, RegisterRequest>().ReverseMap();
             CreateMap<DataBuildAuthBase, ForgetPasswordRequest>().ReverseMap();
             CreateMap<DataBuildAuthBase, ResendConfirmationEmail>().ReverseMap();
@@ -88,27 +89,40 @@ namespace LAHJA.Mappings
             CreateMap<ContainerPlans, CategoryComponent>()
                   .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                   .ReverseMap();
-
-
             CreateMap<PlanFeature, DigitalService>()
                   .ForMember(dest => dest.ServiceType, opt => opt.MapFrom(src => src.Name))
                   .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.Price))
                 .ReverseMap();
-
             CreateMap<PlanFeature, TechnologyService>()
                   .ForMember(dest => dest.TechnicalServices, opt => opt.Ignore())
                 .ReverseMap();
-
-
              CreateMap<SubscriptionPlan, SubscriptionPlanInfo>().ReverseMap();
              CreateMap<PlanFeature, FeaturePlanInfo>().ReverseMap();
 
 
+            /// Payment
+            
+            CreateMap<PaymentCheckoutRequest, DataBuildPaymentBase>().ReverseMap();
 
-             CreateMap<PaymentCheckoutRequest, DataBuildPaymentBase>().ReverseMap();
+            /// Billing
+
+            CreateMap<BillingDetailsResponse, BillingContact>()
+              
+                .ReverseMap();
+
+            ///  CreditCard
+            CreateMap<CardDetailsResponse, CardDetails>().ReverseMap();
 
 
-             CreateMap<BillingDetailsResponse, BillingContact>().ReverseMap();
+            /// Profile
+
+             CreateMap<ProfileResponse, DataBuildUserProfile>()
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Image))
+                .ReverseMap();   
+            
+            CreateMap<ProfileRequest, DataBuildUserProfile>()
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Image))
+                .ReverseMap();
             
 
             //.ForMember(dest => dest.ServiceDetailsList, opt => opt.MapFrom(src => src.Features

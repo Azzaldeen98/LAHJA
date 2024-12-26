@@ -20,10 +20,11 @@ namespace Infrastructure.DataSource.Seeds
 
         private readonly IMapper _mapper;
 
-        //public SeedsUsers(IMapper mapper)
-        //{
-        //    _mapper = mapper;
-        //}
+        public SeedsUsers(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         public async Task<UserModel?> loginAsync(LoginRequestModel model)
         {
 
@@ -62,7 +63,7 @@ namespace Infrastructure.DataSource.Seeds
         public async Task<UserModel?> getUserByIdAsync(string id)
         {
            var user =  db.FirstOrDefault(x => x.Id == id);
-           if (user == null)
+           if (user != null)
                 return  _mapper.Map<UserModel>(user);
 
             return null;
@@ -71,7 +72,7 @@ namespace Infrastructure.DataSource.Seeds
         public async Task<UserModel?> getUserByEmailAsync(string email)
         {
             var user = db.FirstOrDefault(x => x.Email == email);
-            if (user == null)
+            if (user != null)
                 return _mapper.Map<UserModel>(user);
 
             return null;
