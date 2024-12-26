@@ -83,6 +83,28 @@ namespace Infrastructure.Repository.Plans
             }
           
 
+        }  
+        
+        public async Task<Result<IEnumerable<SubscriptionPlan>>> getBasicSubscriptionsPlansAsync()
+        {
+        
+
+            var response = await ExecutorAppMode.ExecuteAsync<Result<List<SubscriptionPlanModel>>>(
+                 async () => Result<List<SubscriptionPlanModel>>.Success(),
+                 async () => Result<List<SubscriptionPlanModel>>.Success(seedsPlansContainers.GetBasicSubscriptionsPlansAR())
+
+             );
+            if (response.Succeeded)
+            {
+                var result = (response.Data != null) ? _mapper.Map<IEnumerable<SubscriptionPlan>>(response.Data) : null;
+                return Result<IEnumerable<SubscriptionPlan>>.Success(result);
+            }
+            else
+            {
+                return Result<IEnumerable<SubscriptionPlan>>.Fail(response.Messages);
+            }
+          
+
         }
 
         public async Task<Result<PlanResponse>> createPlanAsync(PlanCreate request)

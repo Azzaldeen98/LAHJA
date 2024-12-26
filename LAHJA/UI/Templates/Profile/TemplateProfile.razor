@@ -1,7 +1,7 @@
-﻿@page "/settings"
+﻿@* @page "/settings" *@
 @using LAHJA.Data.UI.Components.ProFileModel
 @using LAHJA.UI.Components.Auth
-@using LAHJA.Data.UI.Templates.Auth
+@using LAHJA.Data.UI.Templates.Auth 
 @using LAHJA.UI.Components.Plan
 @using LAHJA.UI.Components.SidebarMen
 
@@ -9,7 +9,7 @@
 @inject LAHJA.Data.UI.Templates.Profile.TemplateProfile Template
 
 @if(Template!=null){
-    <SettingshomProfile DataBuild="buildData" />
+    <SettingshomProfile1 DataBuild="buildData" />
 }
 
 @code{

@@ -1,21 +1,19 @@
 ﻿@using LAHJA.Data.UI.Components.Base
 
 <section class="pt-0">
-    <div class="container">
+    <div class="container" >
         @if (Params != null)
         {
             <div class="bg-dark position-relative rounded-4 overflow-hidden p-4 p-sm-6" data-bs-theme="dark">
                 <!-- Grad decoration -->
-            <div class="position-absolute top-0 end-0 mt-n6">
-                <img src="assets/images/elements/grad-shape/blur-decoration.svg" class="blur-8 opacity-3" alt="Grad shape">
-            </div>
+       
 
-            <div class="row g-4 align-items-center position-relative">
+            <div class="row g-8 align-items-center position-relative">
                 <!-- Title and list -->
                 <div class="col-lg-6">
                     <h2 class="mb-3">
                         @Params.Name
-                      <span class="text-purple">AI Chatbot</span></h2>
+                      <span class="text-purple">AI لهجــة</span></h2>
                     <p class="mb-4">
                         @Params.Description
                         </p>
@@ -25,10 +23,14 @@
                 </div>
 
                 <!-- Button -->
-                <div class="col-lg-6 position-absolute end-0 top-0 mt-n3 me-n5 d-none d-lg-block">
+                <div class="col-lg-6  end-0 top-0 mt-n3 me-n5 d-none d-lg-block">
                     <img src="assets/images/chatbot-cta.png" style="width: 46%; margin-left: 50%;" alt="">
                 </div>
             </div>
+
+                <div class=" top-0  mt-n6">
+                    <img src="assets/images/elements/grad-shape/blur-decoration.svg" class="blur-8 opacity-3" alt="Grad shape">
+                </div>
         </div>
         }
     </div>
@@ -44,9 +46,13 @@
 
         Params = new CaerdSevicisIcon()
             {
-                Name = "Experience the Power of",
-                Description = "Our AI chatbot offers enhancing customer satisfaction and boosting your business efficiency.",
-                ButtonLink = "Start free trial",
+                // Name = "Experience the Power of",
+                // Description = "Our AI chatbot offers enhancing customer satisfaction and boosting your business efficiency.",
+                // ButtonLink = "Start free trial",
+
+                Name = "جرب قوة",
+                Description = "يوفر منصة لهجة خدمات التعامل مع نماذج الذكاء الاصطناعي وبرنامج المحادثة الصوتي للهجات .",
+                ButtonLink = "ابدأ الإصدار التجريبي المجاني",
             }; 
 
             }

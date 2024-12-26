@@ -74,7 +74,8 @@
 
 
 
-    <MudContainer Class="container relative flex flex-col md:grid md:space-y-0 w-full md:grid-cols-12 space-y-4 md:gap-6 py-6" Style="margin-right: 15%;">
+   @*  <MudContainer  Class="container  relative flex flex-col md:grid md:space-y-0 w-full md:grid-cols-12 space-y-4 md:gap-6 py-6" 
+    style="margin-right: 15%;direction:ltr !important">
    
      <div class="md:col-span-4 lg:col-span-3">
         <div Class="pt-6 border border-gray-100 rounded-xl bg-gradient-to-l overflow-hidden" style="background-color:none!important">
@@ -118,9 +119,9 @@
             </MudLink>
         </MudContainer>
    </div>
-
+ *@
    
-    @if (!string.IsNullOrEmpty(url))
+@*     @if (!string.IsNullOrEmpty(url))
     { 
                 @RenderComponentBasedOnUrl
     }
@@ -133,7 +134,7 @@
     }
 
 </MudContainer>
-
+ *@
 
 
     
@@ -161,103 +162,7 @@ else
 <style>
 
 
-    .tab-alternate.active {
-        --tw-border-opacity: 1;
-        border-color: rgb(55 65 81 / var(--tw-border-opacity));
-        font-weight: 600;
-        --tw-text-opacity: 1;
-    
-    }
-
-    .tab-alternate {
-        display: flex;
-        height: 100%;
-        align-items: center;
-        white-space: nowrap;
-        border-bottom-width: 2px;
-        border-color: transparent;
-        padding-left: .625rem;
-        padding-right: .625rem;
-        font-weight: 500;
-        --tw-text-opacity: 1;
-       
-    }
-
-    a {
-       
-        text-decoration: inherit;
-    }
-
-    .tab-alternate {
-        display: flex;
-        height: 100%;
-        align-items: center;
-        white-space: nowrap;
-        border-bottom-width: 2px;
-        border-color: transparent;
-        padding-left: .625rem;
-        padding-right: .625rem;
-        font-weight: 500;
-        --tw-text-opacity: 1;
-      
-    }
-    /* التأثير عند التمرير */
-    button.group:hover {
-        background-color: #f3f4f6; /* تغيير الخلفية */
-        border-color: #d1d5db; /* تغيير الإطار */
-        /* لون نص مختلف */
-    }
-
-    /* الجزء الداخلي للزر */
-    button.group div {
-        /*             border-radius: 6px; /* زوايا مخصصة للنص */
-        transition: background-color 0.3s ease; /* تأثير تغيير الخلفية */
-    }
-
-    /* التأثير عند التمرير فوق الجزء الداخلي */
-    button.group:hover div {
-        background-color: #e5e7eb; /* خلفية عند التمرير */
-    }
-
-    /* شارة (Badge) مميزة */
-
-
-    /* التأثير على الشارة عند التمرير */
-    button.group:hover span {
-        background-color: #bfdbfe; /* لون الخلفية عند التمرير */
-         /* لون النص */
-    }
-
-    /* تصميم الوضع المظلم */
-    button.group.dark {
-        background-color: #1f2937;
-     
-        border-color: #374151;
-    }
-
-        button.group.dark:hover {
-            background-color: #111827;
-            border-color: #4b5563;
-           
-        }
-
-        button.group.dark div {
-            background-color: transparent;
-        }
-
-        button.group.dark:hover div {
-            background-color: #374151;
-        }
-
-        button.group.dark span {
-            background-color: #334155;
-            
-        }
-
-        button.group.dark:hover span {
-            background-color: #1e293b;
-            
-        }
+  
 
     
 </style>

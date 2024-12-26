@@ -16,7 +16,7 @@
 
 
 
-<MudForm id="Auth-Demo-form" @ref="form" onsubmit="onSubmitReCAPTCHA(event)" @bind-IsValid="@success" @bind-Errors="@errors">
+<MudForm style="" id="Auth-Demo-form" @ref="form" onsubmit="onSubmitReCAPTCHA(event)"  @bind-IsValid="@success" @bind-Errors="@errors">
 
 
    
@@ -113,16 +113,16 @@
     async Task Submit(){
         DataBuildAuthBase data;
 
-        var result = await JSRuntime.InvokeAsync<string>("onSubmitReCAPTCHA");
-        if (result == null)
-        {
+        // var result = await JSRuntime.InvokeAsync<string>("onSubmitReCAPTCHA");
+        // if (result == null)
+        // {
 
-            errors = new string[] { MapperMessages.Map(
-                    global::Shared.Constants.ErrorMessages.CHECK_FROM_RECAPTCHA_EN,
-                    global::Shared.Constants.ErrorMessages.CHECK_FROM_RECAPTCHA_EN) };
+        //     errors = new string[] { MapperMessages.Map(
+        //             global::Shared.Constants.ErrorMessages.CHECK_FROM_RECAPTCHA_EN,
+        //             global::Shared.Constants.ErrorMessages.CHECK_FROM_RECAPTCHA_EN) };
 
-        }
-        else
+        // }
+        // else
         {
 
 

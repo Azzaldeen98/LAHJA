@@ -8,7 +8,6 @@ namespace Shared
     {
         public static void InstallSharedConfigServices(this IServiceCollection serviceCollection)
         {
-            
             serviceCollection.AddSingleton(_ => ApplicationModeService.getInstance(ApplicationMode.Production));
         }
     }

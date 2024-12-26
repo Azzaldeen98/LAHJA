@@ -24,7 +24,11 @@
                 <MudText Typo="Typo.body1" Class="mb-1">
                     @* <MudIcon Icon="@Icons.Custom.Uncategorized.AlertSuccess"  /> *@
                 @* <MudText Typo="Typo.body1">Total Price</MudText> *@
-                <MudText Typo="Typo.h4" > @Params.Price <small>$</small> </MudText>
+                @* <MudText Typo="Typo.h4" > @Params.Price <small>$</small> </MudText> *@
+                @* <MudText Typo="Typo.h4"> @Params.WeeklyPrice <small>$</small> </MudText> *@
+                <MudText Typo="Typo.h5" > @Params.MonthlyPrice <small>$</small> </MudText>
+               
+                @* <MudText Typo="Typo.h4" > @Params.AnnualPrice <small>$</small> </MudText> *@
             </MudText>
                 <MudList  Dense="true" T="object">
 
@@ -43,11 +47,11 @@
                 {
 
                     @* <MudListSubheader> Services </MudListSubheader> *@
-                    <MudListItem  Text="Technical Features" Expanded>
-                        <NestedList>
+                    <MudListItem Text="Technical Features" @bind-Expanded="_expanded" >
+                        <NestedList >
                             @foreach (var featur in Params.Features.Where(x => x.IsFixed).ToList())
                             {
-                                <MudListItem>
+                                <MudListItem style="padding:0% !important" >
 
                                     <TechnologyFeture Params="featur" />
 
@@ -85,7 +89,7 @@
 
 
 @code {
-    bool _expanded=true;
+    bool _expanded=false;
 }
  
 

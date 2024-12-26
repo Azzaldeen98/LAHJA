@@ -8,10 +8,15 @@
   
 @if (!IsDialog)
 {
-  
 
 
- 
+
+
+    <MudTabs Outlined="true">
+        <MudTabPanel Text="Api" Icon="@Icons.Material.Filled.Api" />
+        <MudTabPanel Icon="@Icons.Material.Filled.Build" />
+        <MudTabPanel Text="Bug Report" Icon="@Icons.Material.Filled.BugReport" />
+    </MudTabs>
 
     <MudGrid Class="@MainPlanStyle.MainPlanGrid" Justify="Justify.SpaceAround">
 
@@ -27,11 +32,11 @@
         else if (DataBuilds != null && DataBuilds.Any())
         {
 
-
+            
 
             @foreach (var item in DataBuilds)
             {
-                <MudItem Class="@MainPlanStyle.MainPlanItem" xs="12" sm="12" md="4">
+                <MudItem Class="@MainPlanStyle.MainPlanItem" xs="12" sm="12" md="3">
                     <TemplatePlan Params="@item" OnSubmit="OnSubmitButton"   />
                 </MudItem>
             }

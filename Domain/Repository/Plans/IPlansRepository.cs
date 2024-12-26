@@ -23,6 +23,7 @@ namespace Domain.Repository.Plans
         public Task<Result<IEnumerable<PlansGroupResponse>>> getPlansGroupAsync();
         public Task<Result<PlanResponse>> createPlanAsync(PlanCreate request);
         public Task<Result<PlanResponse>> updatePlanAsync(PlanUpdate request);
+        Task<Result<IEnumerable<SubscriptionPlan>>> getBasicSubscriptionsPlansAsync();
 
 
     }

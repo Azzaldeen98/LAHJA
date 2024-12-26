@@ -316,8 +316,11 @@ namespace LAHJA.Data.UI.Templates.Plans
                     if (take > 0)
                     {
                          _allPlans = response.Data.Take(take).ToList();
-                    _allPlans[1].ClassImport = "plan-import-card";
-                    _allPlans[1].HeaderImport = "textHeader";
+                    if (_allPlans.Count() > 2)
+                    {
+                        _allPlans[2].ClassImport = "plan-import-card";
+                        _allPlans[2].HeaderImport = "textHeader";
+                    }
                 }
                     else{
 

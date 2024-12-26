@@ -1,6 +1,7 @@
 ﻿@using LAHJA.Data.UI.Components.Base
 @using LAHJA.Data.UI.Components.Category
 @using LAHJA.Data.UI.Components.Plan.Css
+@using LAHJA.Them
 @inject NavigationManager Navigation
 @inherits CardCategory<CategoryComponent>
 @inject ISnackbar Snackbar
@@ -29,45 +30,69 @@
 
  @if (Params != null)
 {
-    <MudGrid Class="@MainPlanStyle.MainPlanGrid" Justify="Justify.SpaceAround">
+    <div Class="d-flex flex-wrap justify-content-around align-items-center" >
 
     @foreach (var item in Params)
     {
+
+            <MudCard  Class="w30 RCardP">
+                <MudCardHeader>
+                    <CardHeaderAvatar>
+                        <MudAvatar Color="@AppColors.BASE_COLOR_ENUM">I</MudAvatar>
+                    </CardHeaderAvatar>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.body1">@item.Name</MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardMedia Image="chatbot-03.png" Height="250" />
+                <MudCardContent>
+                    <MudText Typo="Typo.body2">@item.Description</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Default" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Default" />
+                    <MudRating SelectedValue="2" Color="@AppColors.BASE_COLOR_ENUM" />
+                </MudCardActions>
+            </MudCard>
+
+@* 
         <MudItem xs="12" sm="12" md="4" > 
 
-            <MudCard Elevation="25" Class="rounded-lg pb-4 card-hover m-1">
+            <MudCard Elevation="12" Class="rounded-lg  card-hover m-1" Style="height:400px !important">
 
-                <MudTooltip Text="@item.Description" Color="Color.Primary" Placement="Placement.Top">
+                    <MudTooltip Text="@item.Description" Class="p-2" Disabled="true" Color="@AppColors.BASE_COLOR_ENUM" Placement="Placement.Top">
                 <MudCardHeader>
                     <CardHeaderContent>
-                        <MudText Typo="Typo.h5" Align="Align.Center">@item.Name</MudText>
+                                <MudText Typo="Typo.body2"  Class="textHeader" Style="font-size:20px !important" Align="Align.Center">@item.Name</MudText>
                     </CardHeaderContent>
                 </MudCardHeader>
                 <MudCardContent>
                     
-                    @if (!string.IsNullOrEmpty(@item.ImageUrl))
-                    {
-                        <MudCardMedia Image="@item.ImageUrl" Height=400 />
-                    }
+            
+                      <img src="chatbot-03.png" style="height:200px !important;width:100% !important" />
+                    
 
                     @if (!string.IsNullOrEmpty(@item.Name))
                     {
-                        <MudText Typo="Typo.h6" Class="@TemplateCategoryStyle.MudText">@item.Description</MudText>
+                        <MudText Typo="Typo.subtitle2" Class="@TemplateCategoryStyle.MudText">@item.Description</MudText>
                     }
 
                 </MudCardContent>
                 <MudCardActions Class="d-flex justify-center">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;" OnClick="@(()=>Submit(@item))">Start Now</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM"  Style="width:50%;" OnClick="@(()=>Submit(@item))">Start Now</MudButton>
                 </MudCardActions>
                 </MudTooltip>
             </MudCard>
          
-        </MudItem>
+        </MudItem> *@
 
     }
 
    
-   </MudGrid> 
+   </div> 
 
 }
 

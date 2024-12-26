@@ -11,7 +11,7 @@
 @if (Template != null)
 {
 
-    <MainCategory DataBuild="Template.Categories" OnSubmit="Template.BuilderComponents.SubmitContainerPlans" />
+    <MainCategory    DataBuild="Template.Categories" OnSubmit="Template.BuilderComponents.SubmitContainerPlans" />
 
 
     @if (Template.SubscriptionPlans != null && Template.SubscriptionPlans.Count()>0)
@@ -27,13 +27,27 @@
 @code
 {
 
-    protected override async Task OnInitializedAsync()
 
+
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
 
-        await Template.OnInitialize();
 
-        StateHasChanged();
+
+        if (firstRender)
+        {
+
+
+
+            await Template.OnInitialize();
+
+
+
+            StateHasChanged();
+
+        }
 
         // var temp= Template.BuilderComponents.Categories;
 

@@ -15,7 +15,7 @@
 
 @inject LAHJA.Data.UI.Templates.Auth.TemplateAuth templateAuth
 
-
+<MudRTLProvider RightToLeft="@_rightToLeft">
 <MudThemeProvider @ref="@_mudThemeProvider" Theme="_themeManager.Theme" @bind-IsDarkMode="@_isDarkMode" />
 <MudPopoverProvider   />
 <MudDialogProvider />
@@ -33,7 +33,7 @@
           {
 
 
-                <MudLink Href="/"  Style="@("color:"+iconfill+"!important")" >Home</MudLink>
+                <MudLink class="isMenu-show" Href="/"  Style="@("color:"+iconfill+"!important")" >Home</MudLink>
 
                   @if (@flagauth)
                   {
@@ -43,11 +43,11 @@
                       
                   }
 
-            <MudLink Style="@("color:"+iconfill+"!important")"  Href="/Plans">Plans</MudLink>
+            <MudLink class="isMenu-show" Style="@("color:"+iconfill+"!important")"  Href="/Plans">Plans</MudLink>
 
-            <MudLink Style="@("color:"+iconfill+"!important")" Href="/CategoriesPlan">Categories</MudLink>
-            <MudLink Style="@("color:"+iconfill+"!important")" Href="/services"> Services</MudLink>
-            <MudLink Style="@("color:"+iconfill+"!important")" Href="/payment"> Payment</MudLink>
+            <MudLink class="isMenu-show" Style="@("color:"+iconfill+"!important")" Href="/CategoriesPlan">Categories</MudLink>
+            <MudLink class="isMenu-show" Style="@("color:"+iconfill+"!important")" Href="/services"> Services</MudLink>
+            <MudLink class="isMenu-show" Style="@("color:"+iconfill+"!important")" Href="/payment"> Payment</MudLink>
 
             @if (!@flagauth && @NavigationManager.Uri == @NavigationManager.BaseUri)
             {
@@ -89,15 +89,17 @@
     </MudDrawer>
     }
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.False" Class="mt-16 px-16">
+        
             @Body
-        </MudContainer>
+       
     </MudMainContent>
     <MudThemeManagerButton OnClick="@((e) => OpenThemeManager(true))" />
     <MudThemeManager Open="_themeManagerOpen" OpenChanged="OpenThemeManager" Theme="_themeManager" ThemeChanged="UpdateTheme" IsDarkMode="@_isDarkMode" />
 </MudLayout>
-
+</MudRTLProvider>
 @code {
+
+    private bool _rightToLeft = true;
 
     // [Parameter] public bool HiddenNavMenu { get => _hiddenNavMenu; set => _hiddenNavMenu = value; }
 

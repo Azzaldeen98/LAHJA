@@ -94,11 +94,11 @@
 
 
 
-            var res2 = await templatePayment.getPaymentCheckoutUrlPage(new DataBuildPaymentBase { PlanId = planId });
+        var res2 = await templatePayment.getPaymentCheckoutUrlPage(new DataBuildPaymentBase { PlanId = planId });
 
-                if (res2.Data != null)
+            if (res2.Data != null)
 
-                    Navigation.NavigateTo(res2.Data.url ?? RouterPage.HOME);
+                Navigation.NavigateTo(res2.Data.url ?? RouterPage.HOME);
 
 
              

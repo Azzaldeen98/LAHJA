@@ -13,9 +13,10 @@
 
 
     <MudTooltip Text="@Params.Description" style="padding:2% !important" Color="@AppColors.BASE_COLOR_ENUM" Placement="Placement.Bottom">
-            <MudText Typo="Typo.body2" style="padding:0 !important;margin:0 !important">
-            <MudIcon Icon="@Icon" Color="@AppColors.BASE_COLOR_ENUM" />
-            @string.Join(",", Params.Name)
+
+        <MudText Typo="Typo.body2" style="padding:0% !important;margin:0% !important;font-size:12px !important;">
+            <MudIcon Icon="@Icon" Color="@(Params.Active?AppColors.BASE_COLOR_ENUM:Color.Error)" />
+            @Params.Name : @Params.Description
             </MudText>
         </MudTooltip>
       @*   <MudText Typo="Typo.body2">
@@ -40,22 +41,15 @@ else
     public bool flagTypeService { get; set; }
     public string Error { get; set; } = "No Data";
 
-
-    [Parameter] public string Icon { get; set; } = Icons.Material.Sharp.Check;
-
-
+    [Parameter] public string Icon { get; set; } = Icons.Material.Sharp.CheckBox;
 
     [Parameter] public FeaturePlanInfo? Params { get; set; }
-
-
-
 
     protected override void OnInitialized()
     {
 
         if (Params!=null)
-            Icon = Params.Active ? @Icons.Material.Sharp.Check : @Icons.Material.Sharp.Cancel;
-
+            Icon = Params.Active ? @Icons.Material.Sharp.CheckBox : @Icons.Material.Sharp.Cancel;
 
     }
 

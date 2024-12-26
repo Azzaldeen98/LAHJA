@@ -655,10 +655,7 @@ a, .btn-link {
     .wk1 {
         padding: 5%;
     }
-    .w30 {
-        width: 0% !important;
-        display:none !important;
-    }
+
     .w70 {
         width: 100% !important
     }

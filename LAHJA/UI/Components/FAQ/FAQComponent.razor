@@ -1,9 +1,12 @@
-﻿<MudContainer MaxWidth="MaxWidth.Large">
-    <MudPaper Elevation="3" Class="pa-4">
-        <MudTypography Variant="h4" Align="Align.Center" GutterBottom="true">
+﻿<div Class="container" MaxWidth="MaxWidth.Large">
+    <MudPaper Elevation="0" Class="pa-4 d-flex flex-column  justify-content-center align-items-center">
+@*         <MudTypography Variant="h3" Align="Align.Center" GutterBottom="true">
             الأسئلة الشائعة (FAQ)
-        </MudTypography>
+        </MudTypography> *@
+        <MudText Typo="Typo.h3">
+            الأسئلة الشائعة (FAQ)
 
+        </MudText>
         <MudExpansionPanels>
             @foreach (var item in FAQItems)
             {
@@ -15,7 +18,7 @@
             }
         </MudExpansionPanels>
     </MudPaper>
-</MudContainer>
+</div>
 
 @code {
 
