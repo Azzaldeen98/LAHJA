@@ -43,7 +43,7 @@ namespace LAHJA.Data.UI.Components.Base
     public abstract class ComponentBaseCard<T> : ComponentBase, IBaseComponentCard<T>
     {
         public abstract TypeComponentCard Type { get; }
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; } =true;
         public bool IsAuth { get; set; } = false;
         public T DataBuild { get; set; }
         public string? ClassItem { get; set; } = "";

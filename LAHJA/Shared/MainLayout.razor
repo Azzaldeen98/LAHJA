@@ -22,7 +22,7 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="_themeManager.AppBarElevation" style="@(_isDarkMode?"":"background:#fff" )" class="navbar-light">
+    <MudAppBar  Elevation="_themeManager.AppBarElevation" style="@((_isDarkMode?"":"background:#fff")+";direction:ltr !important;" )" class="navbar-light">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         
         <MudIcon Size="Size.Large" Color="@AppColors.BASE_COLOR_ENUM" Icon="@Icons.Material.Filled.BlurOn" Title="API" />
@@ -66,10 +66,10 @@
              
           }
         <MudSpacer />
-        <MudIconButton  class="mx-3" Icon="@Icons.Material.Filled.DarkMode" Color="Color.Inherit" OnClick="@((e) => DarkModeToggle())" Edge="Edge.End" />
+        <MudIconButton  class="mx-3" Icon="@Icons.Material.Filled.DarkMode" Color="@AppColors.BASE_COLOR_ENUM" OnClick="@((e) => DarkModeToggle())" Edge="Edge.End" />
         
          <form role="search">
-            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+            <input class="form-control" style="background-color:Transparent !important" type="search" placeholder="Search" aria-label="Search">
         </form>
 
     </MudAppBar>

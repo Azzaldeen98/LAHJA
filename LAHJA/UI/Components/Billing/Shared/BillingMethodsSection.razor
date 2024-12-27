@@ -1,4 +1,5 @@
 ﻿@using LAHJA.Data.UI.Components.Payment.BillingContact
+@using LAHJA.UI.Components.Payment.CreditCard
  
 
 
@@ -7,13 +8,8 @@
 <MudText Typo="Typo.h6" Class="mb-4"> Payment information</MudText>
 @if (@billingContact == null)
 {
-
-
-
-
- 
     <div class="mx-auto">
-
+        @if (@billingContact == null){}
         <MudExpansionPanels>
             <MudExpansionPanel @bind-Expanded="@open" HideIcon="true">
                 <TitleContent>
@@ -28,7 +24,7 @@
                 </TitleContent>
                 <ChildContent>
 
-                    <LAHJA.UI.Components.Payment.CreditCard.FormBilling OnClickSave= "@OnclickCreate" />
+                    <FormBilling OnClickSave= "@OnclickCreate" />
 
                 </ChildContent>
             </MudExpansionPanel>
@@ -46,36 +42,42 @@
 
 }
 else
-
 {
-      
-           <MudExpansionPanels>
-            <MudExpansionPanel @bind-Expanded="@open" HideIcon="true">
-                <TitleContent>
-                    <div class="d-flex">
-                    <MudPaper Class="p-4 mb-4" Elevation="1">
-                        <MudText>Billing information</MudText>
-                        <MudText>@billingContact.FullName</MudText>
-                        <MudText>@billingContact.Country</MudText>
-                        <MudText>@billingContact.City</MudText>
-                        <MudText>@billingContact.MobilePhoneNumber</MudText>
-                        <div class="d-flex justify-end mt-2">
-                     
-                           
-                            
-                            <MudButton Variant="Variant.Outlined" Color="Color.Error">Remove</MudButton>
-                        </div>
-                    </MudPaper>
-                        <MudIcon Icon="@(open ? Icons.Material.Filled.Close : Icons.Material.Filled.Edit)" class="ml-auto"></MudIcon>
-                    </div>
-                </TitleContent>
-                <ChildContent>
 
-                    <LAHJA.UI.Components.Payment.CreditCard.FormBilling OnClickSave="@OnclickCreate"  />
 
-                </ChildContent>
-            </MudExpansionPanel>
-        </MudExpansionPanels>
+  
+
+     <MudExpansionPanels>
+         <MudExpansionPanel @bind-Expanded="@open" HideIcon="true">
+             <TitleContent>
+                 <MudText Typo="Typo.h6" Class="font-weight-bold">Billing Information</MudText>
+            
+                 <MudPaper Class="p-4 mb-4 shadow-md rounded-lg" Elevation="3">
+                     <MudText Class="mb-2"><strong>Name:</strong> @billingContact.FullName</MudText>
+                     <MudText Class="mb-2"><strong>Country:</strong> @billingContact.Country</MudText>
+                     <MudText Class="mb-2"><strong>City:</strong> @billingContact.City</MudText>
+                     <MudText Class="mb-2"><strong>Phone Number:</strong> @billingContact.MobilePhoneNumber</MudText>
+                     <MudText Class="mb-2"><strong>Address1:</strong> @billingContact.Address1</MudText>
+
+                     @if (!string.IsNullOrEmpty(billingContact.Address2))
+                     {
+                         <MudText Class="mb-2"><strong>Address2:</strong> @billingContact.Address2</MudText>
+                     }
+
+                     <div class="d-flex justify-end mt-3">
+                         <MudButton Variant="Variant.Outlined" Color="Color.Error" StartIcon="Icons.Material.Filled.Delete" Class="px-4 py-2">Remove</MudButton>
+                     </div>
+                 </MudPaper>
+
+                 <MudIcon Icon="@(open ? Icons.Material.Filled.Close : Icons.Material.Filled.Edit)" class="ml-auto" />
+            </TitleContent>
+
+             <ChildContent>
+                 <FormBilling OnClickSave="@OnclickCreate" />
+             </ChildContent>
+         </MudExpansionPanel>
+     </MudExpansionPanels> 
+
    
 
 
@@ -104,19 +106,19 @@ else
 
 
 
-    [Parameter] public BillingContact BilledData { get; set; }
+    [Parameter] public BillingContact BilledData { get => billingContact; set => billingContact = value; }
     [Parameter] public EventCallback<BillingContact> OnSelect { get; set; }
     protected override async Task OnInitializedAsync()
     {
 
-        try
+       @*  try
         {
             BillingContactt(billingContact);
         }
         catch(Exception ex)
         {
             
-        }
+        } *@
 
     }
     private void Tabb()

@@ -76,3 +76,43 @@ async function queryModelTextToSpeech1(inputText) {
     audioPlayer.play();
 
 }
+
+
+
+async function getEventIdAndData() {
+    // Make the first POST request to get the EVENT_ID
+    const response = await fetch('https://wasmdashai-lahja-ai.hf.space/call/predict', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            data: [
+                "Hello!!",
+                "wasmdashai/vits-ar-sa-huba-v1",
+                0
+            ]
+        })
+    });
+
+    // Parse the response and extract the EVENT_ID
+    const data = await response.json();
+    const eventId = data?.event_id || '';  // Extract the event ID if available
+
+    if (!eventId) {
+        console.error('EVENT_ID not found');
+        return;
+    }
+
+    // Make the second request to get the result using the EVENT_ID
+    const finalResponse = await fetch(`https://wasmdashai-lahja-ai.hf.space/call/predict/${eventId}`, {
+        method: 'GET'
+    });
+
+    // Parse and log the result
+    const result = await finalResponse.json();
+    console.log(result);
+}
+
+// Call the function
+getEventIdAndData();

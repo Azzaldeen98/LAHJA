@@ -1,6 +1,7 @@
 @using LAHJA.Data.UI.Components.ServiceCard
 @using System.Text.Json.Serialization
 @using System.Text.Json;
+@using LAHJA.Data.UI.Models
 @inject IDialogService DialogService
 @inject IJSRuntime jsRuntime
 
@@ -72,6 +73,8 @@ else
 
 
 
+
+
     [Parameter]
 
 
@@ -89,37 +92,6 @@ else
         serviceComponentPar = ServiceComponentPar.GetGenarelCard(DataBuildPage);
         StateHasChanged();
     }
-
-
-
-
-    public class QueryRequestTextToSpeechHeader
-    {
-        [JsonPropertyName("Authorization")]
-        public string Authorization { get; set; } = "Bearer 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";
-
-        [JsonPropertyName("Content-Type")]
-        public string ContentType { get; set; } = "application/json";
-    }
-
-    public class QueryRequestTextToSpeech
-    {
-        [JsonPropertyName("Url")]
-        public string Url { get; set; } = "https://api-inference.huggingface.co/models/wasmdashai/vits-ar-sa-huba-v2";
-
-        [JsonPropertyName("Headers")]
-        public QueryRequestTextToSpeechHeader Headers { get; set; } = new QueryRequestTextToSpeechHeader();
-
-        [JsonPropertyName("Method")]
-        public string Method { get; set; } = "POST";
-
-        [JsonPropertyName("Data")]
-        public string Data { get; set; } = "«·”·«„ ⁄·Ìﬂ„ Ê—Õ„… «··Â";
-
-        [JsonPropertyName("TagId")]
-        public string TagId { get; set; } = "OutputPlayerId";
-    }
-
 
     private async void OnSubmitText(OnDataResult obj)
     {
@@ -143,6 +115,8 @@ else
 
 
     }
+
+
     private Task OpenDialogAsync()
     {
 

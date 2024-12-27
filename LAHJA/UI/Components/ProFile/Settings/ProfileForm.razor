@@ -1,26 +1,29 @@
-﻿
-<MudContainer Class="pt-6 border-gray-100 md:col-span-8 lg:col-span-9 xl:col-span-9 md:px-4 py-4">
+﻿@using LAHJA.Them
+
+
+
+@* <MudContainer Class="pt-6 border-gray-100 md:col-span-8 lg:col-span-9 xl:col-span-9 md:px-4 py-4">
     <MudContainer Class="mb-6">
         <MudContainer Class="flex justify-between">
             <MudText Typo="Typo.h5" Class="flex flex-row items-center text-xl font-bold">
-                Profile Settings 2423
+                Profile Settings 
             </MudText>
         </MudContainer>
     </MudContainer>
     <MudForm @ref="form" OnValidSubmit="HandleValidSubmit" Class="mb-8 flex flex-col space-y-5 md:pr-36">
-        @* <MudHiddenInput Name="csrf" Value="eyJkYXRhIjp7ImV4cGlyYXRpb24iOjE3MzQ0NTYxNDI1NzMsInVzZXJJZCI6IjY3NThiYzJmMmVlMGI2ZTExODU3ZDBlMiJ9LCJzaWduYXR1cmUiOiI1YjdkODg5NjRiZWNhNmNiY2VkMTc1ZWFiYmFhYTA0ZWY2NDY2YjUxNmU2YmI2OTY5ZWU0MDM4OWRiYmEzZTJjIn0=" /> *@
+        
         <MudTextField @bind-Value="FullName" Label="Full name" Placeholder="Full name" Name="fullname" Pattern="^(?!\.+$).*$" MaxLength="50" Required="true" />
         <MudContainer>
             <MudText Typo="Typo.body2">Avatar <span class="pl-2 text-gray-400">(optional)</span></MudText>
             <MudContainer Class="flex items-center gap-2">
-                <MudContainer Class="mt-1 flex items-center gap-3">
+                <MudContainer Class="mt-1 flex items-center gap-3"> *@
                     @* <MudButton Variant="Variant.Outlined">Upload file</MudButton> *@
                     @* <MudTextField InputType="InputType." Label="avatar" Value="" /> *@
                     @* <MudInput ="file" Accept="image/png, image/jpeg" Class="sr-only" /> *@
-                </MudContainer>
+@*                 </MudContainer>
                 <MudButton Variant="Variant.Text" Class="mt-1 flex items-center text-sm text-gray-500 hover:text-gray-800 hover:underline">Remove</MudButton>
             </MudContainer>
-        </MudContainer>
+        </MudContainer>1
         <MudTextField @bind-Value="Homepage" Label="Homepage" Placeholder="Homepage" Name="homepage" Type="url" />
         <MudTextField @bind-Value="Interests" Label="AI & ML interests" Placeholder="AI & ML interests" Name="details" TextArea="true" />
         <MudTextField @bind-Value="GitHubUsername" Label="GitHub username" Placeholder="GitHub username" Name="github" Pattern="[a-zA-Z\d\-]+" Title="Github 'username' from https://github.com/username" />
@@ -29,9 +32,38 @@
         <MudTextField @bind-Value="BlueskyUsername" Label="Bluesky username" Placeholder="Bluesky account" Name="bluesky" Pattern="[a-zA-Z\d\.-]+" Title="Bluesky 'username' from https://bsky.app/profile/username" />
         <MudButton Type="Submit" Variant="Variant.Filled" Color="Color.Primary">Save changes</MudButton>
     </MudForm>
+</MudContainer> *@
+
+@inject NavigationManager NavigationManager
+
+<MudContainer Class="pt-6 border-gray-100 md:col-span-8 lg:col-span-9 xl:col-span-9 md:px-4 py-4" dir="@GetDirection()">
+    <MudContainer Class="mb-6">
+        <MudContainer Class="flex justify-between">
+            <MudText Typo="Typo.h5" Class="flex flex-row items-center text-xl font-bold">
+                @Texts["ProfileSettings"]
+            </MudText>
+        </MudContainer>
+    </MudContainer>
+    <MudForm @ref="form" OnValidSubmit="HandleValidSubmit" Class="mb-8 flex flex-col space-y-5 md:pr-36">
+        <MudTextField @bind-Value="FullName" Label="@Texts["FullName"]" Placeholder="@Texts["FullNamePlaceholder"]" Name="fullname" Pattern="^(?!\.+$).*$" MaxLength="50" Required="true" />
+        <MudContainer>
+            <MudText Typo="Typo.body2">@Texts["Avatar"] <span class="pl-2 text-gray-400">(@Texts["Optional"])</span></MudText>
+            <MudContainer Class="flex items-center gap-2">
+                <MudButton Variant="Variant.Text" Class="mt-1 flex items-center text-sm text-gray-500 hover:text-gray-800 hover:underline">@Texts["Remove"]</MudButton>
+            </MudContainer>
+        </MudContainer>
+        <MudTextField @bind-Value="Homepage" Label="@Texts["Homepage"]" Placeholder="@Texts["HomepagePlaceholder"]" Name="homepage" Type="url" />
+        <MudTextField @bind-Value="Interests" Label="@Texts["Interests"]" Placeholder="@Texts["InterestsPlaceholder"]" Name="details" TextArea="true" />
+        <MudTextField @bind-Value="GitHubUsername" Label="@Texts["GitHubUsername"]" Placeholder="@Texts["GitHubPlaceholder"]" Name="github" Pattern="[a-zA-Z\d\-]+" Title="@Texts["GitHubTitle"]" />
+        <MudTextField @bind-Value="TwitterUsername" Label="@Texts["TwitterUsername"]" Placeholder="@Texts["TwitterPlaceholder"]" Name="twitter" Pattern="[a-zA-Z\d_]+" Title="@Texts["TwitterTitle"]" />
+        <MudTextField @bind-Value="LinkedInProfile" Label="@Texts["LinkedInProfile"]" Placeholder="@Texts["LinkedInPlaceholder"]" Name="linkedin" Pattern="[a-zA-Z\d\-]+" Title="@Texts["LinkedInTitle"]" />
+        <MudTextField @bind-Value="BlueskyUsername" Label="@Texts["BlueskyUsername"]" Placeholder="@Texts["BlueskyPlaceholder"]" Name="bluesky" Pattern="[a-zA-Z\d\.-]+" Title="@Texts["BlueskyTitle"]" />
+        <MudButton Type="Submit" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM">@Texts["SaveChanges"]</MudButton>
+    </MudForm>
 </MudContainer>
 
 @code {
+
     private MudForm form;
     private string FullName { get; set; } = "عبدالرحمن";
     // private File file { get; set; }
@@ -46,6 +78,85 @@
     {
         // Handle form submission
     }
+    private Dictionary<string, string> Texts;
+
+    private string CurrentLanguage = "ar"; 
+
+    protected override void OnInitialized()
+    {
+        LoadTexts();
+    }
+
+    private void LoadTexts()
+    {
+        if (CurrentLanguage == "ar")
+        {
+            Texts = new Dictionary<string, string>
+            {
+                {"ProfileSettings", "إعدادات الملف الشخصي"},
+                {"FullName", "الاسم الكامل"},
+                {"FullNamePlaceholder", "أدخل الاسم الكامل"},
+                {"Avatar", "الصورة الرمزية"},
+                {"Optional", "اختياري"},
+                {"Remove", "إزالة"},
+                {"Homepage", "الصفحة الرئيسية"},
+                {"HomepagePlaceholder", "أدخل رابط الصفحة الرئيسية"},
+                {"Interests", "اهتمامات الذكاء الاصطناعي"},
+                {"InterestsPlaceholder", "أدخل اهتماماتك"},
+                {"GitHubUsername", "اسم مستخدم GitHub"},
+                {"GitHubPlaceholder", "أدخل اسم المستخدم الخاص بـ GitHub"},
+                {"GitHubTitle", "اسم المستخدم من https://github.com/username"},
+                {"TwitterUsername", "اسم مستخدم Twitter"},
+                {"TwitterPlaceholder", "أدخل اسم المستخدم الخاص بـ Twitter"},
+                {"TwitterTitle", "اسم المستخدم من https://twitter.com/username"}, // أضف المفتاح الصحيح
+                {"LinkedInProfile", "ملف LinkedIn الشخصي"},
+                {"LinkedInPlaceholder", "أدخل رابط LinkedIn الخاص بك"},
+                {"LinkedInTitle", "اسم المستخدم من https://linkedin.com/in/username"},
+                {"BlueskyUsername", "اسم مستخدم Bluesky"},
+                {"BlueskyPlaceholder", "أدخل اسم المستخدم الخاص بـ Bluesky"},
+                {"BlueskyTitle", "اسم المستخدم من https://bsky.app/profile/username"},
+                {"SaveChanges", "حفظ التغييرات"}
+            };
+
+        }
+        else
+        {
+            Texts = new Dictionary<string, string>
+            {
+                {"ProfileSettings", "Profile Settings"},
+                {"FullName", "Full name"},
+                {"FullNamePlaceholder", "Enter your full name"},
+                {"Avatar", "Avatar"},
+                {"Optional", "optional"},
+                {"Remove", "Remove"},
+                {"Homepage", "Homepage"},
+                {"HomepagePlaceholder", "Enter your homepage URL"},
+                {"Interests", "AI & ML interests"},
+                {"InterestsPlaceholder", "Enter your interests"},
+                {"GitHubUsername", "GitHub username"},
+                {"GitHubPlaceholder", "Enter your GitHub username"},
+                {"GitHubTitle", "GitHub 'username' from https://github.com/username"},
+                {"TwitterUsername", "Twitter username"},
+                {"TwitterPlaceholder", "Enter your Twitter account"},
+                {"TwitterTitle", "Twitter 'username' from https://twitter.com/username"}, 
+                {"LinkedInProfile", "LinkedIn profile"},
+                {"LinkedInPlaceholder", "Enter your LinkedIn profile"},
+                {"LinkedInTitle", "LinkedIn 'username' from https://linkedin.com/in/username"},
+                {"BlueskyUsername", "Bluesky username"},
+                {"BlueskyPlaceholder", "Enter your Bluesky account"},
+                {"BlueskyTitle", "Bluesky 'username' from https://bsky.app/profile/username"},
+                {"SaveChanges", "Save changes"}
+            };
+
+        }
+    }
+
+    private string GetDirection()
+    {
+        return CurrentLanguage == "ar" ? "rtl" : "ltr";
+    }
+
+ 
 }
 
 

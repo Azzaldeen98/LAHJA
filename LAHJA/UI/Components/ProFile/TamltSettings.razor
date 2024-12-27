@@ -189,7 +189,7 @@
 @*    @page "/settings/{*url}"
 @inherits ComponentBase
 @inject NavigationManager NavigationManager
-@using BlazorASG.Components.SidebarMen.Settings
+@using BlazorASG.Components.Profile.Settings
  *@
 @* <div style="margin-top: 3%;" class="bg-gradient-to-b py-3 text-sm md:text-base from-yellow-50 to-yellow-100 dark:from-yellow-500 dark:to-yellow-600 dark:text-gray-950 ">
     <div class="container">
@@ -314,7 +314,7 @@
         else
         {
             // مكون افتراضي إذا لم يتم العثور على `url`
-            builder.OpenComponent(0, typeof(BlazorASG.Components.SidebarMen.UserNameSettinge));
+            builder.OpenComponent(0, typeof(BlazorASG.Components.Profile.UserNameSettinge));
             builder.CloseComponent();
         }
     };

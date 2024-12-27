@@ -29,7 +29,7 @@
                 <MudText Typo="Typo.body2" Class="mt-2 text-sm text-gray-400">
                     We will use this email to communicate with you. This is also the email to use to authenticate on hf.co.
                 </MudText>
-                <MudButton Type="Submit" Variant="Variant.Filled" Color="Color.Primary">Save changes</MudButton>
+                <MudButton Type="Submit" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM">Save changes</MudButton>
             </MudForm>
         </MudContainer>
 
@@ -42,7 +42,7 @@
             <MudForm @ref="form" OnValidSubmit="HandleValidSubmit" Class="mb-8 flex flex-col space-y-5">
                 <MudTextField @bind-Value="Password" Label="Password" Placeholder="Enter new password" Type="password" Required="true" MinLength="4" MaxLength="100" />
                 <MudTextField @bind-Value="ConfirmPassword" Label="Confirm your new password" Placeholder="Confirm new password" Type="password" Required="true" MinLength="8" />
-                <MudButton Type="Submit" Variant="Variant.Filled" Color="Color.Primary">Save changes</MudButton>
+                <MudButton Type="Submit" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM">Save changes</MudButton>
             </MudForm>
         </MudContainer>
 
@@ -57,7 +57,7 @@
                 <MudCardContent Class="flex-1 overflow-y-auto">
                     <MudForm @ref="emailForm" OnValidSubmit="HandleEmailSubmit">
                         <MudTextField @bind-Value="Email" Label="Email" Placeholder="john.doe@company.org" Required="true" />
-                        <MudButton Type="Submit" Variant="Variant.Filled" Color="Color.Primary">Confirm</MudButton>
+                        <MudButton Type="Submit" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM">Confirm</MudButton>
                     </MudForm>
                 </MudCardContent>
             </MudCard>
@@ -69,11 +69,11 @@
             <MudText Typo="Typo.body2" Class="mb-4 text-gray-500">
                 Delete your HF account permanently, this action is irreversible. All your repositories (models, datasets, & Spaces) will be deleted.
             </MudText>
-            <MudButton OnClick="OpenModal" Variant="Variant.Filled" Color="Color.Primary">Delete my account</MudButton>
+            <MudButton OnClick="OpenModal" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM">Delete my account</MudButton>
 
             <MudContainer @bind-IsVisible="isModalVisible">
                 <MudCard>
-                    <MudText Typo="Typo.h6">Delete your Hugging Face account</MudText>
+                    <MudText Typo="Typo.h6">Delete your LAHAJA account</MudText>
                     <MudIconButton Icon="Icons.Material.Filled.Close" OnClick="CloseModal" />
                 </MudCard>
                 <MudContainer>

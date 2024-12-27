@@ -16,11 +16,19 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Shared.Models;
 using LAHJA.Helpers.Services;
 using Domain.ShareData;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+
+
+builder.Services.AddLocalization(options => options.ResourcesPath = "Local/Resources");
+
+
 
 
 
@@ -139,6 +147,18 @@ builder.Services.AddSession(options =>
 
 
 var app = builder.Build();
+
+
+// ÊÍÏíÏ ÇááÛÉ ÇáÇÝÊÑÇÖíÉ æÏÚã ÇááÛÇÊ
+var supportedCultures = new[] { "en", "ar" };
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("en"),
+    SupportedCultures = supportedCultures.Select(c => new CultureInfo(c)).ToList(),
+    SupportedUICultures = supportedCultures.Select(c => new CultureInfo(c)).ToList(),
+});
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

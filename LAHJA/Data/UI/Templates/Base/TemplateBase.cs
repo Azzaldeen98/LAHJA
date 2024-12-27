@@ -1,11 +1,5 @@
 ﻿using AutoMapper;
-using LAHJA.ApplicationLayer.Auth;
-using LAHJA.Data.UI.Components.Base;
 using LAHJA.Helpers.Services;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
-using MudBlazor;
-using System.Collections;
 
 namespace LAHJA.Data.UI.Templates.Base;
 
