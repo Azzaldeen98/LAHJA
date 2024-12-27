@@ -1,8 +1,8 @@
 ﻿
- 
+@page "/settings/{*Url}"
 @using LAHJA.Data.UI.Components.ProFileModel
-@using LAHJA.Data.UI.Components.SidebarMen.Settings
-@using LAHJA.Data.UI.Components.SidebarMen.USettings
+@using LAHJA.UI.Components.SidebarMen.Settings
+@using LAHJA.UI.Components.SidebarMen.USettings
 @inherits ComponentBase
 @inject NavigationManager NavigationManager
  
@@ -64,7 +64,54 @@
 
 
 
-
+    <MudContainer Class="container relative flex flex-col md:grid md:space-y-0 w-full md:grid-cols-12 space-y-4 md:gap-6 py-6" style="margin-right: 15%; direction:ltr !important">
+        <MudContainer Class="md:col-span-4 lg:col-span-3">
+            <MudContainer Class="pt-6 border border-gray-100 rounded-xl bg-gradient-to-l overflow-hidden" style="background-color:none!important">
+                <MudLink Href="/735408478mm" Class="cols-span-9 mb-2 flex items-center px-4 pb-4">
+                    <MudImage Alt="" Class="rounded-full mr-3 size-12 flex-none overflow-hidden bg-gray-100 dark:bg-gray-900" Src="@data.ImageUrl" />
+                    <div>
+                        <MudText Typo="Typo.h5" Class="font-bold">@data.Name</MudText>
+                        <MudChip Class="mt-1" T="object" Color="Color.Default" Variant="Variant.Outlined">@data.Phone</MudChip>
+                    </div>
+                </MudLink>
+                <MudList T="string">
+                    @foreach (var item in NavItems)
+                    {
+                        <MudListItem style="padding:0% !important; margin:10px !important" Text="@item.Label">
+                            <MudNavLink style="padding:0% !important; margin:0px !important" Href="@item.Url" Match="NavLinkMatch.All" OnClick="() => SetActiveTab(item.Url)">
+                                <MudText Typo="Typo.body2">@item.Label</MudText>
+                                @if (!string.IsNullOrEmpty(item.Badge))
+                                {
+                                    <MudText Typo="Typo.caption" Class="ml-auto mr-1.5 rounded px-1.5 text-xs font-semibold leading-tight bg-blue-500/10 text-blue-700 dark:text-blue-200">@item.Badge</MudText>
+                                }
+                            </MudNavLink>
+                        </MudListItem>
+                    }
+                </MudList>
+            </MudContainer>
+            <MudContainer Class="mt-3 flex items-center gap-2 text-sm text-gray-400">
+                Upgrade to
+                <MudLink Href="/settings/billing/subscription#subscribe" Class="flex items-center">
+                    <MudIcon Icon="mdi-crown" Class="mr-1" />
+                    Pro
+                </MudLink>
+            </MudContainer>
+        </MudContainer>
+        <MudContainer Class="md:col-span-8 lg:col-span-9 w-full border-1">
+            <MudTabs Class="w-full">
+                <MudTabPanel Class="w-full" Text="Content">
+                    @if (!string.IsNullOrEmpty(Url))
+                    {
+                        @RenderComponentBasedOnUrl
+                    }
+                    else
+                    {
+                        <BillingSection />
+                    }
+                </MudTabPanel>
+            </MudTabs>
+        </MudContainer>
+    </MudContainer>
 
 
 
@@ -74,67 +121,8 @@
 
 
 
-   @*  <MudContainer  Class="container  relative flex flex-col md:grid md:space-y-0 w-full md:grid-cols-12 space-y-4 md:gap-6 py-6" 
-    style="margin-right: 15%;direction:ltr !important">
-   
-     <div class="md:col-span-4 lg:col-span-3">
-        <div Class="pt-6 border border-gray-100 rounded-xl bg-gradient-to-l overflow-hidden" style="background-color:none!important">
-            <MudLink Href="/735408478mm" Class="cols-span-9 mb-2 flex items-center px-4 pb-4">
-                   
-                        <MudImage Alt="" Class="rounded-full mr-3 size-12 flex-none overflow-hidden bg-gray-100 dark:bg-gray-900"
-                                  Src="https://cdn-avatars.huggingface.co/v1/production/uploads/noauth/SXJTVYmE71adfaZsiGDsE.png" />
-                    
-                <div>
-                    <MudText Typo="Typo.h5" Class="font-bold">@DataBuild.Name</MudText>
-                    <MudChip Class="mt-1" T="object" Color="Color.Default" Variant="Variant.Outlined">
-                        @DataBuild.Phone
-                    </MudChip>
-                </div>
-            </MudLink>
+    
 
-          
-                <ul class="divide-y divide-gray-100 border-t border-gray-100 text-base text-gray-600" style="background-color:none!important">
-                    @foreach (var item in NavItems)
-                    {
-                        <li>
-                            <a href="@item.url" class="group relative flex items-center overflow-hidden px-2 py-1.5 dark:text-gray-400">
-                                <div class="block rounded px-2 py-0.5 group-hover:bg-gray-100 dark:group-hover:bg-gray-800">@item.Label</div>
-                                @if (!string.IsNullOrEmpty(item.Badge))
-                                {
-                                    <span class="ml-auto mr-1.5 rounded px-1.5 py-0.5 text-xs font-semibold leading-tight bg-blue-500/10 text-blue-700 dark:text-blue-200">@item.Badge</span>
-                                }
-
-                            </a>
-                        </li>
-                    }
-                </ul>
-        </div>
-
-     
-        <MudContainer Class="mt-3 flex items-center gap-2 text-sm text-gray-400">
-            Upgrade to
-            <MudLink Href="/settings/billing/subscription#subscribe" Class="flex items-center">
-                <MudIcon Icon="mdi-crown" Class="mr-1" />
-                Pro
-            </MudLink>
-        </MudContainer>
-   </div>
- *@
-   
-@*     @if (!string.IsNullOrEmpty(url))
-    { 
-                @RenderComponentBasedOnUrl
-    }
-         
-    else
-    {
-        
-                <BillingSection />
-            
-    }
-
-</MudContainer>
- *@
 
 
     
@@ -169,80 +157,87 @@ else
 @code
 {
 
-    [Parameter] public DataBuildUserProfile DataBuild { get; set; }
-    private DataBuildUserProfile data;
-    // protected override async Task OnInitializedAsync()
-    // {
-
-    //     data = new DataBuildUserProfile();
-    //     if (DataBuild == null)
-    //     {
-
-    //         DataBuild = data;
-    //         StateHasChanged();
-    //     }
+    [Parameter] public DataBuildUserProfile DataBuild { get => data; set => data=value; }
+    private DataBuildUserProfile data = new DataBuildUserProfile();
 
 
-    // }
+    protected override async Task OnInitializedAsync()
+    {
+
+   
+      
+    }
 
 
 
     private List<NavItem> NavItems = new()
     {
-        new NavItem { Label = "Profile", url = "settings/profile" },
-        new NavItem { Label = "Account", url = "settings/Account" },
-        new NavItem { Label = "Authentication", url = "settings/authentication" },
-        new NavItem { Label = "Organizations", url = "settings/organizations" },
-        new NavItem { Label = "Billing", url = "settings/billing" },
-        new NavItem { Label = "Access Tokens", url = "settings/AccessTokens" },
-        new NavItem { Label = "SSH and GPG Keys", url = "settings/keys" },
-        new NavItem { Label = "Webhooks", url = "settings/webhooks" },
-        new NavItem { Label = "Papers", url = "settings/papers" },
-        new NavItem { Label = "Notifications", url = "settings/notifications" },
-        new NavItem { Label = "Local Apps and ", url = "settings/local-apps", Badge = "NEW" },
-        new NavItem { Label = "Gated Repositories", url = "settings/gated-repos" },
-        new NavItem { Label = "Content Preferences", url = "settings/content-preferences" },
-        new NavItem { Label = "Connected Apps", url = "settings/applications" },
-        new NavItem { Label = "Theme", url = "settings/theme" }
+         new NavItem { Label = "Profile", Url = "settings/profile" },
+        new NavItem { Label = "Account", Url = "settings/Account" },
+        new NavItem { Label = "Authentication", Url = "settings/authentication" },
+        new NavItem { Label = "Organizations", Url = "settings/organizations" },
+        new NavItem { Label = "Billing", Url = "settings/billing" },
+        new NavItem { Label = "Access Tokens", Url = "settings/AccessTokens" },
+        new NavItem { Label = "SSH and GPG Keys", Url = "settings/keys" },
+        new NavItem { Label = "Webhooks", Url = "settings/webhooks" },
+        new NavItem { Label = "Papers", Url = "settings/papers" },
+        new NavItem { Label = "Notifications", Url = "settings/notifications" },
+        new NavItem { Label = "Local Apps and ", Url = "settings/local-apps", Badge = "NEW" },
+        new NavItem { Label = "Gated Repositories", Url = "settings/gated-repos" },
+        new NavItem { Label = "Content Preferences", Url = "settings/content-preferences" },
+        new NavItem { Label = "Connected Apps", Url = "settings/applications" },
+        new NavItem { Label = "Theme", Url = "settings/theme" }
     };
 
-    [Parameter] public string url { get; set; }  // هذه الخاصية تعتمد على المسار الديناميكي
+    [Parameter] public string Url { get; set; } = "profile"; // المسار الافتراضي
+
+    public void SetActiveTab(string url)
+    {
+        Url = url;
+    }
 
     private RenderFragment RenderComponentBasedOnUrl => builder =>
     {
-    if (builder == null)
-    {
-        throw new ArgumentNullException(nameof(builder));
-    }
-
-    // قائمة المكونات المرتبطة بكل URL
-    var componentMap = new Dictionary<string, Type>
+        if (builder == null)
         {
-        { "profile", typeof(SidebarMenu) },
-        { "Account", typeof(AccountTemplate) },
-        { "authentication", typeof(AuthenticationTemplate) },
-        { "organizations", typeof(OrganizationsTemplate) },
-        { "billing", typeof(BillingSection) },
-        { "AccessTokens", typeof(AccessTokensTemplate) },
-        { "keys", typeof(SSHandGPGKeysTemplate) },
-        { "keys/addtype=ssh", typeof(KeysAddaSSHkey) },
-        { "keys/addtype=pgp", typeof(Keysaddapgpp) },
-        { "webhooks", typeof(WebhooksTemplate) },
-                { "webhooks/new", typeof(Newwebhook) },
+            throw new ArgumentNullException(nameof(builder));
+        }
 
-        { "papers", typeof(PapersTemplate) },
-        { "notifications", typeof(NotificationsTemplate) },
-        { "local-apps", typeof(LocalAppsTemplate) },
-        { "gated-repos", typeof(GatedRepositoriesTemplate) },
-        { "content-preferences", typeof(ContentPreferencesTemplate) },
-        { "applications", typeof(ConnectedAppsTemplate) },
-                { "applications/new", typeof(NewCreateanOAuthapp) },
+        if (string.IsNullOrEmpty(Url))
+        {
+            Url = "settings/profile";
+        }
 
-        { "theme", typeof(ThemeTemplate) }
-        };
+        // قائمة المكونات المرتبطة بكل URL
+        var componentMap = new Dictionary<string, Type>
+                        {
+                { "profile", typeof(ProfileForm) },
+                { "Account", typeof(AccountTemplate) },
+                { "authentication", typeof(AuthenticationTemplate) },
+                { "organizations", typeof(OrganizationsTemplate) },
+                { "billing", typeof(BillingSection) },
+                { "AccessTokens", typeof(AccessTokensTemplate) },
+                { "keys", typeof(SSHandGPGKeysTemplate) },
+                { "keys/addtype=ssh", typeof(KeysAddaSSHkey) },
+                { "keys/addtype=pgp", typeof(Keysaddapgpp) },
+                { "webhooks", typeof(WebhooksTemplate) },
+                        { "webhooks/new", typeof(Newwebhook) },
+
+                { "papers", typeof(PapersTemplate) },
+                { "notifications", typeof(NotificationsTemplate) },
+                { "local-apps", typeof(LocalAppsTemplate) },
+                { "gated-repos", typeof(GatedRepositoriesTemplate) },
+                { "content-preferences", typeof(ContentPreferencesTemplate) },
+                { "applications", typeof(ConnectedAppsTemplate) },
+                        { "applications/new", typeof(NewCreateanOAuthapp) },
+
+                { "theme", typeof(ThemeTemplate) }
+                        };
+
+
 
     // تحديد المكون بناءً على `url`
-    if (componentMap.TryGetValue(url, out var componentType))
+    if (componentMap.TryGetValue(Url, out var componentType))
     {
         builder.OpenComponent(0, componentType);
         builder.CloseComponent();
@@ -258,7 +253,7 @@ else
     private class NavItem
     {
         public string Label { get; set; }
-        public string url { get; set; }
+        public string Url { get; set; }
         public string Badge { get; set; }
     }
 }

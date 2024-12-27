@@ -45,6 +45,8 @@
 
                 <MudButton Disabled="@_processing" Color="Color.Primary" FullWidth="true"
                            EndIcon="@Icons.Material.Filled.Send" Variant="Variant.Filled" Class="mb-3" OnClick="Onsubmit">
+
+                    <audio id="OutputPlayerId"  controls></audio>
                     @if (_processing)
                     {
                         <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />

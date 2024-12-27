@@ -14,6 +14,8 @@ namespace LAHJA.Helpers.Services
         {
             _jsRuntime = jsRuntime;
             PSession = pSession;
+
+            
         }
 
         public async Task SaveTokenInSessionAsync(string token)
