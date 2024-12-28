@@ -5,25 +5,26 @@ using Domain.Entities.Billing.Response;
 using Domain.ShareData;
 using Domain.Wrapper;
 using Infrastructure.Nswag;
-using LAHJA.Data.UI.Components.Payment.BillingContact;
+using LAHJA.Data.UI.Components.Payment.DataBuildBillingBase;
 using LAHJA.Data.UI.Templates.Base;
 using LAHJA.Helpers.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
 using MudBlazor;
 
 namespace LAHJA.Data.UI.Templates.Billing
 {
 
-    public class DataBuildBillingBase {
+    //public class DataBuildBillingBase {
 
-        public string BillingId  { get; set; }
-        public string Email  { get; set; }
-        public  BillingContact buildContext { get; set; }
-        public string SuccessUrl { get; set; } = "https://asg.tryasp.net/swagger/index.html";
-        public string CancelUrl { get; set; } = "https://asg.tryasp.net/api/Details";
+    //    public string BillingId  { get; set; }
+    //    public string Email  { get; set; }
+    //    public  DataBuildBillingBase buildContext { get; set; }
+    //    public string SuccessUrl { get; set; } = "https://asg.tryasp.net/swagger/index.html";
+    //    public string CancelUrl { get; set; } = "https://asg.tryasp.net/api/Details";
 
 
-    }
+    //}
 
 
     public interface IBuilderBillingComponent<T> : IBuilderComponents<T>
@@ -155,8 +156,11 @@ namespace LAHJA.Data.UI.Templates.Billing
 
         public async override Task<Result<DeletedResponse>> DeleteBillingDetails(DataBuildBillingBase data)
         {
-            var model = Mapper.Map<BillingDetailsRequest>(data);
-            var res = await Service.DeleteAsync(data?.BillingId);
+            //var model = Mapper.Map<BillingDetailsRequest>(data);
+            if(data!=null && string.IsNullOrEmpty(data?.Email))
+                return Result<DeletedResponse>.Fail("Error No data !!");
+
+            var res = await Service.DeleteAsync(data?.Email);
             if (res.Succeeded)
             {
                 try
@@ -243,7 +247,9 @@ namespace LAHJA.Data.UI.Templates.Billing
             ISnackbar snackbar,
             ISessionUserManager sessionUserManager) : base(mapper, AuthService, client, builderComponents, navigation, dialogService, snackbar)
         {
-            //this.BuilderComponents.SubmitBillingDetailsLink = getBillingDetailsUrlBillings;
+            this.BuilderComponents.SubmitUpdateBillingDetails = oUpdateBillingDetails;
+            this.BuilderComponents.SubmitCreateBillingDetails = onCreateBillingDetails;
+            this.BuilderComponents.SubmitDeleteBillingDetails = onDeleteBillingDetails;
 
 
             this.builderApi = new BuilderBillingApiClient(mapper, client);
@@ -255,7 +261,7 @@ namespace LAHJA.Data.UI.Templates.Billing
 
 
 
-        public async Task<Result<BillingContact>> GetBillingDetails()
+        public async Task<Result<DataBuildBillingBase>> GetBillingDetails()
         {
             //var email = await sessionUserManager.GetEmailAsync();
           var  res = await builderApi.GetBillingDetails(new DataBuildBillingBase { });
@@ -263,18 +269,18 @@ namespace LAHJA.Data.UI.Templates.Billing
             {
                 try
                 {
-                    var map = mapper.Map<BillingContact>(res.Data);
-                    return Result<BillingContact>.Success(map);
+                    var map = mapper.Map<DataBuildBillingBase>(res.Data);
+                    return Result<DataBuildBillingBase>.Success(map);
 
                 }
                 catch (Exception e)
                 {
-                    return Result<BillingContact>.Fail();
+                    return Result<DataBuildBillingBase>.Fail();
                 }
             }
             else
             {
-                return Result<BillingContact>.Fail(res.Messages);
+                return Result<DataBuildBillingBase>.Fail(res.Messages);
             }
 
         }
@@ -286,7 +292,7 @@ namespace LAHJA.Data.UI.Templates.Billing
 
         }
 
-        public async Task oUpdateBillingDetails(DataBuildBillingBase DataBuildBillingBase)
+        private async Task oUpdateBillingDetails(DataBuildBillingBase DataBuildBillingBase)
         {
 
             await builderApi.UpdateBillingDetails(DataBuildBillingBase);

@@ -50,6 +50,10 @@ namespace Application.Services.Plans
         {
             return await _updateCreditCardUseCase.ExecuteAsync(request);
         }
+         public async Task<Result<CardDetailsResponse>> ActiveCreditCardAsync(CardDetailsRequest request)
+        {
+            return await _updateCreditCardUseCase.ExecuteAsync(request);
+        }
 
 
 

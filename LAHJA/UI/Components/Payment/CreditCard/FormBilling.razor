@@ -3,11 +3,11 @@
 
 
 @using System.ComponentModel.DataAnnotations
-
+@using LAHJA.Them
 @inject ISnackbar Snackbar
 
-@inherits PaymentCard<BillingContact>
-@using LAHJA.Data.UI.Components.Payment.BillingContact
+@inherits PaymentCard<DataBuildBillingBase>
+@using LAHJA.Data.UI.Components.Payment.DataBuildBillingBase
 @using MudBlazor
  
 
@@ -42,7 +42,7 @@
                     </MudItem>
                     <MudItem xs="4">
                         <MudTextField   Variant="Variant.Text" @bind-Value="billingContact.ZipCode" />
-                    </MudItem>
+                    </MudItem> 
                 </MudGrid>
                 <MudGrid Class="mt-3" Spacing="3">
                     <MudItem xs="6">
@@ -65,9 +65,9 @@
 
                  *@
                 
-                <div class="d-flex justify-end mt-4">
-                    <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="SaveChanges">Save</MudButton>
-                    <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Cancle">Cancle</MudButton>
+                <div class="d-flex justify-content-around mt-4">
+                    <MudButton Color="@AppColors.BASE_COLOR_ENUM" Class="@AppTextStyle.TEXT_TRANSFORM_NORMAL" Variant="Variant.Filled" OnClick="SaveChanges">Save</MudButton>
+                    <MudButton Color="Color.Default" Class="@AppTextStyle.TEXT_TRANSFORM_NORMAL" Variant="Variant.Filled" OnClick="Cancle">Cancle</MudButton>
                 </div>
             </MudForm>
         </MudCardContent>
@@ -83,7 +83,7 @@
     
  
 
-    public BillingContact billingContact;
+    public DataBuildBillingBase billingContact;
 
     protected override async Task OnInitializedAsync()
     {
@@ -96,7 +96,7 @@
             else
             {
 
-                billingContact = new BillingContact();
+                billingContact = new DataBuildBillingBase();
             }
             StateHasChanged();
         }
@@ -116,7 +116,7 @@
 
 
 
-            if (OnClickSave.HasDelegate)
+            if (OnClickSave.HasDelegate && billingContact!=null)
             {
 
                 await OnClickSave.InvokeAsync(billingContact);

@@ -1,4 +1,7 @@
 ﻿@using LAHJA.UI.Components.ProFile.USettings
+@using LAHJA.Them
+
+
  <MudGrid Class="mt-6">
                     <MudItem xs="12" sm="12" md="12">
                         <MudPaper Class="shadow-alternate-sm mt-4 w-full flex-col gap-4 self-start rounded-xl border border-gray-100 px-4 pt-4">
@@ -15,18 +18,22 @@
                             <MudGrid Class="lg:grid-cols-2 grid-rows-2 gap-5 sm:gap-x-8 sm:gap-y-7">
                                 <MudItem>
                                     <Storage />
+                                
                                 </MudItem>
 
                                 <MudItem>
                                     <UsageCard Title="Zero GPU"
                                                Value="0/5 minutes"
                                                DocumentationLink="/spaces/enzostvs/zero-gpu-spaces" />
+                    <MudProgressLinear Color="Color.Primary" Value="@Value" Class="my-7" />
+                 
                                 </MudItem>
 
                                 <MudItem>
                                     <UsageCard Title="Inference API"
                                                Value="0/1,000 requests"
                                                DocumentationLink="/playground" />
+                    <MudProgressLinear Color="Color.Secondary" Value="@Value" Class="my-7" />
                                 </MudItem>
 
                                 <MudItem xs="12">
@@ -59,7 +66,40 @@
 
 
 
-@code{
+
+@code {
+    private bool _disposed;
+
+    public int Value { get; set; }
+
+    public async Task SimulateProgressAsync()
+    {
+        Value = 0;
+        do
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            Value += 4;
+            StateHasChanged();
+            await Task.Delay(500);
+
+        } while (Value < 100);
+
+        await SimulateProgressAsync();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await SimulateProgressAsync();
+         
+    }
+
+    public void Dispose() => _disposed = true;
+
 
     private Dictionary<string, string> translations;
     private string CurrentLanguage="ar";
@@ -77,10 +117,10 @@
     //     }
     // }
 
-    protected override void OnInitialized()
-    {
-        LoadTranslations();
-    }
+protected override void OnInitialized()
+{
+    LoadTranslations();
+}
 private string Translate(string key)
 {
     return translations.ContainsKey(key) ? translations[key] : key;

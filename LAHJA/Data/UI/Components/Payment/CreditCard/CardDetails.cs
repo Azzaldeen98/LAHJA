@@ -9,15 +9,15 @@ namespace LAHJA.Data.UI.Components.Payment.CreditCard
     public class CardDetails
     {
         [Required]
-        public string CardNumber { get; set; }
+        public string CardNumber { get; set; } = "";
         [Required]
-        public string ExpirationDate { get; set; }
+        public string ExpirationDate { get; set; } = "";
         [Required]
-        public string Cvc{ get; set; }
-        
-        public string CardType { get; set; }
-        
-        public bool IsSelected { get; set; }
+        public string Cvc{ get; set; } = "";
+        [Required]
+        public string CardType { get; set; } = "";
+
+        public bool IsSelected { get; set; } = false;
     }
 
 

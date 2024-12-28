@@ -23,9 +23,11 @@
 
 
         <MudContainer Class="mb-8 max-w-lg">
-            <MudForm @ref="form" OnValidSubmit="HandleValidSubmit" Class="mb-8 flex flex-col space-y-5">
+        <MudForm @ref="form" OnValidSubmit="HandleValidSubmit" Class="mb-8 flex flex-col space-y-5" @bind-Errors="@errors">
                 <MudTextField @bind-Value="Username" Label="Username" Placeholder="Username" Pattern="\b(?!\d+$)([a-zA-Z0-9]|-(?!-))+\b" Title="Letters, numbers, dashes. No dash at the end or the start, no consecutive dashes. Not just numbers." MinLength="2" MaxLength="42" Required="true" />
-                <MudTextField @bind-Value="Email" Label="Primary email" Placeholder="Email address" Type="email" Required="true" />
+                @* <MudTextField @bind-Value="Email" Label="Primary email" Placeholder="Email address" Type="email" Required="true" /> *@
+            <MudTextField T="string" Label="Primary Email" Required="true" RequiredError="Email is required!"
+                          Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})" @bind-Value="@email" />
                 <MudText Typo="Typo.body2" Class="mt-2 text-sm text-gray-400">
                     We will use this email to communicate with you. This is also the email to use to authenticate on hf.co.
                 </MudText>
@@ -100,7 +102,7 @@
     private bool isEmailModalVisible = true;
     private string Username { get; set; }
     private string Confirmation { get; set; }
-       private string Password { get; set; }
+    private string Password { get; set; }
       private string ConfirmPassword { get; set; }
     private bool isModalVisible = true;
 

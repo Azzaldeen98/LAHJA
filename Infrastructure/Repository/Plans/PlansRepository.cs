@@ -331,7 +331,7 @@ namespace Infrastructure.Repository.Plans
         public async Task<Result<SubscriptionPlan>> getOneSubscriptionsPlanAsync(string planId)
         {
             var response = await ExecutorAppMode.ExecuteAsync<Result<SubscriptionPlanModel>>(
-              async () => Result<SubscriptionPlanModel>.Success(),
+              async () => Result<SubscriptionPlanModel>.Success(new SubscriptionPlanModel { Id = planId }),
               async () => Result<SubscriptionPlanModel>.Success(await seedsPlansContainers.getOneSubscriptionPlanAsync(planId)));
 
 

@@ -1,5 +1,7 @@
 ﻿@using LAHJA.Data.UI.Components.Payment.CreditCard
 @using LAHJA.Data.UI.Components.Payment.CreditCards
+@using LAHJA.Them
+@using LAHJA.UI.Components.Payment.CreditCard
 @using MudBlazor
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
@@ -10,16 +12,60 @@
 
 @if (creditCards != null && creditCards.Count > 0)
     {
+
+  <br />
     <MudExpansionPanels>
         <MudExpansionPanel @bind-Expanded="@open" HideIcon="true">
             <TitleContent>
-                <div class="d-flex">
-                    <MudList T="object" Class="mt-4">
 
+                <div class="d-flex flex-column w-100">
+                     <MudCard Elevation="1"  Class="m-2 p-2">
+                        <MudIcon Color="@AppColors.BASE_COLOR_ENUM" @onclick="OnAdd" Icon="@(open ? Icons.Material.Filled.Close : Icons.Material.Filled.Add)" class="ml-auto"></MudIcon>
+                    </MudCard>
+                    <MudList T="object" Class="mt-4">
+                        <MudListItem Text="Credit Cards" @bind-Expanded="_expanded">
+                            <NestedList>
+                                @foreach (var card in creditCards)
+                                {
+                                   <MudCard Elevation="1"  Class="my-2">
+                                        <MudCardContent>
+                                        <MudGrid>
+                                            <MudItem >
+                                                <MudRadio T="bool" @bind-Checked="card.IsSelected" />
+                                            </MudItem>
+                                            <MudItem >
+                                                <MudIcon Class="mr-2" Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Outlined.AddCard"> </MudIcon>
+                                            </MudItem>
+                                            <MudItem >
+                                                <MudText Typo="Typo.body1">@card.CardNumber</MudText>
+                                            </MudItem>
+                                            <MudItem >
+                                                <MudText Typo="Typo.caption" Class="ml-2">Expiry @card.ExpirationDate</MudText>
+                                            </MudItem>
+                                            <MudItem >
+                                                <MudText Typo="Typo.caption" Class="ml-2">Card Type: @card.CardType</MudText>
+                                            </MudItem>
+                                            <MudItem  Class="ml-auto">
+                                                    <MudIcon Color="@AppColors.BASE_COLOR_ENUM" @onclick="(()=>OnEditCard(card))" Icon="@(Icons.Material.Filled.Edit)" class="ml-auto"></MudIcon>
+                                                @* <MudIconButton Color="@AppColors.BASE_COLOR_ENUM" aria-label="edit" OnClick="@(async ()=> await OnEditCard(card))" Icon="@Icons.Material.Outlined.Edit" /> *@
+                                                @* <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Update</MudButton> *@
+                                            </MudItem>
+                                        </MudGrid>
+                                        </MudCardContent>
+                                    </MudCard>
+
+                                }
+                            </NestedList>
+                        </MudListItem>
+                    </MudList>
+
+                    @* <MudList T="object" Class="mt-4">
+                     <MudListItem Text="Technical Features" @bind-Expanded="_expanded" >
+                        <NestedList>
 
                             @foreach (var card in creditCards)
                             {
-                                <MudListItem Class="custom-border">
+                                <MudListItem Class="custom-border" >
                                     <MudRadio T="bool" @bind-Checked="card.IsSelected"  />
                                     <MudIcon Class="mr-2" Color="Color.Primary" Size="Size.Small" Icon="@Icons.Material.Outlined.AddCard"> </MudIcon>
                                     <MudText Typo="Typo.body1">@card.CardNumber</MudText>
@@ -28,13 +74,14 @@
                                     <MudButton Variant="Variant.Outlined" Color="Color.Secondary" Class="ml-auto">Update</MudButton>
                                 </MudListItem>
                             }
-
-                        </MudList>
-                    <MudIcon Icon="@(open ? Icons.Material.Filled.Close : Icons.Material.Filled.Add)" class="ml-auto"></MudIcon>
+                               </NestedList >
+                        </MudListItem>
+                        </MudList> *@
+                   
                 </div>
             </TitleContent>
             <ChildContent>
-                <LAHJA.UI.Components.Payment.CreditCard.FormCard OnClickSave="AddCard" />
+                <FormCard IsUpdate="isUpdate" BuildData="selectedCard" OnClickSave="OnSaveCard" />
             </ChildContent>
         </MudExpansionPanel>
     </MudExpansionPanels>
@@ -53,12 +100,16 @@
                     <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">The reactor temperature exceeds the optimal range
 
                      </MudAlert>
-                    <MudIcon Icon="@(open ? Icons.Material.Filled.Close : Icons.Material.Filled.Add)" class="ml-auto"></MudIcon>
+
+                    <MudCard Elevation="1" Class="m-2 p-2">
+                        <MudIcon Color="@AppColors.BASE_COLOR_ENUM" @onclick="OnAdd" Icon="@(open ? Icons.Material.Filled.Close : Icons.Material.Filled.Add)" class="ml-auto"></MudIcon>
+                    </MudCard>
+                    @* <MudIcon Icon="@(open ? Icons.Material.Filled.Close : Icons.Material.Filled.Add)" class="ml-auto"></MudIcon> *@
                 </div>
             </TitleContent>
             <ChildContent>
 
-                <LAHJA.UI.Components.Payment.CreditCard.FormCard OnClickSave="AddCard" />
+                <FormCard IsUpdate="isUpdate" BuildData="selectedCard" OnClickSave="OnSaveCard" />
 
             </ChildContent>
         </MudExpansionPanel>
@@ -71,43 +122,91 @@
 {
 
 
-    [Parameter] public EventCallback<CardDetails> OnSelect { get; set; }
+    [Parameter] public EventCallback<CardDetails> SelectedCard { get; set; }
+    [Parameter] public EventCallback<CardDetails> CreateCard { get; set; }
+    [Parameter] public EventCallback<CardDetails> EditCard { get; set; }
 
     [Parameter] public List<CardDetails> BuildData { get => creditCards; set => creditCards=value; }
 
-    private List<CardDetails> creditCards = new List<CardDetails>{ };
-    bool open;
-    private async  void AddCard(CardDetails newCard)
 
+    private List<CardDetails> creditCards = new List<CardDetails>{ };
+    private CardDetails selectedCard = new CardDetails();
+    private bool open, isUpdate = false;
+    private bool _expanded = false;
+
+
+    protected override async void OnInitialized()
+    {
+        if (creditCards != null  && SelectedCard.HasDelegate)      
+        {
+            if ((selectedCard == null || string.IsNullOrEmpty(selectedCard.CardNumber)) && creditCards?.Count() > 0)
+                selectedCard = creditCards[0];
+
+            if (selectedCard!=null)
+                await SelectedCard.InvokeAsync(selectedCard);
+        }
+    }
+    private async Task OnAdd()
+    {
+        isUpdate = false;
+        selectedCard = new CardDetails();
+        StateHasChanged();
+    }
+    private async Task OnEditCard(CardDetails card)
+    {
+        isUpdate = true;
+        selectedCard = card;
+        StateHasChanged();
+    }
+    private async void OnSelectedCard(CardDetails newCard)
     {
 
-        try
+
+        if (SelectedCard.HasDelegate)
         {
-            creditCards.Add(newCard);
-            if (OnSelect.HasDelegate)
+
+            await SelectedCard.InvokeAsync(newCard);
+        }
+    }
+
+
+    private async  void OnSaveCard(CardDetails data)
+    {
+        if (data != null)
+           { 
+               selectedCard = data;
+            if (SelectedCard.HasDelegate)
+                await SelectedCard.InvokeAsync(selectedCard);
+           }
+
+        if (isUpdate)
+        {
+            // EditCard.Add(data);
+            if (EditCard.HasDelegate)
             {
 
-                await OnSelect.InvokeAsync(newCard);
+                await EditCard.InvokeAsync(data);
             }
         }
-
-        catch(Exception ex)
+        else
         {
-            
-        }
+            creditCards.Add(data);
 
       
+             
 
 
+            if (CreateCard.HasDelegate)
+            {
 
-     
-
-        
-
-
-    
-
+                await CreateCard.InvokeAsync(data);
+            }
+        }
     }
+    // private async  void OnAddCard(CardDetails newCard)
+    // {
+
+    // }
  
 
 

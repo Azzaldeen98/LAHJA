@@ -22,7 +22,7 @@ namespace LAHJA.Data.UI.Templates.Payment
     public interface IBuilderPaymentComponent<T> : IBuilderComponents<T>
     {
 
-        //public Func<T, Task> SubmitPaymentCheckOutLink { get; set; }
+        public Func<T, Task> SubmitPaymentCheckOut { get; set; }
 
 
 
@@ -61,7 +61,7 @@ namespace LAHJA.Data.UI.Templates.Payment
     }
     public class BuilderPaymentComponent<T> : IBuilderPaymentComponent<T>
     {
-        //public Func<T, Task> SubmitPaymentCheckOutLink { get; set; }
+        public Func<T, Task> SubmitPaymentCheckOut { get; set; }
     }
 
 
@@ -153,7 +153,7 @@ namespace LAHJA.Data.UI.Templates.Payment
             IDialogService dialogService,
             ISnackbar snackbar) : base(mapper, AuthService, client, builderComponents, navigation, dialogService, snackbar)
         {
-            //this.BuilderComponents.SubmitPaymentCheckOutLink = getPaymentCheckoutUrlPayments;
+            this.BuilderComponents.SubmitPaymentCheckOut = onSubmitPaymentCheckOut;
        
 
             this.builderApi = new BuilderPaymentApiClient(mapper, client);
@@ -163,6 +163,19 @@ namespace LAHJA.Data.UI.Templates.Payment
         }
 
 
+
+        public async Task onSubmitPaymentCheckOut(DataBuildPaymentBase DataBuildPaymentBase) {
+            
+            var res=await  builderApi.getPaymentCheckoutUrlAsync(DataBuildPaymentBase);
+            if (res.Succeeded && res.Data!=null && !string.IsNullOrEmpty(res.Data.url)) {
+                navigation.NavigateTo(res.Data.url,true);
+            }
+            else
+            {
+
+            }
+
+        } 
 
         public async Task<Result<PaymentCheckoutResponse>> getPaymentCheckoutUrlPage(DataBuildPaymentBase DataBuildPaymentBase)
         {

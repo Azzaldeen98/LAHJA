@@ -1,5 +1,6 @@
 ﻿@using LAHJA.Data.UI.Components.Base
 @using LAHJA.Data.UI.Components.Payment.CreditCard
+@using LAHJA.Them
 
 
 
@@ -81,7 +82,7 @@
 
          
             <MudItem xs="12" Class="mt-2">
-                <MudButton Color="Color.Primary" OnClick="AddCard">Add Card</MudButton>
+                <MudButton Color="@AppColors.BASE_COLOR_ENUM" OnClick="AddCard">@(IsUpdate?"Update":"Add Card")</MudButton>
             </MudItem>
         </MudGrid>
     </MudForm>
@@ -92,6 +93,9 @@
 {
 
 
+    [Parameter] public CardDetails BuildData { get => newCard; set => newCard = value; }
+    [Parameter] public bool IsUpdate { get; set; } = false;
+
     private CardDetails newCard = new CardDetails();
     private MudForm form;
 
@@ -101,7 +105,7 @@
         try
         {
             newCard.IsSelected = true ;
-            if (OnClickSave.HasDelegate)
+            if (OnClickSave.HasDelegate && newCard!=null)
             {
                 await OnClickSave.InvokeAsync(newCard);
 

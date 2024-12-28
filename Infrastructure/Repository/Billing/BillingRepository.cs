@@ -49,7 +49,13 @@ namespace Infrastructure.Repository.Price
             
 
             var response = await ExecutorAppMode.ExecuteAsync<Result<List<CardDetailsResponseModel>>>(
-                 async () => Result<List<CardDetailsResponseModel>>.Success(),
+                 async () => {
+                     var email = await sessionUserManager.GetEmailAsync();
+                     var res = seedsCardit.GetCardDetailsByEmail(email);
+                     var model = _mapper.Map<List<CardDetailsResponseModel>>(res);
+
+                     return Result<List<CardDetailsResponseModel>>.Success(model);
+                 },
                   async () => {
                       var email = await sessionUserManager.GetEmailAsync();
                       var res = seedsCardit.GetCardDetailsByEmail(email);
@@ -73,7 +79,13 @@ namespace Infrastructure.Repository.Price
         {
            
             var response = await ExecutorAppMode.ExecuteAsync<Result<BillingDetailsResponseModel>>(
-               async () => Result<BillingDetailsResponseModel>.Success(),
+               async () => {
+                   var email = await sessionUserManager.GetEmailAsync();
+                   var res = seeds.GetBillingDetailsByEmail(email);
+                   var model = _mapper.Map<BillingDetailsResponseModel>(res);
+
+                   return Result<BillingDetailsResponseModel>.Success(model);
+               },
                 async () => {
                     var email = await sessionUserManager.GetEmailAsync();
                     var res =  seeds.GetBillingDetailsByEmail(email);
@@ -225,6 +237,11 @@ namespace Infrastructure.Repository.Price
             {
                 return Result<CardDetailsResponse>.Fail(response.Messages);
             }
+        }
+
+        public Task<Result<CardDetailsResponse>> ActiveCreditCardAsync(CardDetailsRequest request)
+        {
+            throw new NotImplementedException();
         }
     } 
 }

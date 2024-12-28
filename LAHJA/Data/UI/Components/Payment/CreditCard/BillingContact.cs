@@ -1,10 +1,11 @@
 ﻿
 
-namespace LAHJA.Data.UI.Components.Payment.BillingContact
+namespace LAHJA.Data.UI.Components.Payment.DataBuildBillingBase
 {
-    public class BillingContact
+    public class DataBuildBillingBase
     {
 
+        public string Id { get; set; } 
         public string FullName { get; set; } = "Azdeen Talal";
         public string Email { get; set; } = "EngneerAzdd@gmail.com";
         public string SecondaryEmail { get; set; } = "EngneerAddzdd@gmail.com";

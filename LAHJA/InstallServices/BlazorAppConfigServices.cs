@@ -20,6 +20,7 @@ using LAHJA.Data.UI.Templates.CreditCard;
 using LAHJA.Data.UI.Templates.Billing;
 using LAHJA.Data.UI.Templates.Profile;
 using LAHJA.Data.UI.Components.ProFileModel;
+using LAHJA.Data.UI.Components.Payment.DataBuildBillingBase;
 
 namespace Infrastructure
 {

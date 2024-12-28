@@ -35,6 +35,10 @@ namespace Application.Services.Plans
         public async Task<Result<CardDetailsResponse>> UpdateAsync(CardDetailsRequest request)
         {
             return await service.UpdateAsync(request);
+        } 
+        public async Task<Result<CardDetailsResponse>> ActiveCreditCardAsync(CardDetailsRequest request)
+        {
+            return await service.UpdateAsync(request);
         }
 
 

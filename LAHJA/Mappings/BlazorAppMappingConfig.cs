@@ -5,11 +5,12 @@ using LAHJA.Data.UI.Components.Category;
 using LAHJA.Data.UI.Templates.Payment;
 using Domain.Entities.Payment;
 using LAHJA.Data.UI.Components.Plan;
-using LAHJA.Data.UI.Components.Payment.BillingContact;
+using LAHJA.Data.UI.Components.Payment.DataBuildBillingBase;
 using Domain.Entities.Billing.Response;
 using LAHJA.Data.UI.Components.ProFileModel;
 using Domain.Entities.Profile;
 using LAHJA.Data.UI.Components.Payment.CreditCard;
+using Domain.Entities.Billing.Request;
 
 namespace LAHJA.Mappings
 {
@@ -106,9 +107,10 @@ namespace LAHJA.Mappings
 
             /// Billing
 
-            CreateMap<BillingDetailsResponse, BillingContact>()
-              
-                .ReverseMap();
+            CreateMap<BillingDetailsResponse, DataBuildBillingBase>().ReverseMap();
+            CreateMap<DataBuildBillingBase, BillingDetailsRequest>().ReverseMap();
+
+
 
             ///  CreditCard
             CreateMap<CardDetailsResponse, CardDetails>().ReverseMap();

@@ -5,7 +5,7 @@ using Domain.Entities.Billing.Response;
 using Domain.Wrapper;
 using IdentityModel.Client;
 using Infrastructure.Nswag;
-using LAHJA.Data.UI.Components.Payment.BillingContact;
+using LAHJA.Data.UI.Components.Payment.DataBuildBillingBase;
 using LAHJA.Data.UI.Components.Payment.CreditCard;
 using LAHJA.Data.UI.Templates.Base;
 using LAHJA.Helpers.Services;
@@ -28,6 +28,7 @@ namespace LAHJA.Data.UI.Templates.CreditCard
     public interface IBuilderCreditCardComponent<T> : IBuilderComponents<T>
     {
 
+        public Func<T, Task> SubmitActiveCreditCard { get; set; }
         public Func<T, Task> SubmitCreateCreditCardDetails { get; set; }
         public Func<T, Task> SubmitUpdateCreditCardDetails { get; set; }
         public Func<T, Task> SubmitDeleteCreditCardDetails { get; set; }
@@ -48,6 +49,7 @@ namespace LAHJA.Data.UI.Templates.CreditCard
 
           Task<Result<List<CardDetailsResponse>>> GetCreditCardDetails(T data);
           Task<Result<CardDetailsResponse>> CreateCreditCardDetails(T data);
+          Task<Result<CardDetailsResponse>> ActiveCreditCard(T data);
           Task<Result<CardDetailsResponse>> UpdateCreditCardDetails(T data);
           Task<Result<DeletedResponse>> DeleteCreditCardDetails(T data);
 
@@ -66,6 +68,7 @@ namespace LAHJA.Data.UI.Templates.CreditCard
 
         public abstract Task<Result<List<CardDetailsResponse>>> GetCreditCardDetails(E data);
         public abstract Task<Result<CardDetailsResponse>> CreateCreditCardDetails(E data);
+        public abstract Task<Result<CardDetailsResponse>> ActiveCreditCard(E data);
         public abstract Task<Result<CardDetailsResponse>> UpdateCreditCardDetails(E data);
         public abstract Task<Result<DeletedResponse>> DeleteCreditCardDetails(E data);
 
@@ -75,6 +78,7 @@ namespace LAHJA.Data.UI.Templates.CreditCard
     }
     public class BuilderCreditCardComponent<T> : IBuilderCreditCardComponent<T>
     {
+        public Func<T, Task> SubmitActiveCreditCard { get; set; }
         public Func<T, Task> SubmitCreateCreditCardDetails { get; set; }
         public Func<T, Task> SubmitUpdateCreditCardDetails { get; set; }
         public Func<T, Task> SubmitDeleteCreditCardDetails { get; set; }
@@ -129,6 +133,13 @@ namespace LAHJA.Data.UI.Templates.CreditCard
 
 
         public async override Task<Result<CardDetailsResponse>> CreateCreditCardDetails(DataBuildCreditCardBase data)
+        {
+            var model = Mapper.Map<CardDetailsRequest>(data);
+            var res = await Service.UpdateAsync(model);
+            return res;
+        } 
+        
+        public async override Task<Result<CardDetailsResponse>> ActiveCreditCard(DataBuildCreditCardBase data)
         {
             var model = Mapper.Map<CardDetailsRequest>(data);
             var res = await Service.UpdateAsync(model);
@@ -209,7 +220,7 @@ namespace LAHJA.Data.UI.Templates.CreditCard
             IDialogService dialogService,
             ISnackbar snackbar) : base(mapper, AuthService, client, builderComponents, navigation, dialogService, snackbar)
         {
-            //this.BuilderComponents.SubmitCreditCardDetailsLink = getCreditCardDetailsUrlCreditCards;
+            this.BuilderComponents.SubmitActiveCreditCard = onSubmitActiveCreditCard;
        
 
             this.builderApi = new BuilderCreditCardApiClient(mapper, client);
@@ -246,6 +257,30 @@ namespace LAHJA.Data.UI.Templates.CreditCard
 
         }
 
+        public async Task onSubmitActiveCreditCard(DataBuildCreditCardBase DataBuildCreditCardBase)
+        {
+
+           var res=  await builderApi.CreateCreditCardDetails(DataBuildCreditCardBase);
+            if (res.Succeeded)
+            {
+                try
+                {
+                    //var map = Mapper.Map<CardDetailsResponse>(res.Data);
+                    //return Result<CardDetailsResponse>.Success(map);
+
+                }
+                catch (Exception e)
+                {
+                    //return Result<CardDetailsResponse>.Fail();
+                }
+            }
+            else
+            {
+                //return Result<CardDetailsResponse>.Fail(res.Messages);
+            }
+
+        }
+        
         public async Task onCreateCreditCardDetails(DataBuildCreditCardBase DataBuildCreditCardBase)
         {
 

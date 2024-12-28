@@ -21,5 +21,6 @@ namespace Domain.Repository.Billing
         Task<Result<CardDetailsResponse>> CreateCardAsync(CardDetailsRequest request);
         Task<Result<DeleteResponse>> DeleteCardAsync(string id);
         Task<Result<CardDetailsResponse>> UpdateCardAsync(CardDetailsRequest request);
+        Task<Result<CardDetailsResponse>> ActiveCreditCardAsync(CardDetailsRequest request);
     }
 }

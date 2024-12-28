@@ -25,7 +25,7 @@ namespace Infrastructure.DataSource.Seeds
                 new CardDetailsRequestModel
             {
                 CardNumber = "4111111111111111",
-                Email = "test2@gmail.com",
+                Email = "azzaldeen771211417@gmail.com",
                 ExpirationDate = "12/25",
                 Cvc = "123",
                 CardType = "Visa",
@@ -43,7 +43,7 @@ namespace Infrastructure.DataSource.Seeds
             new CardDetailsRequestModel
             {
                 CardNumber = "5500000000000004",
-                Email = "test@gmail.com",
+                Email = "azzaldeen771211417@gmail.com",
                 ExpirationDate = "11/24",
                 Cvc = "456",
                 CardType = "MasterCard",

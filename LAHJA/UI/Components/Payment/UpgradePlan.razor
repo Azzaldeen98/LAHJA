@@ -1,11 +1,13 @@
 ﻿
 
 @using LAHJA.Data.UI.Components.Plan
+@using LAHJA.UI.Components.Plan
 
 
 
 <MudPaper Elevation="1" Class="p-4">
-    @if (@Params != null)
+    @if (@BuildData != null)
+
     {
 
         <MudText Typo="Typo.h4" Class="mb-3">Upgrade your account  Api Name Pr</MudText>
@@ -14,7 +16,7 @@
 
 
 
-        <LAHJA.UI.Components.Plan.TemplatePlan Params="@Params"  FlagButton="false" />
+        <TemplatePlan Params="@BuildData" FlagButton="false" />
 
        
     }
@@ -40,7 +42,21 @@
 
 
 
-    [Parameter] public SubscriptionPlanInfo? Params { get; set; }
+    [Parameter] public SubscriptionPlanInfo? BuildData { get; set; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -60,11 +76,15 @@
     {
         if (name == "y")
         {
-            price += Params.TotalPrice - 1;
+
+            price += BuildData.TotalPrice - 1;
+
         }
         else
         {
-            price -= Params.TotalPrice - 1;
+
+            price -= BuildData.TotalPrice - 1;
+
         }
         StateHasChanged();
     }

@@ -14,7 +14,7 @@ namespace Infrastructure.DataSource.Seeds
         
             new UserApp{ Id="12345",Name="Test User",Email="test@gmail.com",password="Test@123",PhoneNumber="771211417",Active=true,Image="" },
             new UserApp{ Id="1345678",Name="User",Email="user@gmail.com",password="Test@2025",PhoneNumber="781211417",Active=true,Image="" },
-            new UserApp{ Id="1345678",Name="Azdeen",Email="Azdeenedghg@gmail.com",password="Azdeen2024$$$",PhoneNumber="781211417",Active=true,Image="" },
+            new UserApp{ Id="1345678",Name="azzaldeen",Email="azzaldeen771211417@gmail.com",password="Test@123",PhoneNumber="781211417",Active=true,Image="" },
         
         };
 

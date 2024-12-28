@@ -1,4 +1,4 @@
-﻿@using LAHJA.Data.UI.Components.Payment.BillingContact
+﻿@using LAHJA.Data.UI.Components.Payment.DataBuildBillingBase
 @using LAHJA.UI.Components.Billing.Shared
 @using LAHJA.UI.Components.ProFile.Settings
 @using MudBlazor
@@ -25,13 +25,13 @@
 
      
 
-        <MudTabs Outlined="true" Position="@Position" Rounded="true" Border="true"
+        <MudTabs Outlined="true" Position="@Position" Rounded="true" 
                  ApplyEffectsToContainer="true" Class="mt-8" PanelClass="pa-6"  ActivePanelIndex="0">
             <MudTabPanel  Text="@Translate("Overview")">
                <BillingOverview/>
             </MudTabPanel>
             <MudTabPanel Text="@Translate("PaymentInformation")">
-                <BillingMethodsSection BilledData="billingData" />
+                <BillingMethodsSection BuildData="billingData" />
             </MudTabPanel>
             <MudTabPanel Text="@Translate("PROSubscription")">
                 <MudText>Content Three</MudText>
@@ -47,7 +47,7 @@
 
     private Dictionary<string, string> translations;
     private string CurrentLanguage="ar";
-    private BillingContact billingData;
+    private DataBuildBillingBase billingData;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
