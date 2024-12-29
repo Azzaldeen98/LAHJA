@@ -14,10 +14,10 @@ using Domain.Entities.Billing.Request;
 
 namespace LAHJA.Mappings
 {
-    public class BlazorAppMappingConfig : AutoMapper.Profile
+    public class LAHJAMappingConfig : AutoMapper.Profile
     {
 
-        public BlazorAppMappingConfig()
+        public LAHJAMappingConfig()
         {
 
         

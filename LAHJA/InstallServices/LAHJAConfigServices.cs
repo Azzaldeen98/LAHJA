@@ -21,12 +21,16 @@ using LAHJA.Data.UI.Templates.Billing;
 using LAHJA.Data.UI.Templates.Profile;
 using LAHJA.Data.UI.Components.ProFileModel;
 using LAHJA.Data.UI.Components.Payment.DataBuildBillingBase;
+using LAHJA.ApplicationLayer.Service;
+using LAHJA.Data.UI.Templates.Services;
+using LAHJA.UI.Templates.Services;
 
-namespace Infrastructure
+
+namespace LAHJA
 {
-    public static class BlazorAppConfigServices
+    public static class LAHJAConfigServices
     {
-        public static void InstallBlazorAppConfigServices(this IServiceCollection serviceCollection)
+        public static void InstallLAHJAConfigServices(this IServiceCollection serviceCollection)
         {
 
             InstallMapping(serviceCollection);
@@ -40,7 +44,7 @@ namespace Infrastructure
        private static  void InstallMapping(this IServiceCollection serviceCollection)
         {
           
-            serviceCollection.AddAutoMapper(typeof(BlazorAppMappingConfig));
+            serviceCollection.AddAutoMapper(typeof(LAHJAMappingConfig));
         }
 
 
@@ -112,6 +116,14 @@ namespace Infrastructure
             serviceCollection.AddScoped<TemplateProfileShare<ProfileClientService, DataBuildUserProfile>>();
             serviceCollection.AddScoped<TemplateProfile>();
 
+
+            //// Services
+          
+            serviceCollection.AddScoped<IBuilderServicesApi<DataBuildServiceBase>, BuilderServiceApiClient>();
+            serviceCollection.AddScoped<IBuilderServicesComponent<DataBuildServiceBase>, BuilderServicesComponent<DataBuildServiceBase>>();
+            serviceCollection.AddScoped<TemplateServicesShare<LAHJAClientService, DataBuildServiceBase>>();
+            serviceCollection.AddScoped<Data.UI.Templates.Services.TemplateServices>();
+
         }
         private static void InstallServices(this IServiceCollection serviceCollection)
         {
@@ -126,6 +138,7 @@ namespace Infrastructure
             serviceCollection.AddScoped<CreditCardClientService>();
             serviceCollection.AddScoped<BillingClientService>();
             serviceCollection.AddScoped<ProfileClientService>();
+            serviceCollection.AddScoped<LAHJAClientService>();
            
            
         }

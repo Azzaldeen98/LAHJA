@@ -1,5 +1,6 @@
 ﻿@page "/services"
 @using LAHJA.UI.Components.ServiceCard
+@using LAHJA.UI.Components.StudioLahjaAi
 @using LAHJA.UI.Templates.Carousel
 @using LAHJA.UI.Templates.CategoriesPlan
 @using LAHJA.UI.Templates.Plans
@@ -15,67 +16,67 @@
 
 
 
+   <ContenerChatComponent />
 
 
 
+ @* <MudDropContainer T="DropItem" Items="_items" ItemsSelector="@((item, dropzone) => item.Identifier == dropzone)" ItemDropped="ItemUpdated">
+     <ChildContent>
+         <MudPaper MinHeight="500px" Class="d-flex flex-1">
+             <MudList T="string" Dense="true" @bind-SelectedValue="_selectedFolder">
+                 <MudListSubheader>Studio AI</MudListSubheader>
 
-<MudDropContainer T="DropItem" Items="_items" ItemsSelector="@((item, dropzone) => item.Identifier == dropzone)" ItemDropped="ItemUpdated">
-    <ChildContent>
-        <MudPaper MinHeight="500px" Class="d-flex flex-1">
-            <MudList T="string" Dense="true" @bind-SelectedValue="_selectedFolder">
-                <MudListSubheader>Studio AI</MudListSubheader>
+                 @foreach (var dropZone in DropZones)
 
-                @foreach (var dropZone in DropZones)
+                 {
+                     <MudDropZone T="DropItem" Identifier="@dropZone.Identifier" OnlyZone="true">
+                         <MudListItem Text="@dropZone.Text" Value="@dropZone.Identifier" Icon="@dropZone.Icon" />
+                     </MudDropZone>
+                 }
 
-                {
-                    <MudDropZone T="DropItem" Identifier="@dropZone.Identifier" OnlyZone="true">
-                        <MudListItem Text="@dropZone.Text" Value="@dropZone.Identifier" Icon="@dropZone.Icon" />
-                    </MudDropZone>
-                }
+                 <!-- Categories -->
+                 <MudListItem Icon="@Icons.Material.Filled.Label" Text="Tune a Model" Expanded="true">
+                     <NestedList>
+                         @foreach (var category in Categories)
 
-                <!-- Categories -->
-                <MudListItem Icon="@Icons.Material.Filled.Label" Text="Tune a Model" Expanded="true">
-                    <NestedList>
-                        @foreach (var category in Categories)
+                         {
+                             <MudDropZone T="DropItem" Identifier="@category.Identifier" OnlyZone="true">
+                                 <MudListItem Dense="true" Text="@category.Text" Value="@category.Identifier" Icon="@category.Icon" Class="pl-8" />
+                             </MudDropZone>
+                         }
+                     </NestedList>
+                 </MudListItem>
+             </MudList>
 
-                        {
-                            <MudDropZone T="DropItem" Identifier="@category.Identifier" OnlyZone="true">
-                                <MudListItem Dense="true" Text="@category.Text" Value="@category.Identifier" Icon="@category.Icon" Class="pl-8" />
-                            </MudDropZone>
-                        }
-                    </NestedList>
-                </MudListItem>
-            </MudList>
+             <MudDivider Vertical="true" FlexItem="true" />
 
-            <MudDivider Vertical="true" FlexItem="true" />
+             <!-- ToolBar and Items -->
+             <MudList T="string" Dense="true" Class="d-flex flex-column flex-grow-1 py-0">
+                 <MudToolBar Gutters="false" Dense="true">
+                     <MudCheckBox @bind-Value="ToolbarCheckBox" />
+                     <MudIconButton Icon="@Icons.Material.Filled.Refresh" />
+                     <MudIconButton Icon="@Icons.Material.Filled.MoreVert" />
+                     <MudSpacer />
+                     <MudIconButton Icon="@Icons.Material.Filled.ChevronLeft" />
+                     <MudIconButton Icon="@Icons.Material.Filled.ChevronRight" />
+                 </MudToolBar>
 
-            <!-- ToolBar and Items -->
-            <MudList T="string" Dense="true" Class="d-flex flex-column flex-grow-1 py-0">
-                <MudToolBar Gutters="false" Dense="true">
-                    <MudCheckBox @bind-Value="ToolbarCheckBox" />
-                    <MudIconButton Icon="@Icons.Material.Filled.Refresh" />
-                    <MudIconButton Icon="@Icons.Material.Filled.MoreVert" />
-                    <MudSpacer />
-                    <MudIconButton Icon="@Icons.Material.Filled.ChevronLeft" />
-                    <MudIconButton Icon="@Icons.Material.Filled.ChevronRight" />
-                </MudToolBar>
+                 <MudDivider />
 
-                <MudDivider />
+                 <!-- Drop Zone for Selected Folder -->
+                 <MudDropZone T="DropItem" Identifier="@_selectedFolder.ToString()" Class="flex-grow-1" />
+             </MudList>
+         </MudPaper>
+     </ChildContent>
 
-                <!-- Drop Zone for Selected Folder -->
-                <MudDropZone T="DropItem" Identifier="@_selectedFolder.ToString()" Class="flex-grow-1" />
-            </MudList>
-        </MudPaper>
-    </ChildContent>
-
-    <!-- Item Renderer -->
-    <ItemRenderer>
-        <MudListItem T="string" Text="@context.Name" />
-        <MudDivider />
-        <MainCardService    />
-    </ItemRenderer>
-</MudDropContainer>
-
+     <!-- Item Renderer -->
+     <ItemRenderer>
+         <MudListItem T="string" Text="@context.Name" />
+         <MudDivider />
+         <MainCardService    />
+     </ItemRenderer>
+ </MudDropContainer>
+  *@
 @code {
     public bool ToolbarCheckBox { get; set; } = false;
 

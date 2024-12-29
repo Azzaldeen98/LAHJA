@@ -1,13 +1,6 @@
 ﻿
-
-
-
-using Domain.Entities.Billing.Request;
-using Domain.Entities.Billing.Response;
 using Domain.ShareData.Base.Auth;
 using Infrastructure.Models.BaseFolder.Response;
-using Infrastructure.Models.Billing.Request;
-using Infrastructure.Models.Billing.Response;
 using Infrastructure.Models.Payment.Request;
 using Infrastructure.Models.Payment.Response;
 using Infrastructure.Models.Plans;
@@ -15,8 +8,9 @@ using Infrastructure.Models.Price.Request;
 using Infrastructure.Models.Price.Response;
 using Infrastructure.Models.Product.Request;
 using Infrastructure.Models.Product.Response;
+using Infrastructure.Models.Service.Request;
+using Infrastructure.Models.Service.Response;
 using Infrastructure.Models.Setting.Request;
-using Infrastructure.Models.Setting.Response;
 using Infrastructure.Models.Subscriptions.Request;
 using Infrastructure.Nswag;
 
@@ -100,7 +94,10 @@ namespace Infrastructure.Mappings.Plans
             //CreateMap< ,CardDetailsRequestModel>().ReverseMap();
             //CreateMap< ,BillingDataRequestModel>().ReverseMap();
 
-
+            //// Service
+            CreateMap<ServiceResponse, ServiceResponseModel>().ReverseMap();
+            CreateMap<ServiceCreate, ServiceRequestModel>().ReverseMap();
+            CreateMap<ServiceUpdate, ServiceRequestModel>().ReverseMap();
         }
     }
 }

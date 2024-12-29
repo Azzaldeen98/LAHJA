@@ -2,9 +2,12 @@
 @using LAHJA.Data.UI.Components.Category
 @using LAHJA.Data.UI.Components.Plan.Css
 @using LAHJA.Them
+@using LAHJA.UI.Components.ServiceCard
 @inject NavigationManager Navigation
 @inherits CardCategory<CategoryComponent>
 @inject ISnackbar Snackbar
+ @inject IDialogService DialogService
+
 <style>
 
   /*   .card-hover {
@@ -35,7 +38,7 @@
     @foreach (var item in Params)
     {
 
-            <MudCard  Class="w30 RCardP">
+            <MudCard  Class="w30 RCardP "  >
                 <MudCardHeader>
                     <CardHeaderAvatar>
                         <MudAvatar Color="@AppColors.BASE_COLOR_ENUM">I</MudAvatar>
@@ -44,10 +47,16 @@
                         <MudText Typo="Typo.body1">@item.Name</MudText>
                     </CardHeaderContent>
                     <CardHeaderActions>
-                        <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                        <MudIconButton Icon="@Icons.Material.Filled.More" OnClick="OpenDialogAsyncS" Color="Color.Default" />
                     </CardHeaderActions>
                 </MudCardHeader>
-                <MudCardMedia Image="chatbot-03.png" Height="250" />
+                <div Class="launch-service-panel" style="position:relative">
+                    <MudCardMedia Image="chatbot-03.png"  Height="250" />
+                    <div class="launch-bg-service-panel justify-content-center align-items-center">
+
+                        <MudButton Variant="Variant.Filled" Class="@AppTextStyle.TEXT_TRANSFORM_NORMAL" OnClick="Submit" Color="@AppColors.BASE_COLOR_ENUM">Launch</MudButton>
+                    </div>
+                </div>
                 <MudCardContent>
                     <MudText Typo="Typo.body2">@item.Description</MudText>
                 </MudCardContent>
@@ -58,36 +67,6 @@
                 </MudCardActions>
             </MudCard>
 
-@* 
-        <MudItem xs="12" sm="12" md="4" > 
-
-            <MudCard Elevation="12" Class="rounded-lg  card-hover m-1" Style="height:400px !important">
-
-                    <MudTooltip Text="@item.Description" Class="p-2" Disabled="true" Color="@AppColors.BASE_COLOR_ENUM" Placement="Placement.Top">
-                <MudCardHeader>
-                    <CardHeaderContent>
-                                <MudText Typo="Typo.body2"  Class="textHeader" Style="font-size:20px !important" Align="Align.Center">@item.Name</MudText>
-                    </CardHeaderContent>
-                </MudCardHeader>
-                <MudCardContent>
-                    
-            
-                      <img src="chatbot-03.png" style="height:200px !important;width:100% !important" />
-                    
-
-                    @if (!string.IsNullOrEmpty(@item.Name))
-                    {
-                        <MudText Typo="Typo.subtitle2" Class="@TemplateCategoryStyle.MudText">@item.Description</MudText>
-                    }
-
-                </MudCardContent>
-                <MudCardActions Class="d-flex justify-center">
-                    <MudButton Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM"  Style="width:50%;" OnClick="@(()=>Submit(@item))">Start Now</MudButton>
-                </MudCardActions>
-                </MudTooltip>
-            </MudCard>
-         
-        </MudItem> *@
 
     }
 
@@ -107,19 +86,28 @@
 
 
 
-    private async Task Submit(CategoryComponent inputCategory)
+    private async Task Submit()
     {
         try
         {
+            Navigation.NavigateTo("/ServiceInforMationModel");
 
-            if (OnSubmit.HasDelegate)
-            {
-                await OnSubmit.InvokeAsync(inputCategory);
-            }
+            // if (OnSubmit.HasDelegate)
+            // {
+            //     await OnSubmit.InvokeAsync(inputCategory);
+            // }
         }
         catch (Exception ex)
         {
             Snackbar.Add(ex.Message, Severity.Error);
         }
+    }
+
+    private Task OpenDialogAsyncS()
+    {
+
+        var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Medium };
+
+        return DialogService.ShowAsync<DialogUsageExample_Dialog>("Simple Dialog", options);
     }
 }

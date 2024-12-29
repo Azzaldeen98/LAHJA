@@ -1,0 +1,163 @@
+﻿@page "/products"
+ 
+@inject HttpClient Http
+
+<style>
+
+    .algin
+    {
+        direction:rtl;
+        text-align:right;
+
+    }
+
+
+</style>
+<MudContainer MaxWidth="MaxWidth.Large" class="algin">
+    <MudPaper Elevation="8" Class="pa-8 algin" Style="background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+        <MudTypography Variant="h3" Align="Align.Center" GutterBottom="true" Class="text-primary" Style="font-weight: bold;">
+            منتجاتنا
+        </MudTypography>
+
+        <MudDivider Class="my-4" />
+
+        @foreach (var product in products)
+        {
+            <MudExpansionPanel Text="@product.ProductName" Icon="@Icons.Material.Filled.Mic" Elevation="4">
+                <MudText Typo="Typo.body1" Class="text-dark" Style="line-height: 1.6; text-align: right;">
+                    <strong>الوصف:</strong> @product.Description
+                </MudText>
+
+                <MudText Typo="Typo.body2" Class="text-dark" Style="line-height: 1.6; text-align: right;">
+                    <strong>المزايا:</strong>
+                    <ul class="custom-list">
+                        @foreach (var feature in product.Features)
+                        {
+                            <li>@feature</li>
+                        }
+                    </ul>
+                </MudText>
+
+                <MudText Typo="Typo.body2" Class="text-dark" Style="line-height: 1.6; text-align: right;">
+                    <strong>حالات الاستخدام:</strong>
+                    <ul class="custom-list">
+                        @foreach (var useCase in product.UseCases)
+                        {
+                            <li>@useCase</li>
+                        }
+                    </ul>
+                </MudText>
+
+                <MudText Typo="Typo.body2" Class="text-dark" Style="line-height: 1.6; text-align: right;">
+                    <strong>التكامل:</strong> @product.Integration
+                </MudText>
+
+                <MudText Typo="Typo.body2" Class="text-dark" Style="line-height: 1.6; text-align: right;">
+                    <strong>التخصيص:</strong> @product.Customization
+                </MudText>
+            </MudExpansionPanel>
+        }
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private List<Product> products = new List<Product>();
+
+    public class Product
+    {
+        public string ProductName { get; set; }
+        public string Description { get; set; }
+        public List<string> Features { get; set; }
+        public List<string> UseCases { get; set; }
+        public string Integration { get; set; }
+        public string Customization { get; set; }
+    }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        // تحميل البيانات من الـ API أو البيانات الثابتة
+        products = new List<Product>
+        {
+            new Product
+            {
+                ProductName = "تحويل الصوت إلى نص",
+                Description = "تحويل الصوت المسجل إلى نص مكتوب باستخدام تقنيات التعرف على الكلام. يمكن استخدام هذه الخدمة لتحويل المحادثات الصوتية إلى نصوص لسهولة المعالجة.",
+                Features = new List<string>
+                {
+                    "دقة عالية في التعرف على الكلمات",
+                    "دعم للعديد من اللغات واللهجات",
+                    "التعرف على الكلمات في بيئات ضوضاء",
+                    "يتم معالجة النصوص على الخوادم أو محليًا وفقًا لاختيار العميل"
+                },
+                UseCases = new List<string>
+                {
+                    "تحويل المحاضرات أو الاجتماعات إلى نصوص",
+                    "أنظمة الرد الصوتي التلقائي",
+                    "تطبيقات المساعدة الشخصية"
+                },
+                Integration = "دعم التكامل مع تطبيقات أخرى عبر API",
+                Customization = "إمكانية تخصيص دقة التحويل وفقًا لمتطلبات العميل"
+            },
+            new Product
+            {
+                ProductName = "تحويل النص إلى صوت",
+                Description = "تحويل النصوص المكتوبة إلى صوت باستخدام تقنيات توليد الصوت الاصطناعي (TTS). توفر هذه الخدمة أصواتًا بشرية عالية الجودة يمكن استخدامها في تطبيقات متعددة.",
+                Features = new List<string>
+                {
+                    "أصوات طبيعية وواقعية",
+                    "دعم لعدة لغات ولهجات",
+                    "إمكانية تعديل السرعة والنبرة",
+                    "دعم للعديد من الحالات (نصوص قصيرة، طويلة، أو معقدة)"
+                },
+                UseCases = new List<string>
+                {
+                    "المساعدات الصوتية الشخصية",
+                    "قراءة النصوص التلقائية على الأجهزة المحمولة",
+                    "تحويل النصوص لذوي الاحتياجات الخاصة"
+                },
+                Integration = "توفير API للتكامل مع الأنظمة المختلفة",
+                Customization = "إمكانية تخصيص الصوت والنبرة حسب احتياجات العميل"
+            },
+            new Product
+            {
+                ProductName = "تحويل النص إلى لهجة",
+                Description = "تحويل النصوص إلى لهجات محلية محددة بدقة، مع توفير إمكانية تعديل النبرة والسرعة وفقًا للمتطلبات المحلية.",
+                Features = new List<string>
+                {
+                    "دقة في تحويل النص إلى لهجات محلية",
+                    "دعم لهجات متعددة مثل اللهجة النجدية، الحجازية، وغيرها",
+                    "إمكانية تخصيص النبرة والسرعة للتماشي مع الاستخدامات المحلية"
+                },
+                UseCases = new List<string>
+                {
+                    "تطبيقات المساعدات الصوتية في اللهجات المحلية",
+                    "خدمة العملاء مع تخصيص للهجة المنطقة",
+                    "تحويل النصوص للترفيه والتطبيقات الإعلامية"
+                },
+                Integration = "API لتكامل الخدمة مع الأنظمة المختلفة",
+                Customization = "إمكانية تخصيص اللهجات والنبرات الصوتية"
+            },
+            new Product
+            {
+                ProductName = "الدردشة الفورية",
+                Description = "نظام دردشة يعتمد على الذكاء الصناعي للتفاعل مع المستخدمين بشكل فوري، ويقدم إجابات مباشرة على الأسئلة والاستفسارات.",
+                Features = new List<string>
+                {
+                    "إجابات فورية ودقيقة",
+                    "دعم للغات ولهجات متعددة",
+                    "تخصيص مستوى التفاعل والذكاء الاصطناعي حسب الحاجة"
+                },
+                UseCases = new List<string>
+                {
+                    "دعم العملاء عبر الإنترنت",
+                    "المساعدات الشخصية الذكية",
+                    "التفاعل مع المستخدمين في التطبيقات المختلفة"
+                },
+                Integration = "تقديم API للتكامل مع الأنظمة المختلفة",
+                Customization = "إمكانية تخصيص أسلوب التفاعل استنادًا إلى نوع التطبيق"
+            }
+        };
+    }
+}

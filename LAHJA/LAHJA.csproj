@@ -39,14 +39,15 @@
 	  <Folder Include="ApplicationLayer\Request\" />
 	  <Folder Include="ApplicationLayer\Roles\" />
 	  <Folder Include="ApplicationLayer\ServiceMethod\" />
-	  <Folder Include="ApplicationLayer\Service\" />
 	  <Folder Include="ApplicationLayer\Setting\" />
 	  <Folder Include="Data\UI\Components\Profile\" />
 	  <Folder Include="Data\UI\Templates\Setting\" />
+	  <Folder Include="UI\Components\FeatureServices\" />
 	  <Folder Include="UI\Components\SidebarMen\" />
 	  <Folder Include="UI\Templates\Sections\Profile\" />
 	  <Folder Include="wwwroot\assets\images\Icon\" />
 	  <Folder Include="wwwroot\css\fonts\Jozoor_Font\__MACOSX\" />
+	  <Folder Include="wwwroot\js\NewFolder\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Application\Application.csproj" />

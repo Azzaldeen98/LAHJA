@@ -1,4 +1,5 @@
 ﻿@using LAHJA.Data.UI.Components.Base
+@using LAHJA.Them
 
 <section class="pt-0">
     <div class="container" >
@@ -13,11 +14,12 @@
                 <div class="col-lg-6">
                     <h2 class="mb-3">
                         @Params.Name
-                      <span class="text-purple">AI لهجــة</span></h2>
+                            <span class="text-purple;" style="color:@(AppColors.BASE_COLOR_FOUCS)">AI لهجــة</span>
+                        </h2>
                     <p class="mb-4">
                         @Params.Description
                         </p>
-                    <a href="pricing-v1.html" class="btn btn-outline-secondary mb-0">
+                    <a href="/studio"  class="btn btn-outline-secondary mb-0">
                         @Params.ButtonLink
                         </a>
                 </div>

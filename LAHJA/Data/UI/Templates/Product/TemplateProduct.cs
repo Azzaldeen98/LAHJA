@@ -16,6 +16,7 @@ using MudBlazor;
 namespace LAHJA.Data.UI.Templates.Product
 {
 
+
     public class DataBuildProductBase
     {
         public string Id { get; set; }

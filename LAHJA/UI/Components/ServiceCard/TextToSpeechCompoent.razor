@@ -1,6 +1,7 @@
  @using MudBlazor
  @using LAHJA.Data.UI.Components.ServiceCard
  @using Microsoft.AspNetCore.Components
+  @using LAHJA.Them
  @inject IDialogService DialogService
   @inject NavigationManager Navigation
 <MudCard Elevation="25" Class="rounded-lg pb-4 card-hover">
@@ -16,7 +17,8 @@
             <CardHeaderActions>
 
                 <MudTooltip Text="@Param.DataBuild.TolTabText" Color="Color.Primary" Placement="Placement.Top">
-                    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" OnClick="testing" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" 
+                    OnClick="OpenDialogAsyncS" />
                 </MudTooltip>
             </CardHeaderActions>
         </MudCardHeader>
@@ -43,7 +45,7 @@
                 </MudSelect>
 
 
-                <MudButton Disabled="@_processing" Color="Color.Primary" FullWidth="true"
+                <MudButton Disabled="@_processing" Color="@AppColors.BASE_COLOR_ENUM" FullWidth="true"
                            EndIcon="@Icons.Material.Filled.Send" Variant="Variant.Filled" Class="mb-3" OnClick="Onsubmit">
 
                     <audio id="OutputPlayerId"  controls></audio>
@@ -64,9 +66,9 @@
             @if (OnResult != null && OnResult.Sccess && OnResult.OperationType == "TextToSpeech")
             {
 
-                <MudButton Color="Color.Primary" FullWidth="true" Variant="Variant.Filled" Class="mb-3"
+                <MudButton Color="@AppColors.BASE_COLOR_ENUM" FullWidth="true" Variant="Variant.Filled" Class="mb-3"
                            OnClick="OpenDialogAsync">Play Sound</MudButton>
-                <MudButton Color="Color.Primary" FullWidth="true" Variant="Variant.Filled"
+                <MudButton Color="@AppColors.BASE_COLOR_ENUM" FullWidth="true" Variant="Variant.Filled"
                            EndIcon="@Icons.Material.Filled.ArrowDownward">Install</MudButton>
             }
 

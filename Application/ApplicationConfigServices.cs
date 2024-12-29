@@ -2,11 +2,13 @@
 using Application.Services.Plans;
 using Application.Services.Profile;
 using Application.Services.Prroduct;
+using Application.Services.Service;
 using Application.Services.Subscriptions;
 using Application.UseCase;
 using Application.UseCase.Auth;
 using Application.UseCase.Plans;
 using Application.UseCase.Plans.Get;
+using Application.UseCase.Service;
 using Infrastructure.DataSource.ApiClient.Plans;
 using Infrastructure.Mappings.Plans;
 using Microsoft.Extensions.DependencyInjection;
@@ -110,6 +112,13 @@ namespace Infrastructure
             serviceCollection.AddScoped<UpdateBillingDetailsUseCase>();
             serviceCollection.AddScoped<DeleteBillingDetailsUseCase>();
 
+            // Services
+            serviceCollection.AddScoped<GetAllServicesUseCase>();
+            serviceCollection.AddScoped<GetServiceByIdUseCase>();
+            serviceCollection.AddScoped<CreateServiceUseCase>();
+            serviceCollection.AddScoped<UpdateServiceUseCase>();
+            serviceCollection.AddScoped<DeleteServiceUseCase>();
+
         }
 
         private static void InstallServices(this IServiceCollection serviceCollection)
@@ -124,6 +133,7 @@ namespace Infrastructure
             serviceCollection.AddScoped<SubscriptionService>();
             serviceCollection.AddScoped<BillingService>();
             serviceCollection.AddScoped<CreditCardService>();
+            serviceCollection.AddScoped<LAHJAService>();
 
         }
 

@@ -1,10 +1,17 @@
 ﻿@page "/ShowInSound"
 
 @inject IJSRuntime JSRuntime
+@using LAHJA.ApiClient.Models
+@using LAHJA.ApiClient.Services.Query
+@using LAHJA.ApiClient.Services.VoiceBot
 @using LAHJA.Data.UI.Components.ServiceCard
 @using LAHJA.Data.UI.Models
 @using System.Text.Json
 @using LAHJA.Them
+@inject IQueryTextToSpeechService  _QueryTextToSpeechService
+@inject IVoiceBotService _VoiceBotService
+@inject LAHJA.ApiClient.Services.IT2TService _T2TService;
+
 
 <gradio-app control_page_title="true" embed="false" eager="true" style="display: flex; flex-direction: column; flex-grow: 1;background-color:none!important">
     <div class="gradio-container gradio-container-4-41-0 svelte-wpkpf6 app" data-iframe-height="" style="min-height: initial; flex-grow: 1;">
@@ -201,10 +208,65 @@
         }
     } 
 
-   
 
 
+    private async Task OnSubmitVoiceBot(OnDataResult obj)
+    {
+        DataModelVoiceBot requestData = new DataModelVoiceBot
+            {
 
+                Text2Text = new DataModelText2Text
+                {
+                    Input = obj.Text,
+                },
+                Speech = new DataModelText2Speech
+                {
+                    AudioPlayerID = "OutputPlayerId",
+                }
+
+            };
+        string json = JsonSerializer.Serialize(requestData);
+        var response = await JSRuntime.InvokeAsync<string>("VoiceBot", json);
+        if (response != null)
+        {
+
+        }
+
+    }
+    private async Task onSubmitTextToSpeechAsync(string inputText)
+    {
+        try
+        {
+            if (!string.IsNullOrWhiteSpace(inputText))
+            {
+
+
+                var requestData = new QueryRequestTextToSpeech { Data = inputText, TagId = "OutputPlayerId" };
+                // string json = JsonSerializer.Serialize(requestData);
+                // var response = await JSRuntime.InvokeAsync<string>("queryModelTextToSpeech", json);
+
+                var response = await _QueryTextToSpeechService.TextToSpeechAsync(requestData);
+                if (response != null)
+                {
+
+                }
+                else
+                {
+
+                }
+
+                StateHasChanged();
+
+            }
+            Clear();
+
+
+        }
+        catch (Exception ex)
+        {
+
+        }
+    }
     private async Task Onsubmit()
     {
         try
@@ -213,14 +275,60 @@
 
             if (!string.IsNullOrEmpty(textSpeech))
             {
-
-                var requestData = new QueryRequestTextToSpeech { Data = textSpeech };
-                string json = JsonSerializer.Serialize(requestData);
-                var response = await JSRuntime.InvokeAsync<string>("queryModelTextToSpeech", json);
-                if (response != null)
+                var request = new QueryRequest
                 {
 
+                        QueryRequestTextToText = new QueryRequestTextToText { Text = textSpeech },
+                        QueryRequestTextToSpeech = new QueryRequestTextToSpeech {  TagId = "OutputPlayerId" }
+                };
+
+                var response = await _VoiceBotService.TextToSpeechAsync(request);
+                if (response.Succeeded)
+                {
+                   await Task.Delay(100);
                 }
+                else
+                {
+                    
+                }
+
+                // var response = await _T2TService.T2TClientJSAsync(new QueryRequestTextToText { Text = textSpeech });
+                // if (response.Succeeded)
+                // {
+
+                //     string text = response.Data.Text;
+                //     await onSubmitTextToSpeechAsync(text);
+                // }
+
+
+                // var response = await T2TService.T2TClientJSAsync(new QueryRequestTextToText { Text = textSpeech });
+                // if (response != null)
+                // {
+                //     await onSubmitTextToSpeechAsync(response);
+                // }
+
+                // OnSubmitVoiceBot(new OnDataResult { Text = textSpeech});
+                // DataModelVoiceBot requestData = new DataModelVoiceBot
+                //     {
+
+                //         Text2Text = new DataModelText2Text
+                //         {
+                //             Input = textSpeech,
+                //         },
+                //         Speech = new DataModelText2Speech
+                //         {
+                //             AudioPlayerID = "OutputPlayerId",
+                //         }
+
+                //     };
+        
+                // var requestData = new QueryRequestTextToSpeech { Data = textSpeech };
+                // string json = JsonSerializer.Serialize(requestData);
+                // var response = await JSRuntime.InvokeAsync<string>("queryModelTextToSpeech", json);
+                // if (response != null)
+                // {
+
+                // }
 
             }
             // if (OnSubmit.HasDelegate && !string.IsNullOrEmpty(textSpeech))

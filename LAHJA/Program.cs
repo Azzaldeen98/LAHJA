@@ -18,6 +18,7 @@ using LAHJA.Helpers.Services;
 using Domain.ShareData;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using LAHJA.ApiClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,7 +45,8 @@ builder.Services.AddSingleton<JWTSettings>(jwtSettings);
 builder.Services.InstallSharedConfigServices();
 builder.Services.InstallInfrastructureConfigServices(configuration: builder.Configuration);
 builder.Services.InstallApplicationConfigServices();
-builder.Services.InstallBlazorAppConfigServices();
+builder.Services.InstallLAHJAConfigServices();
+builder.Services.InstallApiClientConfigServices();
 
 builder.Services.Configure<ReCaptchaSettings>(builder.Configuration.GetSection("ReCaptchaSettings"));
 builder.Services.AddOptions<ReCaptchaSettings>().BindConfiguration("ReCaptchaSettings");

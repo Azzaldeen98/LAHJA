@@ -10,8 +10,6 @@ using LAHJA.Data.UI.Templates.Base;
 using LAHJA.Helpers.Services;
 using LAHJA.UI.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
-using Microsoft.AspNetCore.Http;
 using MudBlazor;
 using Shared.Constants;
 using Shared.Constants.Router;

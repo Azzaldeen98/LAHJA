@@ -36,6 +36,11 @@ using Domain.Entities.Profile;
 using Domain.Entities;
 using Infrastructure.Models.Plans.Response;
 using Infrastructure.Models.Profile.Request;
+using Infrastructure.Models.Service.Response;
+using Infrastructure.Models.Service.Request;
+using Infrastructure.DataSource.ApiClient.Plans;
+using Domain.Entities.Service.Request;
+using Domain.Entities.Service.Response;
 
 
 namespace Infrastructure.Mappings.Plans
@@ -133,9 +138,11 @@ namespace Infrastructure.Mappings.Plans
                  .ForMember(dest => dest.BillingDetails, opt => opt.Ignore())
                  .ReverseMap();   
             CreateMap<UserSubscriptionPlanModel, UserSubscriptionPlan>().ReverseMap();   
-            CreateMap<ProfileRequestModel, ProfileRequest>().ReverseMap();   
+            CreateMap<ProfileRequestModel, ProfileRequest>().ReverseMap();
 
-           
+            //// Service
+            CreateMap<ServiceResponseModel, ServiceResponse>().ReverseMap();
+            CreateMap<ServiceRequestModel, ServiceRequest>().ReverseMap();
 
 
         }

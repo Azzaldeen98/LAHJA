@@ -3,6 +3,7 @@
  @using Microsoft.AspNetCore.Components
  @inject IDialogService DialogService
  @inject NavigationManager Navigation
+ @using LAHJA.Them
 
 <MudCard Elevation="25" Class="rounded-lg pb-4 card-hover">
 
@@ -21,7 +22,7 @@
         <CardHeaderActions>
 
             <MudTooltip Text="@Param.DataBuild.TolTabText" Color="Color.Primary" Placement="Placement.Top">
-                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" OnClick="testing" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" OnClick="OpenDialogAsyncS" />
             </MudTooltip>
         </CardHeaderActions>
     </MudCardHeader>
@@ -52,7 +53,7 @@
             </MudSelect>
             
             
-            <MudButton Disabled="@_processing" Color="Color.Primary" FullWidth="true" 
+                <MudButton Disabled="@_processing" Color="@AppColors.BASE_COLOR_ENUM" FullWidth="true"
                            EndIcon="@Icons.Material.Filled.Send" Variant="Variant.Filled" Class="mb-3" OnClick="Onsubmit">
                 @if (_processing)
                 {
@@ -102,7 +103,7 @@ else
 
     private void testing()
     {
-        Navigation.NavigateTo("/ServiceInforMationModel");
+        Navigation.NavigateTo("/TextToText");
     }
 
     [Parameter] public TextToDialectComponent? Param { get; set; }

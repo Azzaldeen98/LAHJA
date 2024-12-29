@@ -5,6 +5,7 @@ using Domain.Repository.Plans;
 using Domain.Repository.Price;
 using Domain.Repository.Product;
 using Domain.Repository.Profile;
+using Domain.Repository.Service;
 using Domain.Repository.Setting;
 using Domain.Repository.Subscriptions;
 using Domain.Repository.Users;
@@ -15,6 +16,7 @@ using Infrastructure.DataSource.ApiClient.Billing;
 using Infrastructure.DataSource.ApiClient.Payment;
 using Infrastructure.DataSource.ApiClient.Plans;
 using Infrastructure.DataSource.ApiClient.Profile;
+using Infrastructure.DataSource.ApiClient.Service;
 using Infrastructure.DataSource.ApiClientFactory;
 using Infrastructure.DataSource.Seeds;
 using Infrastructure.Mappings.Plans;
@@ -22,6 +24,7 @@ using Infrastructure.Repository.Auth;
 using Infrastructure.Repository.Plans;
 using Infrastructure.Repository.Price;
 using Infrastructure.Repository.Product;
+using Infrastructure.Repository.Services;
 using Infrastructure.Repository.Setting;
 using Infrastructure.Repository.Subscription;
 using Infrastructure.Repository.Users;
@@ -77,6 +80,7 @@ namespace Infrastructure
             serviceCollection.AddScoped<SettingsApiClient>();
             serviceCollection.AddScoped<ProfileApiClient>();
             serviceCollection.AddScoped<BillingApiClient>();
+            serviceCollection.AddScoped<ServiceApiClient>();
         }
         private static void InstallSeeds(this IServiceCollection serviceCollection)
         {
@@ -113,6 +117,7 @@ namespace Infrastructure
             serviceCollection.AddScoped<ISubscriptionsRepository, SubscriptionsRepository>();
             serviceCollection.AddScoped<ISettingRepository, SettingRepository>();
             serviceCollection.AddScoped<IBillingRepository, BillingRepository>();
+            serviceCollection.AddScoped<IServiceRepository, ServiceRepository>();
         }    
       
     }

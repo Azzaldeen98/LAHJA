@@ -26,7 +26,6 @@
     <Folder Include="DataSource\ApiClient\User\" />
     <Folder Include="DataSource\ApiClient\Request\" />
     <Folder Include="DataSource\ApiClient\Roles\" />
-    <Folder Include="DataSource\ApiClient\Service\" />
     <Folder Include="DataSource\ApiClient\ServiceMethod\" />
     <Folder Include="Models\RequestEvent\Request\" />
     <Folder Include="Models\RequestEvent\Response\" />
@@ -36,8 +35,6 @@
     <Folder Include="Models\Roles\Response\" />
     <Folder Include="Models\ServiceMethod\Request\" />
     <Folder Include="Models\ServiceMethod\Response\" />
-    <Folder Include="Models\Service\Request\" />
-    <Folder Include="Models\Service\Response\" />
     <Folder Include="Models\Subscriptions\Response\" />
     <Folder Include="Models\User\Request\" />
     <Folder Include="Models\User\Response\" />
@@ -45,7 +42,6 @@
     <Folder Include="Repository\Request\" />
     <Folder Include="Repository\Roles\" />
     <Folder Include="Repository\ServiceMethod\" />
-    <Folder Include="Repository\Service\" />
     <Folder Include="Repository\User\" />
   </ItemGroup>
 

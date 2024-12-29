@@ -2,9 +2,11 @@
 @using System.Text.Json.Serialization
 @using System.Text.Json;
 @using LAHJA.Data.UI.Models
+@using LAHJA.Pages.FeatureServices
+@using LAHJA.UI.Components.StudioLahjaAi
 @inject IDialogService DialogService
 @inject IJSRuntime jsRuntime
-
+@using LAHJA.Them
 
 <style>
     .card-hover {
@@ -40,13 +42,8 @@
 
             <MudItem xs="12" sm="6" md="4">
 
-
-
-
-
-                <TextToDialectCompoent Param="@serviceComponentPar.textToDialectComponent"
+            <TextToDialectCompoent Param="@serviceComponentPar.textToDialectComponent"
                                        OnResult="@DataBuildReturn" OnSubmit="@OnSubmitText" />
-
 
             </MudItem>
 
@@ -55,11 +52,16 @@
 
                 <TextToSpeechCompoent OnResult="@DataBuildReturn" OnSubmit="@OnSubmitText" Param="@serviceComponentPar.textToSpeechComponent" />
 
+            </MudItem>
+            <MudItem xs="12" sm="12" md="4">
 
+                <TextToSpeechCompoent OnResult="@DataBuildReturn" OnSubmit="@OnSubmitText" Param="@serviceComponentPar.textToSpeechComponent" />
 
             </MudItem>
         </MudGrid>
     </MudContainer>
+
+    <FeatureServices />
 
 }
 else
@@ -93,19 +95,41 @@ else
         StateHasChanged();
     }
 
+    private async void OnSubmitVoiceBot(OnDataResult obj)
+    {
+        DataModelVoiceBot requestData = new DataModelVoiceBot {
+
+            Text2Text = new DataModelText2Text
+            {
+                Input=obj.Text,
+            },
+            Speech  = new DataModelText2Speech
+            {
+                   AudioPlayerID = "OutputPlayerId",
+            }
+
+        };
+        string json = JsonSerializer.Serialize(requestData);
+        var response = await jsRuntime.InvokeAsync<string>("VoiceBot", json);
+        if (response != null)
+        {
+
+        }
+
+    }
     private async void OnSubmitText(OnDataResult obj)
     {
 
         if (obj != null)
         {
-
-            var requestData = new QueryRequestTextToSpeech { Data= obj.Text};
-            string json = JsonSerializer.Serialize(requestData);
-            var response=  await jsRuntime.InvokeAsync<string>("queryModelTextToSpeech",json);
-            if (response!=null)
-            {
+            OnSubmitVoiceBot(obj);
+            // var requestData = new QueryRequestTextToSpeech { Data= obj.Text};
+            // string json = JsonSerializer.Serialize(requestData);
+            // var response=  await jsRuntime.InvokeAsync<string>("queryModelTextToSpeech",json);
+            // if (response!=null)
+            // {
                 
-            }
+            // }
 
         }
 
@@ -121,7 +145,6 @@ else
     {
 
         var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Medium };
-
         return DialogService.ShowAsync<DialogUsageExample_Dialog>("Simple Dialog", options);
 
     }

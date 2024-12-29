@@ -1,0 +1,188 @@
+@using LAHJA.Data.UI.Models
+@using MudBlazor
+@using LAHJA.Data.UI.Components.ServiceCard
+@using Microsoft.AspNetCore.Components
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+@inject LAHJA.ApiClient.Services.IT2TService _T2TService
+
+
+<MudCard Elevation="25" Class="rounded-lg pb-4 card-hover" Style="width:400px;height:350px;">
+
+    @if (Param != null)
+    {
+
+
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">@Param.DataBuild.NameCompoent</MudText>
+            </CardHeaderContent>
+            <CardHeaderActions>
+
+
+                <MudTooltip Text="@Param.DataBuild.TolTabText" Color="Color.Primary" Placement="Placement.Top">
+                    
+
+
+                </MudTooltip>
+            </CardHeaderActions>
+        </MudCardHeader>
+        <MudCardContent>
+
+
+
+
+            <MudForm @ref="form" ValidationDelay="300" OnValidSubmit="Onsubmit" OnInvalidSubmit="Onsubmit" Style="height:250px">
+
+                <MudTextField T="string"
+                              Label="Text"
+                              HelperText="Choose a Text"
+                              InputType="InputType.Text"
+                          
+                              @bind-Value="@textSpeech" />
+
+                <MudSelect @bind-Value="SelectedDialect" Label="Select Dialect" FullWidth="true" Class="mb-3"
+                           Required="true" RequiredError="Language is required!">
+                    @foreach (var dialect in Param.DataBuild.AvailableDialects)
+                    {
+                        <MudSelectItem Value="@dialect">@dialect</MudSelectItem>
+                    }
+                </MudSelect>
+
+
+                <MudButton Disabled="@_processing"   FullWidth="true"
+                           EndIcon="@Icons.Material.Filled.Send" Variant="Variant.Filled" Class="mb-3" OnClick="Onsubmit">
+                    @if (_processing)
+                    {
+
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                        <MudText Class="ms-2">Processing</MudText>
+                    }
+                    else
+                    {
+                        <MudText>Click me</MudText>
+                    }
+                </MudButton>
+            </MudForm>
+
+
+
+
+            @if (OnResult != null && OnResult.Sccess && OnResult.OperationType == "TextToDialect")
+            {
+                <MudTextField   T="string" Label="Single Select" Variant="Variant.Outlined" Text="@OnResult.Text"
+                              Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Api" />
+                <MudButton OnClick="ShareResult" EndIcon="@Icons.Material.Filled.Send"   FullWidth="true"
+                           Variant="Variant.Filled">Share</MudButton>
+            }
+
+        </MudCardContent>
+
+
+
+
+
+
+
+
+
+
+    }
+    else
+    {
+        <h1>error </h1>
+    }
+
+</MudCard>
+
+@code {
+
+    private MudForm form;
+    private bool _processing = false;
+
+
+
+    private void testing()
+    {
+        Navigation.NavigateTo("/ServiceInforMationModel");
+    }
+
+    [Parameter] public TextToDialectComponent? Param { get; set; }
+
+    [Parameter] public EventCallback ShareResult { get; set; }
+
+    [Parameter] public EventCallback<OnDataResult> OnSubmit { get; set; }
+
+    [Parameter] public OnDataResult? OnResult { get; set; } = null;
+
+
+    private bool flag1 = false;
+    private string textSpeech = "";
+    private string SelectedDialect = "";
+
+    private IEnumerable<string> TextStrength(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            yield return "Text cannot be empty.";
+
+        if (value.Length < 6)
+            yield return "Password must be at least 8 characters long.";
+        if (!value.Any(ch => "!@#$%^&*()".Contains(ch)))
+            yield return "Password must include at least one special character (!@#$%^&*()).";
+    }
+
+    private async Task Onsubmit()
+
+    {
+        try
+        {
+
+            _processing = true;
+             await Task.Delay(2000);
+              _processing = false;
+           // await JSRuntime.InvokeVoidAsync("playAudioFromText", textSpeech);
+            if (!string.IsNullOrWhiteSpace(textSpeech))
+                {
+
+                var response = await _T2TService.T2TAsync(new QueryRequestTextToText { Text = textSpeech });
+
+                if (response.Succeeded)
+                {
+                    string decodedText = response.Data.Text;
+
+                    OnResult = new OnDataResult()
+                     {
+                            Text = decodedText,
+                             OperationType="TextToDialect",
+                             Sccess=true,
+                             SelectLanguage=SelectedDialect,
+                            TypeSend="Send"
+                     };
+
+                    // await OnSubmit.InvokeAsync(OnResult);
+
+
+                }
+            
+            StateHasChanged();
+
+                }
+
+        }
+
+        catch (Exception ex)
+        {
+
+        }
+
+
+    }
+    // private Task OpenDialogAsyncS()
+    // {
+
+    //     var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Medium };
+
+    //     return DialogService.ShowAsync<DialogUsageExample_Dialog>("Simple Dialog", options);
+    // }
+}

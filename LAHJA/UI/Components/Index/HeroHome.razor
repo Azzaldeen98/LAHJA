@@ -1,9 +1,13 @@
-﻿@using LAHJA.Them
+﻿@using LAHJA.Data.UI.Models
+@using LAHJA.Them
+@inject LAHJA.ApiClient.Services.Query.IQueryTextToSpeechService queryTextToSpeechService
+
 <div style="position:relative">
 
         <div class="px-4 py-5 my-5 text-center">
-            <img class="d-block mx-auto mb-4" src="/ai-robot-2.png" alt="" width="72" height="57">
-            <h1 class="display-5 fw-bold text-body-emphasis">LAHJA AI</h1>
+        <MudIcon Size="Size.Large" style="direction:ltr !important;margin:8px !important" Color="@AppColors.BASE_COLOR_ENUM" Icon="@Icons.Material.Filled.BlurOn" Title="API" />
+
+            <MudText Typo="Typo.h4">LAHJA AI</MudText>
             <div class="col-lg-6 mx-auto">
                 <p class=" mb-4">
 
@@ -13,6 +17,9 @@
 
 
             </p>
+            <audio style="visibility:hidden; position:fixed" id="AudioPlay2" controls></audio>
+
+            <MudIconButton class="mx-2 " Size="Size.Medium" Icon="@Icons.Material.Filled.SurroundSound" Color="@AppColors.BASE_COLOR_ENUM" OnClick="@((e) => onClick())" Edge="Edge.End" />
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                 
                 <MudChip T="string" Variant="Variant.Outlined"  Icon="@Icons.Custom.Brands.MudBlazor" Label="true" Color="@AppColors.BASE_COLOR_ENUM">Lahja ai</MudChip>
@@ -27,5 +34,14 @@
     </div>
 
 @code {
+
+    // [Para]
+
+    private async void onClick()
+    {
+        var text = " هو إطار متقدم يعتمد على تقنيات الذكاء الاصطناعي لتوليد الكلام من النصوص. تعتمد جميع النماذج على بنية VITS، التي تتيح توليد موجات صوتية واقعية بناءً على المدخلات النصية. النماذج تحتوي على محولات لتحليل النص وتوليد الكلام بناءً على خصائص الصوت المحلية لكل لهجة.";
+
+       await queryTextToSpeechService.TextToSpeechAsync(new QueryRequestTextToSpeech { Data = text, TagId = "AudioPlay2" });
+    }
 
 }

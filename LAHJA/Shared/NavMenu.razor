@@ -1,50 +1,91 @@
 ﻿@using LAHJA.Them
 @inject NavigationManager NavigationManager
 
- @if (_isLogin){ 
-<MudNavMenu Class="mt-4">
-        <MudNavLink Icon="@Icons.Material.Filled.Dashboard" Match="NavLinkMatch.All" Href="/settings">Dashboard</MudNavLink>
-        <MudNavLink Icon="@Icons.Material.Filled.Storage" Href="/services" OnClick="NavigateOnlyToHome">Servers</MudNavLink>
-    <MudNavLink Icon="@Icons.Material.Filled.AccountBalance" Href="/billing" OnClick="NavigateOnlyToHome" >Billing</MudNavLink>
-    <MudNavGroup Title="Settings" Expanded="true">
-        <MudNavLink Icon="@Icons.Material.Filled.People" Href="/dummy" OnClick="NavigateOnlyToHome">Users</MudNavLink>
-        <MudNavLink Icon="@Icons.Material.Filled.Security" Href="/dummy" OnClick="NavigateOnlyToHome">Security</MudNavLink>
-    </MudNavGroup>
-    <MudNavLink Href="/dummy" OnClick="NavigateOnlyToHome">About</MudNavLink>
+@if (_isLogin)
+{
+    <MudNavMenu Class="mt-4">
+        <MudNavLink Icon="@Icons.Material.Filled.Dashboard" Match="NavLinkMatch.All" Href="/settings">
+            @translations[CurrentLanguage]["Dashboard"]
+        </MudNavLink>
+        <MudNavLink Icon="@Icons.Material.Filled.Storage" Href="/services" OnClick="NavigateOnlyToHome">
+            @translations[CurrentLanguage]["Servers"]
+        </MudNavLink>
+        <MudNavLink Icon="@Icons.Material.Filled.AccountBalance" Href="/billing" OnClick="NavigateOnlyToHome">
+            @translations[CurrentLanguage]["Billing"]
+        </MudNavLink>
+        <MudNavGroup Title="@translations[CurrentLanguage]["Settings"]" Expanded="true">
+            <MudNavLink Icon="@Icons.Material.Filled.People" Href="/dummy" OnClick="NavigateOnlyToHome">
+                @translations[CurrentLanguage]["Users"]
+            </MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.Security" Href="/dummy" OnClick="NavigateOnlyToHome">
+                @translations[CurrentLanguage]["Security"]
+            </MudNavLink>
+        </MudNavGroup>
+        <MudNavLink Href="/dummy" OnClick="NavigateOnlyToHome">
+            @translations[CurrentLanguage]["About"]
+        </MudNavLink>
 
-    <MudNavLink>
-       <MudButton Variant="Variant.Filled" class="@AppTextStyle.TEXT_TRANSFORM_NORMAL" StartIcon="@Icons.Material.Filled.Logout" 
-        OnClick="OnLogOut">Logout</MudButton>
-    </MudNavLink>
+        <MudNavLink>
 
-</MudNavMenu>
- }
+            <MudButton Variant="Variant.Text" Class="@AppTextStyle.TEXT_TRANSFORM_NORMAL"
+                       StartIcon="@Icons.Material.Filled.Logout" OnClick="OnLogOut">
+                @translations[CurrentLanguage]["Logout"]
+            </MudButton>
+        </MudNavLink>
+    </MudNavMenu>
+}
 
 @code {
-
     [Parameter] public EventCallback SubmitLogOut { get; set; }
-    [Parameter] public bool IsLogin { set { 
+    [Parameter]
+    public bool IsLogin
+    {
+        set
+        {
             _isLogin = value;
-            StateHasChanged(); } }
-
+            StateHasChanged();
+        }
+    }
 
     private bool _isLogin = false;
+    private string CurrentLanguage = "ar"; // يمكن تغييرها إلى "ar" للعرض بالعربية
+
+    private Dictionary<string, Dictionary<string, string>> translations = new()
+        {
+            ["en"] = new Dictionary<string, string>
+        {
+            { "Dashboard", "Dashboard" },
+            { "Servers", "Servers" },
+            { "Billing", "Billing" },
+            { "Settings", "Settings" },
+            { "Users", "Users" },
+            { "Security", "Security" },
+            { "About", "About" },
+            { "Logout", "Logout" }
+        },
+            ["ar"] = new Dictionary<string, string>
+        {
+            { "Dashboard", "لوحة التحكم" },
+            { "Servers", "الخوادم" },
+            { "Billing", "الفواتير" },
+            { "Settings", "الإعدادات" },
+            { "Users", "المستخدمون" },
+            { "Security", "الأمان" },
+            { "About", "حول" },
+            { "Logout", "تسجيل الخروج" }
+        }
+        };
 
     private void NavigateOnlyToHome() => NavigationManager.NavigateTo("/");
 
-    private  void OnLogOut()
+    private void OnLogOut()
     {
-
         if (SubmitLogOut.HasDelegate)
             SubmitLogOut.InvokeAsync();
-
     }
 
     protected override void OnInitialized()
     {
-  
-
-
+        // يمكن إضافة أي منطق إضافي عند التهيئة
     }
-
-} 
+}

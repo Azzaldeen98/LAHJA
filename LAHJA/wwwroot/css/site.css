@@ -5,17 +5,38 @@
 .nav-item-color-light {
     color: #fff !important;
 }
-
+.icon-size-menu mud-icon-root {
+    font-size: 30px !important;
+}
 .mud-list-item-text {
     padding: 0 !important;
     margin: 0 !important;
-    
 }
+.launch-bg-service-panel {
+    display: none;
+    width: 100%;
+    height: 0%;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background: linear-gradient(90deg, #00ff80a3, #bf46848c);
+    z-index: 100;
+    transition:all 3s;
+}
+
+.launch-service-panel:hover .launch-bg-service-panel {
+    display: flex;
+    transition: 3s ease-in-out all;
+    height:100%
+}
+    .nav-bar_font * {
+        font-size: 12px !important;
+    }
 .plan-all-card {
     border: 2px solid #ddd !important;
     border-top: 30px solid #6c757d !important;
     border-radius: 25px !important;
-    box-shadow:none !important
+    box-shadow: none !important
 }
 .plan-import-card {
     border: 2px solid #07c922 !important;
@@ -608,6 +629,10 @@ a, .btn-link {
 }
 
 @media only screen and (max-width:700px) {
+
+.nav-bar_font * {
+    font-size: small !important;
+}
     .Home {
         font-size: 11px !important
     }

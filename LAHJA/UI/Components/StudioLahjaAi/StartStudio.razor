@@ -1,0 +1,127 @@
+﻿
+
+
+
+
+
+
+
+
+
+
+
+
+<MudContainer>
+
+
+    <MudText Typo="Typo.h2">@Title</MudText>
+
+
+
+    <MudGrid Justify="Justify.Center">
+        @foreach (var item in listt)
+        {
+
+            <MudItem>
+                <MudCard Outlined="true" Class="mb-3">
+                    <MudCardContent>
+
+                        <MudStack Direction="Row" AlignItems="AlignItems.Center" Spacing="2">
+                            <MudIcon Icon="@item.Icon" Color="Color.Primary" />
+                            <MudText Typo="Typo.h5">@item.Name</MudText>
+                            <MudText Typo="Typo.body2" Class="mt-2">
+                                @item.Description
+                            </MudText>
+                        </MudStack>
+
+
+                    </MudCardContent>
+
+                </MudCard>
+            </MudItem>
+        }
+
+    </MudGrid>
+</MudContainer>
+
+@code {
+    [Parameter]
+    public bool Typelangauge { get; set; } = true;
+
+    List<Item> listt;
+    public string Title;
+    protected override void OnInitialized()
+    {
+
+        if (Typelangauge)
+        {
+            listt = Items;
+            Title = "What Will You Build?";
+        }
+        else
+        {
+            listt = ItemsAr;
+             Title = "ماذا ستفعل ";
+        }
+
+    }
+
+    private List<Item> Items = new()
+    {
+        new Item("Text To Text","Icons.Material.Favorite", "This is a description for the Favorite item."),
+        new Item("Text To Speech","Icons.Material.Home", "This is a description for the Home item."),
+        new Item("Text TO Chat","Icons.Material.Settings", "Manage your application settings here.")
+
+    };
+    public string TitleAr = "ماذا ستبني؟";
+
+
+    private List<Item> ItemsAr = new()
+{
+    new Item("موديل التحويل  من نص الى نص", "Icons.Material.Favorite", "هذا وصف لعنصر المفضلة."),
+    new Item("موديل التحويل من نص الى الصوت ", "Icons.Material.Home", "هذا وصف لعنصر الصفحة الرئيسية."),
+    new Item("عام ", "Icons.Material.Settings", "قم بإدارة إعدادات التطبيق هنا.")
+};
+
+    public class Item
+    {
+        public string Name { get; set; }
+        public string Icon { get; set; }
+        public string Description { get; set; }
+
+        public Item(string name, string icon, string description)
+        {
+            Name = name;
+            Icon = icon;
+            Description = description;
+        }
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@code 
+{
+
+
+
+
+
+
+
+
+}

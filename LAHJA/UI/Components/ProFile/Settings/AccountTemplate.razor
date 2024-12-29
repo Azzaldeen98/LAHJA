@@ -2,123 +2,234 @@
 @using LAHJA.Them
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.Extensions.Localization
-@inherits CardAuth<DataBuildAuthBase>
+ @inherits CardAuth<DataBuildAuthBase>
 @inject IJSRuntime JSRuntime
 @* @inject IStringLocalizer<AccountTemplate> Localizer *@
-
-
-
-
-<MudContainer Class="pt-6 border-gray-100 md:col-span-8 lg:col-span-9 xl:col-span-9 md:px-4 py-4">
    
 
 
-            <MudContainer Class="mb-6">
-            <MudContainer Class="flex justify-between">
-                <MudText Typo="Typo.h5" Class="flex flex-row items-center text-xl font-bold">
-                    Account Settings
-                </MudText>
-            </MudContainer>
-        </MudContainer>
 
 
-        <MudContainer Class="mb-8 max-w-lg">
-        <MudForm @ref="form" OnValidSubmit="HandleValidSubmit" Class="mb-8 flex flex-col space-y-5" @bind-Errors="@errors">
-                <MudTextField @bind-Value="Username" Label="Username" Placeholder="Username" Pattern="\b(?!\d+$)([a-zA-Z0-9]|-(?!-))+\b" Title="Letters, numbers, dashes. No dash at the end or the start, no consecutive dashes. Not just numbers." MinLength="2" MaxLength="42" Required="true" />
-                @* <MudTextField @bind-Value="Email" Label="Primary email" Placeholder="Email address" Type="email" Required="true" /> *@
-            <MudTextField T="string" Label="Primary Email" Required="true" RequiredError="Email is required!"
-                          Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})" @bind-Value="@email" />
-                <MudText Typo="Typo.body2" Class="mt-2 text-sm text-gray-400">
-                    We will use this email to communicate with you. This is also the email to use to authenticate on hf.co.
-                </MudText>
-                <MudButton Type="Submit" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM">Save changes</MudButton>
-            </MudForm>
-        </MudContainer>
 
-
-        <MudContainer Class="mb-8 max-w-lg">
-            <MudText Typo="Typo.h6" Class="mb-3 font-semibold">Additional emails</MudText>
-            <MudText Typo="Typo.body2" Class="mb-4 text-gray-500">
-                Link additional emails to your account to join your organizations easily and identify git commits you make.
+<MudContainer Style="@(CurrentLanguage=="en"?"":"direction:rtl !important")" Class="pt-6 border-gray-100 md:col-span-8 lg:col-span-9 xl:col-span-9 md:px-4 py-4">
+    <!-- إعدادات الحساب -->
+    <MudContainer Class="mb-6">
+        <MudContainer Class="flex justify-between">
+            <MudText Typo="Typo.h5" Class="flex flex-row items-center text-xl font-bold">
+                @translations[CurrentLanguage]["AccountSettings"]
             </MudText>
-            <MudForm @ref="form" OnValidSubmit="HandleValidSubmit" Class="mb-8 flex flex-col space-y-5">
-                <MudTextField @bind-Value="Password" Label="Password" Placeholder="Enter new password" Type="password" Required="true" MinLength="4" MaxLength="100" />
-                <MudTextField @bind-Value="ConfirmPassword" Label="Confirm your new password" Placeholder="Confirm new password" Type="password" Required="true" MinLength="8" />
-                <MudButton Type="Submit" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM">Save changes</MudButton>
-            </MudForm>
         </MudContainer>
+    </MudContainer>
 
+    <!-- نموذج تحديث بيانات المستخدم -->
+    <MudContainer Class="mb-8 max-w-lg">
+        <MudForm @ref="form" OnValidSubmit="@HandleValidSubmit" Class="mb-8 flex flex-col space-y-5" @bind-Errors="@errors">
+            <MudTextField 
+                @bind-Value="Username" 
+                Label="@translations[CurrentLanguage]["Username"]"
+                Placeholder="@translations[CurrentLanguage]["EnterUsername"]"
+                Pattern="\b(?!\d+$)([a-zA-Z0-9]|-(?!-))+\b"
+                Title="@translations[CurrentLanguage]["UsernamePattern"]"
+                MinLength="2" 
+                MaxLength="42"
+                Required="true" 
+                RequiredError="@translations[CurrentLanguage]["UsernameRequired"]"
+                ErrorText="@translations[CurrentLanguage]["UsernameError"]" />
+            
+            <MudTextField 
+                T="string" 
+                Label="@translations[CurrentLanguage]["PrimaryEmail"]"
+                Placeholder="@translations[CurrentLanguage]["EnterEmail"]"
+                Required="true" 
+                RequiredError="@translations[CurrentLanguage]["EmailRequired"]"
+                Validation="@(new EmailAddressAttribute() { ErrorMessage = translations[CurrentLanguage]["EmailInvalid"] })"
+                @bind-Value="@Email" />
 
+            <MudText Typo="Typo.body2" Class="mt-2 text-sm text-gray-400">
+                @translations[CurrentLanguage]["EmailInfo"]
+            </MudText>
 
-        <MudContainer Class="fixed inset-0 z-40 !m-0 flex max-h-dvh w-screen select-text items-center overflow-y-auto overflow-x-hidden overscroll-contain bg-black/80 p-4 dark:bg-black/90 lg:p-6 2xl:p-8">
-            <MudCard Class="shadow-alternate m-auto flex min-h-0 flex-col overflow-hidden rounded-xl bg-white lg:mt-20 lg:max-h-[calc(100%-5.5rem)] xl:mt-24 xl:max-h-[calc(100%-10rem)] md:portrait:mt-20 w-full sm:w-96 max-w-full">
-                <MudCardHeader Class="col-span-full flex items-center justify-between whitespace-nowrap bg-gradient-to-r to-white font-semibold dark:to-gray-925 text-gray-800 px-4 py-0.5 border-t border-t-none from-gray-50 first:from-gray-100 dark:from-gray-900 dark:first:from-gray-800 border-b border-gray-100 first:h-[3.1rem] h-11 text-base flex-none rounded-t-lg sm:text-lg">
-                    <MudText Typo="Typo.h6">Link another email to your account</MudText>
-                    <MudIconButton Icon="Icons.Material.Filled.Close"  />
-                </MudCardHeader>
-                <MudCardContent Class="flex-1 overflow-y-auto">
-                    <MudForm @ref="emailForm" OnValidSubmit="HandleEmailSubmit">
-                        <MudTextField @bind-Value="Email" Label="Email" Placeholder="john.doe@company.org" Required="true" />
-                        <MudButton Type="Submit" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM">Confirm</MudButton>
-                    </MudForm>
-                </MudCardContent>
+            <MudButton 
+                Type="Submit" 
+                Variant="Variant.Filled" 
+                Color="@AppColors.BASE_COLOR_ENUM">
+                @translations[CurrentLanguage]["SaveChanges"]
+            </MudButton>
+        </MudForm>
+    </MudContainer>
+
+    <!-- نموذج البريد الإلكتروني الإضافي -->
+    <MudContainer Class="mb-8 max-w-lg">
+        <MudText Typo="Typo.h6" Class="mb-3 font-semibold">
+            @translations[CurrentLanguage]["AdditionalEmails"]
+        </MudText>
+        <MudText Typo="Typo.body2" Class="mb-4 text-gray-500">
+            @translations[CurrentLanguage]["AdditionalEmailsInfo"]
+        </MudText>
+        <MudForm @ref="form" OnValidSubmit="HandleValidSubmit" Class="mb-8 flex flex-col space-y-5">
+            <MudTextField 
+                @bind-Value="Password" 
+                Label="@translations[CurrentLanguage]["Password"]"
+                Placeholder="@translations[CurrentLanguage]["EnterPassword"]" 
+                Type="password" 
+                Required="true" 
+                MinLength="4" 
+                MaxLength="100" />
+            
+            <MudTextField 
+                @bind-Value="ConfirmPassword" 
+                Label="@translations[CurrentLanguage]["ConfirmPassword"]"
+                Placeholder="@translations[CurrentLanguage]["ConfirmPasswordPlaceholder"]" 
+                Type="password" 
+                Required="true" 
+                MinLength="8" />
+            
+            <MudButton Type="Submit"  Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM">
+                @translations[CurrentLanguage]["SaveChanges"]
+            </MudButton>
+        </MudForm>
+    </MudContainer>
+
+    <!-- حذف الحساب -->
+    <MudContainer Class="mb-8 max-w-lg">
+        <MudText Typo="Typo.h6" Class="mb-3 font-semibold">
+            @translations[CurrentLanguage]["DeleteAccount"]
+        </MudText>
+        <MudText Typo="Typo.body2" Class="mb-4 text-gray-500">
+            @translations[CurrentLanguage]["DeleteAccountInfo"]
+        </MudText>
+        <MudButton OnClick="OpenModal" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM">
+            @translations[CurrentLanguage]["DeleteMyAccount"]
+        </MudButton>
+
+        <MudContainer @bind-IsVisible="isModalVisible">
+            <MudCard>
+                <MudText Typo="Typo.h6">
+                    @translations[CurrentLanguage]["DeleteAccount"]
+                </MudText>
+                <MudIconButton Icon="Icons.Material.Filled.Close" OnClick="CloseModal" />
             </MudCard>
-        </MudContainer>
-
-
-        <MudContainer Class="mb-8 max-w-lg">
-            <MudText Typo="Typo.h6" Class="mb-3 font-semibold">Delete your account</MudText>
-            <MudText Typo="Typo.body2" Class="mb-4 text-gray-500">
-                Delete your HF account permanently, this action is irreversible. All your repositories (models, datasets, & Spaces) will be deleted.
-            </MudText>
-            <MudButton OnClick="OpenModal" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM">Delete my account</MudButton>
-
-            <MudContainer @bind-IsVisible="isModalVisible">
-                <MudCard>
-                    <MudText Typo="Typo.h6">Delete your LAHAJA account</MudText>
-                    <MudIconButton Icon="Icons.Material.Filled.Close" OnClick="CloseModal" />
-                </MudCard>
-                <MudContainer>
-                    <MudAlert Severity="Severity.Error">
-                        Deleting your account will delete all your repositories (models, datasets, and Spaces). Your username will be instantly available for new users. You will be immediately billed for any usage of paid services (such as AutoTrain) for the current month. In case of an active subscription, you will be billed for the entirety of the remaining period.
-                    </MudAlert>
-                    <MudForm @ref="form" OnValidSubmit="HandleValidSubmit">
-                        <MudTextField @bind-Value="Username" Label="Username" Placeholder="Enter your username" Required="true" />
-                        <MudTextField @bind-Value="Confirmation" Label='Type "delete my account"' Placeholder='Type "delete my account"' Required="true" />
-                        <MudButton Type="Submit" Variant="Variant.Filled" Color="Color.Error">Delete my account</MudButton>
-                        <MudButton OnClick="CloseModal" Variant="Variant.Outlined" Color="Color.Default">Cancel</MudButton>
-                    </MudForm>
-                </MudContainer>
+            <MudContainer>
+                <MudAlert Severity="Severity.Error">
+                    @translations[CurrentLanguage]["DeleteAccountWarning"]
+                </MudAlert>
+                <MudForm @ref="form" OnValidSubmit="HandleValidSubmit">
+                    <MudTextField 
+                        @bind-Value="Username" 
+                        Label="@translations[CurrentLanguage]["Username"]"
+                        Placeholder="@translations[CurrentLanguage]["EnterUsername"]" 
+                        Required="true" />
+                    
+                    <MudTextField 
+                        @bind-Value="Confirmation" 
+                        Label='@translations[CurrentLanguage]["DeleteAccountConfirmationLabel"]' 
+                        Placeholder='@translations[CurrentLanguage]["DeleteAccountConfirmationPlaceholder"]' 
+                        Required="true" />
+                    
+                    <MudButton Type="Submit" Variant="Variant.Filled" Color="Color.Error">
+                        @translations[CurrentLanguage]["DeleteMyAccount"]
+                    </MudButton>
+                    <MudButton OnClick="CloseModal" Variant="Variant.Outlined" Color="Color.Default">
+                        @translations[CurrentLanguage]["Cancel"]
+                    </MudButton>
+                </MudForm>
             </MudContainer>
         </MudContainer>
+    </MudContainer>
 </MudContainer>
 
-
-
 @code {
+    private Dictionary<string, Dictionary<string, string>> translations = new()
+    {
+        ["en"] = new Dictionary<string, string>
+        {
+            { "AccountSettings", "Account Settings" },
+            { "Username", "Username" },
+            { "EnterUsername", "Enter your username" },
+            { "UsernamePattern", "Letters, numbers, dashes. No dash at the end or start, no consecutive dashes. Not just numbers." },
+            { "UsernameRequired", "Username is required!" },
+            { "UsernameError", "The username must follow the pattern: letters, numbers, and dashes only." },
+            { "PrimaryEmail", "Primary Email" },
+            { "EnterEmail", "Enter your email address" },
+            { "EmailRequired", "Email is required!" },
+            { "EmailInvalid", "The email address is invalid." },
+            { "EmailInfo", "We will use this email to communicate with you." },
+            { "SaveChanges", "Save changes" },
+            { "AdditionalEmails", "Additional Emails" },
+            { "AdditionalEmailsInfo", "Link additional emails to your account." },
+            { "Password", "Password" },
+            { "EnterPassword", "Enter new password" },
+            { "ConfirmPassword", "Confirm Password" },
+            { "ConfirmPasswordPlaceholder", "Confirm your password" },
+            { "DeleteAccount", "Delete Your Account" },
+            { "DeleteAccountInfo", "This action is irreversible." },
+            { "DeleteAccountWarning", "Deleting your account will permanently erase all data." },
+            { "DeleteMyAccount", "Delete My Account" },
+            { "DeleteAccountConfirmationLabel", "Confirmation" },
+            { "DeleteAccountConfirmationPlaceholder", "Type 'delete my account'" },
+            { "Cancel", "Cancel" }
+        },
+        ["ar"] = new Dictionary<string, string>
+        {
+            { "AccountSettings", "إعدادات الحساب" },
+            { "Username", "اسم المستخدم" },
+            { "EnterUsername", "أدخل اسم المستخدم" },
+            { "UsernamePattern", "أحرف وأرقام وشرطات. لا توجد شرطة في البداية أو النهاية." },
+            { "UsernameRequired", "اسم المستخدم مطلوب!" },
+            { "UsernameError", "يجب أن يتبع اسم المستخدم النمط." },
+            { "PrimaryEmail", "البريد الإلكتروني الأساسي" },
+            { "EnterEmail", "أدخل بريدك الإلكتروني" },
+            { "EmailRequired", "البريد الإلكتروني مطلوب!" },
+            { "EmailInvalid", "عنوان البريد الإلكتروني غير صالح." },
+            { "EmailInfo", "سنستخدم هذا البريد للتواصل معك." },
+            { "SaveChanges", "حفظ التغييرات" },
+            { "AdditionalEmails", "إضافة بريد إلكتروني" },
+            { "AdditionalEmailsInfo", "اربط بريدًا إضافيًا بحسابك." },
+            { "Password", "كلمة المرور" },
+            { "EnterPassword", "أدخل كلمة مرور جديدة" },
+            { "ConfirmPassword", "تأكيد كلمة المرور" },
+            { "ConfirmPasswordPlaceholder", "أكد كلمة المرور الخاصة بك" },
+            { "DeleteAccount", "حذف الحساب" },
+            { "DeleteAccountInfo", "هذا الإجراء لا يمكن التراجع عنه." },
+            { "DeleteAccountWarning", "سيتم حذف جميع بياناتك." },
+            { "DeleteMyAccount", "احذف حسابي" },
+            { "DeleteAccountConfirmationLabel", "التأكيد" },
+            { "DeleteAccountConfirmationPlaceholder", "اكتب 'احذف حسابي'" },
+            { "Cancel", "إلغاء" }
+        }
+    };
+
+    private string CurrentLanguage = "en"; // تغيير اللغة إلى "ar" للعرض بالعربية
+
+
+    private string ConfirmPassword { get; set; }
+    private string Confirmation { get; set; }
+    private bool isModalVisible = false;
+
+    private void OpenModal() => isModalVisible = true;
+    private void CloseModal() => isModalVisible = false;
+
+
+
+
     private MudForm form;
     private MudForm emailForm;
     private string Email { get; set; }
     private bool isEmailModalVisible = true;
     private string Username { get; set; }
-    private string Confirmation { get; set; }
+
     private string Password { get; set; }
-      private string ConfirmPassword { get; set; }
-    private bool isModalVisible = true;
 
-    private void OpenModal()
-    {
-        isModalVisible = true;
-    }
 
-    private void CloseModal()
-    {
-        isModalVisible = false;
-    }
+
+
 
     private void HandleValidSubmit()
     {
-        // Handle form submission
+        if (form.IsValid)
+        {
+            
+        }
     }
 
     [Parameter] public EventCallback OnClose { get; set; }
@@ -126,6 +237,7 @@
     {
         
     }
+  
 
  
 }

@@ -1,0 +1,369 @@
+﻿@using LAHJA.Data.UI.Components.ServiceCard
+
+@using LAHJA.Data.UI.Components.StudioLahjaAiVM
+@using Microsoft.AspNetCore.Components
+@using MudBlazor
+
+
+<MudDropContainer T="DropItem" Items="_items" ItemsSelector="@((item,dropzone) => item.Identifier == dropzone)" ItemDropped="ItemUpdated">
+    <ChildContent>
+
+        <MudPaper MinHeight="500px" Class="d-flex flex-1 ">
+            <MudList T="string" Dense="true" @bind-SelectedValue="_selectedFolder">
+              
+                
+
+                @foreach (var dropZone in header)
+                {
+                    <MudDropZone T="DropItem" Identifier="@dropZone.Identifier" OnlyZone="true">
+                        <MudListItem Text="@dropZone.Text" Value="@dropZone.Identifier"
+                                     Icon="@dropZone.Icon" />
+                    </MudDropZone>
+                }
+             
+
+               
+
+                <MudListItem Icon="@Icons.Material.Filled.Label" Text="@namemodel" Expanded="true">
+                    <NestedList>
+                        @foreach (var dropZone in body)
+                            {
+                                <MudDropZone T="DropItem" Identifier="@dropZone.Identifier" OnlyZone="true">
+                                    <MudListItem Text="@dropZone.Text" Value="@dropZone.Identifier" 
+                                    Icon="@dropZone.Icon" />
+                                </MudDropZone>
+                            }
+                    </NestedList>
+                </MudListItem>
+            </MudList>
+
+
+                   
+               
+               
+
+                <MudDivider Vertical="true" FlexItem="true" />
+
+            <MudDivider Vertical="true" FlexItem="true" />
+            <MudList T="string" Dense="true" Class="d-flex flex-column flex-grow-1 py-0">
+                <MudToolBar Gutters="false" Dense="true">
+                    <MudCheckBox @bind-Value="ToolbarCheckBox"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.Refresh"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.MoreVert"/>
+                    <MudSpacer/>
+                    <MudIconButton Icon="@Icons.Material.Filled.ChevronLeft"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.ChevronRight"/>
+                </MudToolBar>
+                <MudDivider/>
+                <MudDropZone T="DropItem" Identifier="@_selectedFolder.ToString()" Class="flex-grow-1"/>
+            </MudList>
+
+    
+
+<MudPaper Width="250px">
+    <MudList T="string">
+
+        <MudListSubheader>
+        </MudListSubheader>
+
+
+                    <MudListItem Icon="@Icons.Material.Filled.Inbox" Text="@(TypeLanguage ? "Lahja Sound" : "انواع الاصوات ")">
+            <NestedList>
+
+                            @foreach (var item in TypeSound)
+                            {
+                                <MudListItem Icon="@Icons.Material.Filled.WatchLater">
+                                    @item.Text
+                                </MudListItem>
+                            }
+             
+
+            </NestedList>
+        </MudListItem>
+
+                    <MudListItem Icon="@Icons.Material.Filled.Inbox" Text="@(TypeLanguage ? "Lahja Type" : "انواع اللهجات")">
+
+            <NestedList>
+
+                            @foreach (var item in TypeLahja)
+                            {
+                                <MudListItem Icon="@Icons.Material.Filled.WatchLater">
+                                    @item.Text
+                                </MudListItem>
+                            }
+                      
+               
+            </NestedList>
+        </MudListItem>
+
+
+
+
+        <MudListItem Icon="@Icons.Material.Filled.Drafts">
+            Get Token 
+        </MudListItem>
+        <MudDivider/>
+        <MudListSubheader Class="mb-n3">
+         <MudSlider T="int" Value="@value" Variant="Variant.Filled">Volume</MudSlider>
+        </MudListSubheader>
+
+        <MudListSubheader Class="mb-n3">
+            <MudSwitch Color="Color.Primary" >"Sent  Expansion</MudSwitch>
+        </MudListSubheader>
+        
+        <MudListSubheader Class="mb-n3">
+            <MudSwitch Color="Color.Primary"  >"Sent  Expansion</MudSwitch>
+        </MudListSubheader>
+  
+        
+        
+    </MudList>
+</MudPaper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </MudPaper>
+    </ChildContent>
+    <ItemRenderer>
+
+        @if (@context.Identifier == "Starter Apps")
+    {
+            <StartStudio Typelangauge="TypeLanguage" />
+       
+    }
+
+
+        else if (@context.Identifier == "Social")
+        {
+
+            <T2Speech Param="@serviceComponentPar.textToSpeechComponent" />
+
+        }
+        else if (@context.Identifier == "Forums")
+        {
+            <T2Text Param="@serviceComponentPar.textToDialectComponent" />
+
+        }
+        else if (@context.Identifier == "ChatText")
+        {
+            <ChatT2Text />
+
+        }
+        else if (@context.Identifier == "Stream Realtime")
+        {
+            <T2SpeechLive Param="@serviceComponentPar.textToSpeechComponent" />
+        }
+        else if (@context.Identifier == "ChangeLog")
+        {
+
+            <LogChangeModelCompoent changeLogs="changeLogs" />
+
+        }
+
+
+
+
+
+
+ 
+
+        <MudDivider/>
+    </ItemRenderer>
+</MudDropContainer>
+
+
+@code {
+    public bool ToolbarCheckBox { get; set; } = false;
+    string _selectedFolder = "Starter Apps";
+    [Parameter]
+    public DataBuildServicePage DataBuildPage { get; set; }
+    [Parameter] public EventCallback<OnDataResult> OnSubmit { get; set; }
+    [Parameter] public OnDataResult DataBuildReturn { get; set; }
+
+    ServiceComponentPar serviceComponentPar = null;
+    ChangeLogService changeLogService = new ChangeLogService();
+    private List<ChangeLogModels> changeLogs;
+    private DataBuildServicePage serviceData = new DataBuildServicePage();
+
+    [Parameter]
+    public bool TypeLanguage { get; set; } = true;
+
+
+    List<CategoryData> header;
+    List<CategoryData> body;
+
+    List<CategoryData> TypeSound;
+    List<CategoryData> TypeLahja;
+
+
+    private string namemodel = "";
+    protected override void OnInitialized()
+    {
+
+
+        if (TypeLanguage)
+        {
+            header = CategoriesStart;
+            body = Categories;
+            namemodel = "Model";
+            TypeSound = TypeSoundEnglish;
+            TypeLahja = TypeLahjaEnglish;
+        }
+        else
+        {
+            header = CategoriesStartArabic;
+            body = Categoriesarbic;
+            namemodel = "موديلات";
+            TypeSound = TypeSoundArabic;
+            TypeLahja = TypeLahjaArabic;
+        }
+
+        DataBuildPage = serviceData;
+        changeLogs = changeLogService.GenerateRealisticChangeLEnglish(5);
+
+        serviceComponentPar = ServiceComponentPar.GetGenarelCard(DataBuildPage);
+        StateHasChanged();
+    }
+
+
+
+    private void ItemUpdated(MudItemDropInfo<DropItem> dropItem)
+    {
+        dropItem.Item.Identifier = dropItem.DropzoneIdentifier;
+    }
+    int value = 1;
+    private List<DropItem> _items = new()
+    {
+        new DropItem(){ Name = "Your exchange rate and Klarna benefits here", Identifier = "Inbox" },
+        new DropItem(){ Name = "Answer: Offer to buy mudblazor", Identifier = "Drafts" },
+
+        new DropItem(){ Name = "Nya privata meddelanden på SweClockers", Identifier = "Forums" },
+         new DropItem(){ Name = "Your exchange rate and Klarna benefits here", Identifier = "Get Space Key" },
+        new DropItem(){ Name = "IKEA - Betalningsbekräftelse för din order", Identifier = "Create Prompt" },
+        new DropItem(){ Name = "Leverans beställd till dig​", Identifier = "Stream Realtime" },
+        new DropItem(){ Name = "You’ve Got Sales! Cotton Bureau On Demand Report for Thursday, February 24, 2022", Identifier = "Starter Apps" },
+        new DropItem(){ Name = "Answer: Offer to buy mudblazor", Identifier = "Tune a Model" },
+        new DropItem(){ Name = "Inloggningsvarning för Facebook Messenger for Android", Identifier = "Social" },
+
+        new DropItem(){ Name = "Nya privata meddelanden på SweClockers", Identifier = "ChatText" },
+        new DropItem(){ Name = "Nya privata meddelanden på SweClockers", Identifier = "ChangeLog" },
+        new DropItem(){ Name = "Nya privata meddelanden på SweClockers", Identifier = "Setting" },
+    };
+
+
+
+    private List<CategoryData> Categories = new()
+    {
+        new CategoryData { Identifier = "Forums", Text = "Text To Text", Icon = Icons.Material.Filled.Group },
+        new CategoryData { Identifier = "Social", Text = "Text To Speech ", Icon = Icons.Material.Filled.Forum },    
+        new CategoryData { Identifier = "Stream Realtime", Text = "Text TO Speech Live", Icon = Icons.Material.Filled.Forum },
+        new CategoryData { Identifier = "ChatText", Text = "Chat Text", Icon = Icons.Material.Filled.Forum },
+
+    };
+    private List<CategoryData> CategoriesStart = new()
+    {
+
+        new CategoryData { Identifier = "Starter Apps", Text = "Starter Apps", Icon = Icons.Material.Filled.Group },
+
+
+    };
+
+
+    private List<CategoryData>TypeSoundEnglish = new()
+    {
+
+        new CategoryData { Identifier = "M", Text = "Male Voice", Icon = Icons.Material.Filled.Group },
+        new CategoryData { Identifier = "F", Text = "Famle Voice", Icon = Icons.Material.Filled.Group }
+
+
+    };
+
+  
+    private List<CategoryData> TypeSoundArabic = new()
+{
+    new CategoryData { Identifier = "M", Text = "صوت ذكر", Icon = Icons.Material.Filled.Group },
+    new CategoryData { Identifier = "F", Text = "صوت أنثى", Icon = Icons.Material.Filled.Group }
+};
+
+    private List<CategoryData> TypeLahjaArabic = new()
+    {
+
+new CategoryData { Identifier = "NA", Text = "اللهجة النجدية", Icon = Icons.Material.Filled.Group },
+new CategoryData { Identifier = "HA", Text = "اللهجة الحجازية", Icon = Icons.Material.Filled.Group },
+new CategoryData { Identifier = "SH", Text = "اللهجة الجنوبية", Icon = Icons.Material.Filled.Group },
+new CategoryData { Identifier = "EA", Text = "اللهجة الشرقية", Icon = Icons.Material.Filled.Group },
+
+
+    };
+
+    private List<CategoryData> TypeLahjaEnglish = new()
+    {
+        new CategoryData { Identifier = "NA", Text = "Najdi Dialect", Icon = Icons.Material.Filled.Group },
+        new CategoryData { Identifier = "HA", Text = "Hejazi Dialect", Icon = Icons.Material.Filled.Group },
+        new CategoryData { Identifier = "SH", Text = "Southern Dialect", Icon = Icons.Material.Filled.Group },
+        new CategoryData { Identifier = "EA", Text = "Eastern Dialect", Icon = Icons.Material.Filled.Group },
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+    private List<CategoryData> Categoriesarbic = new()
+{
+    new CategoryData { Identifier = "Forums", Text = "نص إلى نص", Icon = Icons.Material.Filled.Group },
+    new CategoryData { Identifier = "Social", Text = "نص إلى كلام", Icon = Icons.Material.Filled.Forum },
+    new CategoryData { Identifier = "Stream Realtime", Text = "نص إلى كلام مباشر", Icon = Icons.Material.Filled.Forum },
+    new CategoryData { Identifier = "ChatText", Text = "دردشة نصية", Icon = Icons.Material.Filled.Forum },
+};
+
+    private List<CategoryData> CategoriesStartArabic = new()
+{
+    new CategoryData { Identifier = "Starter Apps", Text = "تطبيقات البداية", Icon = Icons.Material.Filled.Group },
+};
+
+
+
+
+    public class DropItem
+    {
+        public string Name { get; init; }
+        public string Identifier { get; set; }
+    }
+     bool _expanded;
+     public class CategoryData
+    {
+        public string Identifier { get; set; }
+        public string Text { get; set; }
+        public string Icon { get; set; }
+    }
+}

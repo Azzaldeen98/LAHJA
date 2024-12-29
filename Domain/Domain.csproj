@@ -15,8 +15,6 @@
     <Folder Include="Entities\Roles\Response\" />
     <Folder Include="Entities\ServiceMethod\Request\" />
     <Folder Include="Entities\ServiceMethod\Response\" />
-    <Folder Include="Entities\Service\Request\" />
-    <Folder Include="Entities\Service\Response\" />
     <Folder Include="Entities\Subscriptions\Request\" />
     <Folder Include="Entities\User\Request\" />
     <Folder Include="Entities\User\Response\" />
@@ -24,7 +22,6 @@
     <Folder Include="Repository\Request\" />
     <Folder Include="Repository\Roles\" />
     <Folder Include="Repository\ServiceMethod\" />
-    <Folder Include="Repository\Service\" />
     <Folder Include="ShareData\Base\Payment\" />
   </ItemGroup>
 

@@ -114,5 +114,173 @@ async function getEventIdAndData() {
     console.log(result);
 }
 
-// Call the function
-getEventIdAndData();
+
+
+
+
+//import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js"; // ÊÍãíá ãßÊÈÉ Gradio ãä CDN
+
+//async function Text2Text(data) {
+
+//    try {
+
+//        data = JSON.parse(data);
+
+//        const client1 = await Client.connect(data.Space);
+//        const result = await client1.predict(data.Function, {
+//            text: data.Input,
+//            key: data.Key,
+//        });
+
+//        const textres = result.data;
+
+//        return textres;
+//    } catch {
+//        return null;
+//    }
+
+//}
+
+//async function Text2Speech(data) {
+
+//    try {
+//        // ÇáÇÊÕÇá ÈÜ Gradio API
+//        data = JSON.parse(data);
+
+//        const client = await Client.connect(data.Space);
+//        const result = await client.predict(data.Function, {
+//            text: data.Input,
+//            name_model: data.Model,
+//            speaking_rate: data.SR,
+//        });
+
+
+
+
+//        const audioPlayer = document.getElementById(data.AudioPlayerID);
+//        if (result.data) {
+//            audioPlayer.src = result.data[0].url; // ÊÚííä ÑÇÈØ ÇáÕæÊ
+//            audioPlayer.style.display = 'block'; // ÅÙåÇÑ ãÔÛá ÇáÕæÊ
+//            audioPlayer.play(); // ÊÔÛíá ÇáÕæÊ ÊáÞÇÆíðÇ
+//        }
+//        return "222"
+//    } catch (error) {
+
+//        return "333.3"
+//    }
+//}
+//async function VoiceBot(data) {
+
+//    alert(data)
+//    data = JSON.parse(data);
+//    alert(data)
+//    var text = Text2Text(data.Text2Text)
+//    if (text != null) {
+//        data.Speech.Input = text;
+
+//        var res = Text2Speech(data.Speech)
+//        return res
+//    }
+
+//    return "333.3"
+
+//}
+async function t2t(data) {
+    //const url = 'https://wasmdashai-t2t.hf.space/gradio_api/call/predict';
+
+    data = JSON.parse(data);
+
+    try {
+        // Step 1: POST request to get EVENT_ID
+        const postResponse = await fetch(data.URL, {
+            method: data.Method,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                data: [data.Text, data.Key],
+            }),
+        });
+
+        const postData = await postResponse.json();
+        const eventId = postData?.event_id;
+
+
+
+
+
+        const getResponse = await fetch(`${data.URL}/${eventId}`, {
+            method: 'GET',
+        });
+
+        const reader = getResponse.body.getReader();
+        const decoder = new TextDecoder('utf-8');
+        let result = '';
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            result += decoder.decode(value);
+        }
+
+        const dataLine = result.split('\n').find(line => line.startsWith('data:'));
+        const jsonString = dataLine.replace('data: ', '');
+
+        return jsonString;
+    } catch (error) {
+
+        return null;
+    }
+}
+//async function t2t(data) {
+
+//    alert("Alert")
+//    const url = 'https://wasmdashai-t2t.hf.space/gradio_api/call/predict';
+
+
+
+//    try {
+
+//        data = JSON.parse(data);
+//        // Step 1: POST request to get EVENT_ID
+//        const postResponse = await fetch(data.URL, {
+//            method: data.Method,
+//            headers: {
+//                'Content-Type': 'application/json',
+//            },
+//            body: JSON.stringify({
+//                data: [data.Text, data.Key],
+//            }),
+//        });
+
+//        const postData = await postResponse.json();
+//        const eventId = postData?.event_id;
+        
+
+
+
+
+//        const getResponse = await fetch(`${ data.URL } / ${ eventId }`, {
+//            method: 'GET',
+//        });
+        
+        
+//        const reader = getResponse.body.getReader();
+//        const decoder = new TextDecoder('utf-8');
+//        let result = '';
+        
+//        while (true) {
+//            const { done, value } = await reader.read();
+//            if (done) break;
+//            result += decoder.decode(value);
+//        }
+//        alert('jsonString')
+//        const dataLine = result.split('\n').find(line => line.startsWith('data:'));
+//        const jsonString = dataLine.replace('data: ', '');
+        
+//        return jsonString[0];
+//    } catch (error) {
+
+//        return null;
+//    }
+//}
