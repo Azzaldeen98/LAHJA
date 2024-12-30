@@ -16,8 +16,8 @@
 
 
     @* plan - card *@
-
-    <MudCard Class="@("p-2   "+@Params.ClassImport)">
+    <div class="p-0 m2">
+    <MudCard  Class="@("p-0  m-auto "+@Params.ClassImport)">
         <MudText Typo="Typo.h6" Align="Align.Left" class="@Params.HeaderImport"> @Params.Name</MudText>
         <p class="mx-3">@Params.Description</p>
             <MudCardContent>
@@ -79,8 +79,8 @@
                 </MudList>
             </MudCardContent>
       
-    </MudCard> 
-  
+    </MudCard>
+    </div>
 
 }
 

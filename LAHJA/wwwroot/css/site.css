@@ -2,6 +2,17 @@
 .nav-item-color-dark{
     color:#333 !important;
 }
+.nav-menu-continer-items-lg {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+
+.nav-menu-continer-items-sm {
+    display: none !important;
+}
 .nav-item-color-light {
     color: #fff !important;
 }
@@ -108,7 +119,13 @@ h1:focus {
 a, .btn-link {
     color: #0071c1;
 }
+.search-form-control-lg {
+    display: block !important;
+}
 
+.search-form-control-sm {
+    display: none !important;
+}
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
@@ -630,6 +647,20 @@ a, .btn-link {
 
 @media only screen and (max-width:700px) {
 
+    .nav-menu-continer-items-lg {
+        display: none !important;
+    }
+    .nav-menu-continer-items-sm  {
+        margin-top: 10px !important;
+    }
+
+    .nav-menu-continer-items-sm {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: start !important;
+    }
+
 .nav-bar_font * {
     font-size: small !important;
 }
@@ -711,11 +742,19 @@ a, .btn-link {
         width: 100% !important;
 /*        display:none !important;*/
     }
-    .isMenu-show {
+/*    .isMenu-show {
         display: none !important;
+    }*/
+
+    .search-form-control-lg {
+        display: none !important;
+    } 
+    
+    .search-form-control-sm {
+        display: block !important;
     }
-    .display-header-main{
-        display:block !important;
+    .display-header-main {
+        display: block !important;
     }
     .w70 {
         width: 100% !important

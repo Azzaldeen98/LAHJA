@@ -24,6 +24,7 @@ using LAHJA.Data.UI.Components.Payment.DataBuildBillingBase;
 using LAHJA.ApplicationLayer.Service;
 using LAHJA.Data.UI.Templates.Services;
 using LAHJA.UI.Templates.Services;
+using LAHJA.Helpers.Services;
 
 
 namespace LAHJA
@@ -50,8 +51,9 @@ namespace LAHJA
 
         private static void InstallHelperServices(this IServiceCollection serviceCollection)
         {
-            //serviceCollection.AddTransient<RecaptchaService>();
-        
+            serviceCollection.AddTransient<IManageLanguageService,ManageLanguageService>();
+            serviceCollection.AddScoped<LanguageService>();
+
 
         }  
         

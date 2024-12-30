@@ -1,63 +1,270 @@
-﻿
-<div class="position-relative" >
+﻿@using LAHJA.Helpers.Services
+@using LAHJA.Them
 
-    <footer class="py-5" style="padding:0% 8%">
-        <div class="row">
-            <div class="col-6 col-md-2 mb-3">
-                <h5>Section</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
-                </ul>
+ @inject LanguageService languageService
+ @inject IManageLanguageService _manageLanguageService
+ @* <!-- Remove the container if you want to extend the Footer to full width. -->
+ <div class="container my-5">
+     <!-- Footer -->
+     <footer class="text-center text-lg-start text-dark"
+             style="background-color: #ECEFF1">
+         <!-- Section: Social media -->
+         <section class="d-flex justify-content-between p-4 text-white"
+                  style="background-color: #21D192">
+             <!-- Left -->
+             <div class="me-5">
+                 <span>Get connected with us on social networks:</span>
+             </div>
+             <!-- Left -->
+             <!-- Right -->
+             <div>
+                 <a href="" class="text-white me-4">
+                     <i class="fab fa-facebook-f"></i>
+                 </a>
+                 <a href="" class="text-white me-4">
+                     <i class="fab fa-twitter"></i>
+                 </a>
+                 <a href="" class="text-white me-4">
+                     <i class="fab fa-google"></i>
+                 </a>
+                 <a href="" class="text-white me-4">
+                     <i class="fab fa-instagram"></i>
+                 </a>
+                 <a href="" class="text-white me-4">
+                     <i class="fab fa-linkedin"></i>
+                 </a>
+                 <a href="" class="text-white me-4">
+                     <i class="fab fa-github"></i>
+                 </a>
+             </div>
+             <!-- Right -->
+         </section>
+         <!-- Section: Social media -->
+         <!-- Section: Links  -->
+         <section class="">
+             <div class="container text-center text-md-start mt-5">
+                 <!-- Grid row -->
+                 <div class="row mt-3">
+                     <!-- Grid column -->
+                     <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                         <!-- Content -->
+                         <h6 class="text-uppercase fw-bold">Company name</h6>
+                         <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                             style="width: 60px; background-color: #7c4dff; height: 2px" />
+                         <p>
+                             Here you can use rows and columns to organize your footer
+                             content. Lorem ipsum dolor sit amet, consectetur adipisicing
+                             elit.
+                         </p>
+                     </div>
+                     <!-- Grid column -->
+                     <!-- Grid column -->
+                     <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                         <!-- Links -->
+                         <h6 class="text-uppercase fw-bold">Products</h6>
+                         <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                             style="width: 60px; background-color: #7c4dff; height: 2px" />
+                         <p>
+                             <a href="#!" class="text-dark">MDBootstrap</a>
+                         </p>
+                         <p>
+                             <a href="#!" class="text-dark">MDWordPress</a>
+                         </p>
+                         <p>
+                             <a href="#!" class="text-dark">BrandFlow</a>
+                         </p>
+                         <p>
+                             <a href="#!" class="text-dark">Bootstrap Angular</a>
+                         </p>
+                     </div>
+                     <!-- Grid column -->
+                     <!-- Grid column -->
+                     <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                         <!-- Links -->
+                         <h6 class="text-uppercase fw-bold">Useful links</h6>
+                         <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                             style="width: 60px; background-color: #7c4dff; height: 2px" />
+                         <p>
+                             <a href="#!" class="text-dark">Your Account</a>
+                         </p>
+                         <p>
+                             <a href="#!" class="text-dark">Become an Affiliate</a>
+                         </p>
+                         <p>
+                             <a href="#!" class="text-dark">Shipping Rates</a>
+                         </p>
+                         <p>
+                             <a href="#!" class="text-dark">Help</a>
+                         </p>
+                     </div>
+                     <!-- Grid column -->
+                     <!-- Grid column -->
+                     <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                         <!-- Links -->
+                         <h6 class="text-uppercase fw-bold">Contact</h6>
+                         <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                             style="width: 60px; background-color: #7c4dff; height: 2px" />
+                         <p><i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
+                         <p><i class="fas fa-envelope mr-3"></i> info@example.com</p>
+                         <p><i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
+                         <p><i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
+                     </div>
+                     <!-- Grid column -->
+                 </div>
+                 <!-- Grid row -->
+             </div>
+         </section>
+         <!-- Section: Links  -->
+         <!-- Copyright -->
+         <div class="text-center p-3"
+              style="background-color: rgba(0, 0, 0, 0.2)">
+             © 2020 Copyright:
+             <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+         </div>
+         <!-- Copyright -->
+     </footer>
+     <!-- Footer -->
+ </div>
+ <!-- End of .container --> *@
+
+
+ <MudContainer MaxWidth="MaxWidth.Large" Class="my-5 p-0 mx-0">
+    <MudPaper Elevation="1" Class="text-center text-lg-start text-dark" >
+        <!-- Social Media Section -->
+        <Section Class="d-flex justify-content-between py-2" Style="background-color:@AppColors.BASE_COLOR_FOUCS">
+            <MudText Class="me-5" Style="color: white;">@Params["SocialText"]</MudText>
+            <div>
+                <MudIconButton Icon="@Icons.Custom.Brands.Facebook" Class="me-4" Style="color: white;" />
+                <MudIconButton Icon="@Icons.Custom.Brands.Twitter" Class="me-4" Style="color: white;" />
+                <MudIconButton Icon="@Icons.Custom.Brands.Google" Class="me-4" Style="color: white;" />
+                <MudIconButton Icon="@Icons.Custom.Brands.Instagram" Class="me-4" Style="color: white;" />
+
+            @*     <MudIconButton Icon="@Icons.Custom.Brands.Linkedin" Color="@AppColors.BASE_COLOR_ENUM" Class="me-4" />
+                <MudIconButton Icon="@Icons.Custom.Brands.Github" Color="@AppColors.BASE_COLOR_ENUM" Class="me-4" /> *@
             </div>
+        </Section>
 
-            <div class="col-6 col-md-2 mb-3">
-                <h5>Section</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
-                </ul>
-            </div>
-
-            <div class="col-6 col-md-2 mb-3">
-                <h5>Section</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
-                </ul>
-            </div>
-
-            <div class="col-md-5 offset-md-1 mb-3">
-                <form>
-                    <h5>Subscribe to our newsletter</h5>
-                    <p>Monthly digest of what's new and exciting from us.</p>
-                    <div class="d-flex flex-column flex-sm-row w-100 gap-2">
-                        <label for="newsletter1" class="visually-hidden">Email address</label>
-                        <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
-                        <button class="btn btn-primary" type="button">Subscribe</button>
+      
+        <Section>
+            <MudContainer MaxWidth="MaxWidth.Large" Class="text-center  mt-5">
+                <div class="row mt-3">
+                    <!-- Company Info -->
+                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                        <MudText Class="text-uppercase fw-bold">@Params["CompanyName"]</MudText>
+                        <MudDivider Class="mb-4 mt-0 d-inline-block mx-auto" Style="width: 60px; height: 2px" />
+                         <MudText>@Params["CompanyDescription"]</MudText> 
                     </div>
-                </form>
-            </div>
-        </div>
 
-        <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 ">
-            <p>© 2024 Company, Inc. All rights reserved.</p>
-            <ul class="list-unstyled d-flex">
-                <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
-                <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
-                <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
-            </ul>
-        </div>
-    
-    </footer>
-    
-</div>
+                    <!-- Products Section -->
+             @*        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                        <MudText Class="text-uppercase fw-bold">@Params["Products"]</MudText>
+                        <MudDivider Class="mb-4 mt-0 d-inline-block mx-auto" Style="width: 60px; height: 2px" />
+                        <MudText><MudLink href="#!" Color="@AppColors.BASE_COLOR_ENUM">LAHJA</MudLink></MudText>
+                        
+                    </div> *@
+
+                    <!-- Useful Links -->
+                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4 align-content-start">
+                        <MudText Class="text-uppercase fw-bold">@Params["UsefulLinks"]</MudText>
+                        <MudDivider Class="mb-4 mt-0 d-inline-block mx-auto" Style="width: 60px;  height: 2px" />
+                        <MudText><MudLink href="/" Color="@AppColors.BASE_COLOR_ENUM">@Params["Home"]</MudLink></MudText>
+                        <MudText><MudLink href="/services" Color="@AppColors.BASE_COLOR_ENUM">@Params["Services"]</MudLink></MudText>
+                        <MudText><MudLink href="/pricing" Color="@AppColors.BASE_COLOR_ENUM">@Params["Pricing"]</MudLink></MudText>
+                        <MudText><MudLink href="/studio" Color="@AppColors.BASE_COLOR_ENUM">@Params["Studio"]</MudLink></MudText>
+                        <MudText><MudLink href="/" Color="@AppColors.BASE_COLOR_ENUM">@Params["Help"]</MudLink></MudText>
+                    </div>
+
+                    <!-- Contact Section -->
+                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto start-0 mb-md-0 mb-4">
+                        <MudText Class="text-uppercase fw-bold">@Params["Contact"]</MudText>
+                        <MudDivider Class="mb-4 mt-0 d-inline-block mx-auto" Style="width: 60px;  height: 2px" />
+                        <MudText><MudIcon Icon="@Icons.Material.Filled.Home" Class="mr-3" />@Params["Address"]</MudText>
+                        <MudText><MudIcon Icon="@Icons.Material.Filled.Email" Class="mr-3" />@Params["Email"]</MudText>
+                        <MudText><MudIcon Icon="@Icons.Material.Filled.Phone" Class="mr-3" />@Params["Phone"]</MudText>
+                        <MudText><MudIcon Icon="@Icons.Material.Filled.Print" Class="mr-3" />@Params["Print"]</MudText>
+                    </div>
+                </div>
+            </MudContainer>
+        </Section>
+
+       
+        <Section Class="text-center p-2" Style="background-color: rgba(0, 0, 0, 0.2)">
+            <MudText>@Params["Copyright"]</MudText>
+        </Section>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    protected override void OnInitialized()
+    {
+        languageService.OnLanguageChanged += OnChangedLanguage;
+        OnChangedLanguage(LanguagesCode.AR.ToString().ToLower());
+      
+    }
+    [Parameter] public Dictionary<string, string> Params { get; set; }
+
+    private static readonly Dictionary<string, Dictionary<string, string>> Translations = new()
+    {
+        ["en"] = new()
+        {
+                ["SocialText"] = "Connect with us via social networks:",
+                ["CompanyName"] = "LAHJA  AI",
+                ["CompanyDescription"] = "“The dialect platform provides a smart way to communicate with AI in your own dialect.”",
+                ["Products"] = "Products",
+                ["UsefulLinks"] = "Useful Links",
+                ["Contact"] = "Contact Us",
+                ["Home"] = "Home",
+                ["Pricing"] = "Pricing",
+                ["Services"] = "Services",
+                ["Studio"] = "Studio",
+                ["Help"] = "Help",
+                ["Address"] = "Riyadh,Saudi Arabia",
+                ["Email"] = "gmail@example.com",
+                ["Phone"] = "+ 05 234 567 88",
+                ["Print"] = "+ 05 234 567 89",
+                ["Copyright"] = "© 2024 Copyright:LAHJA "
+        },
+        ["ar"] = new()
+            {
+                ["SocialText"] = "تواصل معنا عبر الشبكات الاجتماعية:",
+                ["CompanyName"] = "لــهجــة  AI",
+                ["CompanyDescription"] = "“توفر منصة لهجة طريقة ذكية للتواصل مع الذكاء الاصطناعي بلهجتك الخاصة.”",
+                ["Products"] = "المنتجات",
+                ["UsefulLinks"] = "روابط مفيدة",
+                ["Contact"] = "اتصل بنا",
+                ["Home"] = "الرئيسية",
+                ["Pricing"] = "الاشتراكات",
+                ["Services"] = "الخدمات",
+                ["Studio"] = "الاستديو",
+                ["Help"] = "مساعدة",
+                ["Address"] = "الرياض، المملكة العربية السعودية،  ",
+                ["Email"] = "gmail@example.com",
+                ["Phone"] = "+ 05 234 567 88",
+                ["Print"] = "+ 05 234 567 89",
+                ["Copyright"] = "© 2024 حقوق الطبع والنشر: LAHJA "
+        }
+    };
+
+    private string currentLang = "en";
+
+    protected void OnChangedLanguage(string langCode)
+    {
+        currentLang = langCode;
+        Params = Translations.ContainsKey(currentLang) ? Translations[currentLang] : Translations["en"];
+        StateHasChanged();
+    }
+
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var currentLangCode = await _manageLanguageService.GetLanguageAsync();
+
+            OnChangedLanguage(currentLangCode);
+        }
+    }
+
+
+}
+

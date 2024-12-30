@@ -1,4 +1,8 @@
 ﻿@using LAHJA.Data.UI.Components.Base
+@using LAHJA.Helpers.Services
+@using LAHJA.Them
+ @inject LanguageService languageService
+ @inject IManageLanguageService _manageLanguageService
 
 <style>
 
@@ -134,132 +138,132 @@ p {
 
 
 </style>
+@code {
+    // قائمة مسارات الصور للأيقونات
+    [Parameter]
+    public List<string> IconPaths { get; set; } = new()
+    {
+        "assets/images/05.svg",
+        "assets/images/02.svg",
+        "assets/images/01.svg",
+        "assets/images/logo-icon.svg",
+        "assets/images/06.svg",
+        "assets/images/07.svg",
+        "assets/images/08.svg"
+    };
+
+    // تعريف النصوص باللغتين
+    private static readonly Dictionary<string, Dictionary<string, string>> Translations = new()
+        {
+            ["en"] = new()
+            {
+                ["Title"] = "Easily bring <span class='text-primary'>AI</span> in your workflow to create content",
+                ["Description"] = "Our robust integration capabilities ensure your data flows smoothly across systems, empowering you to streamline operations and boost productivity.",
+                ["ButtonText"] = "Integrate with your apps"
+            },
+            ["ar"] = new()
+            {
+                ["Title"] = "أدمج الذكاء الاصطناعي <span class='text-primary'>AI</span> في سير عملك بسهولة لإنشاء المحتوى",
+                ["Description"] = "تضمن إمكانيات التكامل القوية لدينا تدفق بياناتك بسلاسة عبر الأنظمة، مما يتيح لك تحسين العمليات وزيادة الإنتاجية.",
+                ["ButtonText"] = "دمج مع تطبيقاتك"
+            }
+        };
+
+    // لغة العرض الحالية (يتم ضبطها من المكون الأب أو بشكل افتراضي)
+    [Parameter] public string CurrentLanguage { get; set; } = "ar"; // اللغة الافتراضية هي الإنجليزية
+
+    // دالة لجلب النصوص حسب اللغة
+    private string GetTranslation(string key)
+    {
+        return Translations[CurrentLanguage].ContainsKey(key) ? Translations[CurrentLanguage][key] : key;
+    }
+
+    protected override void OnInitialized()
+    {
+
+        languageService.OnLanguageChanged += UpdateContent;
+
+    }
+
+
+    protected override async void OnAfterRender(bool firstRender) {
+        if (firstRender) {
+
+            CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+            InvokeAsync(StateHasChanged);
+
+        }
+
+    }
+
+    protected async void UpdateContent(string currentLangCode)
+    {
+
+        CurrentLanguage = currentLangCode;
+        InvokeAsync(StateHasChanged);
+
+
+    }
+
+}
 
 <section class="position-relative pt-0">
-	<div class="container-fluid px-xxl-6">
-		<div class=" bg-opacity-50 position-relative rounded-4 overflow-hidden pt-6 pt-md-8 px-sm-4 px-xxl-6">
-			<!-- Main content -->
-			<div class="container position-relative z-index-2">
-				<!-- Integrations START -->
-				<div class="row mb-6 mb-md-8">
-					<!-- Integrations logos -->
-					<div class="col-12 mb-6">
-						<div class="d-flex justify-content-center align-items-center gap-2 gap-sm-4">
-							<!-- Icon -->
-							<div class="icon-md text-center shadow-primary bg-body rounded-circle flex-shrink-0 d-none d-md-block">
-								<img src="assets/images/04.svg" class="w-20px Ic" alt="">
-							</div>
+    <div class="container-fluid px-xxl-6">
+        <div class="bg-opacity-50 position-relative rounded-4 overflow-hidden pt-6 pt-md-8 px-sm-4 px-xxl-6">
+            <!-- المحتوى الرئيسي -->
+            <div class="container position-relative z-index-2">
+                <!-- Integrations START -->
+                <div class="row mb-6 mb-md-8">
+                    <!-- شعارات التكامل -->
+                    <div class="col-12 mb-6">
+                        <div class="d-flex justify-content-center align-items-center gap-2 gap-sm-4">
+                            <div class="icon-xl text-center shadow-primary bg-body rounded-circle flex-shrink-0" style="line-height: 4.3rem;">
+                                <img src="assets/images/02.svg" class="h-40px" alt="">
+                            </div>
 
-							<!-- Icon -->
-							<div class="icon-lg text-center shadow-primary bg-body rounded-circle flex-shrink-0 ">
-								<img src="assets/images/05.svg" class="w-30px" alt="">
-							</div>
+                            <!-- Icon -->
+                            <div class="icon-xl text-center shadow-primary bg-body rounded-circle flex-shrink-0" style="line-height: 4.3rem;">
+                                <img src="assets/images/01.svg" class="h-40px" alt="">
+                            </div>
 
-							<!-- Icon -->
-							<div class="icon-xl text-center shadow-primary bg-body rounded-circle flex-shrink-0" style="line-height: 4.3rem;">
-								<img src="assets/images/02.svg" class="h-40px" alt="">
-							</div>
+                            <!-- Icon -->
+                            <div class="icon-xxl text-center shadow-primary bg-body rounded-circle flex-shrink-0 ripple-anim" style="line-height: 6.8rem;">
+                                <img src="assets/images/logo-icon.svg" class="h-60px" alt="">
+                            </div>
 
-							<!-- Icon -->
-							<div class="icon-xl text-center shadow-primary bg-body rounded-circle flex-shrink-0" style="line-height: 4.3rem;">
-								<img src="assets/images/01.svg" class="h-40px" alt="">
-							</div>
+                            <!-- Icon -->
+                            <div class="icon-xl text-center shadow-primary bg-body rounded-circle flex-shrink-0" style="line-height: 4.3rem;">
+                                <img src="assets/images/06.svg" class="h-40px" alt="">
+                            </div>
 
-							<!-- Icon -->
-							<div class="icon-xxl text-center shadow-primary bg-body rounded-circle flex-shrink-0 ripple-anim" style="line-height: 6.8rem;">
-								<img src="assets/images/logo-icon.svg" class="h-60px" alt="">
-							</div>
+                            <!-- Icon -->
+                            <div class="icon-xl text-center shadow-primary bg-body rounded-circle flex-shrink-0">
+                                <img src="assets/images/07.svg" class="w-30px" alt="">
+                            </div>
 
-							<!-- Icon -->
-							<div class="icon-xl text-center shadow-primary bg-body rounded-circle flex-shrink-0" style="line-height: 4.3rem;">
-								<img src="assets/images/06.svg" class="h-40px" alt="">
-							</div>
+                        </div>
+                    </div>
 
-							<!-- Icon -->
-							<div class="icon-xl text-center shadow-primary bg-body rounded-circle flex-shrink-0">
-								<img src="assets/images/07.svg" class="w-30px" alt="">
-							</div>
+                    <!-- العنوان والمحتوى -->
+                    <div class="col-xxl-8 text-center mx-auto">
+                        <!-- العنوان -->
+                        <h1 class="fw-bold mb-4 lh-base h4" style="color:@AppColors.BASE_COLOR_FOUCS">@((MarkupString)GetTranslation("Title"))</h1>
 
-							<!-- Icon -->
-							<div class="icon-lg text-center shadow-primary bg-body rounded-circle flex-shrink-0 d-none d-sm-block">
-								<img src="assets/images/08.svg" class="w-30px" alt="">
-							</div>
+                        <!-- الوصف -->
+                        <p class="mb-4">@GetTranslation("Description")</p>
 
-							<!-- Icon -->
-							<div class="icon-md text-center shadow-primary bg-body rounded-circle flex-shrink-0 d-none d-md-block">
-								<img src="assets/images/09.svg" class="w-20px Ic" alt="">
-							</div>
-						</div>
-					</div>
-					
-					<!-- Title and contents -->
-					<div class="col-xxl-8 text-center mx-auto">
-						<!-- Title -->
-						<h1 class="fw-bold mb-4 lh-base h">Easily bring <span class="text-primary">AI</span> in your workflow to create content</h1>
+                        <!-- الزر -->
+                        <MudButton Class="  mb-0" Color="@AppColors.BASE_COLOR_ENUM" Variant="Variant.Filled" Href="integrations.html">
+                            @GetTranslation("ButtonText")
+                            <MudIcon Icon="Icons.Material.Filled.ArrowRight"  />
+                        </MudButton>
+                    </div>
+                </div>
+                <!-- Integrations END -->
+            </div>
+        </div>
+    </div>
 
-						<!-- Desc -->
-						<p class="mb-4">Our robust integration capabilities ensure your data flows smoothly across systems, empowering you to streamline operations and boost productivity</p>
-
-						<!-- Button -->
-						<a href="integrations.html" class="btn btn-primary-grad icon-link icon-link-hover mb-0">Integrate with your apps <i class="bi bi-arrow-right"></i></a>
-					</div>
-				</div>
-				<!-- Integrations END -->
-				
-				@* <!-- Features START -->
-				<div class="row g-4 g-lg-6">
-					<!-- Feature item -->
+    </section>
 
 
-					@foreach (var cardDetai in CardTextAndIconlsLis)
-					{
-
-
-						<IconManin Params="@cardDetai" />
-					}
-
-
-					<!-- Feature item -->
-				
-
-					<!-- Feature item -->
-					
-				</div>
-				<!-- Features END --> *@
-			</div>
-		</div>
-	</div>
-
-	<!-- Blur bg -->
-</section>
-@code {
-	
-	private List<CaerdSevicisIcon> CardTextAndIconlsLis = new List<CaerdSevicisIcon>
-	{
-		new CaerdSevicisIcon
-		{Name= "Sentiment analysis",
-	Description= "This enables the chatbot to respond appropriately, enhancing customer satisfaction and engagement",
-	},
-		new CaerdSevicisIcon
-		{Name= "Sentiment analysis",
-	Description= "This enables the chatbot to respond appropriately, enhancing customer satisfaction and engagement",
-	},
-		new CaerdSevicisIcon
-		{Name= "Sentiment analysis",
-	Description= "This enables the chatbot to respond appropriately, enhancing customer satisfaction and engagement",
-	},
-		new CaerdSevicisIcon
-		{Name= "Sentiment analysis",
-	Description= "This enables the chatbot to respond appropriately, enhancing customer satisfaction and engagement",
-	},
-		new CaerdSevicisIcon
-		{Name= "Sentiment analysis",
-	Description= "This enables the chatbot to respond appropriately, enhancing customer satisfaction and engagement",
-	},
-		new CaerdSevicisIcon
-		{Name= "Sentiment analysis",
-	Description= "This enables the chatbot to respond appropriately, enhancing customer satisfaction and engagement",
-	},
-	};
-	
-}

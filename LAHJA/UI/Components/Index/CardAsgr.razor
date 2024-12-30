@@ -1,4 +1,5 @@
-﻿@* <div class="row g-4 g-lg-5 position-relative" style="padding:5%;width: 100%;">
+﻿@using LAHJA.Them
+@* <div class="row g-4 g-lg-5 position-relative" style="padding:5%;width: 100%;">
 
             <!-- Feature item -->
             <div class="col-md-4 mb-4 mb-sm-0">
@@ -63,8 +64,8 @@
                     <div class="col-lg-6 ms-auto">
                         <!-- Skill set -->
                         <div class="d-flex align-items-center" style="max-width: 30rem;">
-                            <h2 class="display-4 text-primary-grad mb-0">366+</h2>
-                            <h6 class="mb-0 ms-3 tser">Products successfully launched</h6>
+                    <h2 class="display-4 text-primary-grad mb-0" style="color:@AppColors.BASE_COLOR_FOUCS">366+</h2>
+                    <h6 class="mb-0 ms-3 tser" style="color:@AppColors.BASE_COLOR_FOUCS">Products successfully launched</h6>
                         </div>
 
                         <hr class="border-primary border-opacity-50 mt-4 mb-5"> <!-- Divider -->
@@ -77,10 +78,10 @@
                                 <div class="tab-pane fade show active" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab" tabindex="0">
                                     <p class="mb-2">We strive to be the trusted partner that helps our clients navigate the complexities of the digital age with confidence and ease</p>
                                     <!-- List -->
-                                    <ul class="list-group list-group-borderless mb-3">
-                                        <li class="list-group-item heading-color d-flex pb-0"><i class="bi bi-patch-check text-success me-2"></i>Advanced AI technology</li>
-                                        <li class="list-group-item heading-color d-flex pb-0"><i class="bi bi-patch-check text-success me-2"></i>Boosting efficiency with optimized workflows</li>
-                                        <li class="list-group-item heading-color d-flex pb-0"><i class="bi bi-patch-check text-success me-2"></i>Driving sustainable growth with insights</li>
+                                    <ul class="list-group list-group-borderless mb-3" style="background-color:transparent !important">
+                                <li class="list-group-item  d-flex pb-0" style="background-color:transparent !important;color:@AppColors.BASE_COLOR_FOUCS"><i class="bi bi-patch-check  me-2"></i>Advanced AI technology</li>
+                                <li class="list-group-item  d-flex pb-0" style="background-color:transparent !important;color:@AppColors.BASE_COLOR_FOUCS"><i class="bi bi-patch-check  me-2"></i>Boosting efficiency with optimized workflows</li>
+                                <li class="list-group-item  d-flex pb-0" style="background-color:transparent !important;color:@AppColors.BASE_COLOR_FOUCS"><i class="bi bi-patch-check  me-2"></i>Driving sustainable growth with insights</li>
                                     </ul>
                                 </div>
 
@@ -91,18 +92,18 @@
                                 <p class="mb-2">Effective design communicates your brand's identity, cultivates trust, and can significantly impact conversion rates and customer loyalty.</p>
                                 <!-- List -->
                                 <ul class="list-group list-group-borderless mb-3">
-                                    <li class="list-group-item heading-color d-flex pb-0"><i class="bi bi-patch-check text-success me-2"></i>Tailored solutions</li>
-                                    <li class="list-group-item heading-color d-flex pb-0"><i class="bi bi-patch-check text-success me-2"></i>Proven track Record</li>
-                                    <li class="list-group-item heading-color d-flex pb-0"><i class="bi bi-patch-check text-success me-2"></i>Cost-effectiveness</li>
+                            <li class="list-group-item heading-color d-flex pb-0" style="background-color:transparent !important;color:@AppColors.BASE_COLOR_FOUCS"><i class="bi bi-patch-check text-success me-2"></i>Tailored solutions</li>
+                            <li class="list-group-item heading-color d-flex pb-0" style="background-color:transparent !important;color:@AppColors.BASE_COLOR_FOUCS"><i class="bi bi-patch-check text-success me-2"></i>Proven track Record</li>
+                            <li class="list-group-item heading-color d-flex pb-0" style="background-color:transparent !important;color:@AppColors.BASE_COLOR_FOUCS"><i class="bi bi-patch-check text-success me-2"></i>Cost-effectiveness</li>
                                 </ul>
                             </MudTabPanel>
                             <MudTabPanel Text="Bug Report" Icon="@Icons.Material.Filled.BugReport" ToolTip="ToolTip Three">
                                 <p class="mb-2">We provide a range of tools, guides, and best practices to help you create designs, websites.</p>
                                 <!-- List -->
                                 <ul class="list-group list-group-borderless mb-3">
-                                    <li class="list-group-item heading-color d-flex pb-0"><i class="bi bi-patch-check text-success me-2"></i>Digital pioneers</li>
-                                    <li class="list-group-item heading-color d-flex pb-0"><i class="bi bi-patch-check text-success me-2"></i>Continuous learning</li>
-                                    <li class="list-group-item heading-color d-flex pb-0"><i class="bi bi-patch-check text-success me-2"></i>Inspiring transformation</li>
+                            <li class="list-group-item heading-color d-flex pb-0"  style="background-color:transparent !important;color:@AppColors.BASE_COLOR_FOUCS"><i class="bi bi-patch-check text-success me-2"></i>Digital pioneers</li>
+                            <li class="list-group-item heading-color d-flex pb-0" style="background-color:transparent !important;color:@AppColors.BASE_COLOR_FOUCS"><i class="bi bi-patch-check text-success me-2"></i>Continuous learning</li>
+                            <li class="list-group-item heading-color d-flex pb-0" style="background-color:transparent !important;color:@AppColors.BASE_COLOR_FOUCS"><i class="bi bi-patch-check text-success me-2"></i>Inspiring transformation</li>
                                 </ul>
                         </MudTabPanel>
                         </MudTabs> 

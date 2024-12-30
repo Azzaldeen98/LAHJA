@@ -37,6 +37,12 @@
 
 @code {
     [Parameter] public EventCallback SubmitLogOut { get; set; }
+    [Parameter] public string LanguageCode {  set {
+
+            CurrentLanguage = value;
+            StateHasChanged();
+        } }
+
     [Parameter]
     public bool IsLogin
     {

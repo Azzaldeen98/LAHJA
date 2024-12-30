@@ -1,11 +1,14 @@
 ﻿using Domain.Entities.User;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.JSInterop;
+using Newtonsoft.Json.Linq;
 using Shared.Constants;
+using Shared.Constants.Localization;
 using Shared.Helpers;
 using System.Threading.Tasks;
 namespace LAHJA.Helpers.Services
 {
+ 
     public class TokenService : ITokenService
     {
         private readonly IJSRuntime _jsRuntime;
