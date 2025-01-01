@@ -1,176 +1,271 @@
 @using LAHJA.Data.UI.Models
+@using LAHJA.Them
+@using MudBlazor
+@using LAHJA.Data.UI.Components.ServiceCard
+@using Microsoft.AspNetCore.Components
+@using LAHJA.ApiClient.Services.Query
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
 @inject LAHJA.ApiClient.Services.IT2TService _T2TService
+@inject IQueryTextToSpeechService _queryTextToSpeechService
 
-<style>
+<MudCard Elevation="25" Class="rounded-lg p-0 h-100 d-flex flex-column" Style="max-width: 100%; margin: auto;">
 
-    .chat-container {
-        display: flex;
-        flex-direction: column;
-        height: 500px;
-        width: 100%;
-        max-width: 600px;
-        margin: auto;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-    .chat-messages {
-        flex-grow: 1;
-        overflow-y: auto;
-        padding: 15px;
-    }
-
-
-    .chat-input {
-        display: flex;
-        align-items: center;
-        padding: 10px;
-        border-top: 1px solid #ddd;
-        background-color: #fff;
-    }
-
-    .input-field {
-        flex-grow: 1;
-        margin-right: 10px;
-    }
-
-    .message {
-        padding: 10px;
-        margin-bottom: 8px;
-        border-radius: 8px;
-        max-width: 40%;
-    }
-
-    .user-message
-    
-    {
-        background-color: #d1f4ff;
-        margin-left: auto;
-    }
-
-
-    .bot-message 
-    {
-        background-color: #e0e0e0;
-        margin-right: auto;
-        width: 300px
-    }
-
-</style>
-
-
-
-
-
-
-
-
-
-
-
-<MudPaper Class="chat-container" Elevation="2">
-    <div class="chat-messages" @ref="messagesContainer">
-        @foreach (var message in messages)
-        {
-
-
-
-            <MudPaper Class="@(message.IsUser ? "user-message" : "bot-message")" Elevation="1">
-                <div class="message-content">
-
-                    @if (message.IsText)
-                    {
-
-                        <MudText Typo="Typo.body1">@message.Content</MudText>
-                    }
-                   
-                </div>
-            </MudPaper>
-        }
-
-    </div>
-    <div class="chat-input">
-        <MudTextField @bind-Value="currentMessage" Placeholder="Type a message..." Class="input-field" />
-        <MudIconButton Icon="@Icons.Material.Filled.Send" Size="Size.Medium" OnClick="SendMessage" />
-
-    </div>
-</MudPaper>
-
-
-@code
-{
-    [Parameter]
-    public string IncomingMessageType { get; set; } = "Audio"; 
-
-
-    private List<Message> messages = new();
-    private string currentMessage;
-    private ElementReference messagesContainer;
-    private async void SendMessage()
-    {
-
-
-        if (!string.IsNullOrWhiteSpace(currentMessage))
-        {
-            messages.Add(new Message { Content = currentMessage, IsUser = true, IsText = true });
-
-
-            var response = await _T2TService.T2TAsync(new QueryRequestTextToText { Text = currentMessage });
-
-            if (response.Succeeded)
+    <MudCardContent Class="flex-grow-1 p-0 w-100 p-2 overflow-auto" Style="max-height:300px;min-height:300px">
+        <div id="chat-messages" class="d-flex flex-column gap-2">
+            @if (ChatMessages != null && ChatMessages.Any())
             {
-                string decodedText = response.Data.Text;
-                GenerateResponse(decodedText);
-                StateHasChanged();
+                @foreach (var message in ChatMessages)
+                {
+                    <div class="chat-bubble">
+                        <MudPaper Class="px-3 py-1 d-flex flex-row justify-content-around align-items-center" Style="@("background-color:"+@message.BubbleColor)">
+                            
+                            <MudText Class="mb-0 fs-small fw-normal" style="font-size:12px !important; font-weight:normal !important">
+                                @message.DisplayedContent
+                            </MudText>
+                            <MudIconButton class="mx-2" Size="Size.Medium" style="height:50px" Icon="@Icons.Material.Filled.SurroundSound" Color="@AppColors.BASE_COLOR_ENUM" OnClick="@(() => speechText(message.DisplayedContent))" Edge="Edge.End" />
+                        </MudPaper>
+                    </div>
+                }
             }
             else
             {
-                // response.Messages;
+                <MudText Typo="Typo.body2" Class="text-center text-muted">
+                    No messages yet. Start the conversation!
+                </MudText>
             }
+        </div>
+    </MudCardContent>
+    <MudCard Style="width:100%" Class="mb-3 d-flex flex-row-reverse">
 
-                
-            // GenerateResponse();
-            currentMessage = string.Empty;
-            ScrollToBottom();
+        <MudCardContent Style="width:100%">
+
+            <MudTextField T="string"
+                          Required="true"
+                          Class="custom-focus-border py-2 rounded-3"
+                          style="font-size:12px !important; font-weight:normal !important"
+                          RequiredError="Enter your Message!"
+                          @bind-Value="@textSpeech"
+                          Placeholder="Type a message..."
+                          Variant="Variant.Outlined"
+                          MaxLines="14" />
+
+        </MudCardContent>
+        <MudCardActions Class="pt-0">
+            <MudSpacer />
+            <MudTooltip Text="Submit">
+                <MudIconButton Disabled="@_processing" ButtonType="ButtonType.Submit" OnClick="OnSubmit" Icon="@Icons.Material.Filled.Send"
+                               Size="Size.Medium" Color="@AppColors.BASE_COLOR_ENUM">
+                    @if (_processing)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                    }
+                    else
+                    {
+                        <MudIcon Size="Size.Medium" Icon="@Icons.Material.Filled.Send" Color="@AppColors.BASE_COLOR_ENUM" />
+                    }
+
+                </MudIconButton>
+            </MudTooltip>
+        </MudCardActions>
+
+    </MudCard>
+
+ 
+</MudCard>
+
+<style>
+
+
+    .custom-focus-border:focus-within {
+        border-color: rgba(11,186,131,1) !important;
+    }
+
+    .chat-bubble {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 10px;
+    }
+
+        .chat-bubble.User {
+            justify-content: flex-end;
+        }
+
+        .chat-bubble .mud-paper {
+            border-radius: 10px;
+            max-width: 75%;
+        }
+
+        /* Dynamic Chat Bubble Colors */
+        .chat-bubble.User .mud-paper {
+            background-color: #e3f2fd; /* Light blue for user messages */
+        }
+
+        .chat-bubble.System .mud-paper {
+            background-color: #eeeeee; /* Light gray for system messages */
+        }
+
+
+
+</style>
+
+@code {
+
+    private string textSpeech;
+
+
+    private List<ChatMessage> ChatMessages = new();
+
+   
+
+    private async void speechText(string message)
+    {
+
+
+        if (!string.IsNullOrEmpty(message))
+        {
+
+            var res = await _queryTextToSpeechService.TextToSpeechAsync(new QueryRequestTextToSpeech
+                {
+                    Url = "https://api-inference.huggingface.co/models/wasmdashai/vits-ar-sa-huba-v2",
+                    Data = message,
+                });
         }
     }
 
-  
-
-
-
-    private void GenerateResponse(string message)
+    private async Task TriggerTypingEffect(ChatMessage message)
     {
-         
+        if (string.IsNullOrEmpty(message.Content))
+            return;
 
-            messages.Add(new Message
-                {
-                Content = message,
-                    IsUser = false,
-                    IsText = true
-
-                });
-        StateHasChanged();
-     
- 
+        message.DisplayedContent = string.Empty;
+        foreach (char c in message.Content)
+        {
+            message.DisplayedContent += c;
+            StateHasChanged();
+            await Task.Delay(50); // Typing delay per character
+        }
     }
-
-
-
-    
-
-
-    private async Task ScrollToBottom()
-    {
-        await Task.Delay(100);
-
-    }
-
-    private class Message
+    public class ChatMessage
     {
         public string Content { get; set; }
-        public bool IsUser { get; set; }
-        public bool IsText { get; set; }
+        public string DisplayedContent { get; set; } = string.Empty;
+        public string IsUser { get; set; } // "User" or "System"
+        public string BubbleColor { get; set; }
     }
+
+
+
+    private MudForm form;
+    private bool _processing = false;
+    private void testing()
+    {
+        Navigation.NavigateTo("/ServiceInforMationModel");
+    }
+
+    [Parameter] public TextToDialectComponent? Param { get; set; }
+
+    [Parameter] public EventCallback ShareResult { get; set; }
+
+    // [Parameter] public EventCallback<OnDataResult> OnSubmit { get; set; }
+
+    [Parameter] public OnDataResult? OnResult { get; set; } = null;
+
+
+    private bool flag1 = false;
+    // private string /* textSpeech */ = "";
+    private string SelectedDialect = "";
+
+    private IEnumerable<string> TextStrength(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            yield return "Text cannot be empty.";
+
+        if (value.Length < 6)
+            yield return "Password must be at least 8 characters long.";
+        if (!value.Any(ch => "!@#$%^&*()".Contains(ch)))
+            yield return "Password must include at least one special character (!@#$%^&*()).";
+    }
+
+    private async Task addTextToChatMessage(string message, string bg = "#21c99569")
+    {
+        ChatMessages.Add(new ChatMessage
+            {
+                DisplayedContent = message,
+                IsUser = "System",
+                BubbleColor = bg
+            });
+
+        StateHasChanged();
+    }
+    private async Task OnSubmit()
+    {
+        try
+        {
+
+            _processing = true;
+
+            StateHasChanged();
+
+            if (!string.IsNullOrWhiteSpace(textSpeech))
+            {
+
+                addTextToChatMessage(textSpeech);
+
+
+
+                var response = await _T2TService.T2TAsync(new QueryRequestTextToText { Text = textSpeech });
+
+                if (response.Succeeded)
+                {
+                    string decodedText = response.Data.Text;
+                    if (!string.IsNullOrWhiteSpace(decodedText))
+                    {
+                        // addTextToChatMessage(decodedText,"#eeeeee");
+
+                        var msg = new ChatMessage
+                            {
+                                Content = decodedText,
+                                IsUser = "System",
+                                BubbleColor = ""
+                            };
+
+                        ChatMessages.Add(msg);
+
+                        await TriggerTypingEffect(msg);
+
+                        _processing = false;
+
+                    }
+
+
+                    // OnResult = new OnDataResult()
+                    //  {
+                    //          Text = decodedText,
+                    //          OperationType="TextToDialect",
+                    //          Sccess=true,
+                    //          SelectLanguage=SelectedDialect,
+                    //         TypeSend="Send"
+                    //  };
+
+                    // await OnSubmit.InvokeAsync(OnResult);
+
+
+                }
+                textSpeech = "";
+                StateHasChanged();
+
+            }
+
+        }
+
+        catch (Exception ex)
+        {
+
+        }
+
+
+    }
+
 }

@@ -1,4 +1,10 @@
-﻿<style>
+﻿@using LAHJA.Helpers.Services
+ @using System.Collections.Generic
+@using LAHJA.Data.UI.Components.Base
+@inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+
+<style>
     .swiper-container {
         width: 100%;
         height: auto;
@@ -26,10 +32,11 @@
        
     }
 </style>
+
+<h2 class="testimonials-title">@title</h2>
 <div class=" px-4 py-5 position-relative" id="hanging-icons" style="margin-top: 0%;">
 
-    @using System.Collections.Generic
-@using LAHJA.Data.UI.Components.Base
+
 
     <div class="row">
         <div class="col-lg-9 col-xl-7 mx-auto cont">
@@ -65,18 +72,66 @@
 
 </div>
 @code {
-    public List<Testimonial> Testimonials = new List<Testimonial>
-    {
-        new Testimonial { Name = "Louis Ferguson", Role = "Web Developer", Message = "Our passion for customer excellence is just one reason why we are the market leader. We've always worked very hard to give our customers the best experience. Was out laughter raptures returned outweigh. Luckily cheered colonel I do we attack highest enabled...", ImageUrl = "assets/images/avatar/02.jpg" },
-        new Testimonial { Name = "Emma Watson", Role = "UI/UX Designer", Message = "Our passion for customer excellence is just one reason why we are the market leader. We've always worked very hard to give our customers the best experience. Was out laughter raptures returned outweigh. Luckily cheered colonel I do we attack highest enabled...", ImageUrl = "assets/images/avatar/04.jpg" },
-        new Testimonial { Name = "Jacqueline Miller", Role = "Product Designer", Message = "Our passion for customer excellence is just one reason why we are the market leader. We've always worked very hard to give our customers the best experience. Was out laughter raptures returned outweigh. Luckily cheered colonel I do we attack highest enabled....", ImageUrl = "assets/images/avatar/09.jpg" }
-    };
 
-    // public class Testimonial
-    // {
-    //     public string Name { get; set; }
-    //     public string Role { get; set; }
-    //     public string Message { get; set; }
-    //     public string ImageUrl { get; set; }
-    // }
+    private List<Testimonial> Testimonials;
+    private string title;
+    protected override void OnInitialized()
+    {
+        languageService.OnLanguageChanged += setLocalization;
+        setLocalization("ar");
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var currentLanguage = await _manageLanguageService.GetLanguageAsync();
+            setLocalization(currentLanguage);
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void setLocalization(string langCode)
+    {
+        Testimonials = (langCode == "ar") ? getTestimonialsAr() : getTestimonialsEn();
+        title = (langCode == "ar") ? "ماذا يقول عملاؤنا" : "What Our Customers Say";
+        StateHasChanged();
+    }
+
+    private List<Testimonial> getTestimonialsEn()
+    {
+        return new List<Testimonial>{
+            new Testimonial { Name = "Louis Ferguson", Role = "Web Developer", Message = "Our passion for customer excellence is just one reason why we are the market leader. We've always worked very hard to give our customers the best experience. Was out laughter raptures returned outweigh. Luckily cheered colonel I do we attack highest enabled...", ImageUrl = "assets/images/avatar/02.jpg" },
+            new Testimonial { Name = "Emma Watson", Role = "UI/UX Designer", Message = "Our passion for customer excellence is just one reason why we are the market leader. We've always worked very hard to give our customers the best experience. Was out laughter raptures returned outweigh. Luckily cheered colonel I do we attack highest enabled...", ImageUrl = "assets/images/avatar/04.jpg" },
+            new Testimonial { Name = "Jacqueline Miller", Role = "Product Designer", Message = "Our passion for customer excellence is just one reason why we are the market leader. We've always worked very hard to give our customers the best experience. Was out laughter raptures returned outweigh. Luckily cheered colonel I do we attack highest enabled....", ImageUrl = "assets/images/avatar/09.jpg" }
+        };
+    }
+    private List<Testimonial> getTestimonialsAr()
+    {
+        return new List<Testimonial>
+{
+    new Testimonial
+    {
+        Name = "لويس فيرغسون",
+        Role = "مطور ويب",
+        Message = "شغفنا بتميز العملاء هو مجرد أحد الأسباب التي تجعلنا رواد السوق. لقد عملنا دائمًا بجد لتقديم أفضل تجربة لعملائنا. كان من حسن الحظ أن شجعنا العقيد على الهجوم بالوسائل الأفضل...",
+        ImageUrl = "assets/images/avatar/02.jpg"
+    },
+    new Testimonial
+    {
+        Name = "إيما واتسون",
+        Role = "مصممة UI/UX",
+        Message = "شغفنا بتميز العملاء هو مجرد أحد الأسباب التي تجعلنا رواد السوق. لقد عملنا دائمًا بجد لتقديم أفضل تجربة لعملائنا. كان من حسن الحظ أن شجعنا العقيد على الهجوم بالوسائل الأفضل...",
+        ImageUrl = "assets/images/avatar/04.jpg"
+    },
+    new Testimonial
+    {
+        Name = "جاكلين ميلر",
+        Role = "مصممة منتجات",
+        Message = "شغفنا بتميز العملاء هو مجرد أحد الأسباب التي تجعلنا رواد السوق. لقد عملنا دائمًا بجد لتقديم أفضل تجربة لعملائنا. كان من حسن الحظ أن شجعنا العقيد على الهجوم بالوسائل الأفضل...",
+        ImageUrl = "assets/images/avatar/09.jpg"
+    }
+};
+
+    }
 }

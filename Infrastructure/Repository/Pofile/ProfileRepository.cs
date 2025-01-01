@@ -23,6 +23,7 @@ public class ProfileRepository :IProfileRepository
     private readonly SeedsUsers seedsUsers;
     private readonly SeedsBillings seedsBillings;
     private readonly SeedsCreditCards seedsCreditCards;
+    private readonly SeedsUserSubscriptionsPlans seedsUserSubscriptionsPlans;
     private readonly SeedsPlans seedsPlans;
 
     private readonly ProfileApiClient profileApiClient;
@@ -30,28 +31,30 @@ public class ProfileRepository :IProfileRepository
     private readonly IMapper _mapper;
     private readonly ApplicationModeService appModeService;
 
-    public ProfileRepository(SeedsProfile seedsProfile,
-                             ProfileApiClient profileApiClient,
-                            IMapper mapper,
-                            ApplicationModeService appModeService,
-                            ISessionUserManager sessionUserManager,
-                            SeedsUsers seedsUsers,
-                            SeedsBillings seedsBillings,
-                            SeedsCreditCards seedsCreditCards,
-                            SeedsPlans seedsPlans)
-    {
-        this.seedsProfile = seedsProfile;
-        this.profileApiClient = profileApiClient;
-        _mapper = mapper;
-        this.appModeService = appModeService;
-        this._sessionUserManager = sessionUserManager;
-        this.seedsUsers = seedsUsers;
-        this.seedsBillings = seedsBillings;
-        this.seedsCreditCards = seedsCreditCards;
-        this.seedsPlans = seedsPlans;
-    }
+	public ProfileRepository(SeedsProfile seedsProfile,
+							 ProfileApiClient profileApiClient,
+							IMapper mapper,
+							ApplicationModeService appModeService,
+							ISessionUserManager sessionUserManager,
+							SeedsUsers seedsUsers,
+							SeedsBillings seedsBillings,
+							SeedsCreditCards seedsCreditCards,
+							SeedsPlans seedsPlans,
+							SeedsUserSubscriptionsPlans seedsUserSubscriptionsPlans)
+	{
+		this.seedsProfile = seedsProfile;
+		this.profileApiClient = profileApiClient;
+		_mapper = mapper;
+		this.appModeService = appModeService;
+		this._sessionUserManager = sessionUserManager;
+		this.seedsUsers = seedsUsers;
+		this.seedsBillings = seedsBillings;
+		this.seedsCreditCards = seedsCreditCards;
+		this.seedsPlans = seedsPlans;
+		this.seedsUserSubscriptionsPlans = seedsUserSubscriptionsPlans;
+	}
 
-    public Task<Result<ProfileResponse>> CreateProfileAsync(ProfileRequest profileRequest)
+	public Task<Result<ProfileResponse>> CreateProfileAsync(ProfileRequest profileRequest)
     {
         throw new NotImplementedException();
     }
@@ -77,12 +80,14 @@ public class ProfileRepository :IProfileRepository
                           var billing = seedsBillings.GetBillingDetailsByEmail(email);
                           var cards = seedsCreditCards.GetCardDetailsByEmail(email);
                           var user = await seedsUsers.getUserByEmailAsync(email);
+                          var subscriptionsPlans =  seedsUserSubscriptionsPlans.GetAllSubscriptionsPlansByEmail(email);
 
 
                           var bilRes = _mapper.Map<BillingDetailsResponseModel>(billing);
                           var billingData = _mapper.Map<BillingDetailsResponse>(bilRes);
 
                           var cardsRes = _mapper.Map<List<CardDetailsResponseModel>>(cards);
+                          var subscriptionsPlansRes = _mapper.Map<List<SubscriptionPlan>>(subscriptionsPlans);
                           var cardsData = _mapper.Map<List<CardDetailsResponse>>(cardsRes);
 
                           if (user != null)
@@ -96,7 +101,7 @@ public class ProfileRepository :IProfileRepository
                                   Active = user?.Active,
                                   CreditCards = cardsData,
                                   BillingDetails = billingData,
-                                  SubscriptionsPlans = new List<SubscriptionPlan> { },
+                                  SubscriptionsPlans = subscriptionsPlansRes,
                               };
                               return Result<ProfileResponse>.Success(profile);
                           }

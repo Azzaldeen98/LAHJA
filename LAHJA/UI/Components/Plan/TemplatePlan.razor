@@ -1,5 +1,4 @@
-﻿ 
-@using LAHJA.Data.UI.Components.Base
+﻿@using LAHJA.Data.UI.Components.Base
 @using LAHJA.Data.UI.Components.Plan
 
 
@@ -10,76 +9,73 @@
 @using LAHJA.Them
 
 @if (Params != null)
-
 {
-
 
 
     @* plan - card *@
     <div class="p-0 m2">
-    <MudCard  Class="@("p-0  m-auto "+@Params.ClassImport)">
-        <MudText Typo="Typo.h6" Align="Align.Left" class="@Params.HeaderImport"> @Params.Name</MudText>
-        <p class="mx-3">@Params.Description</p>
+
+        <MudCard Class="@("p-0  m-auto "+@Params.ClassImport)">
+            <MudText Typo="Typo.h6" Align="Align.Left" class="@Params.HeaderImport"> @Params.Name</MudText>
+            <p class="mx-3">@Params.Description</p>
             <MudCardContent>
                 <MudText Typo="Typo.body1" Class="mb-1">
-                    @* <MudIcon Icon="@Icons.Custom.Uncategorized.AlertSuccess"  /> *@
-                @* <MudText Typo="Typo.body1">Total Price</MudText> *@
-                @* <MudText Typo="Typo.h4" > @Params.Price <small>$</small> </MudText> *@
-                @* <MudText Typo="Typo.h4"> @Params.WeeklyPrice <small>$</small> </MudText> *@
-                <MudText Typo="Typo.h5" > @Params.MonthlyPrice <small>$</small> </MudText>
-               
-                @* <MudText Typo="Typo.h4" > @Params.AnnualPrice <small>$</small> </MudText> *@
-            </MudText>
-                <MudList  Dense="true" T="object">
+                  <MudText Typo="Typo.h5"> @Params.MonthlyPrice <small>$</small> </MudText>
+                </MudText>
+                <MudList Dense="true" T="object">
 
-                  @*   <MudText Typo="Typo.body1"><strong> 
-                        <MudIcon Icon="@Icons.Custom.Uncategorized.AlertSuccess" Color="Color.Primary" />Features:</strong></MudText> *@
+                    @if (_isDisplayButton)
+                    {
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Outlined" Color="@AppColors.BASE_COLOR_ENUM" OnClick="@(()=>Submit(@Params))" Class="@AppTextStyle.TEXT_TRANSFORM_NORMAL">Select Plan</MudButton>
+                        </MudCardActions>
 
-                @if (FlagButton)
-                {
-                    <MudCardActions>
-                        <MudButton Variant="Variant.Outlined" Color="@AppColors.BASE_COLOR_ENUM" OnClick="@(()=>Submit(@Params))" Class="@AppTextStyle.TEXT_TRANSFORM_NORMAL">Select Plan</MudButton>
-                    </MudCardActions>
-
-                }
-                <MudDivider />
-                @if (Params.Features != null && Params.Features.Count() > 0)
-                {
-
-                    @* <MudListSubheader> Services </MudListSubheader> *@
-                    <MudListItem Text="Technical Features" @bind-Expanded="_expanded" >
-                        <NestedList >
-                            @foreach (var featur in Params.Features.Where(x => x.IsFixed).ToList())
-                            {
-                                <MudListItem style="padding:0% !important" >
-
-                                    <TechnologyFeture Params="featur" />
-
-                                </MudListItem>
-
-                            }
-                        </NestedList>
-                    </MudListItem>
+                    }
                     <MudDivider />
-                    <MudListItem Text="Quantitative features" @bind-Expanded="_expanded" >
-                        <NestedList>
-                            @foreach (var feature in Params.Features.Where(x => x.IsFixed == false).ToList())
-                            {
-                                <MudListItem>
-                                        <NumberFeture Params="feature" IsAuth="IsAuth" OnClickDelete="ONclickDeleteNumberFeture" OnClickEdit="ONclickEditNumberFeture" />
-                                </MudListItem>
+                    @if (Params.Features != null && Params.Features.Count() > 0)
+                    {
+                        //Services List
+                        <MudListItem Text="Services" @bind-Expanded="_expanded">
+                            <NestedList>
+                              
+                                @foreach (var feature in Params.Features)
+                                {
+                                    <MudListItem>
+                                        <FeaturePlanCard Param="feature" AllowUpdate="_allowUpdate" IsAuth="IsAuth" OnClickDelete="ONclickDeleteNumberFeture" OnClickEdit="ONclickEditNumberFeture" />
+                                    </MudListItem>
 
-                            }
-                        </NestedList>
-                    </MudListItem>
-            
-                  
-               
-                }
+                                }
+                            </NestedList>
+                        </MudListItem>
+
+
+
+                    }
                 </MudList>
+                   <MudDivider />
+                    <MudCardActions Class="d-flex justify-content-around">
+                    @if (!_isDisplayButton)
+                    {
+                        @if (_isUpgrade)
+                        {
+
+                            <MudButton Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" px-3")" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM" OnClick="@(()=>OnSubmitUpgrade(@Params))">Upgrade</MudButton>
+                            
+                        }
+                        else if (_allowUpdate)
+                        {
+
+                            <MudButton Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" px-3")" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM" OnClick="@(()=>OnSubmitConfirm(@Params))">Confirm</MudButton>
+
+                        }
+
+                        <MudButton Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" px-3")" Variant="Variant.Filled" Color="Color.Default" OnClick="@(()=>OnSubmitCancel(@Params))">Cancel</MudButton>
+                    }
+                    
+                </MudCardActions>
             </MudCardContent>
-      
-    </MudCard>
+
+        </MudCard>
     </div>
 
 }
@@ -89,149 +85,252 @@
 
 
 @code {
-    bool _expanded=false;
-}
- 
 
-@code 
-{
+    [Parameter] public bool AllowUpdate { get => _allowUpdate; set => _allowUpdate = value; }
 
+    [Parameter] public bool IsUpgrade { get => _isUpgrade; set => _isUpgrade = value; }
 
+    [Parameter] public bool IsExpanded { get => _expanded; set=>_expanded=value; }
 
+    [Parameter] public bool IsDisplaySelectButton { get => _isDisplayButton; set=>_isDisplayButton=value; }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    [Parameter] public bool FlagButton { get; set; } = true;
     [Parameter] public SubscriptionPlanInfo? Params { get; set; }
 
+    [Parameter] public EventCallback<SubscriptionPlanInfo> SubmitUpgrade { get; set; }
+    [Parameter] public EventCallback<SubscriptionPlanInfo> SubmitConfirm { get; set; }
+    [Parameter] public EventCallback<SubscriptionPlanInfo> SubmitCancel { get; set; }
 
 
+    private bool _isDisplayButton = true;
+    private bool _expanded = false;
 
-    protected override async Task OnInitializedAsync()
-    {
+    private bool _allowUpdate = false;
 
-    }
+    private bool _isUpgrade { get; set; } = false;
+
+
 
     private Color GetChipColor(bool status)
+
     {
+
         return status == true ? Color.Success : Color.Error;
+
     }
-    private async Task Submit(SubscriptionPlanInfo input)
+
+    private async Task OnSubmitConfirm(SubscriptionPlanInfo input)
     {
+        if (SubmitConfirm.HasDelegate && input != null)
+        {
+            await SubmitConfirm.InvokeAsync(input);
+        }
+    }
+
+    private async Task OnSubmitCancel(SubscriptionPlanInfo input)
+    {
+        if (SubmitCancel.HasDelegate && input != null)
+        {
+            await SubmitCancel.InvokeAsync(input);
+        }
+    }
+
+    private async Task OnSubmitUpgrade(SubscriptionPlanInfo input)
+    {
+        if (SubmitUpgrade.HasDelegate && input != null)
+        {
+            await SubmitUpgrade.InvokeAsync(input);
+        }
+    }
+
+
+    private async Task Submit(SubscriptionPlanInfo input)
+
+    {
+
         try
+
         {
 
             if (OnSubmit.HasDelegate)
+
             {
+
                 await OnSubmit.InvokeAsync(input);
+
             }
 
 
-        }
-        catch(Exception ex)
-        {
-            Snackbar.Add(ex.Message, Severity.Error);
+
+
+
         }
 
-    }
-    private async void ONclickDeleteNumberFeture(FeaturePlanInfo numberOfService)
-    {
-        try
+        catch (Exception ex)
+
         {
+
+            Snackbar.Add(ex.Message, Severity.Error);
+
+        }
+
+
+
+    }
+
+    private async void ONclickDeleteNumberFeture(FeaturePlanInfo numberOfService)
+
+    {
+
+        try
+
+        {
+
+
+
 
 
             Params.Price -= numberOfService.Price;
+
             Params.Features.Remove(numberOfService);
 
+
+
             StateHasChanged();
+
         }
+
         catch (Exception ex)
+
         {
+
             Snackbar.Add(ex.Message, Severity.Error);
+
         }
+
+
 
     }
 
     private async void ONclickEditNumberFeture(FeaturePlanInfo numberOfService)
+
     {
+
         try
+
         {
 
-         
+
+
+
+
             Params.Price += numberOfService.Price;
+
             StateHasChanged();
+
         }
+
         catch (Exception ex)
+
         {
+
             Snackbar.Add(ex.Message, Severity.Error);
+
         }
+
+
 
     }
-
-
-     
-
-
 
     private async void ONclickEditNumberService(FeaturePlanInfo featurePlanInfo)
+
     {
+
         try
+
         {
-           
+
+
+
             CalculateTotalPrice();
-              StateHasChanged();
+
+            StateHasChanged();
+
         }
+
         catch (Exception ex)
+
         {
+
             Snackbar.Add(ex.Message, Severity.Error);
+
         }
+
+
 
     }
+
     private void CalculateTotalPrice()
+
     {
 
+
+
         try
+
         {
+
             // Price = 0;
+
             // foreach (var item in Params.Services)
+
             // {
+
             //     Price += item.Price;
+
             // }
+
+
 
             // foreach (var item in Params.numberOfServices)
+
             // {
+
             //     Price += item.Price;
+
             // }
 
-    
+
+
+
+
+
 
         }
-        catch(Exception ex)
+
+        catch (Exception ex)
+
         {
-            
+
+
+
         }
-    }
-
-     
-
 
     }
 
- 
+}
+       @* <MudListSubheader> Services </MudListSubheader>  *@
+                        @*        <MudListItem Text="Technical Features" @bind-Expanded="_expanded" >
+                            <NestedList >
+                            @foreach (var featur in Params.Features.Where(x => x.IsFixed).ToList())
+                            {
+                            <MudListItem style="padding:0% !important" >
+
+                            <TechnologyFeture  Params="featur" />
+
+                            </MudListItem>
+
+                            }
+                            </NestedList>
+                            </MudListItem>
+                            <MudDivider /> *@
+

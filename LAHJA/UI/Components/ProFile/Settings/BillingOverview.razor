@@ -1,68 +1,70 @@
-﻿@using LAHJA.UI.Components.ProFile.USettings
+﻿@using LAHJA.UI.Components.ProFile.Charts
+@using LAHJA.UI.Components.ProFile.USettings
 @using LAHJA.Them
 
 
+
  <MudGrid Class="mt-6">
-                    <MudItem xs="12" sm="12" md="12">
-                        <MudPaper Class="shadow-alternate-sm mt-4 w-full flex-col gap-4 self-start rounded-xl border border-gray-100 px-4 pt-4">
-                            <MudText Typo="Typo.body1" Class="font-semibold">
-                                @Translate("UsageQuota")
-                            </MudText>
-                            <MudText Typo="Typo.body2" Class="ml-auto text-xs leading-none text-gray-400 sm:text-sm">
-                                <MudLink Href="/subscribe/pro" Class="underline hover:text-gray-500 dark:hover:text-gray-300">
-                                    @Translate("SubscribeToPRO")
-                                </MudLink>
-                                @Translate("HigherLimits")
-                            </MudText>
+    <MudItem xs="12" sm="12" md="12">
+        <MudPaper Class="shadow-alternate-sm mt-4 w-full flex-col gap-4 self-start rounded-xl border border-gray-100 px-4 pt-4">
+            <MudText Typo="Typo.body1" Class="font-semibold">
+                @Translate("UsageQuota")
+            </MudText>
+            <MudText Typo="Typo.body2" Class="ml-auto text-xs leading-none text-gray-400 sm:text-sm">
+                <MudLink Href="/subscribe/pro" Class="underline hover:text-gray-500 dark:hover:text-gray-300">
+                    @Translate("SubscribeToPRO")
+                </MudLink>
+                @Translate("HigherLimits")
+            </MudText>
 
-                            <MudGrid Class="lg:grid-cols-2 grid-rows-2 gap-5 sm:gap-x-8 sm:gap-y-7">
-                                <MudItem>
-                                    <Storage />
+            <MudGrid Class="lg:grid-cols-2 grid-rows-2 gap-5 sm:gap-x-8 sm:gap-y-7">
+                <MudItem>
+                    <Storage />
                                 
-                                </MudItem>
+                </MudItem>
 
-                                <MudItem>
-                                    <UsageCard Title="Zero GPU"
-                                               Value="0/5 minutes"
-                                               DocumentationLink="/spaces/enzostvs/zero-gpu-spaces" />
-                    <MudProgressLinear Color="Color.Primary" Value="@Value" Class="my-7" />
+                <MudItem>
+                    <UsageCard Title="Zero GPU"
+                                Value="0/5 minutes"
+                                DocumentationLink="/spaces/enzostvs/zero-gpu-spaces" />
+    <MudProgressLinear Color="Color.Primary" Value="@Value" Class="my-7" />
                  
-                                </MudItem>
+                </MudItem>
 
-                                <MudItem>
-                                    <UsageCard Title="Inference API"
-                                               Value="0/1,000 requests"
-                                               DocumentationLink="/playground" />
-                    <MudProgressLinear Color="Color.Secondary" Value="@Value" Class="my-7" />
-                                </MudItem>
+                <MudItem>
+                    <UsageCard Title="Inference API"
+                                Value="0/1,000 requests"
+                                DocumentationLink="/playground" />
+    <MudProgressLinear Color="Color.Secondary" Value="@Value" Class="my-7" />
+                </MudItem>
 
-                                <MudItem xs="12">
-                                    <MudPaper Class="from-gray-50-to-white -mx-4 flex flex-col gap-2 overflow-hidden rounded-b-xl border-t border-gray-100 bg-gradient-to-r p-4">
-                                        <MudGrid>
-                                            <MudItem>
-                                                <MudText Typo="Typo.body2" Class="font-medium">
-                                                    @Translate("PublicRepositoriesStorage")
-                                                </MudText>
-                                            </MudItem>
+                <MudItem xs="12">
+                    <MudPaper Class="from-gray-50-to-white -mx-4 flex flex-col gap-2 overflow-hidden rounded-b-xl border-t border-gray-100 bg-gradient-to-r p-4">
+                        <MudGrid>
+                            <MudItem>
+                                <MudText Typo="Typo.body2" Class="font-medium">
+                                    @Translate("PublicRepositoriesStorage")
+                                </MudText>
+                            </MudItem>
 
 
 
-                                            <MudItem>
-                                                <MudText Typo="Typo.body2" Class="text-gray-400">
-                                                    0 @Translate("Bytes")
-                                                </MudText>
-                                            </MudItem>
-                                        </MudGrid>
-                                    </MudPaper>
-                                </MudItem>
-                            </MudGrid>
-                        </MudPaper>
+                            <MudItem>
+                                <MudText Typo="Typo.body2" Class="text-gray-400">
+                                    0 @Translate("Bytes")
+                                </MudText>
+                            </MudItem>
+                        </MudGrid>
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
 
-                        <MudText Class="overview-card-wrapper px-3 py-2" Typo="Typo.body1">
-                            @Translate("ConfirmEmail")
-                        </MudText>
-                    </MudItem>
-                </MudGrid>
+        <MudText Class="overview-card-wrapper px-3 py-2" Typo="Typo.body1">
+            @Translate("ConfirmEmail")
+        </MudText>
+    </MudItem>
+</MudGrid>
 
 
 

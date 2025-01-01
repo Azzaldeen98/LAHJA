@@ -6,13 +6,13 @@
      @if (IsDisplay)
     {
 
-        <MudLink class="isMenu-show" Href="/" Style="@("color:" + _iconfill + "!important")">
+        <MudLink class="isMenu-show" OnClick="ClickItem" Href="/" Style="@("color:" + _iconfill + "!important")">
             @Translation[CurrentLanguage]["Home"]
         </MudLink>
 
         @if (Flagauth)
         {
-            <MudLink Style="@("color:" + _iconfill + "!important")" Href="/Rigist">
+            <MudLink OnClick="ClickItem" Style="@("color:" + _iconfill + "!important")" Href="/Rigist">
                 @Translation[CurrentLanguage]["Register"]
             </MudLink>
        @*      <div class="">
@@ -22,27 +22,29 @@
             </div> *@
         }
 
-        <MudLink class="isMenu-show" Style="@("color:" + _iconfill + "!important")" Href="/Plans">
+        <MudLink class="isMenu-show" OnClick="ClickItem" Style="@("color:" + _iconfill + "!important")" Href="/Plans">
             @Translation[CurrentLanguage]["Plans"]
         </MudLink>
 
-            <MudLink class="isMenu-show" Style="@("color:" + Iconfill + "!important")" Href="/CategoriesPlan">
+        <MudLink class="isMenu-show" OnClick="ClickItem" Style="@("color:" + Iconfill + "!important")" Href="/CategoriesPlan">
             @Translation[CurrentLanguage]["Categories"]
         </MudLink>
 
-        <MudLink class="isMenu-show" Style="@("color:" + _iconfill + "!important")" Href="/services">
+        <MudLink class="isMenu-show" OnClick="ClickItem" Style="@("color:" + _iconfill + "!important")" Href="/services">
             @Translation[CurrentLanguage]["Services"]
         </MudLink>
 
-        <MudLink class="isMenu-show" Style="@("color:" + _iconfill + "!important")" Href="/payment">
+        <MudLink class="isMenu-show" OnClick="ClickItem"  Style="@("color:" + _iconfill + "!important")" Href="/payment">
             @Translation[CurrentLanguage]["Payment"]
 
-        </MudLink>   <MudLink class="isMenu-show" Style="@("color:" + _iconfill + "!important")" Href="/studio">
+        </MudLink>  
+        
+        <MudLink class="isMenu-show" OnClick="ClickItem"  Style="@("color:" + _iconfill + "!important")" Href="/studio">
             @Translation[CurrentLanguage]["Studio"]
         </MudLink> 
          @if (!@Flagauth){
 
-            <MudLink class="isMenu-show" Style="@("color:" + _iconfill + "!important")" Href="/trainingModel">
+            <MudLink class="isMenu-show" OnClick="ClickItem" Style="@("color:" + _iconfill + "!important")" Href="/trainingModel">
             @Translation[CurrentLanguage]["TrainingModel"]
         </MudLink>
          }
@@ -67,12 +69,16 @@
     [Parameter] public bool RightToLeft { get; set; }
     [Parameter] public bool Flagauth { get; set; }
     [Parameter] public string CurrentLanguage { get; set; }
-    [Parameter] public string Iconfill { get => _iconfill; set { _iconfill = value;
-
-            StateHasChanged(); } }
+    [Parameter] public string Iconfill { get => _iconfill; set { _iconfill = value; StateHasChanged(); } }
     [Parameter] public EventCallback<bool> Logout { get; set; }
+    [Parameter] public EventCallback ClickItem { get; set; }
 
     private string _iconfill = "#fff";
+
+    private void onClickMe()
+    {
+        
+    }
 
     private async void logout(bool flag)
     {

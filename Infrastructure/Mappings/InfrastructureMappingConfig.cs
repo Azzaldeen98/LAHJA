@@ -61,7 +61,7 @@ namespace Infrastructure.Mappings.Plans
             CreateMap<RegisterRequestModel, Domain.Entities.Auth.Request.RegisterRequest>().ReverseMap();
             CreateMap<RegisterResponseModel, RegisterResponse> ().ReverseMap();
             CreateMap<LoginResponseModel, LoginResponse>().ReverseMap();
-            CreateMap<UserModel, User>().ReverseMap();
+            CreateMap<UserModel, UserResponse>().ReverseMap();
             CreateMap<LoginResponseModel, UserModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.userId))
             .ReverseMap();

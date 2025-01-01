@@ -14,7 +14,8 @@ namespace LAHJA.Data.UI.Models
     public class QueryRequestTextToSpeech
     {
         [JsonPropertyName("Url")]
-        public string Url { get; set; } = "https://api-inference.huggingface.co/models/wasmdashai/vits-ar-sa-huba-v2";
+        //public string Url { get; set; } = "https://api-inference.huggingface.co/models/wasmdashai/vits-ar-sa-huba-v2";
+        public string Url { get; set; } = "https://api-inference.huggingface.co/models/wasmdashai/";
 
         [JsonPropertyName("Headers")]
         public QueryRequestTextToSpeechHeader Headers { get; set; } = new QueryRequestTextToSpeechHeader();

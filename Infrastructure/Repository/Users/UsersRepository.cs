@@ -28,7 +28,7 @@ namespace Infrastructure.Repository.Users
             this.appModeService = appModeService;
         }
 
-        public async Task<IEnumerable<User>?> getAllUsersAsync()
+        public async Task<IEnumerable<UserResponse>?> getAllUsersAsync()
         {
             var response = await ExecutorAppMode.ExecuteAsync<IEnumerable<UserModel>>(
                async () => new List<UserModel>(),
@@ -36,12 +36,12 @@ namespace Infrastructure.Repository.Users
 
            );
 
-            var data=(response!=null)? _mapper.Map<IEnumerable<User>>(response): null;
+            var data=(response!=null)? _mapper.Map<IEnumerable<UserResponse>>(response): null;
 
             return data;
         }
 
-        public async Task<User?> getUserByIdAsync(string userId)
+        public async Task<UserResponse?> getUserByIdAsync(string userId)
         {
             var response = await ExecutorAppMode.ExecuteAsync<UserModel>(
                async () => new UserModel(),
@@ -49,7 +49,7 @@ namespace Infrastructure.Repository.Users
 
            );
 
-            var data = (response != null) ? _mapper.Map<User>(response) : null;
+            var data = (response != null) ? _mapper.Map<UserResponse>(response) : null;
 
             return data;
         }

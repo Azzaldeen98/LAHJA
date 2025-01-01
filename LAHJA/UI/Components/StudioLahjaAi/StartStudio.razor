@@ -1,23 +1,13 @@
-﻿
+﻿@using LAHJA.Helpers.Services
+@inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
 
 
 
+<MudContainer >
 
 
-
-
-
-
-
-
-
-<MudContainer>
-
-
-    <MudText Typo="Typo.h2">@Title</MudText>
-
-
-
+    <MudText Typo="Typo.body1">@Title</MudText>
     <MudGrid Justify="Justify.Center">
         @foreach (var item in listt)
         {
@@ -28,7 +18,7 @@
 
                         <MudStack Direction="Row" AlignItems="AlignItems.Center" Spacing="2">
                             <MudIcon Icon="@item.Icon" Color="Color.Primary" />
-                            <MudText Typo="Typo.h5">@item.Name</MudText>
+                            <MudText Typo="Typo.h6">@item.Name</MudText>
                             <MudText Typo="Typo.body2" Class="mt-2">
                                 @item.Description
                             </MudText>
@@ -50,21 +40,7 @@
 
     List<Item> listt;
     public string Title;
-    protected override void OnInitialized()
-    {
 
-        if (Typelangauge)
-        {
-            listt = Items;
-            Title = "What Will You Build?";
-        }
-        else
-        {
-            listt = ItemsAr;
-             Title = "ماذا ستفعل ";
-        }
-
-    }
 
     private List<Item> Items = new()
     {
@@ -96,7 +72,42 @@
             Description = description;
         }
     }
+    protected override void OnInitialized()
+    {
 
+        languageService.OnLanguageChanged += changeLanguage;
+        changeLanguage("ar");
+
+    }
+    protected override async void OnAfterRender(bool firstRender)
+
+    {
+        if (firstRender)
+        {
+            var currentLanguage = await _manageLanguageService.GetLanguageAsync();
+            changeLanguage(currentLanguage);
+
+        }
+
+
+    }
+    protected async void changeLanguage(string currentLangCode)
+    {
+       
+
+        if (currentLangCode=="en")
+        {
+            listt = Items;
+            Title = "What Will You Build?";
+        }
+        else
+        {
+            listt = ItemsAr;
+            Title = "ماذا ستفعل ";
+        }
+    
+        InvokeAsync(StateHasChanged);
+    }
 
 }
 

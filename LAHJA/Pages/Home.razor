@@ -41,7 +41,7 @@
     </MudText>
     <p> @GetTranslation("PlanDescription") </p>
 
-    <div class="d-flex my-5 flex-wrap">
+    <div class="d-flex my-5 flex-wrap" style="width: 100%;">
         <TemplatePlans CountItemsShow="4" />
     </div>
 </div>
@@ -121,20 +121,11 @@
     protected override async void OnAfterRender(bool firstRender)
 
     {
-
-
-
         if (firstRender)
-
         {
+                CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
 
-
-
-            CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
-
-            InvokeAsync(StateHasChanged);
-
-
+                InvokeAsync(StateHasChanged);
 
         }
 

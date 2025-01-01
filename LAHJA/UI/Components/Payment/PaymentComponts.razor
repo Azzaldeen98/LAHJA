@@ -19,15 +19,15 @@
 
 
         <MudDivider Class="my-4" />
-        <UpgradePlan  BuildData="@BuildPlanData" />
+        <UpgradePlan BuildData="@BuildPlanData" SubmitConfirm="OnSubmitConfirmPlan" SubmitUpgrade="OnSubmitUpgradePlan" SubmitCancel="OnSubmitCancelPlan" />
         <MudDivider Class="my-4" />
-
-        <BillingMethodsSection ReadData="OnReadBillingData" BuildData="BuildBillingData" />
-        <MudDivider Class="my-4" />
-        <PaymentMethodsSection SelectedCard="OnSelectedCardData" BuildData="BuildCreditCardData" EditCard="EditCard" CreateCard="CreateCard" />
-
-  
-        <MudButton Variant="Variant.Filled" Size="Size.Large" OnClick="Payment" Color="@AppColors.BASE_COLOR_ENUM">Payment</MudButton>
+        @if (isConfirm)
+        {
+            <BillingMethodsSection ReadData="OnReadBillingData" BuildData="BuildBillingData" />
+            <MudDivider Class="my-4" />
+            <PaymentMethodsSection SelectedCard="OnSelectedCardData" BuildData="BuildCreditCardData" EditCard="EditCard" CreateCard="CreateCard" />
+            <MudButton Variant="Variant.Filled" Size="Size.Large" OnClick="Payment" Color="@AppColors.BASE_COLOR_ENUM">Payment</MudButton>
+        }
     </MudContainer>
   
 </MudLayout>
@@ -47,10 +47,40 @@
     [Parameter] public SubscriptionPlanInfo? BuildPlanData { get; set; } = null;
     [Parameter] public DataBuildBillingBase? BuildBillingData { get; set; } = null;
     [Parameter] public List<CardDetails>? BuildCreditCardData { get; set; } = null;
-
     [Parameter] public string planId { get; set; }
+
     private DataBuildBillingBase billing { get; set; }
+
+
     private CardDetails card { get; set; }
+    private bool isConfirm = false;
+
+
+    private async Task OnSubmitConfirmPlan(SubscriptionPlanInfo input)
+    {
+        if (input != null)
+        {
+            isConfirm = true;
+            StateHasChanged();
+        }
+    }
+
+    private async Task OnSubmitCancelPlan(SubscriptionPlanInfo input)
+    {
+        if ( input != null)
+        {
+           
+        }
+    }
+
+    private async Task OnSubmitUpgradePlan(SubscriptionPlanInfo input)
+    {
+        if (input != null)
+        {
+           
+        }
+    }
+
 
     private void OnSelectedCardData(CardDetails? data)
     {

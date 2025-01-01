@@ -1,18 +1,14 @@
-﻿using Domain.ShareData.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using Domain.Entities.User;
+using Domain.ShareData.Base;
 namespace Domain.Entities.Plans.Response
 {
-   public  class SubscriptionPlan : BaseSubscriptionPlan  
+	public  class SubscriptionPlan : BaseSubscriptionPlan  
     {
         public new List<PlanFeature>? Features { get; set; }
         public new ContainerPlans? ContainerPlan { get; set; }
+		public new UserResponse? User { get; set; }
 
-    }
+	}
 
     //public class SubscriptionPlan
     //{

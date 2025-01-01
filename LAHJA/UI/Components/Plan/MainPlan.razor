@@ -12,18 +12,18 @@
 
 
 
-    <MudTabs Outlined="true">
-        <MudTabPanel Text="Api" Icon="@Icons.Material.Filled.Api" />
-        <MudTabPanel Icon="@Icons.Material.Filled.Build" />
-        <MudTabPanel Text="Bug Report" Icon="@Icons.Material.Filled.BugReport" />
-    </MudTabs>
+@*      <MudTabs Outlined="true">
+         <MudTabPanel Text="Api" Icon="@Icons.Material.Filled.Api" />
+         <MudTabPanel Icon="@Icons.Material.Filled.Build" />
+         <MudTabPanel Text="Bug Report" Icon="@Icons.Material.Filled.BugReport" />
+     </MudTabs> *@
 
-    <MudGrid Class="@MainPlanStyle.MainPlanGrid" Justify="Justify.SpaceAround">
+    <MudGrid Class="@(@MainPlanStyle.MainPlanGrid+" w-100")" Justify="Justify.SpaceAround" >
 
         @if (DataBuild != null)
         {
             <MudItem Class="@MainPlanStyle.MainPlanItem">
-                <TemplatePlan Params="@DataBuild" />
+                <TemplatePlan  Params="@DataBuild" />
             </MudItem>
         }
 
@@ -54,9 +54,6 @@
  
 }
 
- 
-
-
 
 @code
 {
@@ -78,22 +75,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     private async void OnSubmitButton(SubscriptionPlanInfo planInfo)
-
-
-
     {
         if (OnSubmit.HasDelegate)
         {

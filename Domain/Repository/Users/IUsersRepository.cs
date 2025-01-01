@@ -9,7 +9,7 @@ namespace Domain.Repository.Users
 {
     public  interface  IUsersRepository
     {
-       public Task<IEnumerable<User>?> getAllUsersAsync();
-        public Task<User?> getUserByIdAsync(string userId);
+       public Task<IEnumerable<UserResponse>?> getAllUsersAsync();
+        public Task<UserResponse?> getUserByIdAsync(string userId);
     }
 }

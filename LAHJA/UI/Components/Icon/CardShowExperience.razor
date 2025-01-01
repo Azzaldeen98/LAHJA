@@ -5,43 +5,7 @@
 @using LAHJA.Them
 @inject IManageLanguageService _manageLanguageService
 @inject LanguageService languageService
- @* @inherits BaseInitializationComponent  *@
-@* <section class="pt-0">
-    <div class="container" >
-        @if (Params != null)
-        {
-            <div class="bg-dark position-relative rounded-4 overflow-hidden p-4 p-sm-6" data-bs-theme="dark">
-                <!-- Grad decoration -->
-       
 
-            <div class="row g-8 align-items-center position-relative">
-                <!-- Title and list -->
-                <div class="col-lg-6">
-                    <h2 class="mb-3">
-                            @Params["Name"]
-                            <span class="text-purple;" style="color:@(AppColors.BASE_COLOR_FOUCS)">AI لهجــة</span>
-                        </h2>
-                    <p class="mb-4">
-                            @Params["Description"]
-                        </p>
-                    <a href="/studio"  class="btn btn-outline-secondary mb-0">
-                            @Params["ButtonLink"]
-                        </a>
-                </div>
-
-                <!-- Button -->
-                <div class="col-lg-6  end-0 top-0 mt-n3 me-n5 d-none d-lg-block">
-                    <img src="assets/images/chatbot-cta.png" style="width: 46%; margin-left: 50%;" alt="">
-                </div>
-            </div>
-
-                <div class=" top-0  mt-n6">
-                    <img src="assets/images/elements/grad-shape/blur-decoration.svg" class="blur-8 opacity-3" alt="Grad shape">
-                </div>
-        </div>
-        }
-    </div>
-</section> *@
 
 <section class="pt-0">
     <MudContainer Class="p-0">
@@ -103,6 +67,8 @@
             }
         };
 
+
+
     protected override async void OnAfterRender(bool firstRender)
     {
         if (firstRender)
@@ -111,6 +77,7 @@
             var currentLangCode = await _manageLanguageService.GetLanguageAsync();
 
             UpdateContent(currentLangCode);
+            StateHasChanged();
 
         }
     }
@@ -126,7 +93,7 @@
         // var currentLangCode = await _manageLanguageService.GetLanguageAsync();
 
         Params = Translations.ContainsKey(languageCode) ? Translations[languageCode] : Translations["en"];
-        StateHasChanged();
+        // 
         InvokeAsync(StateHasChanged);
 
     }

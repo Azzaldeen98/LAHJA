@@ -35,11 +35,6 @@
     private List<CardDetails>? buildCreditCardData;
 
     private List<string> errors;
-
-
-
-
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -111,24 +106,17 @@
 
         StateHasChanged();
     }
-
-
     private async Task onSubmitPaymentCheckOut(SubscriptionPlanInfo plan)
     {
 
         if (templatePayment.BuilderComponents.SubmitPaymentCheckOut != null && plan!=null)
             await templatePayment.BuilderComponents.SubmitPaymentCheckOut(new DataBuildPaymentBase { PlanId = plan.Id });
     }
-
-
     private async Task onSubmitActiveCreditCard(CardDetails card)
     {
         if (templateCreditCard.BuilderComponents.SubmitActiveCreditCard != null && card != null)
             await templateCreditCard.BuilderComponents.SubmitActiveCreditCard(new DataBuildCreditCardBase { CreditCardId = card.CardNumber });
     }
-
-
-
     private async Task getPaymentCheckoutUrlPageAsync()
     {
 

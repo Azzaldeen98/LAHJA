@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Domain.Entities.Plans.Response;
 using Domain.Entities.Profile;
 using Domain.ShareData.Base;
 using Domain.Wrapper;
 using LAHJA.ApplicationLayer.Profile;
 using LAHJA.ApplicationLayer.Profile;
+using LAHJA.Data.UI.Components.Plan;
 using LAHJA.Data.UI.Components.ProFileModel;
 using LAHJA.Data.UI.Templates.Base;
 using LAHJA.Data.UI.Templates.Profile;
@@ -300,10 +302,21 @@ namespace LAHJA.Data.UI.Templates.Profile
 
 
         }
+        public async Task<Result<IEnumerable<SubscriptionPlanInfo>>> GetUserSubscriptionsPlanAsync()
+        {
+            var response = await builderApi.GetProfileAsync();
+            if (response.Succeeded)
+            {
+                var data = mapper.Map<IEnumerable<SubscriptionPlanInfo>>(response.Data.SubscriptionsPlans);
+                return Result<IEnumerable<SubscriptionPlanInfo>>.Success(data);
+            }
+            else
+            {
+                return Result<IEnumerable<SubscriptionPlanInfo>>.Fail(response.Messages);
+            }
+        }
         public async Task<Result<DataBuildUserProfile>> GetProfileAsync()
         {
-
-            
             var response = await builderApi.GetProfileAsync();
             if (response.Succeeded)
             {

@@ -1,5 +1,55 @@
 
-  async function queryT2S(data) {
+window.downloadAudioFromElement = (audioElementId, fileName) => {
+    const audioElement = document.getElementById(audioElementId);
+
+    if (audioElement && audioElement.currentSrc) {
+        const linkElement = document.createElement('a');
+        linkElement.href = audioElement.currentSrc;
+        linkElement.download = fileName || 'audio-file.mp3';
+        document.body.appendChild(linkElement);
+        linkElement.click();
+        document.body.removeChild(linkElement);
+    } else {
+        console.error("Audio source not found or invalid audio element.");
+    }
+};
+
+
+function typeText(elementId, text, typingSpeed) {
+    const container = document.getElementById(elementId);
+    let i = 0;
+
+    function type() {
+        if (i < text.length) {
+            container.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, typingSpeed);
+        }
+    }
+
+    container.innerHTML = ""; // ÊÝÑíÛ ÇáäÕ ÇáÓÇÈÞ
+    type();
+}
+
+
+function controlSoundAnimation(isStart = false) {
+
+    var animate = document.getElementById("logo-icon-animate-id");
+
+    if (animate != null) {
+        animate.style.display = (isStart) ? "flex !important" : "none !important";
+    }
+
+    var static = document.getElementById("logo-icon-static-id");
+
+    if (static != null) {
+        static.style.display = (!isStart) ? "block !important" : "none !important";
+    }
+}
+
+
+
+async function queryT2S(data) {
         const response = await fetch(
             data.Url, 
             {

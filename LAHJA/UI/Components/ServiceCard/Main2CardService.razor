@@ -1,0 +1,400 @@
+@using System.Threading
+@using LAHJA.Data.UI.Components.ServiceCard
+@using LAHJA.Pages.FeatureServices
+@inject ISnackbar Snackbar
+@inject NavigationManager Navigation;
+@page "/ModelServiceVits"
+@page "/ModelServiceVits/{TypeLanguage}"
+
+
+
+@* <MudAppBar Color="Color.Primary" Fixed="false">
+    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
+    <MudAutocomplete T="string" Label="US States" @bind-Value="value1" SearchFunc="@Search1"
+                     Variant="Variant.Outlined" ShowProgressIndicator="true" ProgressIndicatorColor="SelectedColor" />
+
+
+    <MudSpacer />
+    <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" />
+</MudAppBar> *@
+
+
+
+
+
+
+
+
+
+<MudContainer Class="mt-16 px-0" Style="overflow:hidden;position:relative;height:100%" MaxWidth="MaxWidth.False">
+
+
+
+    <MudDrawer @bind-Open="@_open" Fixed="false" Elevation="1"
+               Variant="@DrawerVariant.Mini" OpenMiniOnHover="true">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">
+                @(TypeLanguage ? "Filter Properties" : "ﬁ«∆„…")
+            </MudText>
+        </MudDrawerHeader>
+        <MudNavMenu>
+            <MudNavGroup Title="@(TypeLanguage ? "Type" : "«·‰Ê⁄ ")" Icon="@Icons.Material.Filled.SpatialAudio">
+                <MudRadioGroup @bind-Value="@selectedType">
+
+                    @foreach (var property in propertyValues["Type"])
+                    {
+                        <MudRadio T="string" Value="@property">@property</MudRadio>
+                    }
+
+                </MudRadioGroup>
+            </MudNavGroup>
+
+            <MudNavGroup Title="@(TypeLanguage ? "Framework" : "«·≈ÿ«— ")" Icon="@Icons.Material.Filled.FilterFrames">
+                <MudRadioGroup @bind-Value="@selectedFramework">
+                    @foreach (var property in propertyValues["Framework"])
+                    {
+                        <MudRadio Value="@property">@property</MudRadio>
+                    }
+                </MudRadioGroup>
+            </MudNavGroup>
+
+            <MudNavGroup Title="@(TypeLanguage ? "Voice" : "«·’Ê  ")" Icon="@Icons.Material.Filled.SurroundSound">
+                <MudRadioGroup @bind-Value="@selectedVoice">
+                    @foreach (var property in propertyValues["Voice"])
+                    {
+                        <MudRadio Value="@property">@property</MudRadio>
+                    }
+                </MudRadioGroup>
+            </MudNavGroup>
+
+            <MudNavGroup Title="@(TypeLanguage ? "Language" : "«··€… ")" Icon="@Icons.Material.Filled.Language">
+                <MudRadioGroup @bind-Value="@selectedLanguage">
+                    @foreach (var property in propertyValues["Language"])
+                    {
+                        <MudRadio Value="@property">@property</MudRadio>
+                    }
+                </MudRadioGroup>
+            </MudNavGroup>
+
+            <MudNavGroup Title="@(TypeLanguage ? "Dialect" : "«··ÂÃ… ")" Icon="@Icons.Material.Filled.MergeType">
+                <MudRadioGroup @bind-Value="@selectedDialect">
+                    @foreach (var property in propertyValues["Dialect"])
+                    {
+                        <MudRadio Value="@property">@property</MudRadio>
+                    }
+                </MudRadioGroup>
+            </MudNavGroup>
+
+            <MudNavGroup Title="@(TypeLanguage ? "Quality" : "«·ÃÊœ… ")" Icon="@Icons.Material.Filled.FilterFrames">
+                <MudRadioGroup @bind-Value="@selectedQuality">
+                    @foreach (var property in propertyValues["Quality"])
+                    {
+                        <MudRadio Value="@property">@property</MudRadio>
+                    }
+                </MudRadioGroup>
+            </MudNavGroup>
+
+            <MudNavGroup Title="@(TypeLanguage ? "Accuracy" : "«·œﬁ… ")" Icon="@Icons.Material.Filled.AccessTime">
+                <MudRadioGroup @bind-Value="@selectedAccuracy">
+                    @foreach (var property in propertyValues["Accuracy"])
+                    {
+                        <MudRadio Value="@property">@property</MudRadio>
+                    }
+
+                </MudRadioGroup>
+            </MudNavGroup>
+
+            <MudNavGroup Title="@(TypeLanguage ? "Speed" : "«·”—⁄… ")" Icon="@Icons.Material.Filled.Speed">
+                <MudRadioGroup @bind-Value="@selectedSpeed">
+                    @foreach (var property in propertyValues["Speed"])
+                    {
+                        <MudRadio Value="@property">@property</MudRadio>
+                    }
+                </MudRadioGroup>
+            </MudNavGroup>
+            <MudButton OnClick="ApplyFilter"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary">@(TypeLanguage ? "Apply Filter" : " ÿ»Ìﬁ ")</MudButton>
+
+
+        </MudNavMenu>
+
+    </MudDrawer>
+
+
+
+
+   
+
+
+
+
+
+
+@if(DataBuild!=null)
+{
+
+     
+
+     
+
+     <MudGrid Justify="Justify.SpaceBetween">
+
+            @foreach (var item in DataBuild)
+            {
+
+                  <MudItem xs="12" sm="6" md="4">
+
+               
+
+            <MudPaper Elevation="2" Class="pa-4" Style="height:200px;">
+                   
+                        
+                           <MudGrid >
+
+                               <MudItem xs="5" sm="6" md="6">
+
+                                        <MudText Typo="Typo.body1">LastUpdated:@item.LastUpdated</MudText>  
+
+                                     
+                                        <MudText Typo="Typo.body1"  >@item.Description</MudText>
+                                     
+                                            <MudText Typo="Typo.body1">Instal:@item.UsageCount</MudText>
+
+ 
+                                       
+                               </MudItem>
+                             <MudItem xs="7" sm="6" md="6">
+                                <MudImage Src="@item.ModelImageUrl" Height="90" onclick="OnclickCard" />
+
+                                    </MudItem>
+
+
+                           </MudGrid>
+            </MudPaper>
+        </MudItem>
+        
+   
+      
+
+
+            }
+        </MudGrid>
+
+}
+else
+{
+
+     <MudAlert  Severity="Severity.Error">
+
+            @(TypeLanguage ? "Not Data !!!" : "·«‰ÊÃœ »Ì«‰« ")
+     
+     
+     </MudAlert>
+
+
+
+}
+   
+</MudContainer>
+
+  <FeatureServices />
+ 
+
+@code 
+
+
+{
+
+    [Parameter]
+    public string TypeMode { get; set; } = " ";
+    [Parameter] public bool TypeLanguage { get; set; } = false;
+
+
+
+
+    private string selectedType;
+    private string selectedFramework;
+    private string selectedVoice;
+    private string selectedLanguage;
+    private string selectedDialect;
+    private string selectedQuality;
+    private string selectedAccuracy;
+    private string selectedSpeed;
+    private string searchQuery = string.Empty;
+    private bool _open = false;
+
+    private void ToggleDrawer()
+    {
+
+        _open = !_open;
+    }
+    private Dictionary<string, List<string>> propertyValues = null;
+    private string selectedStore;
+    private string selectedLibrary;
+    private string selectedCommunity;
+
+    public Color SelectedColor { get; set; } = Color.Default;
+
+
+
+    public void OnclickCard()
+    {
+        try
+        {
+            
+                Navigation.NavigateTo("/TextToText");
+          
+            
+            
+
+        }
+        catch
+        {
+            
+
+        }
+
+    }
+
+    private string value1;
+   
+    List<ModelProperties> DataBuild = null;
+    List<ModelProperties> DataBuild1 = null;
+
+    protected override void OnInitialized()
+    {
+
+        if (TypeLanguage)
+        {
+            DataBuild = PropertyGenerator.GenerateModelPropertiesList(9, 0);
+            propertyValues = PropertyGenerator.propertyValues;
+        }
+        else
+        {
+            DataBuild = PropertyGenerator.GenerateModelPropertiesList(9, 1);
+            propertyValues = PropertyGenerator.propertyValuesInArabic;
+        }
+
+
+        if (!string.IsNullOrWhiteSpace(TypeMode))
+        {
+
+            DataBuild = DataBuild.Where((x => x.Type ==TypeMode)).ToList();
+
+
+        }
+        else
+        {
+            DataBuild1 = DataBuild;
+
+        }
+
+
+
+        StateHasChanged();
+    }
+
+
+
+
+    private void clear()
+    {
+        selectedType = "";
+        selectedFramework = "";
+        selectedVoice = "";
+        selectedLanguage = "";
+        selectedDialect = "";
+        selectedQuality = "";
+        selectedAccuracy = "";
+        selectedSpeed = "";
+    }
+
+
+
+    public void OnColorSelected(Color value)
+    {
+        SelectedColor = value;
+    }
+
+
+    private void ApplyFilter()
+    {
+
+
+        try{
+
+
+
+
+
+            DataBuild = DataBuild1;
+            if (!string.IsNullOrWhiteSpace(selectedType))
+            {
+
+               
+                DataBuild = DataBuild.Where((x => x.Type == selectedType)).ToList();
+
+
+            }
+            if (!string.IsNullOrWhiteSpace(selectedFramework))
+            {
+                // Snackbar.Add(selectedType, Severity.Error);
+                DataBuild= DataBuild.Where((x => x.Framework == selectedFramework)).ToList();
+
+            }
+
+            if (!string.IsNullOrWhiteSpace(selectedVoice))
+            {
+                // Snackbar.Add(selectedType, Severity.Error);
+                DataBuild = DataBuild.Where((x => x.Voice == selectedVoice)).ToList();
+
+            }
+            if (!string.IsNullOrWhiteSpace(selectedLanguage))
+            {
+                // Snackbar.Add(selectedType, Severity.Error);
+                DataBuild = DataBuild.Where((x => x.Language == selectedLanguage)).ToList();
+
+            }
+              if (!string.IsNullOrWhiteSpace(selectedDialect))
+            {
+                // Snackbar.Add(selectedType, Severity.Error);
+                DataBuild = DataBuild.Where((x => x.Dialect == selectedDialect)).ToList();
+
+            }
+            if (!string.IsNullOrWhiteSpace(selectedQuality))
+            {
+                // Snackbar.Add(selectedType, Severity.Error);
+                DataBuild = DataBuild.Where((x => x.Quality == selectedQuality)).ToList();
+
+            }
+
+            if (!string.IsNullOrWhiteSpace(selectedAccuracy))
+            {
+                // Snackbar.Add(selectedType, Severity.Error);
+                DataBuild = DataBuild.Where((x => x.Accuracy == selectedAccuracy)).ToList();
+
+            }
+            if (!string.IsNullOrWhiteSpace(selectedSpeed))
+            {
+                // Snackbar.Add(selectedType, Severity.Error);
+                DataBuild = DataBuild.Where((x => x.Speed == selectedSpeed)).ToList();
+
+            }
+
+            clear();
+            StateHasChanged();
+
+
+        }
+        catch(Exception ex)
+        
+        {
+
+        }
+
+      
+
+        
+    }
+}

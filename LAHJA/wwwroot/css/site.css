@@ -9,6 +9,22 @@
     align-items: center !important;
 }
 
+/*.logo-icon-animate{
+
+    display:none;
+}
+
+.logo-icon-static {
+    display:block;
+}
+*/
+.activ-speech-ai {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4%;
+}
 
 .nav-menu-continer-items-sm {
     display: none !important;
@@ -42,7 +58,12 @@
 }
     .nav-bar_font * {
         font-size: 12px !important;
+      
     }
+.md-item-font * {
+    font-size: 13px !important;
+    font-weight: normal !important;
+}
 .plan-all-card {
     border: 2px solid #ddd !important;
     border-top: 30px solid #6c757d !important;
@@ -346,7 +367,9 @@ a, .btn-link {
         filter: brightness(100%) contrast(100%);
     }
 }
-
+.w-chat-t2s {
+    width: 50%
+}
 .wave-image {
     display: inline-block;
     width: 300px; /* حجم الصورة */
@@ -647,6 +670,9 @@ a, .btn-link {
 
 @media only screen and (max-width:700px) {
 
+    .w-chat-t2s {
+        width: 100%
+    }
     .nav-menu-continer-items-lg {
         display: none !important;
     }

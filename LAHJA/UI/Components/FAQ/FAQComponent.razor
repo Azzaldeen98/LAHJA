@@ -1,20 +1,22 @@
-﻿<div Class="container" MaxWidth="MaxWidth.Large">
-    <MudPaper Elevation="0" Class="pa-4 d-flex flex-column  justify-content-center align-items-center">
-@*         <MudTypography Variant="h3" Align="Align.Center" GutterBottom="true">
-            الأسئلة الشائعة (FAQ)
-        </MudTypography> *@
-        <MudText Typo="Typo.h3">
-            الأسئلة الشائعة (FAQ)
+﻿@using LAHJA.Helpers.Services
+ @inject LanguageService languageService
+ @inject IManageLanguageService _manageLanguageService
 
-        </MudText>
+
+<div Class="container" MaxWidth="MaxWidth.Large">
+    <MudPaper Elevation="0" Class="pa-4 d-flex flex-column  justify-content-center align-items-center">
+
+        <MudText Typo="Typo.h3">@title</MudText>
         <MudExpansionPanels>
-            @foreach (var item in FAQItems)
-            {
-                <MudExpansionPanel Text="@item.Question">
-                    <MudText>
-                        @item.Answer
-                    </MudText>
-                </MudExpansionPanel>
+            @if (FAQItems != null && FAQItems.Count()>0){
+                @foreach (var item in FAQItems)
+                {
+                    <MudExpansionPanel Text="@item.Question">
+                        <MudText>
+                            @item.Answer
+                        </MudText>
+                    </MudExpansionPanel>
+                }
             }
         </MudExpansionPanels>
     </MudPaper>
@@ -22,13 +24,42 @@
 
 @code {
 
-      public class FAQItem
+    public class FAQItem
     {
         public string Question { get; set; }
         public string Answer { get; set; }
     }
-    private List<FAQItem> FAQItems = new List<FAQItem>
+
+    private string title = "";
+
+    private List<FAQItem> FAQItems;
+
+    protected override void OnInitialized()
     {
+        languageService.OnLanguageChanged += setLocalization;
+        setLocalization("ar");
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var currentLanguage = await _manageLanguageService.GetLanguageAsync();
+            setLocalization(currentLanguage);
+            await  InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void setLocalization(string langCode)
+    {
+        FAQItems = (langCode == "ar") ? getArFAQ() : getEnFAQ();
+        title = (langCode == "ar") ? " الأسئلة الشائعة (FAQ)" : "Frequently Asked Questions (FAQ)";
+        StateHasChanged();
+    }
+
+    private List<FAQItem> getArFAQ()
+    {
+        return new List<FAQItem>{
         new FAQItem
         {
             Question = "ما هو تحويل الصوت إلى نص؟",
@@ -90,4 +121,73 @@
             Answer = "تعتمد تكلفة الخدمة على الخطة التي تختارها وعدد الطلبات التي تحتاج إليها. يمكنك التواصل معنا للحصول على تفاصيل حول الأسعار وفقًا لاحتياجاتك."
         }
     };
+    }
+    private List<FAQItem> getEnFAQ()
+    {
+        return new List<FAQItem>{
+                new FAQItem
+                {
+                    Question = "What is speech-to-text conversion?",
+                    Answer = "Speech-to-text conversion is the process of transforming audio recordings into written text using speech recognition technologies. This technology is used to transcribe conversations, interviews, lectures, and meetings into manageable text."
+                },
+                new FAQItem
+                {
+                    Question = "Does the speech-to-text system support different languages and dialects?",
+                    Answer = "Yes, the system supports various languages and dialects, including local accents like the Najdi dialect. The system can also be customized to improve accuracy for specific languages and dialects."
+                },
+                new FAQItem
+                {
+                    Question = "How can I use the text-to-speech service?",
+                    Answer = "You can use the text-to-speech service by entering the text you want to convert into the system, which will generate a natural human-like voice based on the text. The voice and tone can be customized according to your needs."
+                },
+                new FAQItem
+                {
+                    Question = "What types of text can be converted to speech?",
+                    Answer = "Short, long, or complex texts can be converted to speech. For example, articles, books, or even interactive texts in applications can be processed."
+                },
+                new FAQItem
+                {
+                    Question = "Can the voice generated in text-to-speech be customized?",
+                    Answer = "Yes, you can customize the voice in terms of tone and speed. You can also choose the voice (male or female) that suits your application."
+                },
+                new FAQItem
+                {
+                    Question = "Can text be converted to a specific dialect?",
+                    Answer = "Yes, we offer text conversion services to local dialects such as the Najdi, Hijazi, and others. The tone and speed can also be tailored to meet local needs."
+                },
+                new FAQItem
+                {
+                    Question = "What is the use of the instant chat service?",
+                    Answer = "The instant chat service is an AI-powered system that interacts with users in real time, answering their inquiries. It is used in customer support, personal assistants, and user interaction in various applications."
+                },
+                new FAQItem
+                {
+                    Question = "Can these services be integrated with my applications?",
+                    Answer = "Yes, we provide an open API for integration with other systems and applications, allowing you to seamlessly integrate services like speech-to-text, text-to-speech, text-to-dialect conversion, and instant chat."
+                },
+                new FAQItem
+                {
+                    Question = "Does the system require an internet connection?",
+                    Answer = "Yes, some services may require an internet connection, especially when processing data on servers. However, there are also options for running certain services locally in environments that do not support continuous internet connectivity."
+                },
+                new FAQItem
+                {
+                    Question = "How can I customize the service to meet my needs?",
+                    Answer = "You can customize the service by configuring voice settings, tone, speed, and dialects, as well as system integration via API. If you have specific requirements, we can work with you to provide a tailored solution."
+                },
+                new FAQItem
+                {
+                    Question = "Can I use the service on multiple platforms?",
+                    Answer = "Yes, these services can be used across various platforms such as mobile phones (Android and iOS), computers, and can also be integrated into web applications and background processes."
+                },
+                new FAQItem
+                {
+                    Question = "What is the cost of using these services?",
+                    Answer = "The cost of the service depends on the plan you choose and the number of requests you need. You can contact us for details about pricing based on your requirements."
+                }
+            };
+    }
+  
+
+    
 }

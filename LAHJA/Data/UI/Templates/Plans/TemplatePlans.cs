@@ -306,21 +306,20 @@ namespace LAHJA.Data.UI.Templates.Plans
             
 
         }
-
-        public async Task getAllSubscriptionsPlansAsync(int take=0)
+        public async Task getAllSubscriptionsPlansAsync(int take=0,int singleDistinctionNum=0)
         {
 
                 var response = await builderApi.getAllSubscriptionsPlansAsync();
                 if (response.Succeeded)
                 {
-                    if (take > 0)
+                    if (singleDistinctionNum > 0 && take>0)
                     {
                          _allPlans = response.Data.Take(take).ToList();
-                    if (_allPlans.Count() > 2)
-                    {
-                        _allPlans[2].ClassImport = "plan-import-card";
-                        _allPlans[2].HeaderImport = "textHeader";
-                    }
+                        if (_allPlans.Count() > singleDistinctionNum)
+                        {
+                            _allPlans[singleDistinctionNum].ClassImport = "plan-import-card";
+                            _allPlans[singleDistinctionNum].HeaderImport = "textHeader";
+                        }
                 }
                     else{
 

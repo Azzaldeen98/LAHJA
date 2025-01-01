@@ -1,6 +1,7 @@
 ﻿using Microsoft.JSInterop;
 using Shared.Constants;
 using System.ComponentModel;
+using System.Threading;
 namespace LAHJA.Helpers.Services
 {
 
@@ -8,7 +9,7 @@ namespace LAHJA.Helpers.Services
     {
         public event Action<string> OnLanguageChanged;
         private string _currentLanguage = "ar";
-
+     
         public string CurrentLanguage
         {
             get => _currentLanguage;
@@ -24,7 +25,11 @@ namespace LAHJA.Helpers.Services
 
         private void NotifyLanguageChanged(string langCode)
         {
-            OnLanguageChanged?.Invoke(langCode);
+       
+           
+                OnLanguageChanged?.Invoke(langCode);
+       
+            
         }
     }
 
@@ -47,6 +52,7 @@ namespace LAHJA.Helpers.Services
     public class ManageLanguageService: IManageLanguageService
     {
         private readonly IJSRuntime _jsRuntime;
+        private Semaphore semaphore = new Semaphore(1, 1);
         public ManageLanguageService(IJSRuntime jsRuntime)
         {
             _jsRuntime = jsRuntime;
@@ -54,15 +60,20 @@ namespace LAHJA.Helpers.Services
 
         public  async Task<string> GetLanguageAsync()
         {
-            
 
+    
             try
             {
+                semaphore.WaitOne();
                 return await _jsRuntime.InvokeAsync<string>("localStorageHelper.getItem", ConstantsApp.LANGUAGE_STORAGE) ?? LanguagesCode.AR.ToString().ToLower();
             }
             catch (Exception ex)
             {
                 return LanguagesCode.AR.ToString().ToLower();
+            }
+            finally
+            {
+                semaphore.Release();
             }
         }
         public  async Task<bool> CheckIsLanguage(LanguagesCode code)
@@ -81,12 +92,16 @@ namespace LAHJA.Helpers.Services
             {
                 try
                 {
-                    
+                    semaphore.WaitOne();
                     await _jsRuntime.InvokeVoidAsync("localStorageHelper.setItem", ConstantsApp.LANGUAGE_STORAGE,(code.ToString().ToLower()) );
                 }
                 catch(Exception ex)
                 {
 
+                }
+                finally
+                {
+                    semaphore.Release();
                 }
             }
         }

@@ -1,0 +1,68 @@
+﻿<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+      
+    <MudText Typo="Typo.subtitle1">
+        @((IsArabic ? "إليك ملخص المعلومات الموديل " : "Here's a summary of your account Model."))
+    </MudText>
+
+    <MudGrid Class="mt-4">
+
+        <MudItem xs="12" sm="6" md="3">
+            <MudCard>
+                <MudCardContent Class="d-flex align-center">
+                    <MudIcon Icon="@Icons.Custom.Uncategorized.Radioactive" Color="Color.Primary" Size="Size.Small" Class="mr-2" />
+                    <div>
+                        <MudText Typo="Typo.subtitle2">@((IsArabic ? "التنزيلات " : "Install"))</MudText>
+                        <MudText Typo="Typo.h5">250</MudText>
+                    </div>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+
+        <MudItem xs="12" sm="6" md="3">
+            <MudCard>
+                <MudCardContent Class="d-flex align-center">
+                    <MudIcon Icon="@Icons.Material.Filled.ThumbUp" Color="Color.Secondary" Size="Size.Small" Class="mr-2" />
+                    <div>
+                        <MudText Typo="Typo.subtitle2">@((IsArabic ? "البارمترات " : "Paramter"))</MudText>
+                        <MudText Typo="Typo.h5">35.5M</MudText>
+                    </div>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+
+        <MudItem xs="12" sm="6" md="3">
+            <MudCard>
+                <MudCardContent Class="d-flex align-center">
+                    <MudIcon Icon="@Icons.Custom.Uncategorized.Radioactive" Color="Color.Tertiary" Size="Size.Small" Class="mr-2" />
+                    <div>
+                        <MudText Typo="Typo.subtitle2">@((IsArabic ? "متوسط الوقت" : "Avg. Time"))</MudText>
+                        <MudText Typo="Typo.h5">2:55 hrs</MudText>
+                    </div>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+
+        <MudItem xs="12" sm="6" md="3">
+            <MudCard>
+                <MudCardContent Class="d-flex align-center">
+                    <MudIcon Icon="@Icons.Custom.Uncategorized.Radioactive" Color="Color.Success" Size="Size.Small" Class="mr-2" />
+                    <div>
+                        <MudText Typo="Typo.subtitle2">@((IsArabic ? "النمو الأسبوعي" : "Weekly Growth"))</MudText>
+                        <MudText Typo="Typo.h5">14.5%</MudText>
+                    </div>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+
+    [Parameter]
+    public bool IsArabic { get; set; } = true;
+
+
+}

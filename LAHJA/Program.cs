@@ -27,7 +27,7 @@ builder.Services.AddRazorComponents()
 
 
 
-builder.Services.AddLocalization(options => options.ResourcesPath = "Local/Resources");
+builder.Services.AddLocalization(options => options.ResourcesPath = "Locales");
 
 
 
@@ -152,13 +152,14 @@ var app = builder.Build();
 
 
 // ÊÍÏíÏ ÇááÛÉ ÇáÇÝÊÑÇÖíÉ æÏÚã ÇááÛÇÊ
-var supportedCultures = new[] { "en", "ar" };
+string[] supportedCultures = ["en-US", "ar-AR"];
 app.UseRequestLocalization(new RequestLocalizationOptions
 {
-    DefaultRequestCulture = new RequestCulture("en"),
+    DefaultRequestCulture = new RequestCulture("ar"),
     SupportedCultures = supportedCultures.Select(c => new CultureInfo(c)).ToList(),
     SupportedUICultures = supportedCultures.Select(c => new CultureInfo(c)).ToList(),
 });
+
 
 
 
