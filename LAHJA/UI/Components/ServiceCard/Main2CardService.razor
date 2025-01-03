@@ -1,7 +1,9 @@
 @using System.Threading
+@using Domain.ShareData
 @using LAHJA.Data.UI.Components.ServiceCard
 @using LAHJA.Pages.FeatureServices
 @using LAHJA.Them
+@using LAHJA.UI.Components.FeatureServices
 @inject ISnackbar Snackbar
 
 @inject NavigationManager Navigation;
@@ -10,8 +12,19 @@
 
 
 
+@using LAHJA.Helpers.Services
+@inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+
+
+
+
+
+
+
+
  
-<MudContainer Class="mt-16 px-0" Style="overflow:hidden;position:relative;height:100%;" MaxWidth="MaxWidth.False">
+<MudContainer Class="mt-16 pa-0" Style="overflow:hidden;position:relative;height:100%;" MaxWidth="MaxWidth.False">
 
 
 
@@ -22,12 +35,15 @@
           
         </MudDrawerHeader>
         <MudNavMenu>
-            <MudNavGroup Title="@(TypeLanguage ? "Type" : "«·‰Ê⁄ ")" Icon="@Icons.Material.Filled.SpatialAudio">
+            <MudNavGroup Title="@(TypeLanguage ? "Type" : "«·‰Ê⁄ ")" 
+            
+            
+            Icon="@Icons.Material.Filled.SpatialAudio">
                 <MudRadioGroup @bind-Value="@selectedType">
 
                     @foreach (var property in propertyValues["Type"])
                     {
-                        <MudRadio T="string" Value="@property">@property</MudRadio>
+                        <MudRadio Color="@AppColors.BASE_COLOR_ENUM" T="string" Value="@property">@property</MudRadio>
                     }
 
                 </MudRadioGroup>
@@ -37,7 +53,7 @@
                 <MudRadioGroup @bind-Value="@selectedFramework">
                     @foreach (var property in propertyValues["Framework"])
                     {
-                        <MudRadio Value="@property">@property</MudRadio>
+                        <MudRadio  Color="@AppColors.BASE_COLOR_ENUM" Value="@property">@property</MudRadio>
                     }
 
                 </MudRadioGroup>
@@ -47,8 +63,9 @@
                 <MudRadioGroup @bind-Value="@selectedVoice">
                     @foreach (var property in propertyValues["Voice"])
                     {
-                        <MudRadio Value="@property">@property</MudRadio>
+                        <MudRadio  Color="@AppColors.BASE_COLOR_ENUM" Value="@property">@property</MudRadio>
                     }
+
 
                 </MudRadioGroup>
             </MudNavGroup>
@@ -57,8 +74,10 @@
                 <MudRadioGroup @bind-Value="@selectedLanguage">
                     @foreach (var property in propertyValues["Language"])
                     {
-                        <MudRadio Value="@property">@property</MudRadio>
+                        <MudRadio  Color="@AppColors.BASE_COLOR_ENUM" Value="@property">@property</MudRadio>
                     }
+
+
 
                 </MudRadioGroup>
             </MudNavGroup>
@@ -67,42 +86,50 @@
                 <MudRadioGroup @bind-Value="@selectedDialect">
                     @foreach (var property in propertyValues["Dialect"])
                     {
-                        <MudRadio Value="@property">@property</MudRadio>
+                        <MudRadio  Color="@AppColors.BASE_COLOR_ENUM" Value="@property">@property</MudRadio>
                     }
                 </MudRadioGroup>
             </MudNavGroup>
+
+
+
+
 
             <MudNavGroup Title="@(TypeLanguage ? "Quality" : "«·ÃÊœ… ")" Icon="@Icons.Material.Filled.FilterFrames">
                 <MudRadioGroup @bind-Value="@selectedQuality">
-
-
                     @foreach (var property in propertyValues["Quality"])
                     {
-                        <MudRadio Value="@property">@property</MudRadio>
+                        <MudRadio  Color="@AppColors.BASE_COLOR_ENUM" Value="@property">@property</MudRadio>
                     }
                 </MudRadioGroup>
             </MudNavGroup>
+
+
 
             <MudNavGroup Title="@(TypeLanguage ? "Accuracy" : "«·œﬁ… ")" Icon="@Icons.Material.Filled.AccessTime">
                 <MudRadioGroup @bind-Value="@selectedAccuracy">
+
                     @foreach (var property in propertyValues["Accuracy"])
                     {
-                        <MudRadio Value="@property">@property</MudRadio>
+                        <MudRadio Color="@AppColors.BASE_COLOR_ENUM"  Value="@property">@property</MudRadio>
                     }
+
 
                 </MudRadioGroup>
             </MudNavGroup>
 
+
             <MudNavGroup Title="@(TypeLanguage ? "Speed" : "«·”—⁄… ")" Icon="@Icons.Material.Filled.Speed">
                 <MudRadioGroup @bind-Value="@selectedSpeed">
+
                     @foreach (var property in propertyValues["Speed"])
                     {
-                        <MudRadio Value="@property">@property</MudRadio>
+                        <MudRadio Color="@AppColors.BASE_COLOR_ENUM"  Value="@property">@property</MudRadio>
                     }
                 </MudRadioGroup>
             </MudNavGroup>
             <MudButton OnClick="ApplyFilter"
-                       Variant="Variant.Filled"
+                       Variant="Variant.Outlined"
                          Color="@AppColors.BASE_COLOR_ENUM" Style="font-size:12px!important">@(TypeLanguage ? "Apply Filter" : " ÿ»Ìﬁ ")</MudButton>
 
 
@@ -132,16 +159,16 @@
             @foreach (var item in _pagedData)
 
             {
-
+                
                   <MudItem xs="12" sm="6" md="4">
 
-               
 
+                    <div Class="launch-service-panel" style="position:relative">
+                 
             <MudPaper Elevation="2" Class="pa-4"  >
 
 
 
-                        <div Class="launch-service-panel" style="position:relative">
                           
                           
                            <MudGrid >
@@ -167,12 +194,14 @@
                            </MudGrid>
 
 
-                            <div class="launch-bg-service-panel justify-content-center align-items-center">
+                      
+            </MudPaper>
+                  <div class="launch-bg-service-panel justify-content-center align-items-center">
 
                                 <MudButton Variant="Variant.Filled" Class="@AppTextStyle.TEXT_TRANSFORM_NORMAL" OnClick="Submit" Color="@AppColors.BASE_COLOR_ENUM">Launch</MudButton>
                             </div>
                         </div>
-            </MudPaper>
+
         </MudItem>
         
    
@@ -213,8 +242,10 @@ else
 <MudContainer Class="mt-16 px-2">
 
 
-    <FeatureServices />
-
+ @*    <FeatureServices  TypeLanguage="@TypeLanguage" /> *@
+    <FeatureModelLahjaModel TypeLanguage="@TypeLanguage" />
+<ProductLahjaModel TypeLanguage="@TypeLanguage" />
+<StartStepLahjaModel TypeLanguage="@TypeLanguage" />
 
 </MudContainer>
  
@@ -229,9 +260,15 @@ else
 
 
 
+
+
+
+
     [Parameter]
     public string TypeMode { get; set; } = " ";
-    [Parameter] public bool TypeLanguage { get; set; } = false;
+    [Parameter] public bool TypeLanguage { get; set; } = true;
+
+
 
 
 
@@ -243,11 +280,6 @@ else
     private string selectedQuality;
     private string selectedAccuracy;
     private string selectedSpeed;
-
-
-
-
-
 
 
     private int _currentPage = 1;
@@ -282,7 +314,7 @@ else
 
     {
 
-        
+
 
         int skip = (page - 1) * _itemsPerPage;
 
@@ -306,14 +338,19 @@ else
 
 
 
+
+
     private string searchQuery = string.Empty;
     private bool _open = false;
+
+
 
     private void ToggleDrawer()
     {
 
         _open = !_open;
     }
+
     private Dictionary<string, List<string>> propertyValues = null;
     private string selectedStore;
     private string selectedLibrary;
@@ -326,37 +363,122 @@ else
     {
         try
         {
-            
-                Navigation.NavigateTo("/TextToText");
-          
-            
-            
+
+            Navigation.NavigateTo("/TextToText");
+
+
+
 
         }
         catch
         {
-            
+
 
         }
 
     }
 
+
     private string value1;
-   
+
     List<ModelProperties> DataBuild = null;
     List<ModelProperties> DataBuild1 = null;
 
+
+
+
+
+
+
+
+
+    protected override async void OnAfterRender(bool firstRender)
+
+    {
+        if (firstRender)
+
+        {
+            var currentLanguage = await _manageLanguageService.GetLanguageAsync();
+            changeLanguage(currentLanguage);
+
+        }
+
+    }
+
+    private async void changeLanguage(string language)
+
+    {
+
+
+
+        if (language == "en")
+
+        {
+
+            TypeLanguage = true;
+            DataBuild = PropertyGenerator.GenerateModelPropertiesList(22, 0);
+            propertyValues = PropertyGenerator.propertyValues;
+
+        }
+
+        else
+
+        {
+
+            TypeLanguage = false;
+
+            DataBuild = PropertyGenerator.GenerateModelPropertiesList(22, 1);
+            propertyValues = PropertyGenerator.propertyValuesInArabic;
+
+
+        }
+
+        DataBuild1 = DataBuild;
+
+        _totalPages = (int)Math.Ceiling((double)DataBuild.Count / _itemsPerPage);
+
+        LoadPageData(_currentPage);
+
+
+        InvokeAsync(StateHasChanged);
+
+
+
+    }
+
     protected override void OnInitialized()
+
+    {
+
+        try
+
+        {
+            languageService.OnLanguageChanged += changeLanguage;
+
+            changeLanguage("ar");
+
+
+        }
+
+        catch
+
+        {
+
+        }
+    }
+
+
+   @*  protected override void OnInitialized()
     {
 
         if (TypeLanguage)
         {
-            DataBuild = PropertyGenerator.GenerateModelPropertiesList(15, 0);
+            DataBuild = PropertyGenerator.GenerateModelPropertiesList(22, 0);
             propertyValues = PropertyGenerator.propertyValues;
         }
         else
         {
-            DataBuild = PropertyGenerator.GenerateModelPropertiesList(15, 1);
+            DataBuild = PropertyGenerator.GenerateModelPropertiesList(22, 1);
             propertyValues = PropertyGenerator.propertyValuesInArabic;
         }
 
@@ -384,16 +506,12 @@ else
 
 
 
-        _totalPages = (int)Math.Ceiling((double)DataBuild.Count / _itemsPerPage);
-
-
-
-        LoadPageData(_currentPage);
+       
 
 
 
         StateHasChanged();
-    }
+    } *@
 
 
 

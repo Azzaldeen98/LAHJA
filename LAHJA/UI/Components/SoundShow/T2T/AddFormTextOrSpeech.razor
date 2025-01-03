@@ -1,8 +1,18 @@
-﻿@using LAHJA.ApiClient.Models
+﻿@using Domain.ShareData
+@using LAHJA.ApiClient.Models
 @using LAHJA.ApiClient.Services.VoiceBot
 @using LAHJA.Data.UI.Components.ServiceCard
  
  
+
+@using LAHJA.Helpers.Services
+@inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+
+
+
+
+
 
 
 @using LAHJA.Data.UI.Models
@@ -81,8 +91,10 @@
 
             foreach (var item in _selected1)
             {
-                if (item == "Text To Speech")
+                if (item == "Text To Speech" || typemodel == "نص إلى كلام")
                 {
+
+
 
                     <MudItem xs="12" sm="12" md="12" lg="12">
                         <MudPaper Class="p-4 m-2">
@@ -135,7 +147,8 @@
 
         <MudItem xs="12" sm="6">
             <MudButton Variant="Variant.Outlined" OnClick="SubmitForm" Color="@ColorCheck">
-                تطبيق 
+                 
+                @(TypeLanguage ? "Submit" : "تطبيق")
             </MudButton>
 
         </MudItem>
@@ -143,7 +156,8 @@
         <MudItem xs="12" sm="6">
 
             <MudButton Variant="Variant.Outlined" Color="@ColorCheck" OnClick="Navigateto">
-                استديو AI
+              
+                @(TypeLanguage ? "Studio  AI": "  استديو AI")
             </MudButton>
 
         </MudItem>
@@ -200,7 +214,7 @@
     public Color ColorCheck { get; set; } = AppColors.BASE_COLOR_ENUM;
     [Parameter]
     public string TypeMode { get; set; } = " ";
-    [Parameter] public bool TypeLanguage { get; set; } = false;
+    [Parameter] public bool TypeLanguage { get; set; } = true;
     private string value1;
     private Dictionary<string, List<string>> propertyValues = null;
     [Parameter] public  ModelProperties  DataBuild { get; set; } = null;
@@ -223,6 +237,9 @@
     {
 
     };
+
+
+
 
     private bool _checkMark1 = false;
     private bool _checkMark2 = false;
@@ -271,34 +288,94 @@
     }
 
 
-
-    protected override void OnInitialized()
+    protected override async void OnAfterRender(bool firstRender)
     {
 
-        if (TypeLanguage)
+        if (firstRender)
         {
-
-            DataBuild1 = PropertyGenerator.GenerateModelPropertiesList(9, 0);
-            propertyValues = PropertyGenerator.propertyValues;
-        }
-        else
-        {
-
-            DataBuild1 = PropertyGenerator.GenerateModelPropertiesList(9, 1);
-            propertyValues = PropertyGenerator.propertyValuesInArabic;
-        }
-
-        if (DataBuild == null)
-        {
+            var currentLanguage = await _manageLanguageService.GetLanguageAsync();
+            changeLanguage(currentLanguage);
 
         }
-        StateHasChanged();
-
 
 
 
 
     }
+
+
+    private async void changeLanguage(string language)
+    {
+
+        if (language == "en")
+        {
+            TypeLanguage = true;
+            DataBuild1 = PropertyGenerator.GenerateModelPropertiesList(9, 0);
+            propertyValues = PropertyGenerator.propertyValues;
+        }
+        else
+        {
+            TypeLanguage = false;
+            DataBuild1 = PropertyGenerator.GenerateModelPropertiesList(9, 1);
+            propertyValues = PropertyGenerator.propertyValuesInArabic;
+
+
+
+        }
+
+        InvokeAsync(StateHasChanged);
+
+    }
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+
+
+            languageService.OnLanguageChanged += changeLanguage;
+            changeLanguage("ar");
+
+        }
+        catch
+        {
+
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
 
 
     private async void SubmitForm()
@@ -318,13 +395,15 @@
 
 
 
-                if ( typemodel == "نص إلى نص")
+
+                if (typemodel == "نص إلى نص" || typemodel == "Text To Text")
                 {
 
                     var response = await _T2TService.T2TAsync(new QueryRequestTextToText { Text = _name });
 
                     if (response.Succeeded)
                     {
+
                         string decodedText = response.Data.Text;
                         int c = _selected5.Count;
 
@@ -342,7 +421,7 @@
 
 
                 }
-                else if (typemodel ==  "نص إلى كلام")
+                else if (typemodel == "نص إلى كلام" || typemodel == "Text To Speech")
                 {
 
                     int c = _selected5.Count;

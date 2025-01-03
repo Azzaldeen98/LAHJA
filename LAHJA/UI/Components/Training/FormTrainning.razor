@@ -1,167 +1,143 @@
-﻿<MudContainer MaxWidth="MaxWidth.Medium" Class="pa-4" Style="background-color: #e3f2fd; border-radius: 12px;">
-    <MudPaper Class="pa-4" Elevation="4">
-        <MudText Typo="Typo.h4" Align="Align.Center" Class="mb-4" Style="color: #0056b3;">Advanced Settings</MudText>
-
+﻿@using Domain.ShareData
+@using LAHJA.Helpers.Services
+@using LAHJA.Them
+<MudContainer MaxWidth="MaxWidth.Large" Class="pa-4" 
+ Style="border-radius: 12px;">
+ @inject LanguageService languageService
+ @inject IManageLanguageService _manageLanguageService
+ 
+<MudPaper Class="pa-4" Elevation="4">
+    
         <MudForm @ref="form">
 
 
-            <MudTextField Label="EpocK" Variant="Variant.Filled" @bind-Value="paramObject.PrimaryMetric" />
 
 
-            <MudTextField Label="Training Job Time (minutes)" Variant="Variant.Filled" @bind-Value="paramObject.TrainingJobTime" Type="number" />
-
-            <MudTextField Label="Max Number of Iterations" Variant="Variant.Filled" @bind-Value="paramObject.MaxNumberIterations" Type="number" />
 
 
-            <MudTextField Label="Metric Score Threshold" Variant="Variant.Filled" @bind-Value="paramObject.MetricScoreThreshold" Type="number" />
-
-            <MudCheckBox T="string" @bind-Checked="paramObject.EnablePreprocessing" Label="Enable Preprocessing" />
-
-
-            <MudSelect Label="Validation Type" Variant="Variant.Filled" @bind-Value="paramObject.ValidationType">
-                <MudSelectItem Value="@("K-fold cross validation")">K-fold cross validation</MudSelectItem>
-                <MudSelectItem Value="@("Other validation type")">Other validation type</MudSelectItem>
-            </MudSelect>
+            <MudTextField Label="@epok" Variant="Variant.Filled" @bind-Value="paramObject.PrimaryMetric" />
+            <MudTextField Label="@data" Variant="Variant.Filled" @bind-Value="paramObject.NumberOfCrossValidations"   />
+            <MudTextField Label="@nameolddata" Variant="Variant.Filled" @bind-Value="paramObject.MaxConcurrentIterations"  />
+            <MudTextField Label="@namenewdata" Variant="Variant.Filled" @bind-Value="paramObject.MaxConcurrentIterations"  />
+            <MudButton Variant="Variant.Outlined" Color="@AppColors.BASE_COLOR_ENUM" Class="mt-2"> @submit</MudButton>
 
 
-            <MudTextField Label="Number of Cross Validations" Variant="Variant.Filled" @bind-Value="paramObject.NumberOfCrossValidations" Type="number" />
+       
 
 
-            <MudTextField Label="Max Concurrent Iterations" Variant="Variant.Filled" @bind-Value="paramObject.MaxConcurrentIterations" Type="number" />
-
-
-            <MudTextField Label="Max Cores per Iteration" Variant="Variant.Filled" @bind-Value="paramObject.MaxCoresPerIteration" Type="number" />
-
-
-            <MudText Typo="Typo.h6" Class="mt-4">Blocked Algorithms</MudText>
-            <MudRadioGroup T="string" Label="Select an Algorithm" @bind-Value="selectedAlgorithm" Color="Color.Primary">
-                <MudRadio T="string" Value="@("LogisticRegression")">Logistic Regression</MudRadio>
-                <MudRadio T="string" Value="@("SGD")">Text To Text Model</MudRadio>
-                <MudRadio T="string" Value="@("SVM")">Text To Sound Model </MudRadio>
-                <MudRadio T="string" Value="@("KNN")">Text And Sound Model</MudRadio>
-            </MudRadioGroup>
-
-            <MudButton Variant="Variant.Outlined" Color="Color.Primary" Class="mt-2" OnClick="AddAlgorithm">Add Algorithm</MudButton>
-
-
-            <MudList Dense="true" Class="mt-3" T="object">
-                @foreach (var algorithm in paramObject.BlockedAlgorithms)
-                {
-                    <MudListItem>@algorithm</MudListItem>
-                }
-            </MudList>
-
-
-            <MudButton Type="Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">Start</MudButton>
+       
         </MudForm>
     </MudPaper>
 </MudContainer>
 
-@code {
+@code 
+{
+
+
+
     private MudForm form;
     private ParamObject paramObject = new ParamObject();
     private string selectedAlgorithm;
+
+
 
 
     [Parameter]
 
     public bool currentLanguage { get; set; } = true;
 
-    private void AddAlgorithm()
+    protected override async void OnAfterRender(bool firstRender)
     {
-        if (!string.IsNullOrEmpty(selectedAlgorithm) && !paramObject.BlockedAlgorithms.Contains(selectedAlgorithm))
+
+        if (firstRender)
         {
-            paramObject.BlockedAlgorithms.Add(selectedAlgorithm);
+            var currentLanguage = await _manageLanguageService.GetLanguageAsync();
+            changeLanguage(currentLanguage);
+
         }
+
+
+
+
     }
 
 
-    private void HandleSubmit()
+    private async void changeLanguage(string language)
     {
-        Console.WriteLine($"Form Submitted with: {paramObject}");
-    }
 
-
-    public class ParamObject
-    {
-        public string PrimaryMetric { get; set; }
-        public int TrainingJobTime { get; set; }
-        public int MaxNumberIterations { get; set; }
-        public double? MetricScoreThreshold { get; set; }
-        public bool EnablePreprocessing { get; set; }
-        public string ValidationType { get; set; }
-        public int NumberOfCrossValidations { get; set; }
-        public int MaxConcurrentIterations { get; set; }
-        public int? MaxCoresPerIteration { get; set; }
-        public List<string> BlockedAlgorithms { get; set; } = new List<string>();
-    }
-
-
-
-    private void SetLanguage()
-    {
-        if(currentLanguage)
+        if (language == "en")
         {
-                  
+
+            epok =  "Epochs";
+            data ="Url Data"  ;
+            namenewdata = "Name Model"  ;
+            nameolddata =  "Save Model"  ;
+            submit ="Add Algorithm  " ;
+           
         }
         else
         {
 
+
+
+            epok =   "عدد الدورات ";
+            data =    "رابط الدتا";
+            namenewdata =  "اسم الموديل ";
+            nameolddata =  "حفظ الموديل ";
+             submit ="الاظافة ";
+
         }
+        InvokeAsync(StateHasChanged);
+
+    }
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+
+            languageService.OnLanguageChanged += changeLanguage;
+            changeLanguage("ar");
+
+        }
+        catch
+        {
+
+
+        }
+
+    }
+
+ 
+
+
+
+
+
+    public class ParamObject
+    {
+
+        public string PrimaryMetric { get; set; }
+        public string  MaxNumberIterations { get; set; }
+        public string NumberOfCrossValidations { get; set; }
+        public string MaxConcurrentIterations { get; set; }
 
 
     }
 
+    private string epok;
+    private string data;
+    private string namenewdata;
+    private string nameolddata;
+    private string submit;
+
+    [Parameter] public bool TypeLanguage { get; set; } = false;
+
+   
+
+    
 
 
 
-    // public string AdvancedSettings = "Advanced Settings";
-    // public string EpocK = "EpocK";
-    // public string TrainingJobTime = "Training Job Time (minutes)";
-    // public string MaxNumberIterations = "Max Number of Iterations";
-    // public string MetricScoreThreshold = "Metric Score Threshold";
-    // public string EnablePreprocessing = "Enable Preprocessing";
-
-    // public string ValidationType = "Validation Type";
-    // public string KFoldValidation = "K-fold cross validation";
-
-
-    // public string OtherValidation = "Other validation type";
-    // public string NumberOfCrossValidations = "Number of Cross Validations";
-    // public string MaxConcurrentIterations = "Max Concurrent Iterations";
-    // public string MaxCoresPerIteration = "Max Cores per Iteration";
-    // public string BlockedAlgorithms = "Blocked Algorithms";
-    // public string SelectAlgorithm = "Select an Algorithm";
-
-    // public string LogisticRegression = "Logistic Regression";
-    // public string TextToTextModel = "Text to Text Model";
-    // public string Start = "Start";
-            
-       
-          
-         
-           
-            // { "AdvancedSettings", "الإعدادات المتقدمة" },
-            // { "EpocK", "المقياس الأساسي" },
-            // { "TrainingJobTime", "وقت تدريب الوظيفة (بالدقائق)" },
-            // { "MaxNumberIterations", "أقصى عدد للتكرارات" },
-            // { "MetricScoreThreshold", "حد عتبة مقياس الأداء" },
-            // { "EnablePreprocessing", "تمكين المعالجة المبدئية" },
-            // { "ValidationType", "نوع التحقق" },
-            // { "KFoldValidation", "التحقق المتقاطع K-fold" },
-            // { "OtherValidation", "نوع تحقق آخر" },
-            // { "NumberOfCrossValidations", "عدد التحقق المتقاطع" },
-            // { "MaxConcurrentIterations", "أقصى تكرارات متوازية" },
-            // { "MaxCoresPerIteration", "أقصى أنوية لكل تكرار" },
-            // { "BlockedAlgorithms", "الخوارزميات المحجوزة" },
-            // { "SelectAlgorithm", "اختيار الخوارزمية" },
-            // { "LogisticRegression", "الانحدار اللوجستي" },
-            // { "TextToTextModel", "نموذج النص إلى نص" },
-            // { "TextToSoundModel", "نموذج النص إلى صوت" },
-            // { "TextAndSoundModel", "نموذج النص والصوت" },
-            // { "AddAlgorithm", "إضافة خوارزمية" },
-            // { "Start", "ابدأ" },
-            // { "SelectLanguage", "اختر اللغة" },
-            // { "English", "الإنجليزية" },
-            // { "Arabic", "العربية" }
+    
 }

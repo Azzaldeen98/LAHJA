@@ -1,159 +1,93 @@
-﻿@*  <MudContainer MaxWidth="MaxWidth.Large" Class="pa-4">
-    <MudGrid>
-        <MudItem xs="12">
-            <MudText Typo="Typo.h4" Align="Align.Center" Style="color: #0056b3;">Best Model Training</MudText>
-        </MudItem>
-
-        <MudItem xs="4">
-            <MudCard Class="pa-3">
-                <MudText Typo="Typo.subtitle1" Class="mb-2">Best Score</MudText>
-                <MudText Typo="Typo.h5" Align="Align.Center" Style="color: #4CAF50;">@metrics.BestScore</MudText>
-            </MudCard>
-        </MudItem>
-        <MudItem xs="4">
-            <MudCard Class="pa-3">
-                <MudText Typo="Typo.subtitle1" Class="mb-2">Restored Epoch</MudText>
-                <MudText Typo="Typo.h5" Align="Align.Center">@metrics.RestoredEpoch</MudText>
-            </MudCard>
-        </MudItem>
-        <MudItem xs="4">
-            <MudCard Class="pa-3">
-                <MudText Typo="Typo.subtitle1" Class="mb-2">Stopped Epoch</MudText>
-                <MudText Typo="Typo.h5" Align="Align.Center">@metrics.StoppedEpoch</MudText>
-            </MudCard>
-        </MudItem>
-
-        <MudItem xs="6">
-            <MudCard Class="pa-3">
-                <MudText Typo="Typo.subtitle1" Class="mb-2">Validation Loss</MudText>
-                <MudChart ChartType="ChartType.Bar"   ChartSeries="@Series"  Class="ma-2" Style="height: 250px;">
-
-                </MudChart>
-            </MudCard>
-        </MudItem>
-        <MudItem xs="6">
-            <MudCard Class="pa-3">
-                <MudText Typo="Typo.subtitle1" Class="mb-2">Accuracy</MudText>
-                <MudChart ChartType="ChartType.StackedBar" ChartSeries="@Series" Class="ma-2" Style="height: 250px;">
-
-                </MudChart>
-            </MudCard>
-        </MudItem>
-
-        <MudItem xs="12">
-            <MudCard Class="pa-3">
-                <MudText Typo="Typo.subtitle1" Class="mb-2">Validation Accuracy vs Validation Loss</MudText>
-
-
-                <MudChart ChartType="ChartType.Line" ChartSeries="@Seriess"
-                          Width="100%" Height="350px"/>
-
-            </MudCard>
-        </MudItem>
-    </MudGrid>
-</MudContainer>
-
-@code {
-    private Metrics metrics = new Metrics
-    {
-        BestScore = 0.9332024,
-        RestoredEpoch = 17,
-        StoppedEpoch = 22,
-        ValidationLoss = new double[] { 2.0, 1.8, 1.6, 1.4, 1.2, 1.0 },
-        Accuracy = new double[] { 0.5, 0.6, 0.7, 0.8, 0.85, 0.9 },
-        ValidationAccuracy = new double[] { 0.7, 0.75, 0.8, 0.85, 0.88, 0.9 }
-
-
-    };
-    public List<ChartSeries> Series = new List<ChartSeries>()
-    {
-        new ChartSeries() { Name = "United States", Data = new double[] { 40, 20, 25, 27, 46, 60, 48, 80, 15 } }
-
-    };
-    public List<ChartSeries> Seriess = new List<ChartSeries>()
-    {
-        new ChartSeries() { Name = "Fossil", Data = new double[] { 90, 79, 72, 69, 62, 62, 55, 65, 70 } },
-        new ChartSeries() { Name = "Renewable", Data = new double[] { 10, 41, 35, 51, 49, 62, 69, 91, 148 } },
-    };
-    public class Metrics
-    {
-        public double BestScore { get; set; }
-        public int RestoredEpoch { get; set; }
-        public int StoppedEpoch { get; set; }
-        public double[] ValidationLoss { get; set; }
-        public double[] Accuracy { get; set; }
-        public double[] ValidationAccuracy { get; set; }
-    }
-}
- *@
+﻿ 
 
 
  @page "/metrics"
+@using Domain.ShareData
+@using LAHJA.Helpers.Services
+@using LAHJA.Them
 @using MudBlazor
+@inject ISnackbar Snackbar
+@inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+<FormTrainning TypeLanguage="@currentLanguage" />
 
-<FormTrainning />
-<MudContainer MaxWidth="MaxWidth.Large" Class="pa-4">
+
+
+<MudDivider/>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="pa-8">
+
+
+
+    <MudText Typo="Typo.body1">@title</MudText>
 
     <MudGrid>
-        <MudItem xs="12" Class="text-right">
-            <MudButton Variant="Variant.Text" OnClick="ToggleLanguage">
-                @languageSwitcherText
-            </MudButton>
-        </MudItem>
-    </MudGrid>
+         
+        
+        
 
-
-    <MudGrid>
-        <MudItem xs="12">
-            <MudText Typo="Typo.h4" Align="Align.Center" Style="color: #0056b3;">@title</MudText>
-        </MudItem>
-
-        <MudItem xs="4">
+        <MudItem xs="12" sm="6" md="4">
             <MudCard Class="pa-3">
-                <MudText Typo="Typo.subtitle1" Class="mb-2">@bestScoreText</MudText>
-                <MudText Typo="Typo.h5" Align="Align.Center" Style="color: #4CAF50;">@metrics.BestScore</MudText>
+                <MudText Typo="Typo.body1" Class="mb-2">@bestScoreText</MudText>
+                <MudText Typo="Typo.body2" Align="Align.Center" Color="@AppColors.BASE_COLOR_ENUM">@metrics.BestScore</MudText>
             </MudCard>
         </MudItem>
-        <MudItem xs="4">
+        <MudItem xs="12" sm="6" md="4">
             <MudCard Class="pa-3">
-                <MudText Typo="Typo.subtitle1" Class="mb-2">@restoredEpochText</MudText>
-                <MudText Typo="Typo.h5" Align="Align.Center">@metrics.RestoredEpoch</MudText>
+                <MudText Typo="Typo.body1" Class="mb-2"  >@restoredEpochText</MudText>
+                <MudText Typo="Typo.body2" Align="Align.Center" Color="@AppColors.BASE_COLOR_ENUM">@metrics.RestoredEpoch</MudText>
             </MudCard>
         </MudItem>
-        <MudItem xs="4">
+        <MudItem xs="12" sm="6" md="4">
             <MudCard Class="pa-3">
-                <MudText Typo="Typo.subtitle1" Class="mb-2">@stoppedEpochText</MudText>
-                <MudText Typo="Typo.h5" Align="Align.Center">@metrics.StoppedEpoch</MudText>
+                <MudText Typo="Typo.body1" Class="mb-2" >@stoppedEpochText</MudText>
+                <MudText Typo="Typo.body2" Align="Align.Center" Color="@AppColors.BASE_COLOR_ENUM">@metrics.StoppedEpoch</MudText>
             </MudCard>
         </MudItem>
 
-        <MudItem xs="6">
+
+
+
+
+
+
+
+
+
+        <MudItem xs="12" sm="6" md="6">
             <MudCard Class="pa-3">
-                <MudText Typo="Typo.subtitle1" Class="mb-2">@validationLossText</MudText>
+                <MudText Typo="Typo.body1" Class="mb-2" >@validationLossText</MudText>
                 <MudChart ChartType="ChartType.Bar" ChartSeries="@Series" Class="ma-2" Style="height: 250px;" />
             </MudCard>
+
+
+
+
         </MudItem>
-        <MudItem xs="6">
+        <MudItem xs="12" sm="6" md="6">
             <MudCard Class="pa-3">
-                <MudText Typo="Typo.subtitle1" Class="mb-2">@accuracyText</MudText>
+                <MudText Typo="Typo.body1" Class="mb-2"  >@accuracyText</MudText>
                 <MudChart ChartType="ChartType.StackedBar" ChartSeries="@Serieserutey" Class="ma-2" Style="height: 250px;" />
             </MudCard>
         </MudItem>
 
+
         <MudItem xs="12">
             <MudCard Class="pa-3">
-                <MudText Typo="Typo.subtitle1" Class="mb-2">@accuracyVsValidationLossText</MudText>
+                <MudText Typo="Typo.body1" Class="mb-2">@accuracyVsValidationLossText</MudText>
                 <MudChart ChartType="ChartType.Line" ChartSeries="@Seriess" Width="100%" Height="350px" />
             </MudCard>
         </MudItem>
     </MudGrid>
 </MudContainer>
 
+
+
 @code {
 
     [Parameter]
 
-    public bool currentLanguage { get; set; } = true;
+    public bool currentLanguage { get; set; } 
     private string title;
     private string bestScoreText;
     private string restoredEpochText;
@@ -165,12 +99,15 @@
 
 
 
+    private string CurrentLanguage;
     private Metrics metrics = new Metrics
         {
-            BestScore = 0.9332024,
-            RestoredEpoch = 17,
-            StoppedEpoch = 22
+            BestScore =0,
+            RestoredEpoch =0,
+            StoppedEpoch =0
         };
+
+
 
 
     public List<ChartSeries> Series = new List<ChartSeries>()
@@ -180,51 +117,125 @@
    };
     public List<ChartSeries> Serieserutey = new List<ChartSeries>()
    {
+
        new ChartSeries() { Name = "United States", Data = new double[] {40, 20, 25, 27, 46, 60, 48, 80, 15 } }
 
    };
+
+
+
+
+
+
+
+
+
+
     public List<ChartSeries> Seriess = new List<ChartSeries>()
     {
         new ChartSeries() { Name = "Fossil", Data = new double[] { 90, 79, 72, 69, 62, 62, 55, 65, 70 } },
         new ChartSeries() { Name = "Renewable", Data = new double[] { 10, 41, 35, 51, 49, 62, 69, 91, 148 } },
     };
 
-    protected override void OnInitialized()
-    {
-        SetLanguage();
-    }
 
-    private void ToggleLanguage()
+
+
+    protected override async void OnAfterRender(bool firstRender)
     {
 
-        SetLanguage();
-    }
-
-    private void SetLanguage()
-    {
-        if (!currentLanguage)
+        if (firstRender)
         {
-            title = "تدريب أفضل نموذج";
-            bestScoreText = "أفضل نتيجة";
-            restoredEpochText = "العصر المستعاد";
-            stoppedEpochText = "العصر المتوقف";
-            validationLossText = "فقدان التحقق";
-            accuracyText = "الدقة";
-            accuracyVsValidationLossText = "الدقة مقابل فقدان التحقق";
-            languageSwitcherText = "English";
+            var currentLanguage = await _manageLanguageService.GetLanguageAsync();
+            changeLanguage(currentLanguage);
+
         }
-        else
+
+
+
+
+    }
+
+
+    private async void changeLanguage(string language)
+    {
+
+        if (language == "en")
         {
-            title = "Best Model Training";
+
+            currentLanguage = true;
+            title = "Model Training";
             bestScoreText = "Best Score";
             restoredEpochText = "Restored Epoch";
             stoppedEpochText = "Stopped Epoch";
             validationLossText = "Validation Loss";
             accuracyText = "Accuracy";
             accuracyVsValidationLossText = "Accuracy vs Validation Loss";
-            languageSwitcherText = "العربية";
+            SetLanguage(currentLanguage);
+        }
+        else
+        {
+            currentLanguage = false;
+            title = "تدريب  نموذج";
+            bestScoreText = "  نتيجة";
+            restoredEpochText = " رقم العملية";
+            stoppedEpochText = "عدد العمليات";
+            validationLossText = "فقدان التحقق";
+            accuracyText = "الدقة";
+            accuracyVsValidationLossText = "الدقة مقابل فقدان التحقق";
+
+
+        }
+
+
+        InvokeAsync(StateHasChanged);
+        
+    }
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+
+            languageService.OnLanguageChanged += changeLanguage;
+            changeLanguage("ar");
+
+        }
+        catch
+        {
+
+
+        }
+
+    }
+
+
+    private void SetLanguage(bool currentLanguage)
+    {
+        if (currentLanguage)
+        {
+            title = "Model Training";
+            bestScoreText = "Best Score";
+            restoredEpochText = "Restored Epoch";
+            stoppedEpochText = "Stopped Epoch";
+            validationLossText = "Validation Loss";
+            accuracyText = "Accuracy";
+            accuracyVsValidationLossText = "Accuracy vs Validation Loss";
+
+        }
+        else
+        {
+            title = "تدريب  نموذج";
+            bestScoreText = "  نتيجة";
+            restoredEpochText = "ارقم العملية ";
+            stoppedEpochText = "عدد العمليات";
+            validationLossText = "فقدان التحقق";
+            accuracyText = "الدقة";
+            accuracyVsValidationLossText = "الدقة مقابل فقدان التحقق";
+           
+
         }
         StateHasChanged();
+
     }
 
 

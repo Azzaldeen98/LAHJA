@@ -1,13 +1,22 @@
 ﻿ @page "/TextToText"
+@using Domain.ShareData
 @using LAHJA.Data.UI.Components.ServiceCard
+ 
 @using LAHJA.UI.Components.Plan
 @using LAHJA.UI.Components.SoundShow
 @using LAHJA.UI.Components.StudioLahjaAi
 @using MudBlazor
 
+
+@using LAHJA.Helpers.Services
+@inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+
+
+
 <MudContainer MaxWidth="MaxWidth.Large" >
 
-    <HeaderTextAndSpeechCompoent/>
+    <HeaderTextAndSpeechCompoent IsArabic="@IsEnglish" />
     <MudGrid Class="mt-3" Style="font-size:12px!important">
        
        
@@ -56,7 +65,7 @@
 
 
 
-             <AddFormTextOrSpeech/>
+                        <AddFormTextOrSpeech TypeLanguage="@IsEnglish" />
 
                    
                     </main>
@@ -73,13 +82,11 @@
    
 </MudContainer>
 
-
-
  
  <MudContainer MaxWidth="MaxWidth.Large" Style="padding:3%" >  
 
 
-    <LAHJA.UI.Templates.Plans.TemplatePlans />
+    <LAHJA.UI.Templates.Plans.TemplatePlans   />
  
 </MudContainer>
 
@@ -90,10 +97,11 @@
 
 
 
+
     [Parameter]
-    public bool IsEnglish { get; set; } = false;
-    // [Parameter]
-    // public bool EventCa { get; set; } = false;
+    public bool IsEnglish { get; set; } = true;
+
+
 
 
     [Parameter] public EventCallback<OnDataResult> Submit { get; set; }
@@ -109,30 +117,84 @@
         public ContentItemT2T DownloadsTrend { get; set; }
     }
 
-
-
     ContentServiceInformationModelPige obj = new ContentServiceInformationModelPige();
 
 
 
-
-    protected override void OnInitialized()
+    protected override async void OnAfterRender(bool firstRender)
     {
 
+        if (firstRender)
+        {
+            var currentLanguage = await _manageLanguageService.GetLanguageAsync();
+            changeLanguage(currentLanguage);
+
+        }
 
 
-        if (IsEnglish)
-        {
-            Param=LoadEnglishContent();
-        }
-        else
-        {
-            Param = LoadArabicContent();
-        }
-        StateHasChanged();
+
 
     }
 
+
+    private async void changeLanguage(string language)
+    {
+
+        if (language == "en")
+        {
+            IsEnglish = true;
+            Param = LoadEnglishContent();
+        }
+        else
+        {
+            IsEnglish =false;
+            Param = LoadArabicContent();
+
+            
+
+        }
+        InvokeAsync(StateHasChanged);
+
+    }
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+
+            languageService.OnLanguageChanged += changeLanguage;
+            changeLanguage("ar");
+
+        }
+        catch
+        {
+
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
     private async void OnSubmitText(OnDataResult obj)
     {
         if (Submit.HasDelegate)

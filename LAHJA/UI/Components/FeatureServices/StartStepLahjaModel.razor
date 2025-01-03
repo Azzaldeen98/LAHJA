@@ -1,18 +1,27 @@
-﻿
+﻿@using Domain.ShareData
+@using LAHJA.Them
+
+
+@using LAHJA.Helpers.Services
+@inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+
+
 <MudContainer Class="pa-8">
-    <MudPaper Elevation="8" Class="pa-8" Style="border-radius: 16px; background-color: #ffffff;">
-        <MudText Typo="Typo.h3" GutterBottom="true" Align="Align.Right">
+    <MudPaper Elevation="8" Class="pa-8" Style="border-radius: 16px;">
+
+        <MudText Typo="Typo.h5"  >
             @Title
         </MudText>
 
-        <MudDivider Class="my-4" />
 
+        <MudDivider Class="my-4" />
         <MudCarousel TData="StartStepModel" Style="height: 300px;  text-align:right;">
             @foreach (var step in startSteps)
             {
                 <MudCarouselItem>
                     <MudPaper Elevation="4" Class="pa-4" Style="background-color: #f5f5f5; border-radius: 8px;">
-                        <MudText Variant="h5" Class="text-primary" GutterBottom="true" Align="Align.Center">
+                        <MudText Typo="Typo.h5" Color="@AppColors.BASE_COLOR_ENUM" GutterBottom="true" Align="Align.Center">
                             @($"{step.StepNumber}: {step.Title}")
                         </MudText>
                         <MudText Typo="Typo.body1" Class="text-dark" Style="line-height: 1.6;" Align="Align.Center">
@@ -29,10 +38,20 @@
 
 
 
-    [Parameter]
-    public string Title { get; set; } = "    كيفية البدء";
-    [Parameter]
-    public StartStepModel DataModel{ get; set; }
+
+
+
+        [Parameter] public bool TypeLanguage { get; set; } =false;
+
+
+
+
+        [Parameter]
+        public StartStepModel DataModel{ get; set; }
+
+
+
+
 
     public class StartStepModel
     {
@@ -47,12 +66,99 @@
             Description = description;
         }
     }
+    string Title="";
+    List<StartStepModel> startSteps;
 
-    private List<StartStepModel> startSteps = new List<StartStepModel>
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            var currentLanguage = await _manageLanguageService.GetLanguageAsync();
+            changeLanguage(currentLanguage);
+
+        }
+
+
+
+
+    }
+
+
+    private async void changeLanguage(string language)
+    {
+
+        if (language == "en")
+        {
+            TypeLanguage = true;
+            startSteps =  startSteps2;
+             Title =   "How Start?";
+           // Title = (!TypeLanguage ? "كيف الابد؟  " : "How Start?");
+
+        }
+        else
+        {
+            TypeLanguage = false;
+            startSteps = startSteps1;
+            Title = "كيف الابد؟ ";
+
+
+
+        }
+        InvokeAsync(StateHasChanged);
+
+    }
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+
+            languageService.OnLanguageChanged += changeLanguage;
+            changeLanguage("ar");
+
+        }
+        catch
+        {
+
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+    private List<StartStepModel> startSteps1 = new List<StartStepModel>
     {
         new StartStepModel(1, "حدد نوع الخدمة المطلوبة", "اختر بين تدريب نموذج جديد أو Fine Training على نموذج قائم."),
         new StartStepModel(2, "تقديم البيانات الصوتية", "في حال اختيار Fine Training، قم بتقديم عينات صوتية لتحسين النموذج."),
         new StartStepModel(3, "تخصيص النظام", "اختر بين التكامل مع الخوادم المحلية أو إعداد تطبيق يعمل في الخلفية."),
         new StartStepModel(4, "التشغيل المحلي", "إذا كنت بحاجة إلى نسخة مخففة، يتم تزويدك بنموذج يعمل دون الاتصال بالإنترنت.")
     };
+
+    private List<StartStepModel> startSteps2 = new List<StartStepModel>
+{
+    new StartStepModel(1, "Determine the type of required service", "Choose between training a new model or fine-tuning an existing one."),
+    new StartStepModel(2, "Provide audio data", "If fine-tuning is selected, provide audio samples to enhance the model."),
+    new StartStepModel(3, "Customize the system", "Choose between integration with local servers or setting up a background application."),
+    new StartStepModel(4, "Local operation", "If you need a lightweight version, you will be provided with a model that works offline.")
+};
 }

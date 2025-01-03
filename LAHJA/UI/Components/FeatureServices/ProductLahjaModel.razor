@@ -1,35 +1,72 @@
 ﻿@page "/products"
- 
+
+@using Domain.ShareData
+@using LAHJA.ApiClient.Models
+@using LAHJA.ApiClient.Services.VoiceBot
+@using LAHJA.Data.UI.Models
+@using LAHJA.Them
+ @using MudBlazor
+ @using LAHJA.Data.UI.Components.ServiceCard
+ @using Microsoft.AspNetCore.Components
+ @inject IDialogService DialogService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+@inject IVoiceBotService _VoiceBotService
+
+
 @inject HttpClient Http
+
+
+
+@using LAHJA.Helpers.Services
+@inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <style>
 
-    .algin
-    {
-        direction:rtl;
-        text-align:right;
+  
 
-    }
+
 
 
 </style>
-<MudContainer MaxWidth="MaxWidth.Large" class="algin">
-    <MudPaper Elevation="8" Class="pa-8 algin" Style="background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
-        <MudTypography Variant="h3" Align="Align.Center" GutterBottom="true" Class="text-primary" Style="font-weight: bold;">
-            منتجاتنا
-        </MudTypography>
 
+
+
+<MudContainer MaxWidth="MaxWidth.Large" >
+    <MudPaper Elevation="8" Class="pa-8" Style="background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+        <MudText Typo="Typo.h5"  >
+            @((!TypeLanguage ? " منتجاتنا" : "Our Product"))
+        </MudText>
         <MudDivider Class="my-4" />
 
         @foreach (var product in products)
         {
-            <MudExpansionPanel Text="@product.ProductName" Icon="@Icons.Material.Filled.Mic" Elevation="4">
-                <MudText Typo="Typo.body1" Class="text-dark" Style="line-height: 1.6; text-align: right;">
-                    <strong>الوصف:</strong> @product.Description
-                </MudText>
 
-                <MudText Typo="Typo.body2" Class="text-dark" Style="line-height: 1.6; text-align: right;">
-                    <strong>المزايا:</strong>
+            <MudExpansionPanel Text="@product.ProductName"   Elevation="4"  >
+                <MudText Typo="Typo.body1" Class="text-dark" Style="line-height: 1.6; ;">
+                    <strong>@((!TypeLanguage ? "الوصف" : "Descrption")):</strong> @product.Description
+                </MudText>
+                <MudText Typo="Typo.body2" Class="text-dark" Style="line-height: 1.6">
+                    <strong>@((!TypeLanguage ? "المزايا" : "Advantages")):</strong>
                     <ul class="custom-list">
                         @foreach (var feature in product.Features)
                         {
@@ -38,8 +75,8 @@
                     </ul>
                 </MudText>
 
-                <MudText Typo="Typo.body2" Class="text-dark" Style="line-height: 1.6; text-align: right;">
-                    <strong>حالات الاستخدام:</strong>
+                <MudText Typo="Typo.body2" Class="text-dark" Style="line-height: 1.6">
+                    <strong>@((!TypeLanguage ? "حالات الاستخدام" : "Use Cases")):</strong>
                     <ul class="custom-list">
                         @foreach (var useCase in product.UseCases)
                         {
@@ -48,19 +85,26 @@
                     </ul>
                 </MudText>
 
-                <MudText Typo="Typo.body2" Class="text-dark" Style="line-height: 1.6; text-align: right;">
-                    <strong>التكامل:</strong> @product.Integration
+                <MudText Typo="Typo.body2" Class="text-dark" Style="line-height: 1.6">
+                    <strong>@((!TypeLanguage ? "التكامل" : "Integration")):</strong> @product.Integration
                 </MudText>
 
-                <MudText Typo="Typo.body2" Class="text-dark" Style="line-height: 1.6; text-align: right;">
-                    <strong>التخصيص:</strong> @product.Customization
+                <MudText Typo="Typo.body2" Class="text-dark" Style="line-height: 1.6">
+
+
+                    <strong>@((!TypeLanguage ? "التخصيص" : "Customization")):</strong> @product.Customization
                 </MudText>
             </MudExpansionPanel>
         }
     </MudPaper>
 </MudContainer>
 
+
+
 @code {
+
+    [Parameter] public bool TypeLanguage { get; set; } = false;
+
     private List<Product> products = new List<Product>();
 
     public class Product
@@ -75,10 +119,117 @@
 
 
 
-    protected override async Task OnInitializedAsync()
+    [Parameter] public string? ModelId { get; set; } = "vits-ar-sa-A";
+
+
+    protected override async void OnAfterRender(bool firstRender)
     {
-        // تحميل البيانات من الـ API أو البيانات الثابتة
-        products = new List<Product>
+
+        if (firstRender)
+        {
+            var currentLanguage = await _manageLanguageService.GetLanguageAsync();
+            changeLanguage(currentLanguage);
+
+        }
+
+
+
+
+    }
+
+
+    private async void changeLanguage(string language)
+    {
+
+        if (language == "en")
+        {
+            TypeLanguage = true;
+            products = new List<Product>
+{
+    new Product
+    {
+        ProductName = "Speech-to-Text Conversion",
+        Description = "Convert recorded audio into written text using speech recognition technology. This service can be used to transcribe audio conversations into text for easier processing.",
+        Features = new List<string>
+        {
+            "High accuracy in word recognition",
+            "Support for multiple languages and dialects",
+            "Recognizes words in noisy environments",
+            "Text processing can be done on servers or locally, depending on client preference"
+        },
+        UseCases = new List<string>
+        {
+            "Transcribing lectures or meetings",
+            "Interactive voice response systems",
+            "Personal assistant applications"
+        },
+        Integration = "Supports integration with other applications via API",
+        Customization = "Customizable transcription accuracy based on client requirements"
+    },
+    new Product
+    {
+        ProductName = "Text-to-Speech Conversion",
+        Description = "Convert written text into audio using text-to-speech (TTS) technology. This service provides high-quality human-like voices for various applications.",
+        Features = new List<string>
+        {
+            "Natural and realistic voices",
+            "Support for multiple languages and dialects",
+            "Adjustable speed and tone",
+            "Supports various scenarios (short, long, or complex texts)"
+        },
+        UseCases = new List<string>
+        {
+            "Personal voice assistants",
+            "Automatic text reading on mobile devices",
+            "Text-to-audio solutions for people with special needs"
+        },
+        Integration = "API available for system integration",
+        Customization = "Customizable voice and tone based on client needs"
+    },
+    new Product
+    {
+        ProductName = "Text-to-Dialect Conversion",
+        Description = "Accurately convert text into specific local dialects with options to adjust tone and speed as per local requirements.",
+        Features = new List<string>
+        {
+            "Precision in converting text to local dialects",
+            "Support for multiple dialects such as Najdi, Hijazi, and more",
+            "Customizable tone and speed to suit local usage"
+        },
+        UseCases = new List<string>
+        {
+            "Voice assistant applications in local dialects",
+            "Customer service tailored to regional accents",
+            "Text conversion for entertainment and media applications"
+        },
+        Integration = "API for service integration with various systems",
+        Customization = "Customizable dialects and voice tones"
+    },
+    new Product
+    {
+        ProductName = "Instant Chat",
+        Description = "AI-powered chat system for real-time interaction with users, providing instant answers to queries and questions.",
+        Features = new List<string>
+        {
+            "Instant and accurate responses",
+            "Support for multiple languages and dialects",
+            "Customizable interaction and AI intelligence levels as needed"
+        },
+        UseCases = new List<string>
+        {
+            "Online customer support",
+            "Smart personal assistants",
+            "User interaction in various applications"
+        },
+        Integration = "API available for integration with various systems",
+        Customization = "Customizable interaction style based on application type"
+    }
+};
+        }
+        else
+        {
+            TypeLanguage =false;
+            products = new List<Product>
         {
             new Product
             {
@@ -159,5 +310,95 @@
                 Customization = "إمكانية تخصيص أسلوب التفاعل استنادًا إلى نوع التطبيق"
             }
         };
+
+
+
+
+        }
+        InvokeAsync(StateHasChanged);
+
+    }
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+
+            languageService.OnLanguageChanged += changeLanguage;
+            changeLanguage("ar");
+
+        }
+        catch
+        {
+
+
+        }
+
+    }
+
+
+
+
+
+
+ 
+
+    private async void TextSpeech(string textSpeech)
+
+
+    {
+
+
+
+        if (!string.IsNullOrEmpty(textSpeech))
+
+        {
+
+
+
+            StateHasChanged();
+
+            var request = new QueryRequest
+                {
+
+                    QueryRequestTextToText = new QueryRequestTextToText { Text = textSpeech },
+                    QueryRequestTextToSpeech = new QueryRequestTextToSpeech
+                    {
+                        TagId = "OutputPlayerId",
+
+                        Url = "https://api-inference.huggingface.co/models/wasmdashai/" + ModelId
+                    }
+                };
+
+
+
+            var response = await _VoiceBotService.TextToSpeechAsync(request);
+
+            if (response.Succeeded)
+
+            {
+
+
+
+
+
+
+
+            }
+
+            else
+
+            {
+
+
+
+
+
+            }
+
+        }
+
+
+
     }
 }

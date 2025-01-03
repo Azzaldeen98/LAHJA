@@ -3,6 +3,7 @@
 @using Domain.ShareData
 @using LAHJA.Data.UI.Components.ProFileModel
 @using LAHJA.Helpers.Services
+@using LAHJA.UI.Components.ProFile.Cards
 @using LAHJA.UI.Components.ProFile.Settings
 @using LAHJA.UI.Components.ProFile.USettings
 
@@ -19,37 +20,15 @@
     {
 
     <div style="overflow:hidden;position:relative;height:100%" class=" m-0 relative flex flex-wrap   justify-content-around align-items-start md:grid md:space-y-0 w-full md:grid-cols-12 space-y-4 md:gap-6 py-6">
-
+           
+  
         <div class="nav-menu-continer-items-lg md:col-span-3 lg:col-span-3">
-        <MudContainer Class="w-100" >
+            <MudContainer Class="w-100" >
             <MudContainer Class="pt-6 border px-3 border-gray-100 rounded-xl bg-gradient-to-l overflow-hidden p-0" style="background-color:none!important">
-                @* <MudLink Href="/735408478mm" Class="cols-span-9 mb-2 flex items-center px-4 pb-4"> *@
-
-                <MudMenu Class="mr-2">
-                    <ActivatorContent>
-                        <MudAvatar>
-                            <MudImage Style="width:70px;height:70px" Src="@data.ImageUrl" />
-                        </MudAvatar>
-                        <MudText Typo="Typo.h5" Class="font-bold">@data.Name</MudText>
-
-                    </ActivatorContent>
-                
-                    <ChildContent>
-                        <MudMenuItem>Profile</MudMenuItem>
-                        <MudMenuItem>Theme</MudMenuItem>
-                        <MudMenuItem>Usage</MudMenuItem>
-                        <MudMenuItem>Sign Out</MudMenuItem>
-                    </ChildContent>
-                </MudMenu>
-                <MudChip Class="mt-1" T="object" Color="Color.Default" Variant="Variant.Outlined">@data.Phone</MudChip>
+          
+                <UserAvaterCard Name="@data.Name" PhoneNumber="@data.Phone" ImageUrl="@data.ImageUrl" />
        
                 <MudDivider Class="my-3 py-1" />
-
-             @*    <div class="nav-menu-continer-items-sm p-2">
-                    <MudIconButton  Icon="@Icons.Material.Filled.Menu" OnClick="ToggleMenu" />
-                </div> *@
-
-             
                 <MudList T="string" >
                     @foreach (var item in NavItems)
                     {
@@ -78,7 +57,32 @@
         </MudContainer>
         </div>
 
-       
+        <div class="nav-menu-continer-items-sm w-100">
+            <div class="d-flex flex-row justify-content-start align-items-start w-100" style="justify-content:end !important;">
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" OnClick="ToggleMenu" />
+            </div>
+        </div>
+        <MudMainContent Class="nav-profile-menu-continer-items-sm" style="justify-content:end !important;align-items:end !important">
+            <MudDrawer @bind-Open="@_open" Fixed="true" Elevation="0" Class="h-100" Variant="@DrawerVariant.Temporary">
+                <MudNavMenu Class="font-size-nav-v2">
+
+                    <UserAvaterCard Name="@data.Name" PhoneNumber="@data.Phone" ImageUrl="@data.ImageUrl" />
+                    <MudDivider Class="my-3 py-1" />
+                    @foreach (var item in NavItems)
+                    {
+                        <MudNavLink Icon="@item.Icon" Match="NavLinkMatch.All" OnClick="() => SetActiveTab(item.Url)">
+                            <MudText Typo="Typo.body2">@item.Label</MudText>
+                            @if (!string.IsNullOrEmpty(item.Badge))
+                            {
+                                <MudText Typo="Typo.caption" Class="ml-auto mr-1.5 rounded text-xs font-semibold leading-tight bg-blue-500/10 text-blue-700 dark:text-blue-200">@item.Badge</MudText>
+                            }
+                        </MudNavLink>
+
+                    }
+                </MudNavMenu>
+            </MudDrawer>
+        </MudMainContent>
+      
         @* Container *@
         <MudContainer style="overflow:hidden;position:relative;" Class="md:col-span-9  sm:col-span-12 lg:col-span-9 w-full border-1">
             <MudDrawerContainer Class="mud-height-full" Style="min-height:500px">
@@ -105,28 +109,10 @@
             <MudDivider Class="my-3 py-1" /> *@
 
                 @*    <div class="nav-menu-continer-items-sm p-2">
-            <MudIconButton  Icon="@Icons.Material.Filled.Menu" OnClick="ToggleMenu" />
+          
             </div> *@
 
-                <MudMainContent Class="nav-profile-menu-continer-items-sm">
-                    <MudDrawer @bind-Open="@_open" Fixed="false" Elevation="1" style="height:500px" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true">
-                        <MudNavMenu Class="font-size-nav-v2">
-
-                        @foreach (var item in NavItems)
-                        {
-
-                            <MudNavLink Icon="@item.Icon"   Match="NavLinkMatch.All" OnClick="() => SetActiveTab(item.Url)">
-                                <MudText Typo="Typo.body2">@item.Label</MudText>
-                                @if (!string.IsNullOrEmpty(item.Badge))
-                                {
-                                    <MudText Typo="Typo.caption" Class="ml-auto mr-1.5 rounded text-xs font-semibold leading-tight bg-blue-500/10 text-blue-700 dark:text-blue-200">@item.Badge</MudText>
-                                }
-                            </MudNavLink>
-
-                        }
-                    </MudNavMenu>
-                </MudDrawer>
-                </MudMainContent>
+            
 
         
             <MudTabs>
@@ -155,7 +141,7 @@ else
 @code
 {
 
-    private bool _open = true;
+    private bool _open = false;
     [Parameter] public string Url { get; set; } = "profile"; 
     [Parameter] public DataBuildUserProfile DataBuild { get => data; set => data=value; }
 
