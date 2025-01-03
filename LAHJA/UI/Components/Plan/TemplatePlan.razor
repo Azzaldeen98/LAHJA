@@ -53,23 +53,23 @@
                     }
                 </MudList>
                    <MudDivider />
-                    <MudCardActions Class="d-flex justify-content-around">
+                    <MudCardActions Class="w-100">
                     @if (!_isDisplayButton)
                     {
                         @if (_isUpgrade)
                         {
 
-                            <MudButton Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" px-3")" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM" OnClick="@(()=>OnSubmitUpgrade(@Params))">Upgrade</MudButton>
+                            <MudButton Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" w-100")" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM" OnClick="@(()=>OnSubmitUpgrade(@Params))">Upgrade</MudButton>
                             
                         }
                         else if (_allowUpdate)
                         {
 
-                            <MudButton Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" px-3")" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM" OnClick="@(()=>OnSubmitConfirm(@Params))">Confirm</MudButton>
+                            <MudButton Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+"  w-100")" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM" OnClick="@(()=>OnSubmitConfirm(@Params))">Confirm</MudButton>
 
                         }
 
-                        <MudButton Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" px-3")" Variant="Variant.Filled" Color="Color.Default" OnClick="@(()=>OnSubmitCancel(@Params))">Cancel</MudButton>
+                        @* <MudButton Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" px-3")" Variant="Variant.Filled" Color="Color.Default" OnClick="@(()=>OnSubmitCancel(@Params))">Cancel</MudButton> *@
                     }
                     
                 </MudCardActions>

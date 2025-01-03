@@ -3,6 +3,12 @@
 
 //namespace Shared.Wrapper
 //{
+    //public class AppShareData
+    //{
+    //    public static string CurrentLanguageCode {  get; set; }    
+    //}
+
+//{
 //    public class Result : IResult
 //    {
 //        public Result()

@@ -48,6 +48,7 @@ namespace LAHJA.Helpers.Services
         }
    
 
+  
         public async Task SaveTokenAsync(string token)
         {
             await _jsRuntime.InvokeVoidAsync("localStorageHelper.setItem", ConstantsApp.ACCESS_TOKEN, token);
@@ -68,7 +69,9 @@ namespace LAHJA.Helpers.Services
         public async Task<string> GetTokenAsync()
         {
             return await _jsRuntime.InvokeAsync<string>("localStorageHelper.getItem", ConstantsApp.ACCESS_TOKEN) ?? "";
-        }
+        }  
+        
+
         public async Task<string> GetRefreshTokenAsync()
         {
             return await _jsRuntime.InvokeAsync<string>("localStorageHelper.getItem", ConstantsApp.REFRESH_TOKEN);
@@ -85,6 +88,7 @@ namespace LAHJA.Helpers.Services
         public async Task SaveAllTokensAsync(string accessToken, string refreshToken,
             string expiresInToken, string tokenType)
         {
+            await SaveTempTokenAsync(accessToken);
             await SaveTokenAsync(accessToken);
             await SaveRefreshTokenAsync(refreshToken);
             await SaveExpiresInTokenAsync(expiresInToken);
@@ -95,7 +99,9 @@ namespace LAHJA.Helpers.Services
         {
             await _jsRuntime.InvokeVoidAsync("localStorageHelper.removeItem", ConstantsApp.ACCESS_TOKEN);
         }
-        public async Task RemoveAllTokensAsync()
+
+	
+		public async Task RemoveAllTokensAsync()
         {
             try
             {
@@ -110,9 +116,35 @@ namespace LAHJA.Helpers.Services
             }
         }
 
+        /// <summary>
+        /// ///////////////////////////////////////////////////////////////////////////
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+		public async Task SaveTempTokenAsync(string token)
+		{
+			await _jsRuntime.InvokeVoidAsync("localStorageHelper.setItem", "Temp_Token", token);
+		}
+
+		public async Task<string> GetTempTokenAsync()
+		{
+			return await _jsRuntime.InvokeAsync<string>("localStorageHelper.getItem", "Temp_Token") ?? "";
+		}
+		public async Task RemoveTempTokenAsync()
+		{
+			try
+			{
+				await _jsRuntime.InvokeVoidAsync("localStorageHelper.removeItem", "Temp_Token");
+			}
+			catch (Exception ex)
+			{
+
+			}
+		}
 
 
 
 
-    }
+
+	}
 }

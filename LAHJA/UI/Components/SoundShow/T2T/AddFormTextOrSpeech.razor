@@ -1,31 +1,44 @@
-﻿<MudPaper Class="p-4 m-2">
+﻿@using LAHJA.ApiClient.Models
+@using LAHJA.ApiClient.Services.VoiceBot
+@using LAHJA.Data.UI.Components.ServiceCard
+ 
+ 
 
-    <MudGrid Spacing="3">
+
+@using LAHJA.Data.UI.Models
+@using LAHJA.Them
+@using MudBlazor
+@using LAHJA.Data.UI.Components.ServiceCard
+@using Microsoft.AspNetCore.Components
+@using LAHJA.ApiClient.Services.Query
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+@inject LAHJA.ApiClient.Services.IT2TService _T2TService
+@inject IQueryTextToSpeechService _queryTextToSpeechService
+@inject IVoiceBotService _VoiceBotService
+
+
+
+
+<MudPaper Class="p-4 m-2">
+    <MudGrid Spacing="3" Justify="Justify.SpaceAround">
         <MudItem xs="12" sm="12" md="12">
             <MudTextField Label="Enter Name" Variant="Variant.Outlined" @bind-Value="_name" />
         </MudItem>
+
+
+
+     
         <MudItem xs="12" sm="12" md="12" lg="12">
             <MudPaper Class="p-4 m-2">
-                <h6>Type</h6>
-                <MudChipSet @bind-SelectedValues="_selected1"
-                            SelectionMode="SelectionMode.MultiSelection"
-                            CheckMark="_checkMark1" Variant="Variant.Text">
-                    @foreach (var value in propertyValues["Type"])
-                    {
-                        <MudChip Value="@value">@value</MudChip>
-                    }
-                </MudChipSet>
-            </MudPaper>
-        </MudItem>
-        <MudItem xs="12" sm="12" md="12" lg="12">
-            <MudPaper Class="p-4 m-2">
-                <h6>Language</h6>
+                <MudText Typo="Typo.body2">@(TypeLanguage ? "Language" : "اللغة")</MudText>
                 <MudChipSet @bind-SelectedValues="_selected2"
-                            SelectionMode="SelectionMode.MultiSelection"
+                            SelectionMode="SelectionMode.SingleSelection"
                             CheckMark="_checkMark2" Variant="Variant.Text">
                     @foreach (var value in propertyValues["Language"])
                     {
-                        <MudChip Value="@value">@value</MudChip>
+                        <MudChip Value="@value" Color="@ColorCheck">@value</MudChip>
                     }
                 </MudChipSet>
             </MudPaper>
@@ -33,13 +46,13 @@
 
         <MudItem xs="12" sm="12" md="12" lg="12">
             <MudPaper Class="p-4 m-2">
-                <h6>Dialect</h6>
+                <MudText Typo="Typo.body2">@(TypeLanguage ? "Dialect" : "اللهجة")</MudText>
                 <MudChipSet @bind-SelectedValues="_selected3"
-                            SelectionMode="SelectionMode.MultiSelection"
+                            SelectionMode="SelectionMode.SingleSelection"
                             CheckMark="_checkMark3" Variant="Variant.Text">
                     @foreach (var value in propertyValues["Dialect"])
                     {
-                        <MudChip Value="@value">@value</MudChip>
+                        <MudChip Value="@value" Color="@ColorCheck">@value</MudChip>
                     }
                 </MudChipSet>
             </MudPaper>
@@ -47,120 +60,370 @@
 
         <MudItem xs="12" sm="12" md="12" lg="12">
             <MudPaper Class="p-4 m-2">
-                <h6>Voice</h6>
-                <MudChipSet @bind-SelectedValues="_selected4"
-                            SelectionMode="SelectionMode.MultiSelection"
-                            CheckMark="_checkMark4" Variant="Variant.Text" >
-
-                    @foreach (var value in propertyValues["Voice"])
+                <MudText Typo="Typo.body2">@(TypeLanguage ? "Type" : "النوع")</MudText>
+                <MudChipSet @bind-SelectedValues="_selected1"
+                            SelectionMode="SelectionMode.SingleSelection"
+                            CheckMark="_checkMark1" Variant="Variant.Text">
+                    @foreach (var value in propertyValues["Type"])
                     {
-                        <MudChip Value="@value">@value</MudChip>
+
+                        <MudChip Value="@value" Color="@ColorCheck" OnClick="@(() => SerchDataType(@value))">@value</MudChip>
                     }
                 </MudChipSet>
             </MudPaper>
         </MudItem>
 
 
-        <MudItem xs="12" sm="12" md="12" lg="12">
-            <MudPaper Class="p-4 m-2">
-                <h6>Author</h6>
-                <MudChipSet @bind-SelectedValues="_selected5"
-                            SelectionMode="SelectionMode.MultiSelection"
-                            CheckMark="_checkMark5" Variant="Variant.Text"  >
-                    @foreach (var value in propertyValues["Author"])
-                    {
-                        <MudChip Value="@value">@value</MudChip>
-                    }
+        @if(_selected1!=null &&_selected1.Count>0)
+        {
 
-                </MudChipSet>
-            </MudPaper>
-        </MudItem>
+
+
+            foreach (var item in _selected1)
+            {
+                if (item == "Text To Speech")
+                {
+
+                    <MudItem xs="12" sm="12" md="12" lg="12">
+                        <MudPaper Class="p-4 m-2">
+                            <MudText Typo="Typo.body2">@(TypeLanguage ? "Voice" : "الصوت")</MudText>
+                            <MudChipSet @bind-SelectedValues="_selected4" cha
+                                        SelectionMode="SelectionMode.MultiSelection"
+                                        CheckMark="_checkMark4" Variant="Variant.Text">
+
+                                @foreach (var value in propertyValues["Voice"])
+                                {
+                                    <MudChip Value="@value" Color="@ColorCheck">@value</MudChip>
+                                }
+                            </MudChipSet>
+                        </MudPaper>
+                    </MudItem>
+                }
+
+            }
+
+
+        }
+
+       
+
+        @if (DataTypeAuther!=null)
+        {
+
+            <MudItem xs="12" sm="12" md="12" lg="12">
+                <MudPaper Class="p-4 m-2">
+
+                    <MudText Typo="Typo.body2">@(TypeLanguage ? "Author" : "النماذج ")</MudText>
+                    <MudChipSet @bind-SelectedValues="_selected5"
+                                SelectionMode="SelectionMode.MultiSelection"
+                                CheckMark="_checkMark5" Variant="Variant.Text">
+                        @foreach (var value in DataTypeAuther)
+                        {
+                            <MudChip Value="@value" Color="@ColorCheck">@value</MudChip>
+                        }
+
+                    </MudChipSet>
+                </MudPaper>
+            </MudItem>
+
+
+        }
+
+     
+
+
+
         <MudItem xs="12" sm="6">
-            <MudButton Variant="Variant.Filled" OnClick="SubmitForm">
-                Submit
+            <MudButton Variant="Variant.Outlined" OnClick="SubmitForm" Color="@ColorCheck">
+                تطبيق 
             </MudButton>
+
         </MudItem>
+
         <MudItem xs="12" sm="6">
+
+            <MudButton Variant="Variant.Outlined" Color="@ColorCheck" OnClick="Navigateto">
+                استديو AI
+            </MudButton>
+
+        </MudItem>
+        <MudItem xs="12" sm="12">
+
+
             @if (@ResultResponce != null)
             {
+
+
+
+
                 @foreach (var item in ResultResponce)
                 {
-                    <MudExpansionPanels  Style="width:100%">
+
+
+                    <MudExpansionPanels  Style="width:100%!important">
                         <MudExpansionPanel Text="@item.Id" Expanded="true">
                             @item.Content
-    </MudExpansionPanel>
+                       </MudExpansionPanel>
                  </MudExpansionPanels>
                 }
 
             }
+            else if(flag)
+            {
+                <MudExpansionPanels Style="width:100%!important">
+                    <MudExpansionPanel Text="Audio" Expanded="true">
+                         
+                        <audio id="OutputPlayerId" controls></audio>
+                    </MudExpansionPanel>
+                </MudExpansionPanels>
+
+            }
+            
+
+           
         </MudItem>
 
     </MudGrid>
+
 </MudPaper>
 
 
 
 
 
-@code {
+@code{
 
+
+
+
+    [Parameter]
+    public Color ColorCheck { get; set; } = AppColors.BASE_COLOR_ENUM;
+    [Parameter]
+    public string TypeMode { get; set; } = " ";
+    [Parameter] public bool TypeLanguage { get; set; } = false;
+    private string value1;
+    private Dictionary<string, List<string>> propertyValues = null;
+    [Parameter] public  ModelProperties  DataBuild { get; set; } = null;
 
     private string _name = string.Empty;
-    private IReadOnlyCollection<string> _selected4;
-    private IReadOnlyCollection<string> _selected1 = new HashSet<string>()
-    {
-       "Text To Speech"
-    };
 
+
+
+    private IReadOnlyCollection<string> _selected4 = new HashSet<string>(){};
+    private IReadOnlyCollection<string> _selected1 = new HashSet<string>() { };
     private IReadOnlyCollection<string> _selected2 = new HashSet<string>()
     {
-       "Arabic"
+
     };
     private IReadOnlyCollection<string> _selected3 = new HashSet<string>()
     {
-       "Najd"
-    };
 
+    };
     private IReadOnlyCollection<string> _selected5 = new HashSet<string>()
     {
-       "Author 1","Author 2","Author 3"
+
     };
 
+    private bool _checkMark1 = false;
+    private bool _checkMark2 = false;
+    private bool _checkMark3 = false;
+    private bool _checkMark4 = false;
+    private bool _checkMark5 = false;
 
-    private bool _checkMark1 = true;
-    private bool _checkMark2 = true;
-    private bool _checkMark3 = true;
-    private bool _checkMark4 = true;
-    private bool _checkMark5 = true;
+    List<ModelProperties> DataBuild1 = null;
+    List<string> DataTypeAuther = null;
+    private string typemodel;
+    private bool flag = false;
+
+    private void OnSpecificChipClicked(int chipValue)
+    {
+
+
+        Console.WriteLine($"Chip {chipValue} was clicked.");
+    }
+
+
+
+
+    [Parameter] public string? ModelId { get; set; } = "vits-ar-sa-A";
+    private async void SerchDataType(string type)
+    {
+        try
+        {
+
+
+            typemodel = type;
+            DataTypeAuther = DataBuild1
+           .Where(m => m.Type == type)
+           .Select(m => m.Author)  
+           .Distinct()  
+           .ToList();
+
+            StateHasChanged();
+
+
+        }
+        catch(Exception ex)
+        {
+
+        }
+
+    }
+
+
+
+    protected override void OnInitialized()
+    {
+
+        if (TypeLanguage)
+        {
+
+            DataBuild1 = PropertyGenerator.GenerateModelPropertiesList(9, 0);
+            propertyValues = PropertyGenerator.propertyValues;
+        }
+        else
+        {
+
+            DataBuild1 = PropertyGenerator.GenerateModelPropertiesList(9, 1);
+            propertyValues = PropertyGenerator.propertyValuesInArabic;
+        }
+
+        if (DataBuild == null)
+        {
+
+        }
+        StateHasChanged();
+
+
+
+
+
+    }
 
 
     private async void SubmitForm()
     {
 
 
-
-        ResultResponce = new List<ResultTypeModel>()
+        try
         {
 
-           new ResultTypeModel()
-            {
-                Id="Output1",TypeResult="Txt",Content="السلام عليكم ",
 
-            },
-              new ResultTypeModel()
+            if (!string.IsNullOrWhiteSpace(_name))
             {
-                Id="Output2",TypeResult="Txt",Content="السلام عليكم ",
 
-            },
-              new ResultTypeModel()
-            {
-                Id="Output3",TypeResult="Txt",Content="السلام عليكم ",
+
+
+
+
+
+
+                if ( typemodel == "نص إلى نص")
+                {
+
+                    var response = await _T2TService.T2TAsync(new QueryRequestTextToText { Text = _name });
+
+                    if (response.Succeeded)
+                    {
+                        string decodedText = response.Data.Text;
+                        int c = _selected5.Count;
+
+                        ResultResponce = new List<ResultTypeModel>();
+                        for(int i =1;i<=c;i++)
+                        {
+                            var x = new ResultTypeModel()
+                                    {
+                                            Id = "OutPut" + i,
+                                    Content = decodedText
+                                    };
+                            SendServiceText(x);
+
+                        }          }
+
+
+                }
+                else if (typemodel ==  "نص إلى كلام")
+                {
+
+                    int c = _selected5.Count;
+
+                    ResultResponce = null;
+                    // for (int i = 1; i <= c; i++)
+                    // {
+                    //     var x = new ResultTypeModel()
+                    //         {
+                    //             Id = "Audio" + i,
+                    //             Content = _name
+                    //         };
+                    //     SendServiceText(x);
+
+
+
+                    // }
+                    TextSpeech(_name);
+                    flag = true;
+
+
+                }
+                
+
 
             }
-        };
-        clear();
-        StateHasChanged();
 
+
+            clear();
+            StateHasChanged();
+
+        }
+
+        catch
+        {
+
+
+        }
+
+
+
+    }
+
+
+    private async void TextSpeech( string textSpeech)
+   
+   {
+
+        if (!string.IsNullOrEmpty(textSpeech))
+        {
+            
+            StateHasChanged();
+            var request = new QueryRequest
+                {
+
+                    QueryRequestTextToText = new QueryRequestTextToText { Text = textSpeech },
+                    QueryRequestTextToSpeech = new QueryRequestTextToSpeech
+                    {
+                        TagId = "OutputPlayerId",
+                    Url = "https://api-inference.huggingface.co/models/wasmdashai/" + ModelId }
+                };
+
+            var response = await _VoiceBotService.TextToSpeechAsync(request);
+            if (response.Succeeded)
+            {
+
+
+
+            }
+            else
+            {
+                 
+
+            }
+        }
+
+   }
+    private async void SendServiceText(ResultTypeModel obj)
+    {
+
+        ResultResponce.Add(obj);
     }
 
 
@@ -184,40 +447,39 @@
         _checkMark5 = false;
     }
 
-    private Dictionary<string, List<string>> propertyValues = new Dictionary<string, List<string>>()
+
+    private async Task Navigateto()
+
     {
-        { "UsageCount", new List<string> { "600","8888" } },
-        { "ModelImageUrl", new List<string> { "/ai-hand.png", "/ai-robot.png", "chat-boat.jpg", "chatbot-cta.png" } },
-        { "Type", new List<string> { "Text To Text", "Text To Speech", "Chat Model" } },
-        { "Voice", new List<string> { "Male", "Female" } },
-        { "Language", new List<string> { "English", "Spanish", "French", "German", "Arabic" } },
-        { "Dialect", new List<string> { "American", "British", "Australian" ,"Najd","Hijazi"} },
-        { "Quality", new List<string> { "High", "Medium", "Low" } },
-        { "Token", new List<string> { "100", "500", "1000", "5000", "10000" } },
-        { "ModelVersion", new List<string> { "v1.0", "v1.1", "v2.0", "v2.5", "v3.0" } },
-        { "CreationDate", new List<string> { "2023-01-01", "2022-12-15", "2021-11-20" } },
-        { "LastUpdated", new List<string> { "2023-12-01", "2023-11-15", "2023-10-30" } },
-        { "Description", new List<string> { "Random generated description.", "High-quality model for tasks.", "Used in various applications." } },
-        { "Author", new List<string> { "Author 1", "Author 2", "Author 3" } },
-        { "Accuracy", new List<string> { "0.90", "0.85", "0.95" } },
-        { "Speed", new List<string> { "Fast", "Medium", "Slow" } },
-        { "Framework", new List<string> { "TensorFlow", "PyTorch", "Keras" } },
-        { "Parameters", new List<string> { "1000000", "5000000", "10000000" } }
-    };
+
+        try
+
+        {
+
+
+
+            Navigation.NavigateTo("/studio");
+
+
+        }
+
+        catch (Exception ex)
+
+        {
+
+           
+
+        }
+
+    }
+   
     private void HandleSelectionChanged(HashSet<string> selected)
     {
 
     }
     private Dictionary<string, HashSet<string>> selectedValues = new Dictionary<string, HashSet<string>>();
 
-    protected override void OnInitialized()
-    {
-        foreach (var property in propertyValues.Keys)
-        {
-            selectedValues[property] = new HashSet<string>();
-        }
-
-    }
+  
     List<ResultTypeModel> ResultResponce;
     public class ResultTypeModel
     {

@@ -1,4 +1,5 @@
-﻿@using LAHJA.Helpers.Services
+﻿@using Domain.ShareData
+@using LAHJA.Helpers.Services
 @using LAHJA.Them
 @inject LanguageService languageService
 @inject IManageLanguageService _manageLanguageService
@@ -14,7 +15,7 @@
             <MudIconButton class="text-light" Icon="@Icons.Material.Filled.Refresh" />
             @* <MudIconButton class="text-light" Icon="@Icons.Material.Filled.MoreVert" /> *@
             <MudSpacer />
-            <MudText Typo="Typo.h5" class="text-light" Align="Align.Center">Studio</MudText>
+            <MudText Typo="Typo.h5" class="text-light" Align="Align.Center">@GetText("Studio")</MudText>
             <MudSpacer />
        @*      <MudIconButton class="text-light" Icon="@Icons.Material.Filled.ChevronLeft" />
             <MudIconButton class="text-light" Icon="@Icons.Material.Filled.ChevronRight" /> *@
@@ -24,7 +25,7 @@
 
         <!-- Left Drawer Menu -->
         <MudDrawer @bind-Open="@IsMenuOpen" Fixed="false" Elevation="1" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true">
-            <MudNavMenu  Style="font-size:14px !important;">
+            <MudNavMenu Class="font-size-nav-v2">
                 @foreach (var item in Categories)
                 {   
                     <MudNavLink Match="NavLinkMatch.All" OnClick="@(() => SelectMenuItem(item))" Icon="@item.Icon">@item.Text[CurrentLanguage]</MudNavLink>
@@ -395,6 +396,7 @@
     }
     private Dictionary<string, string> EnglishLabels = new()
 {
+    { "Studio", "Studio LAHJA AI" },
     { "Settings", "Settings" },
     { "Languages", "Languages" },
     { "Type Lahja", "Type Lahja" },
@@ -404,6 +406,7 @@
 
     private Dictionary<string, string> ArabicLabels = new()
 {
+    { "Studio", "استديو لهجة AI" },
     { "Settings", "الإعدادات" },
     { "Languages", "اللغات" },
     { "Type Lahja", "نوع اللهجة" },

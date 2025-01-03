@@ -9,26 +9,37 @@
 @using LAHJA.Them
 @using LAHJA.UI.Components.Billing.Shared
 @inject ISnackbar Snackbar
- 
+@inject IDialogService DialogService
+@using LAHJA.UI.Components.Payment.CreditCard
 @using MudBlazor
 
 @inject AuthService AuthService
-<MudLayout>
+<MudLayout Class="w-100">
 
-    <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4" Style="padding:3%!important">
+    <div class="mt-4 container_flex_column justify-content-center align-items-center p-2" >
 
 
         <MudDivider Class="my-4" />
+      
         <UpgradePlan BuildData="@BuildPlanData" SubmitConfirm="OnSubmitConfirmPlan" SubmitUpgrade="OnSubmitUpgradePlan" SubmitCancel="OnSubmitCancelPlan" />
+        
         <MudDivider Class="my-4" />
         @if (isConfirm)
         {
-            <BillingMethodsSection ReadData="OnReadBillingData" BuildData="BuildBillingData" />
-            <MudDivider Class="my-4" />
-            <PaymentMethodsSection SelectedCard="OnSelectedCardData" BuildData="BuildCreditCardData" EditCard="EditCard" CreateCard="CreateCard" />
-            <MudButton Variant="Variant.Filled" Size="Size.Large" OnClick="Payment" Color="@AppColors.BASE_COLOR_ENUM">Payment</MudButton>
+            <MudPaper Elevation="1" Class="w-100 container_flex_wrap">
+             
+                    <div class="w60 mt-3">
+                        <BillingMethodsSection ReadOnly="@(BuildBillingData!=null)" ReadData="OnReadBillingData" BuildData="BuildBillingData" />
+                     </div>
+
+                 <div class="w40 mt-3">
+                    <PaymentMethodsSection SelectedCard="OnSelectedCardData" BuildData="BuildCreditCardData"  EditCard="OnEditCard" CreateCard="OnCreateCard" />
+                </div>
+                @* </div> *@
+                <MudButton Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" m-5")" Variant="Variant.Filled" Size="Size.Large" OnClick="Payment" Color="@AppColors.BASE_COLOR_ENUM">Continue to Payment</MudButton>
+            </MudPaper>
         }
-    </MudContainer>
+    </div>
   
 </MudLayout>
 
@@ -56,6 +67,16 @@
     private bool isConfirm = false;
 
 
+    private async Task OnCreateCard(CardDetails input)
+    {
+
+    }
+    private async Task OnEditCard(CardDetails data)
+    {
+        
+    }
+
+ 
     private async Task OnSubmitConfirmPlan(SubscriptionPlanInfo input)
     {
         if (input != null)

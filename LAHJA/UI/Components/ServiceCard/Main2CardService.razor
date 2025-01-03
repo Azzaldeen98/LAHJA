@@ -1,41 +1,25 @@
 @using System.Threading
 @using LAHJA.Data.UI.Components.ServiceCard
 @using LAHJA.Pages.FeatureServices
+@using LAHJA.Them
 @inject ISnackbar Snackbar
+
 @inject NavigationManager Navigation;
 @page "/ModelServiceVits"
 @page "/ModelServiceVits/{TypeLanguage}"
 
 
 
-@* <MudAppBar Color="Color.Primary" Fixed="false">
-    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" />
-    <MudAutocomplete T="string" Label="US States" @bind-Value="value1" SearchFunc="@Search1"
-                     Variant="Variant.Outlined" ShowProgressIndicator="true" ProgressIndicatorColor="SelectedColor" />
+ 
+<MudContainer Class="mt-16 px-0" Style="overflow:hidden;position:relative;height:100%;" MaxWidth="MaxWidth.False">
 
-
-    <MudSpacer />
-    <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" />
-</MudAppBar> *@
-
-
-
-
-
-
-
-
-
-<MudContainer Class="mt-16 px-0" Style="overflow:hidden;position:relative;height:100%" MaxWidth="MaxWidth.False">
 
 
 
     <MudDrawer @bind-Open="@_open" Fixed="false" Elevation="1"
-               Variant="@DrawerVariant.Mini" OpenMiniOnHover="true">
+               Variant="@DrawerVariant.Mini" OpenMiniOnHover="true" Style="font-size:12px!important">
         <MudDrawerHeader>
-            <MudText Typo="Typo.h6">
-                @(TypeLanguage ? "Filter Properties" : "ﬁ«∆„…")
-            </MudText>
+          
         </MudDrawerHeader>
         <MudNavMenu>
             <MudNavGroup Title="@(TypeLanguage ? "Type" : "«·‰Ê⁄ ")" Icon="@Icons.Material.Filled.SpatialAudio">
@@ -55,6 +39,7 @@
                     {
                         <MudRadio Value="@property">@property</MudRadio>
                     }
+
                 </MudRadioGroup>
             </MudNavGroup>
 
@@ -64,6 +49,7 @@
                     {
                         <MudRadio Value="@property">@property</MudRadio>
                     }
+
                 </MudRadioGroup>
             </MudNavGroup>
 
@@ -73,6 +59,7 @@
                     {
                         <MudRadio Value="@property">@property</MudRadio>
                     }
+
                 </MudRadioGroup>
             </MudNavGroup>
 
@@ -87,6 +74,8 @@
 
             <MudNavGroup Title="@(TypeLanguage ? "Quality" : "«·ÃÊœ… ")" Icon="@Icons.Material.Filled.FilterFrames">
                 <MudRadioGroup @bind-Value="@selectedQuality">
+
+
                     @foreach (var property in propertyValues["Quality"])
                     {
                         <MudRadio Value="@property">@property</MudRadio>
@@ -114,7 +103,7 @@
             </MudNavGroup>
             <MudButton OnClick="ApplyFilter"
                        Variant="Variant.Filled"
-                       Color="Color.Primary">@(TypeLanguage ? "Apply Filter" : " ÿ»Ìﬁ ")</MudButton>
+                         Color="@AppColors.BASE_COLOR_ENUM" Style="font-size:12px!important">@(TypeLanguage ? "Apply Filter" : " ÿ»Ìﬁ ")</MudButton>
 
 
         </MudNavMenu>
@@ -138,28 +127,33 @@
 
      
 
-     <MudGrid Justify="Justify.SpaceBetween">
+     <MudGrid Style="font-size:10px!important">
 
-            @foreach (var item in DataBuild)
+            @foreach (var item in _pagedData)
+
             {
 
                   <MudItem xs="12" sm="6" md="4">
 
                
 
-            <MudPaper Elevation="2" Class="pa-4" Style="height:200px;">
-                   
-                        
+            <MudPaper Elevation="2" Class="pa-4"  >
+
+
+
+                        <div Class="launch-service-panel" style="position:relative">
+                          
+                          
                            <MudGrid >
 
                                <MudItem xs="5" sm="6" md="6">
 
-                                        <MudText Typo="Typo.body1">LastUpdated:@item.LastUpdated</MudText>  
+                                        <MudText Typo="Typo.body2">LastUpdated:@item.LastUpdated</MudText>  
 
                                      
-                                        <MudText Typo="Typo.body1"  >@item.Description</MudText>
+                                        <MudText Typo="Typo.body2"  >@item.Description</MudText>
                                      
-                                            <MudText Typo="Typo.body1">Instal:@item.UsageCount</MudText>
+                                            <MudText Typo="Typo.body2">Instal:@item.UsageCount</MudText>
 
  
                                        
@@ -171,6 +165,13 @@
 
 
                            </MudGrid>
+
+
+                            <div class="launch-bg-service-panel justify-content-center align-items-center">
+
+                                <MudButton Variant="Variant.Filled" Class="@AppTextStyle.TEXT_TRANSFORM_NORMAL" OnClick="Submit" Color="@AppColors.BASE_COLOR_ENUM">Launch</MudButton>
+                            </div>
+                        </div>
             </MudPaper>
         </MudItem>
         
@@ -195,10 +196,28 @@ else
 
 
 }
-   
+<div class="d-flex flex-column align-center">
+        <MudPagination Count="@_totalPages"
+                       @bind-Page="@_currentPage"
+                       SelectedChanged="LoadPageData"
+                       Class="my-4"
+                       Variant="Variant.Filled"
+                       Rectangular="true" Color="@AppColors.BASE_COLOR_ENUM" />
+
+</div>
 </MudContainer>
 
-  <FeatureServices />
+
+<MudDivider/>
+<MudDivider />
+<MudContainer Class="mt-16 px-2">
+
+
+    <FeatureServices />
+
+
+</MudContainer>
+ 
  
 
 @code 
@@ -206,10 +225,13 @@ else
 
 {
 
+
+
+
+
     [Parameter]
     public string TypeMode { get; set; } = " ";
     [Parameter] public bool TypeLanguage { get; set; } = false;
-
 
 
 
@@ -221,6 +243,69 @@ else
     private string selectedQuality;
     private string selectedAccuracy;
     private string selectedSpeed;
+
+
+
+
+
+
+
+    private int _currentPage = 1;
+
+    private int _itemsPerPage =6;
+
+    private int _totalPages = 0;
+
+
+
+
+
+
+
+    private List<ModelProperties> _pagedData = new();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private void LoadPageData(int page)
+
+    {
+
+        
+
+        int skip = (page - 1) * _itemsPerPage;
+
+
+
+        _pagedData = DataBuild.Skip(skip).Take(_itemsPerPage).ToList();
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     private string searchQuery = string.Empty;
     private bool _open = false;
 
@@ -235,7 +320,6 @@ else
     private string selectedCommunity;
 
     public Color SelectedColor { get; set; } = Color.Default;
-
 
 
     public void OnclickCard()
@@ -267,12 +351,12 @@ else
 
         if (TypeLanguage)
         {
-            DataBuild = PropertyGenerator.GenerateModelPropertiesList(9, 0);
+            DataBuild = PropertyGenerator.GenerateModelPropertiesList(15, 0);
             propertyValues = PropertyGenerator.propertyValues;
         }
         else
         {
-            DataBuild = PropertyGenerator.GenerateModelPropertiesList(9, 1);
+            DataBuild = PropertyGenerator.GenerateModelPropertiesList(15, 1);
             propertyValues = PropertyGenerator.propertyValuesInArabic;
         }
 
@@ -289,6 +373,22 @@ else
             DataBuild1 = DataBuild;
 
         }
+
+
+
+
+
+
+
+
+
+
+
+        _totalPages = (int)Math.Ceiling((double)DataBuild.Count / _itemsPerPage);
+
+
+
+        LoadPageData(_currentPage);
 
 
 
@@ -309,6 +409,33 @@ else
         selectedAccuracy = "";
         selectedSpeed = "";
     }
+
+    private async Task Submit()
+
+    {
+
+        try
+
+        {
+
+
+
+            Navigation.NavigateTo("/TextToText");
+
+
+        }
+
+        catch (Exception ex)
+
+        {
+
+            Snackbar.Add(ex.Message, Severity.Error);
+
+        }
+
+    }
+
+
 
 
 
@@ -381,6 +508,20 @@ else
                 DataBuild = DataBuild.Where((x => x.Speed == selectedSpeed)).ToList();
 
             }
+
+
+
+
+
+            _totalPages = (int)Math.Ceiling((double)DataBuild.Count / _itemsPerPage);
+
+
+
+
+
+
+
+             LoadPageData(_currentPage);
 
             clear();
             StateHasChanged();

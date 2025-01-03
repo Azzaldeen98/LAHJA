@@ -25,7 +25,7 @@ namespace LAHJA.Data.UI.Components.Base
         [Parameter]
         public EventCallback<T> OnEdit { get; set; }
         [Parameter]
-        public T Params { get; set; }
+        public T? Params { get; set; }
 
 
 

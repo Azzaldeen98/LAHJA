@@ -1,10 +1,11 @@
 ﻿
+@using Domain.ShareData
 @using LAHJA.UI.Components.Category
 @using LAHJA.UI.Components.Plan
 @using LAHJA.UI.Templates.Plans
 
  
-
+ @inject IManageLanguageService _manageLanguageService
 
 @inject LAHJA.Data.UI.Templates.Plans.TemplatePlans Template
 
@@ -38,6 +39,8 @@
 
         if (firstRender)
         {
+
+            var CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
 
 
 

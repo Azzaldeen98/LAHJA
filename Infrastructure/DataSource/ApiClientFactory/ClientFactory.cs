@@ -62,7 +62,7 @@ namespace Infrastructure.DataSource.ApiClientFactory
                 throw new InvalidOperationException($"An error occurred while creating the client: {ex.Message}", ex);
             }
         }
-        public async Task<TClient> CreateClientWithAuthAsync<TClient>(string clientName = "ApiClient") where TClient : class
+        public async Task<TClient> CreateClientWithAuthAsync<TClient>(string clientName = "ApiClient",string token2="") where TClient : class
         {
 
 
@@ -75,9 +75,14 @@ namespace Infrastructure.DataSource.ApiClientFactory
 
             try
             {
+                var token = "";
 
-                var token = await tokenService.GetTokenAsync();
-                if (token == null)
+                if (string.IsNullOrEmpty(token2))
+                    token = await tokenService.GetTokenAsync();
+                else
+                    token = token2;
+
+				if (token == null)
                     throw new Exception("invalid token!!");
 
                 var httpClient = _httpClientFactory.CreateClient(clientName);

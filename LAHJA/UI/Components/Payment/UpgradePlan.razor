@@ -1,5 +1,6 @@
 ﻿
 
+@using Domain.ShareData
 @using LAHJA.Data.UI.Components.Plan
 @using LAHJA.Helpers.Services
 @using LAHJA.Them
@@ -38,58 +39,78 @@
     <MudButton Variant="Variant.Text" Class="mt-2">Edit</MudButton>
 </MudPaper> *@
 
-<MudPaper Elevation="1" Class="p-4">
-    @if (@BuildData != null)
+<MudPaper Elevation="1" Class="p-4 w-100 mt-3">
+ 
+    <MudText Typo="Typo.h4" Class="mb-3">
+        @LocalizedContent["UpgradeYourAccountTitle"]
+    </MudText>
+    <MudLink Href="/BillingSummary" Color="@AppColors.BASE_COLOR_ENUM" Class="m-3" Target="_self">
+        ← @LocalizedContent["BackToBilling"]
+    </MudLink>
 
-    {
-        <MudText Typo="Typo.h4" Class="mb-3">
-            @LocalizedContent["UpgradeYourAccountTitle"]
-        </MudText>
-        <MudLink Href="/BillingSummary" Target="_self">
-            ← @LocalizedContent["BackToBilling"]
-        </MudLink>
+    <hr class="py-1 my-3" />
 
-        <TemplatePlan IsDisplaySelectButton="false"
-                      SubmitConfirm="OnConfirmPlan"
-                      SubmitUpgrade="SubmitUpgrade"
-                      SubmitCancel="SubmitCancel"
-                      IsExpanded="true"
-                      AllowUpdate="true"
-                      IsUpgrade="false"
-                      Params="@BuildData" />
-    }
+    <div class="container_flex_wrap align-items-center mt-5">
 
-    @if (isConfirm){
-    <MudText Typo="Typo.h6" Class="mt-4">@LocalizedContent["PaymentFrequency"]</MudText>
+        @if (@BuildData != null)
 
-        <MudRadioGroup T="int" Value="2" ValueChanged="Clickfrequency" Class="mb-3 d-flex justify-content-around border p-3">
-            <MudRadio Value="1" Color="@AppColors.BASE_COLOR_ENUM">   @LocalizedContent["PayMonthly"]</MudRadio>
-            <MudRadio Value="2" Color="@AppColors.BASE_COLOR_ENUM">  @LocalizedContent["PayYearly"]</MudRadio>
-    </MudRadioGroup>
-@*     <MudButtonGroup   Variant="Variant.Filled" Class="mb-3 d-flex justify-content-around border p-3">
-        <MudButton Variant="Variant.Filled"  Color="@AppColors.BASE_COLOR_ENUM"
-                   Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" px-3")"
-                   OnClick="@(() => Clickfrequency("y"))">
-            @LocalizedContent["PayYearly"]
-        </MudButton>
-        <MudButton  Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM"
-                   Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" px-3")"
-                   OnClick="@(() => Clickfrequency("m"))">
-            @LocalizedContent["PayMonthly"]
-        </MudButton>
-    </MudButtonGroup> *@
+        {
 
-    <MudPaper Class="p-3" >
-        <MudText Typo="Typo.body1">@string.Format(LocalizedContent["PaymentDue"], "Dec 15, 2024")</MudText>
-        <MudText Typo="Typo.h6">$@price</MudText>
-    </MudPaper>
 
-        <MudButton Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM" OnClick="OnSaveAndConfirm" Class="mt-2">@LocalizedContent["Edit"]</MudButton>
-    }
+            <div class="w46 mt-3">
+  
+      
+        
+                <TemplatePlan IsDisplaySelectButton="false"
+                              SubmitConfirm="OnConfirmPlan"
+                              SubmitUpgrade="SubmitUpgrade"
+                              SubmitCancel="SubmitCancel"
+                              IsExpanded="true"
+                              AllowUpdate="true"
+                              IsUpgrade="false"
+                              Params="@BuildData" />
+            </div>
+        }
+
+        @if (true){
+
+            <MudCard class="w46 mt-3">
+
+                <MudText Typo="Typo.h6" Class="mt-4">@LocalizedContent["PaymentFrequency"]</MudText>
+
+                    <MudRadioGroup T="int" Value="selectedPaymentFrequency" ValueChanged="Clickfrequency" Class="mb-3 d-flex justify-content-around border p-3">
+                        <MudRadio Value="1" Color="@AppColors.BASE_COLOR_ENUM">   @LocalizedContent["PayMonthly"]</MudRadio>
+                        <MudRadio Value="2" Color="@AppColors.BASE_COLOR_ENUM">  @LocalizedContent["PayYearly"]</MudRadio>
+                </MudRadioGroup>
+            @*     <MudButtonGroup   Variant="Variant.Filled" Class="mb-3 d-flex justify-content-around border p-3">
+                    <MudButton Variant="Variant.Filled"  Color="@AppColors.BASE_COLOR_ENUM"
+                               Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" px-3")"
+                               OnClick="@(() => Clickfrequency("y"))">
+                        @LocalizedContent["PayYearly"]
+                    </MudButton>
+                    <MudButton  Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM"
+                               Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" px-3")"
+                               OnClick="@(() => Clickfrequency("m"))">
+                        @LocalizedContent["PayMonthly"]
+                    </MudButton>
+                </MudButtonGroup> *@
+
+                <MudPaper Class="p-3" >
+                    <MudText Typo="Typo.body1">@string.Format(LocalizedContent["PaymentDue"], DateTimeOffset.UtcNow.LocalDateTime.ToLongDateString() + " T " + DateTimeOffset.UtcNow.LocalDateTime.ToLongTimeString())</MudText>
+                    <MudText Typo="Typo.h6">$@price</MudText>
+                </MudPaper>
+
+                    <MudButton Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM" OnClick="OnSaveAndConfirm" Class="@(AppTextStyle.TEXT_TRANSFORM_NORMAL+" mt-2 w-100")">@LocalizedContent["Confirm"]</MudButton>
+        </MudCard>
+        }
+
+    </div>
+   
 </MudPaper>
 
-    @code {
+@code {
     private bool isConfirm = false;
+    private int selectedPaymentFrequency = 2;
     // private int SelectedPaymentOption { get; set; } = 2;
 
     private Dictionary<string, string> LocalizedContent;
@@ -133,6 +154,7 @@
     {
         if (id == 2)
         {
+          
             price = BuildData?.AnnualPrice??0;
         }
         else
@@ -140,6 +162,7 @@
             price= BuildData?.MonthlyPrice??0;
 
         }
+        selectedPaymentFrequency = id;
         StateHasChanged();
     }
 
@@ -169,7 +192,7 @@
                     { "PayYearly", "Pay Yearly" },
                     { "PayMonthly", "Pay Monthly" },
                     { "PaymentDue", "Payment due {0}" },
-                    { "Edit", "Edit" }
+                    { "Confirm", "Confirm" }
                 }
             },
             { "ar", new Dictionary<string, string> {
@@ -180,7 +203,7 @@
                     { "PayYearly", "ادفع سنوياً" },
                     { "PayMonthly", "ادفع شهرياً" },
                     { "PaymentDue", "الدفع المستحق {0}" },
-                    { "Edit", "تعديل" }
+                    { "Confirm", "تأكيد" }
                 }
             }
         };

@@ -1,4 +1,5 @@
-﻿@using LAHJA.Data.UI.Components.Base
+﻿@using Domain.ShareData
+@using LAHJA.Data.UI.Components.Base
 @using LAHJA.Them
 @using LAHJA.UI.Components.Auth
 @using LAHJA.Helpers.Services
@@ -17,6 +18,7 @@
 @inherits LayoutComponentBase
 
 @using Microsoft.Extensions.Localization
+@using System.Globalization
 
  @* @inject IStringLocalizer<Resources> localizer *@
 
@@ -138,7 +140,10 @@
 
     private bool isMobile;
     private bool isHome=false;
-
+    protected override async void OnInitialized()
+    {
+       
+    }
     private void OnMobileMatch(bool match)
     {
         isMobile = match; 
@@ -179,7 +184,7 @@
 
             LanguagesCode langCode = (lang == "ar" )? LanguagesCode.EN : LanguagesCode.AR;
             await _manageLanguageService.SetLanguageAsync(langCode);
-            languageService.CurrentLanguage=CurrentLanguage = langCode.ToString().ToLower();
+            // languageService.CurrentLanguage=CurrentLanguage = langCode.ToString().ToLower();
         }
 
         StateHasChanged();
@@ -250,51 +255,7 @@
     }
 
 
-    protected override async void OnAfterRender(bool firstRender)
-    {
 
-     
-
-        if (firstRender)
-        {
-
-            try
-            {
-                CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
-                _rightToLeft = CurrentLanguage==LanguagesCode.AR.ToString().ToLower();
-
-                tokenn = await _tokenService.GetTokenAsync();
-
-                if (!string.IsNullOrEmpty(tokenn))
-                {
-
-                    await pass.SetAsync("accessToken", tokenn);
-                    flagauth = false;
-                }
-                else {
-
-                    await pass.SetAsync("accessToken", "$$$$$");
-
-                }
-            }
-            catch{}
-            finally
-            {
-
-                isDisplay = true;
-                StateHasChanged();
-
-            }
-
-
-
-            base.OnAfterRender(firstRender);
-
-        }
-
-
-
-    }
 
     private async void Handellogout(bool flag)
 
@@ -333,21 +294,52 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        try
         {
-            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
-            if (_isDarkMode)
+            if (firstRender)
             {
-                iconfill = "#fff";
-            }
-            else
-            {
-                iconfill = "#000";
-            }
-            StateHasChanged();
+                CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+                _rightToLeft = CurrentLanguage == LanguagesCode.AR.ToString().ToLower();
+                StateHasChanged();
+                _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+                StateHasChanged();
+                tokenn = await _tokenService.GetTokenAsync();
+         
+                if (!string.IsNullOrEmpty(tokenn))
+                {
+
+                    await pass.SetAsync("accessToken", tokenn);
+                    flagauth = false;
+                }
+                else
+                {
+
+                    await pass.SetAsync("accessToken", "$$$$$");
+
+                }
            
+                if (_isDarkMode)
+                {
+                    iconfill = "#fff";
+                }
+                else
+                {
+                    iconfill = "#000";
+                }
+                StateHasChanged();
+           
+            }
+
+            await base.OnAfterRenderAsync(firstRender);
         }
-        await base.OnAfterRenderAsync(firstRender);
+        catch { }
+        finally
+        {
+
+            isDisplay = true;
+            StateHasChanged();
+
+        }
     }
 }
 

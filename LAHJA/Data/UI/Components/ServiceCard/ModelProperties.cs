@@ -33,20 +33,23 @@ namespace LAHJA.Data.UI.Components.ServiceCard
         { "ModelImageUrl", new List<string> { "/ai-hand.png", "/ai-robot.png", "chat-boat.jpg", "chatbot-cta.png" } },
         { "Type", new List<string> { "Text To Text", "Text To Speech", "Chat Model" } },
         { "Voice", new List<string> { "Male", "Female" } },
-        { "Language", new List<string> { "English", "Spanish", "French", "German", "Arabic" } },
-        { "Dialect", new List<string> { "American", "British", "Australian" ,"Najd","Hijazi"} },
+        { "Language", new List<string> { "English", "German", "Arabic" } },
+        { "Dialect", new List<string> {"Najd","Hijazi"} },
         { "Quality", new List<string> { "High", "Medium", "Low" } },
         { "Token", new List<string> { "100", "500", "1000", "5000", "10000" } },
         { "ModelVersion", new List<string> { "v1.0", "v1.1", "v2.0", "v2.5", "v3.0" } },
         { "CreationDate", new List<string> { "2023-01-01", "2022-12-15", "2021-11-20" } },
         { "LastUpdated", new List<string> { "2023-12-01", "2023-11-15", "2023-10-30" } },
         { "Description", new List<string> { "Random generated description.", "High-quality model for tasks.", "Used in various applications." } },
-        { "Author", new List<string> { "Author 1", "Author 2", "Author 3" } },
+        { "Author", new List<string> { "Heba  V1", "Heba  V2", "Heba  V3","BssamV1","BssamV2" } },
         { "Accuracy", new List<string> { "0.90", "0.85", "0.95" } },
         { "Speed", new List<string> { "Fast", "Medium", "Slow" } },
         { "Framework", new List<string> { "TensorFlow", "PyTorch", "Keras" } },
         { "Parameters", new List<string> { "1000000", "5000000", "10000000" } }
     };
+
+
+
 
 
 
@@ -57,15 +60,15 @@ namespace LAHJA.Data.UI.Components.ServiceCard
     { "ModelImageUrl", new List<string> { "/ai-hand.png", "/ai-robot.png", "chat-boat.jpg", "chatbot-cta.png" } },
     { "Type", new List<string> { "نص إلى نص", "نص إلى كلام", "نموذج محادثة" } },
     { "Voice", new List<string> { "ذكر", "أنثى" } },
-    { "Language", new List<string> { "إنجليزي", "إسباني", "فرنسي", "ألماني", "عربي" } },
-    { "Dialect", new List<string> { "أمريكي", "بريطاني", "أسترالي", "نجدي","حجازي" } },
+    { "Language", new List<string> { "إنجليزي","صيني" , "عربي" } },
+    { "Dialect", new List<string> {  "نجدي","حجازي" } },
     { "Quality", new List<string> { "عالي", "متوسط", "منخفض" } },
     { "Token", new List<string> { "100", "500", "1000", "5000", "10000" } },
     { "ModelVersion", new List<string> { "v1.0", "v1.1", "v2.0", "v2.5", "v3.0" } },
     { "CreationDate", new List<string> { "2023-01-01", "2022-12-15", "2021-11-20" } },
     { "LastUpdated", new List<string> { "2023-12-01", "2023-11-15", "2023-10-30" } },
     { "Description", new List<string> { "وصف تم إنشاؤه عشوائيًا.", "نموذج عالي الجودة للمهام.", "يستخدم في العديد من التطبيقات." } },
-    { "Author", new List<string> { "المؤلف 1", "المؤلف 2", "المؤلف 3" } },
+    { "Author", new List<string> { "النموذج توليف 1", "النموذج توليف  2", "النموذج توليف 3" } },
     { "Accuracy", new List<string> { "0.90", "0.85", "0.95" } },
     { "Speed", new List<string> { "سريع", "متوسط", "بطيء" } },
     { "Framework", new List<string> { "TensorFlow", "PyTorch", "Keras" } },

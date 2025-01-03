@@ -9,7 +9,7 @@
 
         public string? ExpirationDate { get; set; }
 
-        public string? Cvc { get; set; }
+        public string? CVC { get; set; }
 
         public string? CardType { get; set; }
 

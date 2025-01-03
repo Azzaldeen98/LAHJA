@@ -1,3 +1,7 @@
+window.reloadPage = function () {
+    location.reload();
+};
+
 
 window.downloadAudioFromElement = (audioElementId, fileName) => {
     const audioElement = document.getElementById(audioElementId);

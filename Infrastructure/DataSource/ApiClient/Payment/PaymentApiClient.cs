@@ -27,10 +27,10 @@ namespace Infrastructure.DataSource.ApiClient.Payment
         {
         }
 
-        private async Task<CheckoutClient> GetApiClient()
+        private async Task<CheckoutClient> GetApiClient(string token="")
         {
 
-            var client = await _clientFactory.CreateClientWithAuthAsync<CheckoutClient>("ApiClient");
+            var client = await _clientFactory.CreateClientWithAuthAsync<CheckoutClient>("ApiClient", token);
             return client;
         }
         //async Task<CheckoutResponse> Main(PaymentCheckoutRequestModel request)
@@ -80,13 +80,13 @@ namespace Infrastructure.DataSource.ApiClient.Payment
         //        return null;
         //    }
         //}
-        public async Task<Result<PaymentCheckoutResponseModel>> getPaymentCheckOut(PaymentCheckoutRequestModel request)
+        public async Task<Result<PaymentCheckoutResponseModel>> getPaymentCheckOut(PaymentCheckoutRequestModel request,string token="")
         {
             try
             {
                 var model = _mapper.Map<CheckoutOptions>(request);
-                var client = await GetApiClient();
-                var response = await client.CreateCheckoutAsync(model);
+                var client = await GetApiClient(token);
+				var response = await client.CreateCheckoutAsync(model);
                 //var response = await Main(model);
 
 

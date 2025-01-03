@@ -1,8 +1,4 @@
 ﻿using AutoMapper;
-using Domain.Entities.Auth.Request;
-using Domain.Entities.Auth.Response;
-using Domain.Entities.User;
-using Domain.ShareData.Base;
 using Domain.ShareData.Base.Auth;
 using Domain.Wrapper;
 using Infrastructure.DataSource.ApiClient.Auth;
@@ -10,17 +6,10 @@ using Infrastructure.DataSource.Seeds;
 using Infrastructure.DataSource.Seeds.Models;
 using Infrastructure.Models.Auth.Response;
 using Infrastructure.Models.Plans;
-using Infrastructure.Models.User;
-using Infrastructure.Nswag;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.DataSource
 {
-    public class AuthControl
+	public class AuthControl
     {
         private readonly SeedsUsers seedsUsers;
         private readonly AuthApiClient authApiClient;
@@ -35,28 +24,41 @@ namespace Infrastructure.DataSource
         public async Task<Result<LoginResponseModel>> loginAsync(LoginRequestModel model)
         {
 
-            //var model= _mapper.Map<LoginRequestModel>(request);
-            //var user = await seedsUsers.loginAsync(model);
+       
 
             var response = await ExecutorAppMode.ExecuteAsync<Result<LoginResponseModel>>(
                 async () => await authApiClient.loginAsync(model),
                  async () => {
                       var user=await seedsUsers.loginAsync(model);
-                      if (user != null)
-                      {
-                         var res= _mapper.Map<LoginResponseModel>(user);
+					 var res = _mapper.Map<LoginResponseModel>(user);
+					 var resUser = await authApiClient.loginAsync(new LoginRequestModel
+					 {
+						 email = "azzaldeen771211417@gmail.com",
+						 password = "Test@123"
+					 });
 
-                         res.accessToken = authApiClient.GenerateJwtToken("AZDSF!@#$%^&6756345236");
+            
+					 if (user != null)
+                      {
+						 //var res= _mapper.Map<LoginResponseModel>(user);
+
+						 if (resUser.Succeeded)
+						 {
+							 res.accessToken = resUser.Data.accessToken;
+
+                         }
+                         else
+                         {
+							 res.accessToken = authApiClient.GenerateJwtToken("AZDSF!@#$%^&6756345236");
+						 }
+						 
 
                          return Result<LoginResponseModel>.Success(res);
                       }
                      return Result<LoginResponseModel>.Fail("your email or password is wrong !!");
                  });
 
-            //if (user != null) {
-
-            //   return _mapper.Map<LoginResponseModel>(user);
-            //}
+       
 
             return response;
 

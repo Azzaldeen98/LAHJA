@@ -1,17 +1,19 @@
-﻿<MudChart ChartType="ChartType.Donut" LegendPosition="@LegendPosition" Width="300px" Height="300px"
-          InputData="@data" InputLabels="@labels">
-</MudChart>
+﻿<div class="d-flex flex-column justify-content-around align-items-center">
+
+    <MudChart ChartType="ChartType.Donut" LegendPosition="@LegendPosition" Width="300px" Height="300px"
+              InputData="@data" InputLabels="@labels">
+    </MudChart>
 
 
-<MudSelect Label="Legend Position" Variant="Variant.Outlined" Dense="true" T="@Position" ValueChanged="OnSelectedValue" Class="mt-4">
-    <MudSelectItem T="Position" Value="Position.Top">Top</MudSelectItem>
-    <MudSelectItem T="Position" Value="Position.Left">Left</MudSelectItem>
-    <MudSelectItem T="Position" Value="Position.Right">Right</MudSelectItem>
-    <MudSelectItem T="Position" Value="Position.Bottom">Bottom</MudSelectItem>
-    <MudSelectItem T="Position" Value="Position.Start">Start</MudSelectItem>
-    <MudSelectItem T="Position" Value="Position.End">End</MudSelectItem>
-</MudSelect>
-
+@*     <MudSelect    Label="Legend Position" Variant="Variant.Outlined" Dense="true" T="@Position" ValueChanged="OnSelectedValue" Class="mt-4">
+        <MudSelectItem T="Position" Value="Position.Top">Top</MudSelectItem>
+        <MudSelectItem T="Position" Value="Position.Left">Left</MudSelectItem>
+        <MudSelectItem T="Position" Value="Position.Right">Right</MudSelectItem>
+        <MudSelectItem T="Position" Value="Position.Bottom">Bottom</MudSelectItem>
+        <MudSelectItem T="Position" Value="Position.Start">Start</MudSelectItem>
+        <MudSelectItem T="Position" Value="Position.End">End</MudSelectItem>
+    </MudSelect> *@
+</div>
 @code {
     public double[] data = { 25, 77, 28, 5 };
     public string[] labels = { "Oil", "Coal", "Gas", "Biomass" };

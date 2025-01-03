@@ -6,10 +6,8 @@
 
 
 
-<MudText Typo="Typo.h6" Class="mb-4">@Translate("Payment Information")</MudText>
 @if (billingContact == null)
 {
-    <div class="mx-auto">
         <MudExpansionPanels>
             <MudExpansionPanel @bind-Expanded="@open" HideIcon="true">
                 <TitleContent>
@@ -21,49 +19,61 @@
                     </div>
                 </TitleContent>
                 <ChildContent>
-                    <FormBilling OnEdit="OnSaveData"
+                    <FormBilling Title="@Translate("Payment Information")" 
+                                 OnEdit="OnSaveData"
                                  OnDelete="templateBilling.BuilderComponents.SubmitDeleteBillingDetails"
                                  OnClickSave="OnSaveData" />
                 </ChildContent>
             </MudExpansionPanel>
         </MudExpansionPanels>
-    </div>
+   
 }
 else
 {
-    <MudExpansionPanels>
-        <MudExpansionPanel @bind-Expanded="@open" HideIcon="true">
+    <MudContainer >
+        
+        <FormBilling Title="@Translate("Payment Information")"
+                     OnEdit="OnSaveData"
+                     OnDelete="templateBilling.BuilderComponents.SubmitDeleteBillingDetails"
+                     Params="@billingContact"
+                     OnClickSave="@OnSaveData" />
+    </MudContainer>
+                 
+
+   @*   <MudExpansionPanels>
+         <MudExpansionPanel @bind-Expanded="@open" HideIcon="true">
             <TitleContent>
-                <MudText Typo="Typo.h6" Class="font-weight-bold">@Translate("Billing Information")</MudText>
+                 <MudText Typo="Typo.h6" Class="font-weight-bold">@Translate("Billing Information")</MudText>
 
-                <MudPaper Class="p-4 mb-4 shadow-md rounded-lg" Elevation="3">
-                    <MudText Class="mb-2"><strong>@Translate("Name"):</strong> @billingContact.FullName</MudText>
-                    <MudText Class="mb-2"><strong>@Translate("Country"):</strong> @billingContact.Country</MudText>
-                    <MudText Class="mb-2"><strong>@Translate("City"):</strong> @billingContact.City</MudText>
-                    <MudText Class="mb-2"><strong>@Translate("Phone Number"):</strong> @billingContact.MobilePhoneNumber</MudText>
-                    <MudText Class="mb-2"><strong>@Translate("Address1"):</strong> @billingContact.Address1</MudText>
+                 <MudPaper Class="p-4 mb-4 shadow-md rounded-lg" Elevation="3">
+                     <MudText Class="mb-2"><strong>@Translate("Name"):</strong> @billingContact.FullName</MudText>
+                     <MudText Class="mb-2"><strong>@Translate("Country"):</strong> @billingContact.Country</MudText>
+                     <MudText Class="mb-2"><strong>@Translate("City"):</strong> @billingContact.City</MudText>
+                     <MudText Class="mb-2"><strong>@Translate("Phone Number"):</strong> @billingContact.MobilePhoneNumber</MudText>
+                     <MudText Class="mb-2"><strong>@Translate("Address1"):</strong> @billingContact.Address1</MudText>
 
-                    @if (!string.IsNullOrEmpty(billingContact.Address2))
-                    {
-                        <MudText Class="mb-2"><strong>@Translate("Address2"):</strong> @billingContact.Address2</MudText>
-                    }
+                     @if (!string.IsNullOrEmpty(billingContact.Address2))
+                     {
+                         <MudText Class="mb-2"><strong>@Translate("Address2"):</strong> @billingContact.Address2</MudText>
+                     }
 
-                    <div class="d-flex justify-end mt-3">
-                        <MudButton Variant="Variant.Outlined" OnClick="@(()=>OnDeleteBillingInfo(billingContact))" Color="Color.Error" StartIcon="Icons.Material.Filled.Delete" Class="px-4 py-2">@Translate("Remove")</MudButton>
-                    </div>
-                </MudPaper>
+                     <div class="d-flex justify-end mt-3">
+                         <MudButton Variant="Variant.Outlined" OnClick="@(()=>OnDeleteBillingInfo(billingContact))" Color="Color.Error" StartIcon="Icons.Material.Filled.Delete" Class="px-4 py-2">@Translate("Remove")</MudButton>
+                     </div>
+                 </MudPaper>
 
-                <MudIcon Icon="@(open ? Icons.Material.Filled.Close : Icons.Material.Filled.Edit)" class="ml-auto" />
-            </TitleContent>
+                 <MudIcon Icon="@(open ? Icons.Material.Filled.Close : Icons.Material.Filled.Edit)" class="ml-auto" />
+             </TitleContent> 
 
-            <ChildContent>
-                <FormBilling OnEdit="OnSaveData"
-                             OnDelete="templateBilling.BuilderComponents.SubmitDeleteBillingDetails" 
-                Params="@billingContact"
-                             OnClickSave="@OnSaveData" />
-            </ChildContent>
-        </MudExpansionPanel>
-    </MudExpansionPanels>
+             <ChildContent>
+                 <FormBilling ReadOnly="ReadOnly"
+                              OnEdit="OnSaveData"
+                              OnDelete="templateBilling.BuilderComponents.SubmitDeleteBillingDetails" 
+                              Params="@billingContact"
+                              OnClickSave="@OnSaveData" />
+             </ChildContent>
+         </MudExpansionPanel>
+     </MudExpansionPanels> *@
 }
 
 
@@ -71,16 +81,15 @@ else
 @code
 {
     bool open;
-
-
     private bool flag = true;
-    private DataBuildBillingBase billingContact = null;
+    private DataBuildBillingBase? billingContact = null;
 
 
 
     [Parameter] public DataBuildBillingBase BuildData { get => billingContact; set => billingContact = value; }
     [Parameter] public EventCallback<DataBuildBillingBase> OnSelect { get; set; }
     [Parameter] public EventCallback<DataBuildBillingBase?> ReadData { get; set; }
+    [Parameter] public bool ReadOnly { get; set; }
 
 
     private Dictionary<string, string> translations;

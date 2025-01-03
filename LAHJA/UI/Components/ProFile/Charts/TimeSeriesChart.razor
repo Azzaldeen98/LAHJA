@@ -1,6 +1,6 @@
 ﻿@using MudBlazor.Components.Chart.Models
 
-<div>
+<div class="col-md-12">
     <MudTimeSeriesChart ChartSeries="@_series" @bind-SelectedIndex="Index" Width="100%" Height="350px" ChartOptions="@_options" CanHideSeries TimeLabelSpacing="TimeSpan.FromMinutes(5)" />
     <MudGrid>
         <MudItem xs="6">

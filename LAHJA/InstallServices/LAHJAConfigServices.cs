@@ -25,6 +25,7 @@ using LAHJA.ApplicationLayer.Service;
 using LAHJA.Data.UI.Templates.Services;
 using LAHJA.UI.Templates.Services;
 using LAHJA.Helpers.Services;
+using Domain.ShareData;
 
 
 namespace LAHJA

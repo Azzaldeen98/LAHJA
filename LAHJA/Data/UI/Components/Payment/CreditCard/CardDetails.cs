@@ -12,8 +12,11 @@ namespace LAHJA.Data.UI.Components.Payment.CreditCard
         public string CardNumber { get; set; } = "";
         [Required]
         public string ExpirationDate { get; set; } = "";
+
         [Required]
-        public string Cvc{ get; set; } = "";
+        public string HolderName { get; set; } = "";
+        [Required]
+        public string CVC{ get; set; } = "";
         [Required]
         public string CardType { get; set; } = "";
 

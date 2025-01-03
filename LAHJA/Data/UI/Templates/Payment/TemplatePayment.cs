@@ -14,8 +14,8 @@ namespace LAHJA.Data.UI.Templates.Payment
     public class DataBuildPaymentBase {
 
         public string PlanId  { get; set; }
-        public string SuccessUrl { get; set; } = "https://asg.tryasp.net/swagger/index.html";
-        public string CancelUrl { get; set; } = "https://asg.tryasp.net/api/Checkout";
+        public string SuccessUrl { get; set; }
+        public string CancelUrl { get; set; } 
     }
 
 
@@ -164,9 +164,11 @@ namespace LAHJA.Data.UI.Templates.Payment
 
 
 
-        public async Task onSubmitPaymentCheckOut(DataBuildPaymentBase DataBuildPaymentBase) {
+        public async Task onSubmitPaymentCheckOut(DataBuildPaymentBase data) {
             
-            var res=await  builderApi.getPaymentCheckoutUrlAsync(DataBuildPaymentBase);
+            data.SuccessUrl = $"{navigation.BaseUri}settings";
+            data.CancelUrl = $"{navigation.BaseUri}settings/billing";
+			var res=await  builderApi.getPaymentCheckoutUrlAsync(data);
             if (res.Succeeded && res.Data!=null && !string.IsNullOrEmpty(res.Data.url)) {
                 navigation.NavigateTo(res.Data.url,true);
             }

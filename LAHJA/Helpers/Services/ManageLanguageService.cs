@@ -1,6 +1,9 @@
-﻿using Microsoft.JSInterop;
+﻿using Blazorise;
+using Domain.ShareData;
+using Microsoft.JSInterop;
 using Shared.Constants;
 using System.ComponentModel;
+using System.Globalization;
 using System.Threading;
 namespace LAHJA.Helpers.Services
 {
@@ -25,30 +28,27 @@ namespace LAHJA.Helpers.Services
 
         private void NotifyLanguageChanged(string langCode)
         {
-       
-           
-                OnLanguageChanged?.Invoke(langCode);
-       
-            
+
+            if (langCode == "ar")
+            {
+                CultureInfo.CurrentCulture = new CultureInfo("ar");
+                CultureInfo.CurrentUICulture = new CultureInfo("ar");
+            }
+            else
+            {
+                CultureInfo.CurrentCulture = new CultureInfo("en");
+                CultureInfo.CurrentUICulture = new CultureInfo("en");
+            }
+            //OnLanguageChanged?.Invoke(langCode);
+
+
         }
     }
 
 
 
-    public enum LanguagesCode{
-        [Description("ar")]
-        AR,
 
-        [Description("en")]
-        EN
-    }
-    public interface IManageLanguageService
-    {
-        Task<string> GetLanguageAsync();
-        //Task SetLanguageAsync(string languageCode);
-        Task<bool> CheckIsLanguage(LanguagesCode code);
-        Task SetLanguageAsync(LanguagesCode code);
-    }
+
     public class ManageLanguageService: IManageLanguageService
     {
         private readonly IJSRuntime _jsRuntime;
@@ -64,8 +64,10 @@ namespace LAHJA.Helpers.Services
     
             try
             {
-                semaphore.WaitOne();
-                return await _jsRuntime.InvokeAsync<string>("localStorageHelper.getItem", ConstantsApp.LANGUAGE_STORAGE) ?? LanguagesCode.AR.ToString().ToLower();
+                //semaphore.WaitOne();
+                var lang= await _jsRuntime.InvokeAsync<string>("localStorageHelper.getItem", ConstantsApp.LANGUAGE_STORAGE) ?? LanguagesCode.AR.ToString().ToLower();
+                changeLanguageApp(lang=="ar"? LanguagesCode.AR: LanguagesCode.EN);
+                return lang;
             }
             catch (Exception ex)
             {
@@ -73,7 +75,7 @@ namespace LAHJA.Helpers.Services
             }
             finally
             {
-                semaphore.Release();
+                //semaphore.Release();
             }
         }
         public  async Task<bool> CheckIsLanguage(LanguagesCode code)
@@ -82,20 +84,25 @@ namespace LAHJA.Helpers.Services
             var lang = await GetLanguageAsync();
             if (!string.IsNullOrEmpty(lang))
             {
+
+                changeLanguageApp(lang == "ar" ? LanguagesCode.AR : LanguagesCode.EN);
                 return (lang.ToLower() == code.ToString().ToLower());
             }
             return false;   
         }
-        public  async Task SetLanguageAsync(LanguagesCode code)
+        public async Task SetLanguageAsync(LanguagesCode code)
         {
-            if (code!=null)
+            if (code != null)
             {
                 try
                 {
                     semaphore.WaitOne();
-                    await _jsRuntime.InvokeVoidAsync("localStorageHelper.setItem", ConstantsApp.LANGUAGE_STORAGE,(code.ToString().ToLower()) );
+
+                    changeLanguageApp(code);
+                    await _jsRuntime.InvokeVoidAsync("localStorageHelper.setItem", ConstantsApp.LANGUAGE_STORAGE, (code.ToString().ToLower()));
+                    await _jsRuntime.InvokeVoidAsync("reloadPage");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
 
                 }
@@ -105,5 +112,20 @@ namespace LAHJA.Helpers.Services
                 }
             }
         }
+
+            private void changeLanguageApp(LanguagesCode code)
+            {
+                if (code == LanguagesCode.AR)
+                {
+                    CultureInfo.CurrentCulture = new CultureInfo("ar");
+                    CultureInfo.CurrentUICulture = new CultureInfo("ar");
+                }
+                else
+                {
+                    CultureInfo.CurrentCulture = new CultureInfo("en");
+                    CultureInfo.CurrentUICulture = new CultureInfo("en");
+                }
+            }
+        
     }
 }

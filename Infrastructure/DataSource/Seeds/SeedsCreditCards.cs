@@ -18,7 +18,7 @@ namespace Infrastructure.DataSource.Seeds
                 CardNumber = "4111111111111111",
                 Email = "test@gmail.com",
                 ExpirationDate = "12/25",
-                Cvc = "123",
+                CVC = "123",
                 CardType = "MasterCard",
                 IsSelected = true
             },  
@@ -27,7 +27,7 @@ namespace Infrastructure.DataSource.Seeds
                 CardNumber = "4111111111111111",
                 Email = "azzaldeen771211417@gmail.com",
                 ExpirationDate = "12/25",
-                Cvc = "123",
+                CVC = "123",
                 CardType = "Visa",
                 IsSelected = true
             },   
@@ -36,7 +36,7 @@ namespace Infrastructure.DataSource.Seeds
                 CardNumber = "4111111111111111",
                 Email = "test@gmail.com",
                 ExpirationDate = "12/25",
-                Cvc = "123",
+                CVC = "123",
                 CardType = "Visa",
                 IsSelected = true
             },
@@ -45,7 +45,7 @@ namespace Infrastructure.DataSource.Seeds
                 CardNumber = "5500000000000004",
                 Email = "azzaldeen771211417@gmail.com",
                 ExpirationDate = "11/24",
-                Cvc = "456",
+                CVC = "456",
                 CardType = "MasterCard",
                 IsSelected = false
             },    new CardDetailsRequestModel
@@ -53,7 +53,7 @@ namespace Infrastructure.DataSource.Seeds
                 CardNumber = "5500000000000004",
                 Email = "test@gmail.com",
                 ExpirationDate = "11/24",
-                Cvc = "456",
+                CVC = "456",
                 CardType = "Visa",
                 IsSelected = false
             }
@@ -90,7 +90,7 @@ namespace Infrastructure.DataSource.Seeds
             {
                 cardDetails.Email = updatedCard.Email;
                 cardDetails.ExpirationDate = updatedCard.ExpirationDate;
-                cardDetails.Cvc = updatedCard.Cvc;
+                cardDetails.CVC = updatedCard.CVC;
                 cardDetails.CardType = updatedCard.CardType;
                 cardDetails.IsSelected = updatedCard.IsSelected;
                 return true;

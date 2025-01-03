@@ -28,6 +28,7 @@
 
 .nav-menu-continer-items-sm {
     display: none !important;
+
 }
 .nav-item-color-light {
     color: #fff !important;
@@ -668,8 +669,59 @@ a, .btn-link {
     display: block !important;
 }
 
-@media only screen and (max-width:700px) {
+.font-size-nav-v2 {
+    font-size: 14px !important;
+}
+.nav-profile-menu-continer-items-sm {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    transition: visibility 0.3s, opacity 0.3s ease-in-out;
+}
+.w41 {
+    width: 40%;
+}
+.w40{
+    width:39%;
+}
+.w46{
+    width:46%;
+}
+.w60{
+    width:59%;
+}
+.container_flex_wrap{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-around;
+    align-items:start;
 
+}
+.container_flex_column {
+    display: flex;
+   flex-direction:column;
+    justify-content: start;
+    align-items: start;
+}
+@media (max-width: 768px) {
+    .nav-profile-menu-continer-items-sm {
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    .w40 ,.w46 ,.w60 ,.w41 {
+        width:100%;
+    }
+ 
+}
+@media only screen and (max-width:700px) {
+    .w40, .w46, .w60, .w41 {
+        width: 100%;
+    }
+ 
+    .nav-profile-menu-continer-items-sm {
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
     .w-chat-t2s {
         width: 100%
     }

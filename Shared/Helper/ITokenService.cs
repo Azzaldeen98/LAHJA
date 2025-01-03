@@ -17,6 +17,13 @@
         ///////////////////////////////////////
         Task RemoveTokenAsync();
         Task RemoveAllTokensAsync();
-    }
+
+
+        //////////////////////////////////////////
+      
+        Task SaveTempTokenAsync(string token);
+        Task<string> GetTempTokenAsync();
+        Task RemoveTempTokenAsync();
+	}
 
 }

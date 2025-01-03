@@ -2,6 +2,7 @@
 using AutoMapper;
 using Domain.Entities.Plans.Response;
 using Domain.Repository.Plans;
+using Domain.ShareData;
 using Domain.ShareData.Base;
 using Domain.Wrapper;
 using Infrastructure.DataSource.ApiClient.Plans;
@@ -20,6 +21,8 @@ namespace Infrastructure.Repository.Plans
     {
         private readonly SeedsPlans seedsPlans;
         private readonly PlansApiClient plansApiClient;
+        private readonly IManageLanguageService manageLanguageService;
+
         private readonly SeedsPlansContainers seedsPlansContainers;
         private readonly IMapper _mapper;
         private readonly ApplicationModeService appModeService;
@@ -28,7 +31,8 @@ namespace Infrastructure.Repository.Plans
             SeedsPlans seedsPlans,
             ApplicationModeService appModeService,
             SeedsPlansContainers seedsPlansContainers,
-            PlansApiClient plansApiClient)
+            PlansApiClient plansApiClient,
+            IManageLanguageService manageLanguageService)
         {
 
             //seedsPlans = new SeedsPlans();
@@ -37,6 +41,7 @@ namespace Infrastructure.Repository.Plans
             this.appModeService = appModeService;
             this.seedsPlansContainers = seedsPlansContainers;
             this.plansApiClient = plansApiClient;
+            this.manageLanguageService = manageLanguageService;
         }
 
 
@@ -50,7 +55,12 @@ namespace Infrastructure.Repository.Plans
 
             var response = await ExecutorAppMode.ExecuteAsync<Result<IEnumerable<ContainerPlansModel>>>(
             async () => await plansApiClient.getAllContainersPlansAsync(),
-            async () => Result<IEnumerable<ContainerPlansModel>>.Success(await seedsPlansContainers.getAllAsync()));
+            async () => {
+
+                seedsPlansContainers.Language =await manageLanguageService.GetLanguageAsync();
+              return  Result<IEnumerable<ContainerPlansModel>>.Success(await seedsPlansContainers.getAllAsync());
+
+            });
 
 
             if (response.Succeeded)
@@ -69,7 +79,11 @@ namespace Infrastructure.Repository.Plans
 
             var response = await ExecutorAppMode.ExecuteAsync<Result<IEnumerable<PlanResponseModel>>>(
                  async () => await plansApiClient.getAllPlansAsync(),
-                 async () => Result<IEnumerable<PlanResponseModel>>.Success(await seedsPlans.getAllPlansAsync())
+                 async () =>
+                 {
+                     seedsPlansContainers.Language = await manageLanguageService.GetLanguageAsync();
+                     return Result<IEnumerable<PlanResponseModel>>.Success(await seedsPlans.getAllPlansAsync());
+                 }
 
              );
             if (response.Succeeded)
@@ -91,7 +105,11 @@ namespace Infrastructure.Repository.Plans
 
             var response = await ExecutorAppMode.ExecuteAsync<Result<List<SubscriptionPlanModel>>>(
                  async () => Result<List<SubscriptionPlanModel>>.Success(),
-                 async () => Result<List<SubscriptionPlanModel>>.Success(seedsPlansContainers.GetBasicSubscriptionsPlansAR())
+                 async () =>
+                 {
+                     seedsPlansContainers.Language = await manageLanguageService.GetLanguageAsync();
+                     return Result<List<SubscriptionPlanModel>>.Success(seedsPlansContainers.GetBasicSubscriptionsPlans());
+                 }
 
              );
             if (response.Succeeded)
@@ -168,10 +186,13 @@ namespace Infrastructure.Repository.Plans
         public async Task<Result<IEnumerable<PlansContainerResponse>>> getAllPlansContainerAsync()
         {
 
-      
+           
             var response = await ExecutorAppMode.ExecuteAsync<Result<IEnumerable<PlansContainerModel>>>(
             async () => Result<IEnumerable<PlansContainerModel>>.Success(await seedsPlansContainers.getAllContainersAsync()),
-            async () => Result<IEnumerable<PlansContainerModel>>.Success(await seedsPlansContainers.getAllContainersAsync()));
+            async () => {
+                seedsPlansContainers.Language = await manageLanguageService.GetLanguageAsync();
+                return Result<IEnumerable<PlansContainerModel>>.Success(await seedsPlansContainers.getAllContainersAsync());
+            });
 
 
             if (response.Succeeded)
@@ -281,7 +302,11 @@ namespace Infrastructure.Repository.Plans
 
             var response = await ExecutorAppMode.ExecuteAsync<Result<IEnumerable<SubscriptionPlanModel>>>(
          async () => Result<IEnumerable<SubscriptionPlanModel>>.Success(await seedsPlansContainers.getSubscriptionsPlansAsync(containerId)),
-         async () => Result<IEnumerable<SubscriptionPlanModel>>.Success(await seedsPlansContainers.getSubscriptionsPlansAsync(containerId)));
+         async () =>
+         {
+             seedsPlansContainers.Language = await manageLanguageService.GetLanguageAsync();
+             return Result<IEnumerable<SubscriptionPlanModel>>.Success(await seedsPlansContainers.getSubscriptionsPlansAsync(containerId));
+         });
             if (response.Succeeded)
             {
                 var result = (response.Data != null) ? _mapper.Map<IEnumerable<SubscriptionPlan>>(response.Data) : null;
@@ -296,7 +321,11 @@ namespace Infrastructure.Repository.Plans
         {
             var response = await ExecutorAppMode.ExecuteAsync<Result<IEnumerable<SubscriptionPlanModel>>>(
             async () => await plansApiClient.getAllSubscriptionsPlansAsync(),
-            async () => Result<IEnumerable<SubscriptionPlanModel>>.Success(await seedsPlansContainers.getAllSubscriptionsPlansAsync()));
+            async () =>
+            {
+                seedsPlansContainers.Language = await manageLanguageService.GetLanguageAsync();
+                return Result<IEnumerable<SubscriptionPlanModel>>.Success(await seedsPlansContainers.getAllSubscriptionsPlansAsync());
+            });
 
 
             if (response.Succeeded)
