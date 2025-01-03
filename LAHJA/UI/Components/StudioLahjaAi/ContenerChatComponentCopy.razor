@@ -11,8 +11,9 @@
     <MudDrawerContainer Class="mud-height-full" Style="height:100%">
         <!-- Top Action Bar -->
         <MudList T="string" Dense="true" Class="d-flex flex-grow-1 py-0 mb-3" Style="@("background-color:"+@AppColors.BASE_COLOR_FOUCS)">
-            <MudCheckBox   Class="text-light" />
-            <MudIconButton class="text-light" Icon="@Icons.Material.Filled.Refresh" />
+            @* <MudCheckBox   Class="text-light" /> *@
+            <MudIconButton Class="text-light display-mobile-mode" OnClick="@(()=>IsMenuOpen=!IsMenuOpen)" Icon="@Icons.Material.Filled.MoreVert" />
+            <MudIconButton Class="text-light" Icon="@Icons.Material.Filled.Refresh" />
             @* <MudIconButton class="text-light" Icon="@Icons.Material.Filled.MoreVert" /> *@
             <MudSpacer />
             <MudText Typo="Typo.h5" class="text-light" Align="Align.Center">@GetText("Studio")</MudText>
@@ -22,9 +23,10 @@
             <MudIconButton class="text-light" Icon="@Icons.Material.Filled.Settings" OnClick="ToggleSettingsMenu" />
         </MudList>
         <MudDivider />
-
+   
         <!-- Left Drawer Menu -->
-        <MudDrawer @bind-Open="@IsMenuOpen" Fixed="false" Elevation="1" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true">
+        <MudContainer Class="display-computer-mode">
+        <MudDrawer @bind-Open="@IsMenuOpen"  Fixed="true" Elevation="1" Variant="@DrawerVariant.Mini">
             <MudNavMenu Class="font-size-nav-v2">
                 @foreach (var item in Categories)
                 {   
@@ -32,8 +34,21 @@
                 }
             </MudNavMenu>
         </MudDrawer>
+        </MudContainer>
 
+         <MudContainer Class="display-mobile-mode">
+        <MudDrawer @bind-Open="@IsMenuOpen" Class="display-mobile-mode" Fixed="true" Elevation="1" Variant="@DrawerVariant.Temporary">
+            <MudNavMenu Class="font-size-nav-v2">
+                @foreach (var item in Categories)
+                {
+                    <MudNavLink Match="NavLinkMatch.All" OnClick="@(() => SelectMenuItem(item))" Icon="@item.Icon">@item.Text[CurrentLanguage]</MudNavLink>
+                }
+            </MudNavMenu>
+        </MudDrawer>
+
+        </MudContainer>
         <!-- Main Content Area -->
+
         <MudMainContent  Class="h-100 " style="min-height:500px !important">
 
 

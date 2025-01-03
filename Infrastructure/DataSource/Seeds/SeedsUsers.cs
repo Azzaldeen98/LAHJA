@@ -5,6 +5,8 @@ using Infrastructure.Models.User;
 
 namespace Infrastructure.DataSource.Seeds
 {
+
+ 
     public class SeedsUsers
     {
 

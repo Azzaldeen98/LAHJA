@@ -3,6 +3,7 @@ using Domain.Wrapper;
 using Infrastructure.DataSource.ApiClient.Base;
 using Infrastructure.DataSource.ApiClientFactory;
 using Infrastructure.Models.Subscriptions.Request;
+using Infrastructure.Models.Subscriptions.Response;
 using Infrastructure.Nswag;
 using Microsoft.Extensions.Configuration;
 

@@ -43,7 +43,33 @@ namespace Infrastructure.Repository.Plans
             this.plansApiClient = plansApiClient;
             this.manageLanguageService = manageLanguageService;
         }
+        /// <summary>
+        /// Work
+        /// </summary>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
+        public async Task<Result<IEnumerable<SubscriptionPlan>>> getAllSubscriptionsPlansAsync(int skip = 0, int take = 0)
+        {
+            var response = await ExecutorAppMode.ExecuteAsync<Result<IEnumerable<SubscriptionPlanModel>>>(
+            async () => await plansApiClient.getAllSubscriptionsPlansAsync(),
+            async () =>
+            {
+                seedsPlansContainers.Language = await manageLanguageService.GetLanguageAsync();
+                return Result<IEnumerable<SubscriptionPlanModel>>.Success(await seedsPlansContainers.getAllSubscriptionsPlansAsync());
+            });
 
+
+            if (response.Succeeded)
+            {
+                var result = (response.Data != null) ? _mapper.Map<IEnumerable<SubscriptionPlan>>(response.Data) : null;
+                return Result<IEnumerable<SubscriptionPlan>>.Success(result);
+            }
+            else
+            {
+                return Result<IEnumerable<SubscriptionPlan>>.Fail(response.Messages);
+            }
+        }
 
         /// <summary>
         /// work
@@ -55,10 +81,11 @@ namespace Infrastructure.Repository.Plans
 
             var response = await ExecutorAppMode.ExecuteAsync<Result<IEnumerable<ContainerPlansModel>>>(
             async () => await plansApiClient.getAllContainersPlansAsync(),
-            async () => {
+            async () =>
+            {
 
-                seedsPlansContainers.Language =await manageLanguageService.GetLanguageAsync();
-              return  Result<IEnumerable<ContainerPlansModel>>.Success(await seedsPlansContainers.getAllAsync());
+                seedsPlansContainers.Language = await manageLanguageService.GetLanguageAsync();
+                return Result<IEnumerable<ContainerPlansModel>>.Success(await seedsPlansContainers.getAllAsync());
 
             });
 
@@ -73,35 +100,16 @@ namespace Infrastructure.Repository.Plans
                 return Result<IEnumerable<ContainerPlans>>.Fail(response.Messages);
             }
         }
-        public async Task<Result<IEnumerable<PlanResponse>>> getAllPlansAsync()
-        {
-        
 
-            var response = await ExecutorAppMode.ExecuteAsync<Result<IEnumerable<PlanResponseModel>>>(
-                 async () => await plansApiClient.getAllPlansAsync(),
-                 async () =>
-                 {
-                     seedsPlansContainers.Language = await manageLanguageService.GetLanguageAsync();
-                     return Result<IEnumerable<PlanResponseModel>>.Success(await seedsPlans.getAllPlansAsync());
-                 }
 
-             );
-            if (response.Succeeded)
-            {
-                var result = (response.Data != null) ? _mapper.Map<IEnumerable<PlanResponse>>(response.Data) : null;
-                return Result<IEnumerable<PlanResponse>>.Success(result);
-            }
-            else
-            {
-                return Result<IEnumerable<PlanResponse>>.Fail(response.Messages);
-            }
-          
 
-        }  
-        
+
+  
+    /// /////////////////////////////////////////////////////////////////////////////
+
         public async Task<Result<IEnumerable<SubscriptionPlan>>> getBasicSubscriptionsPlansAsync()
         {
-        
+
 
             var response = await ExecutorAppMode.ExecuteAsync<Result<List<SubscriptionPlanModel>>>(
                  async () => Result<List<SubscriptionPlanModel>>.Success(),
@@ -121,16 +129,76 @@ namespace Infrastructure.Repository.Plans
             {
                 return Result<IEnumerable<SubscriptionPlan>>.Fail(response.Messages);
             }
-          
+
 
         }
 
+
+        public async Task<Result<IEnumerable<SubscriptionPlan>>> getSubscriptionsPlansAsync(string containerId)
+        {
+
+            var response = await ExecutorAppMode.ExecuteAsync<Result<IEnumerable<SubscriptionPlanModel>>>(
+             async () => Result<IEnumerable<SubscriptionPlanModel>>.Success(await seedsPlansContainers.getSubscriptionsPlansAsync(containerId)),
+             async () =>
+             {
+                 seedsPlansContainers.Language = await manageLanguageService.GetLanguageAsync();
+                 return Result<IEnumerable<SubscriptionPlanModel>>.Success(await seedsPlansContainers.getSubscriptionsPlansAsync(containerId));
+             });
+            if (response.Succeeded)
+            {
+                var result = (response.Data != null) ? _mapper.Map<IEnumerable<SubscriptionPlan>>(response.Data) : null;
+                return Result<IEnumerable<SubscriptionPlan>>.Success(result);
+            }
+            else
+            {
+                return Result<IEnumerable<SubscriptionPlan>>.Fail(response.Messages);
+            }
+        }
+    
+
+        public async Task<Result<IEnumerable<PlanFeature>>> getSubscriptionsPlansFeaturesAsync(string planId)
+        {
+            var response = await ExecutorAppMode.ExecuteAsync<Result<IEnumerable<PlanFeatureModel>>>(
+              async () => Result<IEnumerable<PlanFeatureModel>>.Success(),
+              async () => Result<IEnumerable<PlanFeatureModel>>.Success(await seedsPlansContainers.getSubscriptionsPlansFeaturesAsync(planId)));
+
+
+            if (response.Succeeded)
+            {
+                var result = (response.Data != null) ? _mapper.Map<IEnumerable<PlanFeature>>(response.Data) : null;
+                return Result<IEnumerable<PlanFeature>>.Success(result);
+            }
+            else
+            {
+                return Result<IEnumerable<PlanFeature>>.Fail(response.Messages);
+            }
+        }
+
+        public async Task<Result<SubscriptionPlan>> getOneSubscriptionsPlanAsync(string planId)
+        {
+            var response = await ExecutorAppMode.ExecuteAsync<Result<SubscriptionPlanModel>>(
+              async () => Result<SubscriptionPlanModel>.Success(new SubscriptionPlanModel { Id = planId }),
+              async () => Result<SubscriptionPlanModel>.Success(await seedsPlansContainers.getOneSubscriptionPlanAsync(planId)));
+
+
+            if (response.Succeeded)
+            {
+                var result = (response.Data != null) ? _mapper.Map<SubscriptionPlan>(response.Data) : null;
+                return Result<SubscriptionPlan>.Success(result);
+            }
+            else
+            {
+                return Result<SubscriptionPlan>.Fail(response.Messages);
+            }
+        }
+
+
         public async Task<Result<PlanResponse>> createPlanAsync(PlanCreate request)
         {
-         
-                var model = _mapper.Map<PlanCreateModel>(request);
-          
-                var response = await plansApiClient.createPlanAsync(model);
+
+            var model = _mapper.Map<PlanCreateModel>(request);
+
+            var response = await plansApiClient.createPlanAsync(model);
 
             if (response.Succeeded)
             {
@@ -142,7 +210,7 @@ namespace Infrastructure.Repository.Plans
             {
                 return Result<PlanResponse>.Fail(response.Messages);
             }
-               
+
 
         }
 
@@ -183,13 +251,45 @@ namespace Infrastructure.Repository.Plans
                 return Result<DeleteResponse>.Fail(response.Messages);
             }
         }
+
+
+        /// <summary>
+        /// ////////////////////////////////////////////////None Active //////////////////////////////////////////////////////
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Result<IEnumerable<PlanResponse>>> getAllPlansAsync()
+        {
+
+
+            var response = await ExecutorAppMode.ExecuteAsync<Result<IEnumerable<PlanResponseModel>>>(
+                 async () => await plansApiClient.getAllPlansAsync(),
+                 async () =>
+                 {
+                     seedsPlansContainers.Language = await manageLanguageService.GetLanguageAsync();
+                     return Result<IEnumerable<PlanResponseModel>>.Success(await seedsPlans.getAllPlansAsync());
+                 }
+
+             );
+            if (response.Succeeded)
+            {
+                var result = (response.Data != null) ? _mapper.Map<IEnumerable<PlanResponse>>(response.Data) : null;
+                return Result<IEnumerable<PlanResponse>>.Success(result);
+            }
+            else
+            {
+                return Result<IEnumerable<PlanResponse>>.Fail(response.Messages);
+            }
+
+
+        }
         public async Task<Result<IEnumerable<PlansContainerResponse>>> getAllPlansContainerAsync()
         {
 
-           
+
             var response = await ExecutorAppMode.ExecuteAsync<Result<IEnumerable<PlansContainerModel>>>(
             async () => Result<IEnumerable<PlansContainerModel>>.Success(await seedsPlansContainers.getAllContainersAsync()),
-            async () => {
+            async () =>
+            {
                 seedsPlansContainers.Language = await manageLanguageService.GetLanguageAsync();
                 return Result<IEnumerable<PlansContainerModel>>.Success(await seedsPlansContainers.getAllContainersAsync());
             });
@@ -224,7 +324,7 @@ namespace Infrastructure.Repository.Plans
             }
 
 
-        
+
         }
         public async Task<Result<IEnumerable<PlansGroupResponse>>> getPlansByGroupIdAsync(string id)
         {
@@ -248,131 +348,41 @@ namespace Infrastructure.Repository.Plans
 
         }
 
-
-      //class PaymentPageRequest
-      //  {
-      //      pub
-      //  }
-        
-        //public async Task<Result<PlanResponse>> getPaymentPageAsync()
-        //{
-
-        //}
         public async Task<Result<PlanResponse>> getPlanByIdAsync(string id)
         {
-                var response = await ExecutorAppMode.ExecuteAsync<Result<PlanResponseModel>>(
-                 async () => await plansApiClient.getPlanByIdAsync(id),
-                 async () => Result<PlanResponseModel>.Success(await seedsPlans.getPlanByIdAsync(id)));
-                if (response.Succeeded)
-                {
-                    var result = (response.Data != null) ? _mapper.Map<PlanResponse>(response.Data) : null;
-                    return Result<PlanResponse>.Success(result);
-                }
-                else
-                {
-                    return Result<PlanResponse>.Fail(response.Messages);
-                }
+            var response = await ExecutorAppMode.ExecuteAsync<Result<PlanResponseModel>>(
+             async () => await plansApiClient.getPlanByIdAsync(id),
+             async () => Result<PlanResponseModel>.Success(await seedsPlans.getPlanByIdAsync(id)));
+            if (response.Succeeded)
+            {
+                var result = (response.Data != null) ? _mapper.Map<PlanResponse>(response.Data) : null;
+                return Result<PlanResponse>.Success(result);
+            }
+            else
+            {
+                return Result<PlanResponse>.Fail(response.Messages);
+            }
         }
         public async Task<Result<PlanInfoResponse>> GetPlanInfoByIdAsync(string id)
         {
 
-        
 
-                 var response = await ExecutorAppMode.ExecuteAsync<Result<PlanResponseModel>>(
-                 async () => Result<PlanResponseModel>.Success(new PlanResponseModel()),
-                 async () => Result<PlanResponseModel>.Success(await seedsPlans.getPlanByIdAsync(id)));
-                  
-                 if (response.Succeeded)
-                    {
-                        var result = (response.Data != null) ? _mapper.Map<PlanInfoResponse>(response.Data) : null;
-                        return Result<PlanInfoResponse>.Success(result);
-                    }
-                    else
-                    {
-                        return Result<PlanInfoResponse>.Fail(response.Messages);
-                    }
 
-        }
-
-        public async Task<Result<IEnumerable<SubscriptionPlan>>> getSubscriptionsPlansAsync(string containerId)
-        {
-          //  var response = await ExecutorAppMode.ExecuteAsync<Result<IEnumerable<SubscriptionPlanModel>>>(
-          //async () => Result<IEnumerable<SubscriptionPlanModel>>.Success(await seedsPlansContainers.getSubscriptionsPlansAsync(containerId)),
-          //async () => Result<IEnumerable<SubscriptionPlanModel>>.Success(await seedsPlansContainers.getSubscriptionsPlansAsync(containerId)));
-
-            var response = await ExecutorAppMode.ExecuteAsync<Result<IEnumerable<SubscriptionPlanModel>>>(
-         async () => Result<IEnumerable<SubscriptionPlanModel>>.Success(await seedsPlansContainers.getSubscriptionsPlansAsync(containerId)),
-         async () =>
-         {
-             seedsPlansContainers.Language = await manageLanguageService.GetLanguageAsync();
-             return Result<IEnumerable<SubscriptionPlanModel>>.Success(await seedsPlansContainers.getSubscriptionsPlansAsync(containerId));
-         });
-            if (response.Succeeded)
-            {
-                var result = (response.Data != null) ? _mapper.Map<IEnumerable<SubscriptionPlan>>(response.Data) : null;
-                return Result<IEnumerable<SubscriptionPlan>>.Success(result);
-            }
-            else
-            {
-                return Result<IEnumerable<SubscriptionPlan>>.Fail(response.Messages);
-            }
-        }
-        public async Task<Result<IEnumerable<SubscriptionPlan>>> getAllSubscriptionsPlansAsync(int skip=0,int take=0)
-        {
-            var response = await ExecutorAppMode.ExecuteAsync<Result<IEnumerable<SubscriptionPlanModel>>>(
-            async () => await plansApiClient.getAllSubscriptionsPlansAsync(),
-            async () =>
-            {
-                seedsPlansContainers.Language = await manageLanguageService.GetLanguageAsync();
-                return Result<IEnumerable<SubscriptionPlanModel>>.Success(await seedsPlansContainers.getAllSubscriptionsPlansAsync());
-            });
-
+            var response = await ExecutorAppMode.ExecuteAsync<Result<PlanResponseModel>>(
+            async () => Result<PlanResponseModel>.Success(new PlanResponseModel()),
+            async () => Result<PlanResponseModel>.Success(await seedsPlans.getPlanByIdAsync(id)));
 
             if (response.Succeeded)
             {
-                var result = (response.Data != null) ? _mapper.Map<IEnumerable<SubscriptionPlan>>(response.Data) : null;
-                return Result<IEnumerable<SubscriptionPlan>>.Success(result);
+                var result = (response.Data != null) ? _mapper.Map<PlanInfoResponse>(response.Data) : null;
+                return Result<PlanInfoResponse>.Success(result);
             }
             else
             {
-                return Result<IEnumerable<SubscriptionPlan>>.Fail(response.Messages);
+                return Result<PlanInfoResponse>.Fail(response.Messages);
             }
+
         }
 
-        public async Task<Result<IEnumerable<PlanFeature>>> getSubscriptionsPlansFeaturesAsync(string planId)
-        {
-            var response = await ExecutorAppMode.ExecuteAsync<Result<IEnumerable<PlanFeatureModel>>>(
-              async () => Result<IEnumerable<PlanFeatureModel>>.Success(),
-              async () => Result<IEnumerable<PlanFeatureModel>>.Success(await seedsPlansContainers.getSubscriptionsPlansFeaturesAsync(planId)));
-
-
-            if (response.Succeeded)
-            {
-                var result = (response.Data != null) ? _mapper.Map<IEnumerable<PlanFeature>>(response.Data) : null;
-                return Result<IEnumerable<PlanFeature>>.Success(result);
-            }
-            else
-            {
-                return Result<IEnumerable<PlanFeature>>.Fail(response.Messages);
-            }
-        } 
-        
-        public async Task<Result<SubscriptionPlan>> getOneSubscriptionsPlanAsync(string planId)
-        {
-            var response = await ExecutorAppMode.ExecuteAsync<Result<SubscriptionPlanModel>>(
-              async () => Result<SubscriptionPlanModel>.Success(new SubscriptionPlanModel { Id = planId }),
-              async () => Result<SubscriptionPlanModel>.Success(await seedsPlansContainers.getOneSubscriptionPlanAsync(planId)));
-
-
-            if (response.Succeeded)
-            {
-                var result = (response.Data != null) ? _mapper.Map<SubscriptionPlan>(response.Data) : null;
-                return Result<SubscriptionPlan>.Success(result);
-            }
-            else
-            {
-                return Result<SubscriptionPlan>.Fail(response.Messages);
-            }
-        }
-    } 
+    }
 }

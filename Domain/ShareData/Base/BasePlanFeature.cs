@@ -25,6 +25,7 @@
         public string? ConnectionType { get; set; }
         public string? AbsolutePath { get; set; }
         public int? NumberRequests { get; set; }
+        public int? NumberOfRequestsUsed { get; set; } = 0;
         public string? Image { get; set; }
         public List<string>? Images { get; set; }
         public DateTimeOffset? UpdatedAt { get; set; }

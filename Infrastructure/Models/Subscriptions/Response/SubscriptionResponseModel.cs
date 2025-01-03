@@ -6,8 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Models.Subscriptions.Request
+namespace Infrastructure.Models.Subscriptions.Response
 {
+
     public partial class SubscriptionResponseModel : BaseSubscriptionResponse
     {
         public SubscriptionPlanModel? Plan { get; set; }

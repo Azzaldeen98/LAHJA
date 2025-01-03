@@ -92,6 +92,7 @@ namespace Infrastructure
             serviceCollection.AddSingleton<SeedsCreditCards>();
             serviceCollection.AddSingleton<SeedsProfile>();
             serviceCollection.AddSingleton<SeedsUserSubscriptionsPlans>();
+            serviceCollection.AddSingleton<SeedsSubscriptionsData>();
 
 
 

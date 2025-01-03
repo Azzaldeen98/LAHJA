@@ -21,9 +21,7 @@ using Infrastructure.Models.Product.Response;
 using Domain.Entities.Product.Response;
 using Domain.Entities.Product.Request;
 using Infrastructure.Models.Product.Request;
-using Infrastructure.Models.Subscriptions.Request;
 using Domain.Entities.Subscriptions.Response;
-using Domain.Entities.Plans.Response;
 using Infrastructure.Models.Setting.Request;
 using Domain.Entities.Setting.Request;
 using Infrastructure.Models.Setting.Response;
@@ -38,9 +36,9 @@ using Infrastructure.Models.Plans.Response;
 using Infrastructure.Models.Profile.Request;
 using Infrastructure.Models.Service.Response;
 using Infrastructure.Models.Service.Request;
-using Infrastructure.DataSource.ApiClient.Plans;
 using Domain.Entities.Service.Request;
 using Domain.Entities.Service.Response;
+using Infrastructure.Models.Subscriptions.Response;
 
 
 namespace Infrastructure.Mappings.Plans

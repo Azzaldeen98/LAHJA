@@ -11,6 +11,6 @@ namespace Domain.Entities.Subscriptions.Response
 {
     public partial class SubscriptionResponse: BaseSubscriptionResponse
     {
-        public SubscriptionPlan Plan { get; set; }
+        public SubscriptionPlan? SubscriptionPlan { get; set; }
     }
 }

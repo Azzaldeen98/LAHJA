@@ -16,11 +16,14 @@
     <div class="p-0 m2">
 
         <MudCard Class="@("p-0  m-auto "+@Params.ClassImport)">
-            <MudText Typo="Typo.h6" Align="Align.Left" class="@Params.HeaderImport"> @Params.Name</MudText>
+            <MudText Typo="Typo.h6" Class="@(Params.HeaderImport+" w-100")"> @Params.Name</MudText>
             <p class="mx-3">@Params.Description</p>
             <MudCardContent>
                 <MudText Typo="Typo.body1" Class="mb-1">
-                  <MudText Typo="Typo.h5"> @Params.MonthlyPrice <small>$</small> </MudText>
+                    @if (Params.IsPaid==true)
+                    {
+                      <MudText Typo="Typo.h5"> @Params.MonthlyPrice <small>$</small> </MudText>
+                    }
                 </MudText>
                 <MudList Dense="true" T="object">
 

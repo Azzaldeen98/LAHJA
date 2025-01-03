@@ -15,7 +15,6 @@
     <Folder Include="Entities\Roles\Response\" />
     <Folder Include="Entities\ServiceMethod\Request\" />
     <Folder Include="Entities\ServiceMethod\Response\" />
-    <Folder Include="Entities\Subscriptions\Request\" />
     <Folder Include="Entities\User\Request\" />
     <Folder Include="Entities\User\Response\" />
     <Folder Include="Repository\RequestEvent\" />

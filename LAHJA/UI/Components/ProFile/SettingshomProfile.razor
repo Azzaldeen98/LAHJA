@@ -59,11 +59,11 @@
 
         <div class="nav-menu-continer-items-sm w-100">
             <div class="d-flex flex-row justify-content-start align-items-start w-100" style="justify-content:end !important;">
-                <MudIconButton Icon="@Icons.Material.Filled.Menu" OnClick="ToggleMenu" />
+                <MudIconButton Icon="@Icons.Material.Filled.MoreVert" OnClick="ToggleMenu" />
             </div>
         </div>
         <MudMainContent Class="nav-profile-menu-continer-items-sm" style="justify-content:end !important;align-items:end !important">
-            <MudDrawer @bind-Open="@_open" Fixed="true" Elevation="0" Class="h-100" Variant="@DrawerVariant.Temporary">
+            <MudDrawer @bind-Open="@_open" Fixed="true" Elevation="0" Class="h-100" Anchor="Anchor.End" Variant="@DrawerVariant.Temporary">
                 <MudNavMenu Class="font-size-nav-v2">
 
                     <UserAvaterCard Name="@data.Name" PhoneNumber="@data.Phone" ImageUrl="@data.ImageUrl" />

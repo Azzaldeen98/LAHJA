@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.DataSource.Seeds
 {
-   public class SeedsUserSubscriptionsPlans
+    public class SeedsUserSubscriptionsPlans
     {
 
 

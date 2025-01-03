@@ -1,5 +1,6 @@
 ﻿
 using Domain.ShareData.Base.Auth;
+using Infrastructure.DataSource.Seeds.Models;
 using Infrastructure.Models.BaseFolder.Response;
 using Infrastructure.Models.Payment.Request;
 using Infrastructure.Models.Payment.Response;
@@ -12,6 +13,7 @@ using Infrastructure.Models.Service.Request;
 using Infrastructure.Models.Service.Response;
 using Infrastructure.Models.Setting.Request;
 using Infrastructure.Models.Subscriptions.Request;
+using Infrastructure.Models.Subscriptions.Response;
 using Infrastructure.Nswag;
 
 
@@ -98,6 +100,11 @@ namespace Infrastructure.Mappings.Plans
             CreateMap<ServiceResponse, ServiceResponseModel>().ReverseMap();
             CreateMap<ServiceCreate, ServiceRequestModel>().ReverseMap();
             CreateMap<ServiceUpdate, ServiceRequestModel>().ReverseMap();
+
+
+
+            CreateMap<SubscriptionModel, SubscriptionResponseModel>().ReverseMap();
+            CreateMap<SubscriptionRequestModel, SubscriptionModel>().ReverseMap();
         }
     }
 }

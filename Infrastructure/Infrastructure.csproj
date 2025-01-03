@@ -35,7 +35,6 @@
     <Folder Include="Models\Roles\Response\" />
     <Folder Include="Models\ServiceMethod\Request\" />
     <Folder Include="Models\ServiceMethod\Response\" />
-    <Folder Include="Models\Subscriptions\Response\" />
     <Folder Include="Models\User\Request\" />
     <Folder Include="Models\User\Response\" />
     <Folder Include="Repository\RequestEvent\" />
