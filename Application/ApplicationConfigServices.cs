@@ -126,6 +126,8 @@ namespace Infrastructure
             // Request
             serviceCollection.AddScoped<CreateRequestUseCase>();
             serviceCollection.AddScoped<RequestAllowedUseCase>();
+            serviceCollection.AddScoped<CreateEventUseCase>();
+            serviceCollection.AddScoped<ResultRequestUseCase>();
 
         }
 

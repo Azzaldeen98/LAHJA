@@ -1,7 +1,10 @@
 ﻿
 using AutoMapper;
+using Domain.Entities.Event.Request;
+using Domain.Entities.Event.Response;
 using Domain.Entities.Request.Request;
 using Domain.Entities.Request.Response;
+using Domain.Entities.Service.Response;
 using Domain.Repository.Request;
 using Domain.ShareData;
 using Domain.Wrapper;
@@ -45,28 +48,28 @@ namespace Infrastructure.Repository.Subscription
 
         public async Task<Result<bool>> HasActiveSubscriptionAsync()
         {
-            var response = await ExecutorAppMode.ExecuteAsync<Result<List<SubscriptionResponseModel>>>(
-                 async () => await subscriptionApiClient.getAllAsync(),
+            var response = await ExecutorAppMode.ExecuteAsync<Result<SubscriptionResponseModel>>(
+                 async () =>  Result<SubscriptionResponseModel>.Success(),
                   async () =>
                   {
                       var email = await _sessionUserManager.GetEmailAsync();
                       if (email == null)
-                          return Result<List<SubscriptionResponseModel>>.Fail();
+                          return Result<SubscriptionResponseModel>.Fail();
 
-                      var data = seedsSubscriptionsData.getActiveSubscriptions(email);
+                      var data = seedsSubscriptionsData.getActiveSubscription(email);
                       if (data != null)
                       {
-                          var items = _mapper.Map<List<SubscriptionResponseModel>>(data);
-                          return Result<List<SubscriptionResponseModel>>.Success(items);
+                          var items = _mapper.Map<SubscriptionResponseModel>(data);
+                          return Result<SubscriptionResponseModel>.Success(items);
                       }
 
 
-                      return Result<List<SubscriptionResponseModel>>.Fail();
+                      return Result<SubscriptionResponseModel>.Fail();
                   });
 
             if (response.Succeeded)
             {
-                return Result<bool>.Success(true);
+                return Result<bool>.Success(response.Data?.SubscriptionPlan?.NumberOfRequestsUsed < response.Data?.SubscriptionPlan?.NumberRequests);
             }
             else
             {
@@ -79,36 +82,25 @@ namespace Infrastructure.Repository.Subscription
 
         public async Task<Result<RequestResponse>> CreateAsync(RequestCreate request)
         {
-            var response = await ExecutorAppMode.ExecuteAsync<Result>(
+            var response = await ExecutorAppMode.ExecuteAsync<Result<bool>>(
                   async () => Result<bool>.Success(),
                   async () =>
                   {
-
+                      var res =await HasActiveSubscriptionAsync();
+                      if (res.Succeeded)
+                      {
+                          if (res.Data)
+                          {
+                              var email = await _sessionUserManager.GetEmailAsync();
+                              if (email == null)
+                                  return Result<bool>.Fail();
+                              
+                              seedsSubscriptionsData.CreateRequest(email);
+                              return Result<bool>.Success();
+                          }
+                      }
                       return Result<bool>.Fail();
-                      //          var email = await _sessionUserManager.GetEmailAsync();
-                      //          if(email == null)
-                      //              return Result<SubscriptionResponseModel>.Fail();
-
-                      //          var plan= seedsPlans.getOne(request.PlanId);
-                      //          if (plan == null)
-                      //              return Result<SubscriptionResponseModel>.Fail();
-
-                      //          var model=_mapper.Map<SubscriptionModel>(request);
-                      //          model.UserId = email;
-                      //          model.PlanId = plan.Id;
-                      //          model.SubscriptionPlan = plan;
-                      //          model.SubscriptionPlan.Active = true; 
-                      //          model.StartDate = DateTime.Now;
-                      //          model.CancelAtPeriodEnd = true;
-
-                      //          seedsSubscriptionsData.AddSubscription(model);
-                      //          var res = seedsSubscriptionsData.SearchSubscriptions(x => x.UserId == email).FirstOrDefault();
-                      //          if (res != null)
-                      //          {
-                      //              var data = _mapper.Map<SubscriptionResponseModel>(res);
-                      //              return Result<SubscriptionResponseModel>.Success(data);
-                      //          }
-                      //          return Result<SubscriptionResponseModel>.Fail();
+                      
                   });
 
             if (response.Succeeded)
@@ -122,13 +114,26 @@ namespace Infrastructure.Repository.Subscription
             }
         }
 
-        public async Task<Result<RequestAllowed>> AllowedService(RequestCreate request)
+        public async Task<Result<RequestAllowed>> RequestAllowedAsync(RequestCreate request)
         {
             var response = await ExecutorAppMode.ExecuteAsync<Result<RequestAllowedModel>>(
                   async () => Result<RequestAllowedModel>.Success(),
                   async () =>
                   {
-                      return Result<RequestAllowedModel>.Success();
+                      var res = await HasActiveSubscriptionAsync();
+                      if (res.Succeeded)
+                      {
+                          if (res.Data)
+                          {
+                              var email = await _sessionUserManager.GetEmailAsync();
+                              if (email == null)
+                                  return Result<RequestAllowedModel>.Fail();
+
+                              seedsSubscriptionsData.CreateRequest(email);
+                              return Result<RequestAllowedModel>.Success();
+                          }
+                      }
+                      return Result<RequestAllowedModel>.Fail();
                   });
 
             if (response.Succeeded)
@@ -142,12 +147,80 @@ namespace Infrastructure.Repository.Subscription
             }
         }
 
-        public Task<Result<RequestResponse>> CreateRequestAsync(RequestCreate request)
+        public async Task<Result<RequestResponse>> CreateRequestAsync(RequestCreate request)
+        {
+
+            var response = await ExecutorAppMode.ExecuteAsync<Result<bool>>(
+                  async () => Result<bool>.Success(),
+                  async () =>
+                  {
+                      var res = await HasActiveSubscriptionAsync();
+                      if (res.Succeeded)
+                      {
+                          if (res.Data)
+                          {
+                              var email = await _sessionUserManager.GetEmailAsync();
+                              if (email == null)
+                                  return Result<bool>.Fail();
+
+                              seedsSubscriptionsData.CreateRequest(email);
+                              return Result<bool>.Success();
+                          }
+                      }
+                      return Result<bool>.Fail();
+
+                  });
+
+            if (response.Succeeded)
+            {
+                //var result = (response.Data != null) ? _mapper.Map<SubscriptionResponse>(response.Data) : null;
+                return Result<RequestResponse>.Success(new RequestResponse { Id= "12332" });
+            }
+            else
+            {
+                return Result<RequestResponse>.Fail(response.Messages);
+            }
+        }
+
+        public async Task<Result<RequestResponse>> RequestAllowedAsync(string serviceId)
+        {
+            var response = await ExecutorAppMode.ExecuteAsync<Result<RequestResponse>>(
+                   async () => Result<RequestResponse>.Success(),
+                   async () =>
+                   {
+                       var res = await HasActiveSubscriptionAsync();
+                       if (res.Succeeded)
+                       {
+                           if (res.Data)
+                           {
+                               var email = await _sessionUserManager.GetEmailAsync();
+                               if (email == null)
+                                   return Result<RequestResponse>.Fail();
+
+                               seedsSubscriptionsData.CreateRequest(email);
+                               return Result<RequestResponse>.Success();
+                           }
+                       }
+                       return Result<RequestResponse>.Fail();
+                   });
+
+            if (response.Succeeded)
+            {
+                var result = (response.Data != null) ? _mapper.Map<RequestResponse>(response.Data) : null;
+                return Result<RequestResponse>.Success(result);
+            }
+            else
+            {
+                return Result<RequestResponse>.Fail(response.Messages);
+            }
+        }
+
+        public Task<Result<EventResponse>> CreateEventAsync(EventRequest request)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result<RequestResponse>> RequestAllowedAsync(string serviceId)
+        public Task<Result<ServiceResponse>> ResultRequestAsync(ResultRequest request)
         {
             throw new NotImplementedException();
         }

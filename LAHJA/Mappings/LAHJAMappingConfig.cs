@@ -19,6 +19,8 @@ using Domain.Entities.Service.Request;
 using Domain.Entities.Request.Response;
 using LAHJA.Data.UI.Templates.Services;
 using LAHJA.ApiClient.Models;
+using Domain.Entities.Request.Request;
+using Domain.Entities.Event.Request;
 
 namespace LAHJA.Mappings
 {
@@ -146,16 +148,24 @@ namespace LAHJA.Mappings
                 .ReverseMap();  
             
             
-               CreateMap< DataBuildServiceBase, QueryRequestTextToText>()
-                //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Image))
+               CreateMap< DataBuildServiceBase, Data.UI.Models.QueryRequestTextToText>()
+                //.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text))
+                .ReverseMap();  
+            
+             CreateMap<RequestResponse, Data.UI.Models.QueryRequestTextToText>()
+                .ForMember(dest => dest.Key, opt => opt.MapFrom(src => src.Token))
+                .ReverseMap();  
+            
+            CreateMap<RequestResponse, EventRequest>()
+                //.ForMember(dest => dest.Key, opt => opt.MapFrom(src => src.Token))/
                 .ReverseMap();   
             
-                CreateMap< DataBuildServiceBase, QueryRequestTextToSpeech>()
+                CreateMap< DataBuildServiceBase, Data.UI.Models.QueryRequestTextToSpeech>()
                 //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Image))
                 .ReverseMap();
             
-               CreateMap<DataBuildServiceBase, QueryRequest>()
-                //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Image))
+               CreateMap<DataBuildServiceBase, RequestCreate>()
+                .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Text))
                 .ReverseMap();
             
 

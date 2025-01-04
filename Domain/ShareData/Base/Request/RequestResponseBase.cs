@@ -13,6 +13,7 @@ namespace Domain.ShareData.Base.Request
         public string? Answer { get; set; }
         public string? ModelGateway { get; set; }
         public string? ModelAi { get; set; }
+        public string? Data { get; set; }
         public string? URL { get; set; }
         public string? Token { get; set; }
         public string? Method { get; set; }

@@ -1,4 +1,5 @@
 @using LAHJA.Data.UI.Models
+@using LAHJA.Data.UI.Templates.Services
 @using LAHJA.Them
 @using MudBlazor
 @using LAHJA.Data.UI.Components.ServiceCard
@@ -9,6 +10,7 @@
 @inject IJSRuntime JSRuntime
 @inject LAHJA.ApiClient.Services.IT2TService _T2TService
 @inject IQueryTextToSpeechService _queryTextToSpeechService
+@inject TemplateServices _TemplateServices;
 
 @* <MudCard Elevation="25" Class="rounded-lg pb-4 ">
 
@@ -180,7 +182,7 @@
 </style>
 
 @code {
-        // private MudForm form;
+    // private MudForm form;
     private string textSpeech;
     // private bool _processing = false;
 
@@ -192,7 +194,7 @@
 
         if(!string.IsNullOrEmpty(message)){
 
-           var res= await _queryTextToSpeechService.TextToSpeechAsync(new QueryRequestTextToSpeech { 
+            var res= await _queryTextToSpeechService.TextToSpeechAsync(new QueryRequestTextToSpeech { 
                 Url="https://api-inference.huggingface.co/models/wasmdashai/vits-ar-sa-huba-v2",
                     Data = message,
             }) ;
@@ -269,13 +271,13 @@
     {
         try
         {
-             _processing = true;
+            _processing = true;
 
             if (ChatMessages != null && ChatMessages.Count()>0)
                 ChatMessages.Clear();
 
-           
-  
+
+
             StateHasChanged();
 
             if (!string.IsNullOrWhiteSpace(textSpeech))
@@ -285,18 +287,16 @@
 
 
 
-                var response = await _T2TService.T2TAsync(new QueryRequestTextToText { Text = textSpeech });
-
-                if (response.Succeeded)
-                {
-                    string decodedText = response.Data.Result;
-                    if (!string.IsNullOrWhiteSpace(decodedText))
+                await _TemplateServices.BuilderComponents.SubmitText2Text(new DataBuildServiceBase { Text = textSpeech });
+                // _processing = _TemplateServices.IsEndProcessing;
+                StateHasChanged();
+                 if (!string.IsNullOrWhiteSpace(_TemplateServices.Response))
                     {
-                        // addTextToChatMessage(decodedText,"#eeeeee");
+                        addTextToChatMessage(_TemplateServices.Response, "#eeeeee");
 
                         var msg = new ChatMessage
                             {
-                                Content = decodedText,
+                                Content = _TemplateServices.Response,
                                 IsUser = "System",
                                 BubbleColor = ""
                             };
@@ -308,23 +308,47 @@
                         _processing = false;
 
                     }
+                StateHasChanged();
+                // var response = await _T2TService.T2TAsync(new QueryRequestTextToText { Text = textSpeech });
+
+                // if (response.Succeeded)
+                // {
+                //     string decodedText = response.Data.Result;
+                //     if (!string.IsNullOrWhiteSpace(decodedText))
+                //     {
+                //         addTextToChatMessage(decodedText,"#eeeeee");
+
+                //         var msg = new ChatMessage
+                //             {
+                //                 Content = decodedText,
+                //                 IsUser = "System",
+                //                 BubbleColor = ""
+                //             };
+
+                //         ChatMessages.Add(msg);
+
+                //         await TriggerTypingEffect(msg);
+
+                //         _processing = false;
+
+                //     }
               
 
-                    // OnResult = new OnDataResult()
-                    //  {
-                    //          Text = decodedText,
-                    //          OperationType="TextToDialect",
-                    //          Sccess=true,
-                    //          SelectLanguage=SelectedDialect,
-                    //         TypeSend="Send"
-                    //  };
+                //     OnResult = new OnDataResult()
+                //      {
+                //              Text = decodedText,
+                //              OperationType="TextToDialect",
+                //              Sccess=true,
+                //              SelectLanguage=SelectedDialect,
+                //             TypeSend="Send"
+                //      };
 
-                    // await OnSubmit.InvokeAsync(OnResult);
+                //     await OnSubmit.InvokeAsync(OnResult);
 
 
-                }
-                  textSpeech = "";
-                  StateHasChanged();
+                // }
+                //   textSpeech = "";
+                //   StateHasChanged();
 
                 }
 

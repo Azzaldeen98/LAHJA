@@ -52,7 +52,7 @@
 
 
 <MudContainer MaxWidth="MaxWidth.Large" >
-    <MudPaper Elevation="8" Class="pa-8" Style="background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+    <MudPaper Elevation="8" Class="pa-8" Style=" border-radius: 16px; box-shadow: 0 4px 12px  ">
         <MudText Typo="Typo.h5"  >
             @((!TypeLanguage ? " منتجاتنا" : "Our Product"))
         </MudText>
@@ -62,7 +62,7 @@
         {
 
             <MudExpansionPanel Text="@product.ProductName"   Elevation="4"  >
-                <MudText Typo="Typo.body1" Class="text-dark" Style="line-height: 1.6; ;">
+                <MudText Typo="Typo.body1" Class="text-dark" Style="line-height: 1.6;">
                     <strong>@((!TypeLanguage ? "الوصف" : "Descrption")):</strong> @product.Description
                 </MudText>
                 <MudText Typo="Typo.body2" Class="text-dark" Style="line-height: 1.6">
@@ -101,22 +101,24 @@
 
 
 
-@code {
+@code
+{
+
+
+
+
+
 
     [Parameter] public bool TypeLanguage { get; set; } = false;
+    [Parameter] public List<Product>DataBulid{ get; set; }
+
+
+
+
 
     private List<Product> products = new List<Product>();
 
-    public class Product
-    {
-        public string ProductName { get; set; }
-        public string Description { get; set; }
-        public List<string> Features { get; set; }
-        public List<string> UseCases { get; set; }
-        public string Integration { get; set; }
-        public string Customization { get; set; }
-    }
-
+  
 
 
     [Parameter] public string? ModelId { get; set; } = "vits-ar-sa-A";

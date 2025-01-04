@@ -1,5 +1,8 @@
-﻿using Domain.Entities.Request.Request;
+﻿using Domain.Entities.Event.Request;
+using Domain.Entities.Event.Response;
+using Domain.Entities.Request.Request;
 using Domain.Entities.Request.Response;
+using Domain.Entities.Service.Response;
 using Domain.Wrapper;
 
 namespace Domain.Repository.Request
@@ -8,5 +11,8 @@ namespace Domain.Repository.Request
     {
         Task<Result<RequestResponse>> CreateRequestAsync(RequestCreate request);
         Task<Result<RequestResponse>> RequestAllowedAsync(string serviceId);
+        Task<Result<EventResponse>> CreateEventAsync(EventRequest request);
+        Task<Result<ServiceResponse>> ResultRequestAsync(ResultRequest request);
+       
     }
 }

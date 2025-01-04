@@ -33,6 +33,8 @@ namespace Infrastructure.DataSource.Seeds
                         IsFixed = false,
                         IsPaid = false,
                         Quantity = 1,
+                        NumberRequests = 10,
+                        NumberOfRequestsUsed = 0,
                         BillingPeriod = "Monthly",
                         TotalAmount = 0m,
                         ContainerId = "1",
@@ -41,6 +43,8 @@ namespace Infrastructure.DataSource.Seeds
                         MonthlyPrice = 0m,
                         AnnualPrice = 0m,
                         WeeklyPrice = 0m,
+                        //Services =new List<PlanFeatureModel>{
+                        //},
                         Features = new List<PlanFeatureModel>
                         {
                             new PlanFeatureModel { Id = "1", Name = "AI Models", Description = "3", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 0m, Active = true },
@@ -191,6 +195,21 @@ namespace Infrastructure.DataSource.Seeds
             return subscriptions.Where(x => x.UserId == userId && x?.SubscriptionPlan?.Active==true)?.OrderDescending()?.ToList();
           
         }
+
+
+        public SubscriptionModel getActiveSubscription(string userId)
+        {
+            return subscriptions.FirstOrDefault(x => x.UserId == userId && x?.SubscriptionPlan?.Active == true);
+
+        }
+
+        public void CreateRequest(string userId)
+        {
+            var res= subscriptions.FirstOrDefault(x => x.UserId == userId && x?.SubscriptionPlan?.Active == true);
+            res.SubscriptionPlan.NumberOfRequestsUsed += 1;
+
+        }
+
 
         public List<SubscriptionModel>? getAllUserSubscriptions(string userId)
         {

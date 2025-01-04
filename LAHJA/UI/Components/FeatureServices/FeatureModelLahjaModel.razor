@@ -1,17 +1,22 @@
 ﻿@using Domain.ShareData
+@using LAHJA.Data.UI.Components.ServiceCard
 @using LAHJA.Helpers.Services
 @inject LanguageService languageService
 @inject IManageLanguageService _manageLanguageService
 
 
     <style >
-    .feature-card {
+    .feature-card 
+    
+    {
+
         padding: 20px;
         border-radius: 15px;
-        background: linear-gradient(145deg, #ffffff, #e6e6e6);
+ 
         box-shadow: 3px 3px 6px #d1d1d1, -3px -3px 6px #ffffff;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+
 
     .feature-card:hover {
         transform: scale(1.05);
@@ -36,7 +41,7 @@
     .icon-container > .mud-icon {
         font-size: 2rem;
         border-radius: 50%;
-        background-color: #4caf50;
+       
         color: white;
         padding: 10px;
         margin: auto;
@@ -46,13 +51,16 @@
 
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="my-5">
-    <MudGrid Spacing="3" AlignItems="Center">
+    <MudGrid Spacing="3" >
         @foreach (var feature in serviceFeatures)
         {
 
+
+
+
             <MudItem xs="12" md="4">
                 <MudPaper Class="feature-card" Elevation="6">
-                    <MudGrid AlignItems="Center">
+                    <MudGrid  >
                         <MudItem xs="12" md="3" Class="icon-container">
                             <MudIcon Icon="xxx" Size="Size.Large" Color="Color.Primary" />
                         </MudItem>
@@ -66,6 +74,8 @@
         }
     </MudGrid>
 </MudContainer>
+
+
 
 @code {
 
@@ -179,6 +189,126 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    [Parameter]
+    public List<FeatureModel>DataBulidAr{ get; set; }
+
+    [Parameter]
+
+    public List<FeatureModel> DataBulidEn { get; set; }
+
+
+
+
+
+
     [Parameter] public bool TypeLanguage { get; set; } = false;
 
     List<FeatureModel> serviceFeatures1 = new List<FeatureModel>
@@ -198,15 +328,7 @@
 };
 
 
-
-
-
     List<FeatureModel> serviceFeatures = null;
-
-
-
-
-
     protected override async void OnAfterRender(bool firstRender)
 
     {
@@ -350,19 +472,7 @@
 
     
 
-    public class FeatureModel
-    {
-        public int Number { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-
-        public FeatureModel(int number, string title, string description)
-        {
-            Number = number;
-            Title = title;
-            Description = description;
-        }
-    }
+    
 }
 
 

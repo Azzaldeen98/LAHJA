@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Domain.Entities.Event.Request;
 using Domain.Entities.Event.Response;
+using Domain.Entities.Request.Request;
 using Domain.Entities.Request.Response;
 using Domain.Entities.Service.Request;
 using Domain.Entities.Service.Response;
@@ -7,12 +9,14 @@ using Domain.ShareData.Base;
 using Domain.ShareData.Base.Request;
 using Domain.Wrapper;
 using LAHJA.ApiClient.Models;
+using LAHJA.ApplicationLayer.Request;
 using LAHJA.ApplicationLayer.Service;
 using LAHJA.ApplicationLayer.Subscription;
 using LAHJA.Data.UI.Templates.Base;
 using LAHJA.Helpers.Services;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using MudBlazor.Interfaces;
 
 
 namespace LAHJA.Data.UI.Templates.Services
@@ -20,7 +24,8 @@ namespace LAHJA.Data.UI.Templates.Services
 
     public class DataBuildServiceBase
     {
-     
+ 
+        public string? PublicKey { get; set; }
         public string ServiceId {  get; set; }
         public string Text {  get; set; }
         public string Token {  get; set; }
@@ -83,13 +88,18 @@ namespace LAHJA.Data.UI.Templates.Services
         Task<Result<DeleteResponse>> DeleteRequestAsync(T data);
         Task<Result<RequestResponse>> UpdateRequestAsync(T data);
         Task<Result<EventResponse>> CreateEventAsync(T data);
-        Task<Result<EventResponse>> ResultRequestAsync(T data);
-     
+        Task<Result<ServiceResponse>> ResultRequestAsync(T data);
+
     }
 
     public abstract class BuilderServicesApi<T, E> : BuilderApi<T, E>, IBuilderServicesApi<E>, IBuilderRequestApi<E>
     {
-        public BuilderServicesApi(IMapper mapper, T service) : base(mapper, service) { }
+
+        protected readonly RequestClientService requestClientService;
+        public BuilderServicesApi(IMapper mapper, T service, RequestClientService requestClientService) : base(mapper, service)
+        {
+            this.requestClientService = requestClientService;
+        }
 
         public abstract Task<Result<ServiceResponse>> CreateAsync(E data);
         public abstract Task<Result<DeleteResponse>> DeleteAsync(E dataId);
@@ -101,29 +111,22 @@ namespace LAHJA.Data.UI.Templates.Services
         public abstract Task<Result<ServiceAIResponse>> VoiceBot(E data);
 
         public abstract Task<Result<RequestAllowed>> AllowedAsync(E data);
-
         public abstract Task<Result<List<RequestResponse>>>  GetAllRequestAsync();
-
-
         public abstract Task<Result<RequestResponse>>  CreateRequestAsync(E data);
-
-
 
         public abstract Task<Result<RequestResponse>> UpdateRequestAsync(E data);
 
+        public abstract Task<Result<EventResponse>> CreateEventAsync(E data);
 
-        public abstract  Task<Result<EventResponse>> CreateEventAsync(E data);
-
-
-        public abstract Task<Result<EventResponse>> ResultRequestAsync(E data);
-
+        public abstract Task<Result<ServiceResponse>> ResultRequestAsync(E data);
         public abstract Task<Result<DeleteResponse>> DeleteRequestAsync(E data);
        
     }
 
-    public class BuilderServiceApiClient : BuilderServicesApi<LAHJAClientService, DataBuildServiceBase>, IBuilderServicesApi<DataBuildServiceBase>
+    public class BuilderServiceApiClient : BuilderServicesApi<LAHJAClientService, DataBuildServiceBase>, IBuilderServicesApi<DataBuildServiceBase>,IBuilderRequestApi<DataBuildServiceBase>
     {
-        public BuilderServiceApiClient(IMapper mapper, LAHJAClientService service) : base(mapper, service) { }
+        
+        public BuilderServiceApiClient(IMapper mapper, LAHJAClientService service, RequestClientService requestClientService) : base(mapper, service,requestClientService) { }
 
         public override async Task<Result<ServiceResponse>> CreateAsync(DataBuildServiceBase data)
         {
@@ -138,6 +141,7 @@ namespace LAHJA.Data.UI.Templates.Services
 
         public override async Task<Result<List<ServiceResponse>>> GetAllAsync()
         {
+          
             return await Service.GetAllAsync();
         }
 
@@ -158,13 +162,42 @@ namespace LAHJA.Data.UI.Templates.Services
 
         public override async Task<Result<ServiceAIResponse>> Text2Text(DataBuildServiceBase data)
         {
-            var map=Mapper.Map<Data.UI.Models.QueryRequestTextToText>(data);
-            return await Service.Text2TextAsync(map);
+            var mapReq = Mapper.Map<RequestCreate>(data);
+            var res = await requestClientService.CreateRequestAsync(mapReq);
+            if(res.Succeeded)
+            {
+                var req = new Data.UI.Models.QueryRequestTextToText { Text = data.Text };
+                //req.URL += data.ModelAi;
+                var map = Mapper.Map<Data.UI.Models.QueryRequestTextToText>(req);
+                var servRes= await Service.Text2TextAsync(req);
+                if (servRes.Succeeded)
+                {
+                    var _event = Mapper.Map<EventRequest>(res.Data);
+                    _event.RequestId = res.Data.Id;
+                    await requestClientService.CreateEventAsync(_event);
+                }
+                else
+                {
+                    var _event = Mapper.Map<EventRequest>(res);
+                    _event.RequestId = res.Data.Id;
+            
+                    await requestClientService.CreateEventAsync(_event);
+                    return  Result<ServiceAIResponse>.Fail();
+                }
+            }
+            else
+            {
+                return Result<ServiceAIResponse>.Fail("لايوجد لديك رصيد كافي من الطلبات");
+   
+            }
+
+            return Result<ServiceAIResponse>.Fail("Finished Request!!");
+
         }
 
         public override async Task<Result<ServiceAIResponse>> Text2Speech(DataBuildServiceBase data)
         {
-            var map = Mapper.Map<Data.UI.Models.QueryRequestTextToSpeech>(data);
+            var map = Mapper.Map<Models.QueryRequestTextToSpeech>(data);
             return await Service.Text2SpeechAsync(map);
         }
 
@@ -184,7 +217,7 @@ namespace LAHJA.Data.UI.Templates.Services
             throw new NotImplementedException();
         }
 
-        public override Task<Result<RequestResponse>> CreateRequestAsync(DataBuildServiceBase data)
+        public override async Task<Result<RequestResponse>> CreateRequestAsync(DataBuildServiceBase data)
         {
             throw new NotImplementedException();
         }
@@ -199,7 +232,7 @@ namespace LAHJA.Data.UI.Templates.Services
             throw new NotImplementedException();
         }
 
-        public override Task<Result<EventResponse>> ResultRequestAsync(DataBuildServiceBase data)
+        public override async Task<Result<ServiceResponse>> ResultRequestAsync(DataBuildServiceBase data)
         {
             throw new NotImplementedException();
         }
@@ -231,12 +264,14 @@ namespace LAHJA.Data.UI.Templates.Services
         protected IBuilderServicesApi<E> builderApi;
         protected IBuilderRequestApi<E> builderRequestApi;
         private readonly IBuilderServicesComponent<E> builderComponents;
+        protected readonly RequestClientService requestClientService;
         public IBuilderServicesComponent<E> BuilderComponents { get => builderComponents; }
         public TemplateServicesShare(
 
                IMapper mapper,
                AuthService AuthService,
                 T client,
+                RequestClientService requestClientService,
                 IBuilderServicesComponent<E> builderComponents,
                 NavigationManager navigation,
                 IDialogService dialogService,
@@ -261,20 +296,25 @@ namespace LAHJA.Data.UI.Templates.Services
     public class TemplateServices : TemplateServicesShare<LAHJAClientService, DataBuildServiceBase>
     {
         
-        private List<string> _errors = new List<string>();
-         //protected readonly SubscriptionClientService subscriptionClientService;
+        //private List<string> _errors = new List<string>();
+        public  bool IsEndProcessing { get => _isResponse; }
+        public  string Response { get => _response; }
+ 
+        private string _response = "";
+        private bool _isResponse = false;
         public List<string> Errors => _errors;
 
         public TemplateServices(
             IMapper mapper,
             AuthService authService,
             LAHJAClientService client,
+             RequestClientService requestClientService,
             IBuilderServicesComponent<DataBuildServiceBase> builderComponents,
             SubscriptionClientService subscriptionClientService,
             NavigationManager navigation,
             IDialogService dialogService,
             ISnackbar snackbar
-        ) : base(mapper, authService, client, builderComponents, navigation, dialogService, snackbar, subscriptionClientService)
+        ) : base(mapper, authService, client, requestClientService, builderComponents, navigation, dialogService, snackbar, subscriptionClientService)
         {
             this.BuilderComponents.SubmitCreate = OnCreate;
             this.BuilderComponents.SubmitUpdate = OnUpdate;
@@ -285,8 +325,8 @@ namespace LAHJA.Data.UI.Templates.Services
             this.BuilderComponents.SubmitText2Speech = OnSubmitText2Speech;
             this.BuilderComponents.SubmitVoiceBot = OnSubmitVoiceBot;
 
-            this.builderApi = new BuilderServiceApiClient(mapper, client);
-            this.builderRequestApi = new BuilderServiceApiClient(mapper, client);
+            this.builderApi = new BuilderServiceApiClient(mapper, client, requestClientService);
+            this.builderRequestApi = new BuilderServiceApiClient(mapper, client, requestClientService);
         }
 
         private async Task OnSubmitText2Speech(DataBuildServiceBase data) {
@@ -295,25 +335,29 @@ namespace LAHJA.Data.UI.Templates.Services
         }
         private async Task OnSubmitText2Text(DataBuildServiceBase data) {
 
-            var response = await builderRequestApi.CreateRequestAsync(data);
-            if (response.Succeeded)
-            {
-                var map = mapper.Map<DataBuildServiceBase>(response.Data);
-                map.Text = data.Text;
-                var resService = await builderApi.Text2Text(map);
+            //var response = await builderRequestApi.CreateRequestAsync(data);
+            //if (response.Succeeded)
+            //{
+            //    var map = mapper.Map<DataBuildServiceBase>(response.Data);
+            //    map.Text = data.Text;
+                var resService = await builderApi.Text2Text(data);
                 if (resService.Succeeded)
                 {
-                    builderRequestApi.CreateEventAsync(data);
-                }
+                     _response = resService.Data.Result;
+                    Snackbar.Add("Success", Severity.Success);
+                      // await builderRequestApi.CreateEventAsync(new DataBuildServiceBase { PublicKey= "pifgigdfgidf", Token=""});
+                 }
                 else
                 {
-
-                }
-            }
-            else
-            {
-                Snackbar.Add("لايوجد لديك رصيد كافي من الطلبات", Severity.Warning);
-            }
+                     Snackbar.Add(resService.Messages?[0]??"null", Severity.Warning);
+                }   
+            _isResponse = true;
+       
+            //}
+            //else
+            //{
+            //    Snackbar.Add("لايوجد لديك رصيد كافي من الطلبات", Severity.Warning);
+            //}
 
         }
         private async Task OnSubmitVoiceBot(DataBuildServiceBase data)

@@ -2,6 +2,7 @@
 using Domain.ShareData.Base;
 using Infrastructure.Models.Plans;
 using Infrastructure.Models.Plans.Response;
+using System.Collections.Generic;
 
 
 namespace Infrastructure.DataSource.Seeds
@@ -11,6 +12,36 @@ namespace Infrastructure.DataSource.Seeds
 
       public string Language { get; set; } = "ar";
       private static List<ContainerPlansModel> db= new List<ContainerPlansModel>();
+      public static List<PlansContainerModel> Data = new List<PlansContainerModel>{
+                new PlansContainerModel
+                {
+                    Id = "1",
+                    Name = "Basic Plan",
+                    Description = "This is a basic plan with minimal features.",
+                    Price = 19.99m,
+                    ImageUrl = "/ai-hand.png",
+
+                },
+                new PlansContainerModel
+                {
+                    Id = "2",
+                    Name = "Standard Plan",
+                    Description = "This is a standard plan with more features.",
+                    Price = 49.99m,
+                    ImageUrl = "/ai-hand.png",
+
+                },
+                new PlansContainerModel
+                {
+                    Id = "3",
+                    Name = "Premium Plan",
+                    Description = "This is a premium plan with all features.",
+                    Price = 99.99m,
+                    ImageUrl = "/ai-hand.png",
+
+
+                }
+         };
 
 
         public SeedsPlansContainers()
@@ -25,132 +56,7 @@ namespace Infrastructure.DataSource.Seeds
 
         public List<ContainerPlansModel> SeedsPlansContainersEN()
         {
-            var plans = new List<SubscriptionPlanModel>
-            {
-                new SubscriptionPlanModel
-                {
-                    Id = "price_1Pst3IKMQ7LabgRTZV9VgPex",
-                    Name = "Free",
-                    Description = "Basic subscription plan",
-                    Active = true,
-                    Price = 0m,
-                    IsFixed = false,
-                    IsPaid = false,
-                    Quantity = 1,
-                    BillingPeriod = "Monthly",
-                    TotalAmount = 0m,
-                    ContainerId = "1",
-                    TotalBilling = 0m,
-                    Image = "basic-plan.png",
-                    MonthlyPrice = 0m,
-                    AnnualPrice = 0m,
-                    WeeklyPrice = 0m,
-                    Features = new List<PlanFeatureModel>
-                    {
-                        new PlanFeatureModel { Id = "1", Name = "AI Models", Description = "3", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 0m, Active = true },
-                        new PlanFeatureModel { Id = "2", Name = "Requests", Description = "1,000 requests", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 0m, Active = true },
-                        new PlanFeatureModel { Id = "3", Name = "Processor", Description = "Shared", BillingPeriod = "Monthly", TotalAmount = 0m, Active = true },
-                        new PlanFeatureModel { Id = "4", Name = "RAM", Description = "2 GB", BillingPeriod = "Monthly", TotalAmount = 0m, Active = true },
-                        new PlanFeatureModel { Id = "5", Name = "Speed", Description = "2 pre/Second", BillingPeriod = "Monthly", TotalAmount = 0m, Active = true },
-                        new PlanFeatureModel { Id = "6", Name = "Support", Description = "No", BillingPeriod = "Monthly", TotalAmount = 0m, Active = false },
-                        new PlanFeatureModel { Id = "7", Name = "Customization", Description = "No", BillingPeriod = "Monthly", TotalAmount = 0m, Active = false },
-                        new PlanFeatureModel { Id = "8", Name = "API", Description = "No", BillingPeriod = "Monthly", TotalAmount = 0m, Active = false },
-                        new PlanFeatureModel { Id = "9", Name = "Space", Description = "1", BillingPeriod = "Monthly", TotalAmount = 0m, Active = true },
-                    }
-                },
-                new SubscriptionPlanModel
-                {
-                    Id = "price_1QSOh8KMQ7LabgRTu8QHKFJE",
-                    Name = "Standard",
-                    Description = "Standard subscription plan",
-                    Active = true,
-                    Price = 29.99m,
-                    IsFixed = false,
-                    IsPaid = true,
-                    Quantity = 1,
-                    BillingPeriod = "Monthly",
-                    TotalAmount = 29.99m,
-                    ContainerId = "2",
-                    TotalBilling = 359.88m,
-                    Image = "standard-plan.png",
-                    MonthlyPrice = 29.99m,
-                    AnnualPrice = 299.99m,
-                    WeeklyPrice = 7.49m,
-                    Features = new List<PlanFeatureModel>
-                    {
-                        new PlanFeatureModel { Id = "1", Name = "AI Models", Description = "3", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "2", Name = "Requests", Description = "10,000", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "3", Name = "Processor", Description = "2 GB", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "4", Name = "RAM", Description = "2 GB", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "5", Name = "Speed", Description = "1 pre/Second", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "6", Name = "Support", Description = "No", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = false },
-                        new PlanFeatureModel { Id = "7", Name = "Customization", Description = "No", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = false },
-                        new PlanFeatureModel { Id = "8", Name = "API", Description = "Yes", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "9", Name = "Space", Description = "3", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "10", Name = "Scalability", Description = "Twice per month", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = true },
-                    }
-                },
-                new SubscriptionPlanModel
-                {
-                    Id = "price_1Pst3IKMQ7LabgRTZV9VgPex",
-                    Name = "Professional",
-                    Description = "Professional subscription plan",
-                    Active = true,
-                    Price = 49.99m,
-                    IsFixed = false,
-                    IsPaid = true,
-                    Quantity = 1,
-                    BillingPeriod = "Monthly",
-                    TotalAmount = 49.99m,
-                    ContainerId = "3",
-                    TotalBilling = 599.88m,
-                    Image = "professional-plan.png",
-                    MonthlyPrice = 49.99m,
-                    AnnualPrice = 499.99m,
-                    WeeklyPrice = 12.49m,
-                    Features = new List<PlanFeatureModel>
-                    {
-                        new PlanFeatureModel { Id = "1", Name = "AI Models", Description = "12", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "2", Name = "Requests", Description = "100,000", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "3", Name = "Processor", Description = "4 GB", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "4", Name = "RAM", Description = "8 GB", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "5", Name = "Speed", Description = "0.5 pre/Second", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "6", Name = "Support", Description = "Yes", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "7", Name = "Customization", Description = "Yes", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "8", Name = "API", Description = "Yes", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "9", Name = "Space", Description = "10", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "10", Name = "Scalability", Description = "Unlimited", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = true },
-                    }
-                },
-                new SubscriptionPlanModel
-                {
-                    Id = "price_1QSOh8KMQ7LabgRTu8QHKFJE",
-                    Name = "Enterprise",
-                    Description = "Advanced subscription plan for enterprises",
-                    Active = true,
-                    Price = 99.99m,
-                    IsFixed = false,
-                    IsPaid = true,
-                    Quantity = 1,
-                    BillingPeriod = "Monthly",
-                    TotalAmount = 99.99m,
-                    ContainerId = "4",
-                    TotalBilling = 1199.88m,
-                    Image = "advanced-plan.png",
-                    MonthlyPrice = 99.99m,
-                    AnnualPrice = 999.99m,
-                    WeeklyPrice = 24.99m,
-                    Features = new List<PlanFeatureModel>
-                    {
-                        new PlanFeatureModel { Id = "1", Name = "AI Models", Description = "12", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "2", Name = "Requests", Description = "Unlimited", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 9.99m, Active = true },
-                        new PlanFeatureModel { Id = "3", Name = "Processor", Description = "Unlimited", BillingPeriod = "Monthly", TotalAmount = 9.99m, Active = true },
-
-
-                    }
-                }
-            };
-
+         
             return new List<ContainerPlansModel>{
                 new ContainerPlansModel
                 {
@@ -159,7 +65,7 @@ namespace Infrastructure.DataSource.Seeds
                     Description = "Convert written text to speech using advanced AI technologies.",
                     Active = true,
                     Image = "/chatbot-03.png",  // You can change the card image here
-                    SubscriptionsPlans = plans
+                
                 },
                 new ContainerPlansModel
                 {
@@ -168,7 +74,7 @@ namespace Infrastructure.DataSource.Seeds
                     Description = "Convert text into a specific dialect with high accuracy.",
                     Active = true,
                     Image = "/chatbot-03.png",  // You can change the card image here
-                    SubscriptionsPlans = plans
+                
                 },
                 new ContainerPlansModel
                 {
@@ -177,7 +83,7 @@ namespace Infrastructure.DataSource.Seeds
                     Description = "Integrate an interactive bot through API for various tasks.",
                     Active = true,
                     Image = "/chatbot-03.png",  // You can change the card image here
-                    SubscriptionsPlans = plans
+                  
                 }
             };
 
@@ -185,118 +91,118 @@ namespace Infrastructure.DataSource.Seeds
 
         public List<ContainerPlansModel> SeedsPlansContainersAR()
         {
-            var plans = new List<SubscriptionPlanModel>
-            {
-                    new SubscriptionPlanModel
-                    {
-                        Id = "price_1QSOh8KMQ7LabgRTu8QHKFJE",
-                        Name = "الخطة العامة (Basic Plan)",
-                        Description = "خطة اشتراك أساسية",
-                        Active = true,
-                        Price = 0m,
-                        IsFixed = false,
-                        IsPaid = false,
-                        Quantity = 1,
-                        BillingPeriod = "Monthly",
-                        TotalAmount = 0m,
-                        ContainerId = "1",
-                        TotalBilling = 119.88m,
-                        Image = "basic-plan.png",
-                        MonthlyPrice = 0m,
-                        AnnualPrice = 0m,
-                        WeeklyPrice = 0m,
-                        Features = new List<PlanFeatureModel>
-                        {
-                            new PlanFeatureModel { Id = "1", Name = "Requests", Description = "1,000 طلب", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 0m, Active = true },
-                            new PlanFeatureModel { Id = "2", Name = "CPU", Description = "مشترك مع خوادم أخرى", BillingPeriod = "Monthly", TotalAmount = 0m, Active = true },
-                            new PlanFeatureModel { Id = "3", Name = "RAM", Description = "4 جيجابايت", BillingPeriod = "Monthly", TotalAmount = 0m, Active = true },
-                            new PlanFeatureModel { Id = "4", Name = "Speed (Response Time)", Description = "متوسط 2 ثانية لكل طلب", BillingPeriod = "Monthly", TotalAmount = 0m, Active = true },
-                            new PlanFeatureModel { Id = "5", Name = "Support", Description = "دعم عبر البريد الإلكتروني فقط", BillingPeriod = "Monthly", TotalAmount = 0m, Active = true }
-                        }
-                    },
-                    new SubscriptionPlanModel
-                    {
-                        Id = "price_1Pst3IKMQ7LabgRTZV9VgPex",
-                        Name = "الخطة المتوسطة (Standard Plan)",
-                        Description = "خطة اشتراك متوسطة",
-                        Active = true,
-                        Price = 29.99m,
-                        IsFixed = false,
-                        IsPaid = true,
-                        Quantity = 1,
-                        BillingPeriod = "Monthly",
-                        TotalAmount = 29.99m,
-                        ContainerId = "2",
-                        TotalBilling = 359.88m,
-                        Image = "standard-plan.png",
-                        MonthlyPrice = 29.99m,
-                        AnnualPrice = 299.99m,
-                        WeeklyPrice = 7.49m,
-                        Features = new List<PlanFeatureModel>
-                        {
-                            new PlanFeatureModel { Id = "1", Name = "Requests", Description = "10,000 طلب", BillingPeriod = "Monthly", NumberRequests = 10000, TotalAmount = 29.99m, Active = true },
-                            new PlanFeatureModel { Id = "2", Name = "CPU", Description = "معالج مستقل رباعي النواة", BillingPeriod = "Monthly", TotalAmount = 29.99m, Active = true },
-                            new PlanFeatureModel { Id = "3", Name = "RAM", Description = "8 جيجابايت", BillingPeriod = "Monthly", TotalAmount = 29.99m, Active = true },
-                            new PlanFeatureModel { Id = "4", Name = "Customization", Description = "إمكانية تعديل نبرة الصوت وسرعته", BillingPeriod = "Monthly", TotalAmount = 29.99m, Active = true },
-                            new PlanFeatureModel { Id = "5", Name = "Support", Description = "دعم عبر البريد الإلكتروني والدردشة الفورية خلال ساعات العمل", BillingPeriod = "Monthly", TotalAmount = 29.99m, Active = true }
-                        }
-                    },
-                    new SubscriptionPlanModel
-                    {
-                        Id = "price_1QSOh8KMQ7LabgRTu8QHKFJE",
-                        Name = "الخطة الاحترافية (Professional Plan)",
-                        Description = "خطة اشتراك احترافية",
-                        Active = true,
-                        Price = 49.99m,
-                        IsFixed = false,
-                        IsPaid = true,
-                        Quantity = 1,
-                        BillingPeriod = "Monthly",
-                        TotalAmount = 49.99m,
-                        ContainerId = "3",
-                        TotalBilling = 599.88m,
-                        Image = "professional-plan.png",
-                        MonthlyPrice = 49.99m,
-                        AnnualPrice = 499.99m,
-                        WeeklyPrice = 12.49m,
-                        Features = new List<PlanFeatureModel>
-                        {
-                            new PlanFeatureModel { Id = "1", Name = "Requests", Description = "50,000 طلب", BillingPeriod = "Monthly", NumberRequests = 50000, TotalAmount = 49.99m, Active = true },
-                            new PlanFeatureModel { Id = "2", Name = "CPU", Description = "معالج مستقل ثماني النواة", BillingPeriod = "Monthly", TotalAmount = 49.99m, Active = true },
-                            new PlanFeatureModel { Id = "3", Name = "RAM", Description = "16 جيجابايت", BillingPeriod = "Monthly", TotalAmount = 49.99m, Active = true },
-                            new PlanFeatureModel { Id = "4", Name = "Customization", Description = "تخصيص كامل لتجربة الاستخدام", BillingPeriod = "Monthly", TotalAmount = 49.99m, Active = true },
-                            new PlanFeatureModel { Id = "5", Name = "Support", Description = "دعم فوري على مدار الساعة عبر البريد الإلكتروني والدردشة", BillingPeriod = "Monthly", TotalAmount = 49.99m, Active = true }
-                        }
-                    },
-                    new SubscriptionPlanModel
-    {
-        Id = "price_1Pst3IKMQ7LabgRTZV9VgPex",
-        Name = "الخطة المتقدمة (Advanced Plan)",
-        Description = "خطة اشتراك متقدمة للمؤسسات",
-        Active = true,
-        Price = 99.99m,
-        IsFixed = false,
-        IsPaid = true,
-        Quantity = 1,
-        BillingPeriod = "Monthly",
-        TotalAmount = 99.99m,
-        ContainerId = "4",
-        TotalBilling = 1199.88m,
-        Image = "advanced-plan.png",
-        MonthlyPrice = 99.99m,
-        AnnualPrice = 999.99m,
-        WeeklyPrice = 24.99m,
-        Features = new List<PlanFeatureModel>
-        {
-            new PlanFeatureModel { Id = "1", Name = "Requests", Description = "100,000 طلب", BillingPeriod = "Monthly", NumberRequests = 100000, TotalAmount = 99.99m, Active = true },
-            new PlanFeatureModel { Id = "2", Name = "CPU", Description = "معالج مستقل متعدد الأنوية", BillingPeriod = "Monthly", TotalAmount = 99.99m, Active = true },
-            new PlanFeatureModel { Id = "3", Name = "RAM", Description = "32 جيجابايت", BillingPeriod = "Monthly", TotalAmount = 99.99m, Active = true },
-            new PlanFeatureModel { Id = "4", Name = "Customization", Description = "إعدادات متقدمة لتجربة الاستخدام", BillingPeriod = "Monthly", TotalAmount = 99.99m, Active = true },
-            new PlanFeatureModel { Id = "5", Name = "Support", Description = "دعم فوري وشامل عبر جميع القنوات", BillingPeriod = "Monthly", TotalAmount = 99.99m, Active = true }
-        }
-    }
-                // Add other plans similarly...
-            }; 
+    //        var plans = new List<SubscriptionPlanModel>
+    //        {
+    //                new SubscriptionPlanModel
+    //                {
+    //                    Id = "price_1QSOh8KMQ7LabgRTu8QHKFJE",
+    //                    Name = "الخطة العامة (Basic Plan)",
+    //                    Description = "خطة اشتراك أساسية",
+    //                    Active = true,
+    //                    Price = 0m,
+    //                    IsFixed = false,
+    //                    IsPaid = false,
+    //                    Quantity = 1,
+    //                    BillingPeriod = "Monthly",
+    //                    TotalAmount = 0m,
+    //                    ContainerId = "1",
+    //                    TotalBilling = 119.88m,
+    //                    Image = "basic-plan.png",
+    //                    MonthlyPrice = 0m,
+    //                    AnnualPrice = 0m,
+    //                    WeeklyPrice = 0m,
+    //                    Features = new List<PlanFeatureModel>
+    //                    {
+    //                        new PlanFeatureModel { Id = "1", Name = "Requests", Description = "1,000 طلب", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 0m, Active = true },
+    //                        new PlanFeatureModel { Id = "2", Name = "CPU", Description = "مشترك مع خوادم أخرى", BillingPeriod = "Monthly", TotalAmount = 0m, Active = true },
+    //                        new PlanFeatureModel { Id = "3", Name = "RAM", Description = "4 جيجابايت", BillingPeriod = "Monthly", TotalAmount = 0m, Active = true },
+    //                        new PlanFeatureModel { Id = "4", Name = "Speed (Response Time)", Description = "متوسط 2 ثانية لكل طلب", BillingPeriod = "Monthly", TotalAmount = 0m, Active = true },
+    //                        new PlanFeatureModel { Id = "5", Name = "Support", Description = "دعم عبر البريد الإلكتروني فقط", BillingPeriod = "Monthly", TotalAmount = 0m, Active = true }
+    //                    }
+    //                },
+    //                new SubscriptionPlanModel
+    //                {
+    //                    Id = "price_1Pst3IKMQ7LabgRTZV9VgPex",
+    //                    Name = "الخطة المتوسطة (Standard Plan)",
+    //                    Description = "خطة اشتراك متوسطة",
+    //                    Active = true,
+    //                    Price = 29.99m,
+    //                    IsFixed = false,
+    //                    IsPaid = true,
+    //                    Quantity = 1,
+    //                    BillingPeriod = "Monthly",
+    //                    TotalAmount = 29.99m,
+    //                    ContainerId = "2",
+    //                    TotalBilling = 359.88m,
+    //                    Image = "standard-plan.png",
+    //                    MonthlyPrice = 29.99m,
+    //                    AnnualPrice = 299.99m,
+    //                    WeeklyPrice = 7.49m,
+    //                    Features = new List<PlanFeatureModel>
+    //                    {
+    //                        new PlanFeatureModel { Id = "1", Name = "Requests", Description = "10,000 طلب", BillingPeriod = "Monthly", NumberRequests = 10000, TotalAmount = 29.99m, Active = true },
+    //                        new PlanFeatureModel { Id = "2", Name = "CPU", Description = "معالج مستقل رباعي النواة", BillingPeriod = "Monthly", TotalAmount = 29.99m, Active = true },
+    //                        new PlanFeatureModel { Id = "3", Name = "RAM", Description = "8 جيجابايت", BillingPeriod = "Monthly", TotalAmount = 29.99m, Active = true },
+    //                        new PlanFeatureModel { Id = "4", Name = "Customization", Description = "إمكانية تعديل نبرة الصوت وسرعته", BillingPeriod = "Monthly", TotalAmount = 29.99m, Active = true },
+    //                        new PlanFeatureModel { Id = "5", Name = "Support", Description = "دعم عبر البريد الإلكتروني والدردشة الفورية خلال ساعات العمل", BillingPeriod = "Monthly", TotalAmount = 29.99m, Active = true }
+    //                    }
+    //                },
+    //                new SubscriptionPlanModel
+    //                {
+    //                    Id = "price_1QSOh8KMQ7LabgRTu8QHKFJE",
+    //                    Name = "الخطة الاحترافية (Professional Plan)",
+    //                    Description = "خطة اشتراك احترافية",
+    //                    Active = true,
+    //                    Price = 49.99m,
+    //                    IsFixed = false,
+    //                    IsPaid = true,
+    //                    Quantity = 1,
+    //                    BillingPeriod = "Monthly",
+    //                    TotalAmount = 49.99m,
+    //                    ContainerId = "3",
+    //                    TotalBilling = 599.88m,
+    //                    Image = "professional-plan.png",
+    //                    MonthlyPrice = 49.99m,
+    //                    AnnualPrice = 499.99m,
+    //                    WeeklyPrice = 12.49m,
+    //                    Features = new List<PlanFeatureModel>
+    //                    {
+    //                        new PlanFeatureModel { Id = "1", Name = "Requests", Description = "50,000 طلب", BillingPeriod = "Monthly", NumberRequests = 50000, TotalAmount = 49.99m, Active = true },
+    //                        new PlanFeatureModel { Id = "2", Name = "CPU", Description = "معالج مستقل ثماني النواة", BillingPeriod = "Monthly", TotalAmount = 49.99m, Active = true },
+    //                        new PlanFeatureModel { Id = "3", Name = "RAM", Description = "16 جيجابايت", BillingPeriod = "Monthly", TotalAmount = 49.99m, Active = true },
+    //                        new PlanFeatureModel { Id = "4", Name = "Customization", Description = "تخصيص كامل لتجربة الاستخدام", BillingPeriod = "Monthly", TotalAmount = 49.99m, Active = true },
+    //                        new PlanFeatureModel { Id = "5", Name = "Support", Description = "دعم فوري على مدار الساعة عبر البريد الإلكتروني والدردشة", BillingPeriod = "Monthly", TotalAmount = 49.99m, Active = true }
+    //                    }
+    //                },
+    //                new SubscriptionPlanModel
+    //{
+    //    Id = "price_1Pst3IKMQ7LabgRTZV9VgPex",
+    //    Name = "الخطة المتقدمة (Advanced Plan)",
+    //    Description = "خطة اشتراك متقدمة للمؤسسات",
+    //    Active = true,
+    //    Price = 99.99m,
+    //    IsFixed = false,
+    //    IsPaid = true,
+    //    Quantity = 1,
+    //    BillingPeriod = "Monthly",
+    //    TotalAmount = 99.99m,
+    //    ContainerId = "4",
+    //    TotalBilling = 1199.88m,
+    //    Image = "advanced-plan.png",
+    //    MonthlyPrice = 99.99m,
+    //    AnnualPrice = 999.99m,
+    //    WeeklyPrice = 24.99m,
+    //    Features = new List<PlanFeatureModel>
+    //    {
+    //        new PlanFeatureModel { Id = "1", Name = "Requests", Description = "100,000 طلب", BillingPeriod = "Monthly", NumberRequests = 100000, TotalAmount = 99.99m, Active = true },
+    //        new PlanFeatureModel { Id = "2", Name = "CPU", Description = "معالج مستقل متعدد الأنوية", BillingPeriod = "Monthly", TotalAmount = 99.99m, Active = true },
+    //        new PlanFeatureModel { Id = "3", Name = "RAM", Description = "32 جيجابايت", BillingPeriod = "Monthly", TotalAmount = 99.99m, Active = true },
+    //        new PlanFeatureModel { Id = "4", Name = "Customization", Description = "إعدادات متقدمة لتجربة الاستخدام", BillingPeriod = "Monthly", TotalAmount = 99.99m, Active = true },
+    //        new PlanFeatureModel { Id = "5", Name = "Support", Description = "دعم فوري وشامل عبر جميع القنوات", BillingPeriod = "Monthly", TotalAmount = 99.99m, Active = true }
+    //    }
+    //}
+    //            // Add other plans similarly...
+    //        }; 
             return new List<ContainerPlansModel>
             {
                 new ContainerPlansModel
@@ -306,7 +212,7 @@ namespace Infrastructure.DataSource.Seeds
                     Description = "تحويل النصوص المكتوبة إلى صوت باستخدام تقنيات الذكاء الاصطناعي المتقدمة.",
                     Active = true,
                     Image = "/chatbot-03.png",  // يمكن تغيير صورة البطاقة هنا
-                    SubscriptionsPlans = plans
+
                 },
                 new ContainerPlansModel
                 {
@@ -315,7 +221,7 @@ namespace Infrastructure.DataSource.Seeds
                     Description = "تحويل النص إلى لهجة محددة بدقة عالية.",
                     Active = true,
                     Image = "/chatbot-03.png",  // يمكن تغيير صورة البطاقة هنا
-                    SubscriptionsPlans = plans
+                    //SubscriptionsPlans = plans
                 },
                 new ContainerPlansModel
                 {
@@ -324,7 +230,7 @@ namespace Infrastructure.DataSource.Seeds
                     Description = "دمج روبوت تفاعلي من خلال API للعديد من المهام.",
                     Active = true,
                     Image = "/chatbot-03.png",  // يمكن تغيير صورة البطاقة هنا
-                    SubscriptionsPlans = plans
+                    //SubscriptionsPlans = plans
                 }
             };
 
@@ -528,6 +434,8 @@ namespace Infrastructure.DataSource.Seeds
                         MonthlyPrice = 0m,
                         AnnualPrice = 0m,
                         WeeklyPrice = 0m,
+                        //Services =new List<PlanFeatureModel>{
+                        //},
                         Features = new List<PlanFeatureModel>
                         {
                             new PlanFeatureModel { Id = "1", Name = "عدد النماذج AI", Description = "3", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 0m, Active = true },
@@ -635,10 +543,10 @@ namespace Infrastructure.DataSource.Seeds
                             new PlanFeatureModel { Id = "7", Name = "تخصيص", Description = "نعم", BillingPeriod = "شهري", TotalAmount = 9.99m, Active = true },
                             new PlanFeatureModel { Id = "8", Name = "API", Description = "نعم", BillingPeriod = "شهري", TotalAmount = 9.99m, Active = true },
                             new PlanFeatureModel { Id = "9", Name = "Space", Description = "غير محدد", BillingPeriod = "شهري", TotalAmount = 9.99m, Active = true },
-                           
+
         }
     }
-                
+
             };
    
 

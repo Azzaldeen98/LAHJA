@@ -7,7 +7,7 @@
         public string NameModel { get; set; }
         public string Descrption { get; set; }
 
-    }
+    }   
 
     public class ChangeLogService
     {

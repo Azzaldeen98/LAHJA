@@ -7,6 +7,7 @@ namespace Infrastructure.DataSource.Seeds.Models
     {
        
         public SubscriptionPlanModel? SubscriptionPlan { get; set; }
+        public List<SubscriptionPlanModel>? Services { get; set; }
     }
 
    
