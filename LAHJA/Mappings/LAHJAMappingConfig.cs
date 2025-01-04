@@ -11,6 +11,14 @@ using LAHJA.Data.UI.Components.ProFileModel;
 using Domain.Entities.Profile;
 using LAHJA.Data.UI.Components.Payment.CreditCard;
 using Domain.Entities.Billing.Request;
+using LAHJA.Data.UI.Templates.Subscription;
+using Domain.Entities.Subscriptions.Request;
+using Domain.Entities.Subscriptions.Response;
+using LAHJA.Data.UI.Components.Subscription;
+using Domain.Entities.Service.Request;
+using Domain.Entities.Request.Response;
+using LAHJA.Data.UI.Templates.Services;
+using LAHJA.ApiClient.Models;
 
 namespace LAHJA.Mappings
 {
@@ -98,6 +106,7 @@ namespace LAHJA.Mappings
                   .ForMember(dest => dest.TechnicalServices, opt => opt.Ignore())
                 .ReverseMap();
              CreateMap<SubscriptionPlan, SubscriptionPlanInfo>().ReverseMap();
+             CreateMap<SubscriptionResponse, UserSubscription>().ReverseMap();
              CreateMap<PlanFeature, FeaturePlanInfo>().ReverseMap();
 
 
@@ -116,6 +125,11 @@ namespace LAHJA.Mappings
             CreateMap<CardDetailsResponse, CardDetails>().ReverseMap();
 
 
+            ///  Subscription
+            CreateMap<SubscriptionResponse, DataBuildSubscriptionBase>().ReverseMap();
+            CreateMap<DataBuildSubscriptionBase, SubscriptionRequest>().ReverseMap();
+
+
             /// Profile
 
              CreateMap<ProfileResponse, DataBuildUserProfile>()
@@ -124,6 +138,24 @@ namespace LAHJA.Mappings
             
             CreateMap<ProfileRequest, DataBuildUserProfile>()
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Image))
+                .ReverseMap();
+
+
+                CreateMap<RequestResponse, DataBuildServiceBase>()
+                //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Image))
+                .ReverseMap();  
+            
+            
+               CreateMap< DataBuildServiceBase, QueryRequestTextToText>()
+                //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Image))
+                .ReverseMap();   
+            
+                CreateMap< DataBuildServiceBase, QueryRequestTextToSpeech>()
+                //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Image))
+                .ReverseMap();
+            
+               CreateMap<DataBuildServiceBase, QueryRequest>()
+                //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Image))
                 .ReverseMap();
             
 

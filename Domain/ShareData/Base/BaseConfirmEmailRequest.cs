@@ -1,4 +1,4 @@
-﻿namespace Domain.ShareData.Base.Request
+﻿namespace Domain.ShareData.Base
 {
     public class BaseConfirmEmailRequest
     {

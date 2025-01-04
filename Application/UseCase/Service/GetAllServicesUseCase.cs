@@ -19,5 +19,4 @@ namespace Application.UseCase.Service
         }
     }
 
-
 }

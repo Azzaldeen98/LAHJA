@@ -174,7 +174,7 @@ namespace LAHJA.Data.UI.Templates.Payment
             }
             else
             {
-
+                Snackbar.Add("Field Option ! Please try anther once or again login ", Severity.Error);
             }
 
         } 

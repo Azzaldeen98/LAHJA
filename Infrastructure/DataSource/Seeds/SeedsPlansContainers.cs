@@ -9,7 +9,7 @@ namespace Infrastructure.DataSource.Seeds
     public class SeedsPlansContainers
     {
 
-        public string Language { get; set; } = "ar";
+      public string Language { get; set; } = "ar";
       private static List<ContainerPlansModel> db= new List<ContainerPlansModel>();
 
 
@@ -298,35 +298,35 @@ namespace Infrastructure.DataSource.Seeds
                 // Add other plans similarly...
             }; 
             return new List<ContainerPlansModel>
-{
-    new ContainerPlansModel
-    {
-        Id = "1",
-        Name = "تحويل النص إلى صوت",
-        Description = "تحويل النصوص المكتوبة إلى صوت باستخدام تقنيات الذكاء الاصطناعي المتقدمة.",
-        Active = true,
-        Image = "/chatbot-03.png",  // يمكن تغيير صورة البطاقة هنا
-        SubscriptionsPlans = plans
-    },
-    new ContainerPlansModel
-    {
-        Id = "2",
-        Name = "تحويل النص إلى لهجة",
-        Description = "تحويل النص إلى لهجة محددة بدقة عالية.",
-        Active = true,
-        Image = "/chatbot-03.png",  // يمكن تغيير صورة البطاقة هنا
-        SubscriptionsPlans = plans
-    },
-    new ContainerPlansModel
-    {
-        Id = "3",
-        Name = "روبوت تفاعلي (API)",
-        Description = "دمج روبوت تفاعلي من خلال API للعديد من المهام.",
-        Active = true,
-        Image = "/chatbot-03.png",  // يمكن تغيير صورة البطاقة هنا
-        SubscriptionsPlans = plans
-    }
-};
+            {
+                new ContainerPlansModel
+                {
+                    Id = "1",
+                    Name = "تحويل النص إلى صوت",
+                    Description = "تحويل النصوص المكتوبة إلى صوت باستخدام تقنيات الذكاء الاصطناعي المتقدمة.",
+                    Active = true,
+                    Image = "/chatbot-03.png",  // يمكن تغيير صورة البطاقة هنا
+                    SubscriptionsPlans = plans
+                },
+                new ContainerPlansModel
+                {
+                    Id = "2",
+                    Name = "تحويل النص إلى لهجة",
+                    Description = "تحويل النص إلى لهجة محددة بدقة عالية.",
+                    Active = true,
+                    Image = "/chatbot-03.png",  // يمكن تغيير صورة البطاقة هنا
+                    SubscriptionsPlans = plans
+                },
+                new ContainerPlansModel
+                {
+                    Id = "3",
+                    Name = "روبوت تفاعلي (API)",
+                    Description = "دمج روبوت تفاعلي من خلال API للعديد من المهام.",
+                    Active = true,
+                    Image = "/chatbot-03.png",  // يمكن تغيير صورة البطاقة هنا
+                    SubscriptionsPlans = plans
+                }
+            };
 
 
 
@@ -643,6 +643,8 @@ namespace Infrastructure.DataSource.Seeds
    
 
         }
+
+
         public async Task<IEnumerable<ContainerPlansModel>?> getAllAsync()
         {
 

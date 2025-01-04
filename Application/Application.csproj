@@ -17,12 +17,10 @@
 
   <ItemGroup>
     <Folder Include="Services\RequestEvent\" />
-    <Folder Include="Services\Request\" />
     <Folder Include="Services\Roles\" />
     <Folder Include="Services\ServiceMethod\" />
     <Folder Include="Services\Setting\" />
     <Folder Include="UseCase\RequestEvent\" />
-    <Folder Include="UseCase\Request\" />
     <Folder Include="UseCase\Roles\" />
     <Folder Include="UseCase\ServiceMethod\" />
     <Folder Include="UseCase\Setting\" />

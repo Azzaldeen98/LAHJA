@@ -1,15 +1,16 @@
 ﻿using Domain.Entities.Billing.Request;
 using Domain.Entities.Billing.Response;
 using Domain.Repository.Billing;
+using Domain.Repository.CreditCard;
 using Domain.Wrapper;
 
 namespace Application.Services.Plans
 {
     public class UpdateCreditCardUseCase
     {
-        private readonly IBillingRepository repository;
+        private readonly ICreditCardRepository repository;
 
-        public UpdateCreditCardUseCase(IBillingRepository repository)
+        public UpdateCreditCardUseCase(ICreditCardRepository repository)
         {
             this.repository = repository;
         }
@@ -17,7 +18,7 @@ namespace Application.Services.Plans
         public async Task<Result<CardDetailsResponse>> ExecuteAsync(CardDetailsRequest request)
         {
          
-            return await repository.UpdateCardAsync(request);
+            return await repository.UpdateAsync(request);
         }
     }
 

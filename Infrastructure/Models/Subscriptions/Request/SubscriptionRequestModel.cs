@@ -1,8 +1,9 @@
-﻿using Domain.ShareData.Base.Response;
+﻿using Domain.ShareData.Base;
+using Domain.ShareData.Base.Response;
 
 namespace Infrastructure.Models.Subscriptions.Request
 {
-    public partial class SubscriptionRequestModel : BaseSubscriptionResponse
+    public partial class SubscriptionRequestModel : BaseSubscription
     {
 
     }

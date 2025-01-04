@@ -2,6 +2,7 @@
 using Domain.Entities.Billing.Response;
 using Domain.Entities.Plans.Response;
 using Domain.Entities.Profile;
+using Domain.Entities.Subscriptions.Response;
 using Domain.Repository.Profile;
 using Domain.ShareData;
 using Domain.Wrapper;
@@ -23,7 +24,7 @@ public class ProfileRepository :IProfileRepository
     private readonly SeedsUsers seedsUsers;
     private readonly SeedsBillings seedsBillings;
     private readonly SeedsCreditCards seedsCreditCards;
-    private readonly SeedsUserSubscriptionsPlans seedsUserSubscriptionsPlans;
+    private readonly SeedsSubscriptionsData seedsSubscriptionsData;
     private readonly SeedsPlans seedsPlans;
 
     private readonly ProfileApiClient profileApiClient;
@@ -40,7 +41,7 @@ public class ProfileRepository :IProfileRepository
 							SeedsBillings seedsBillings,
 							SeedsCreditCards seedsCreditCards,
 							SeedsPlans seedsPlans,
-							SeedsUserSubscriptionsPlans seedsUserSubscriptionsPlans)
+							SeedsSubscriptionsData seedsSubscriptionsData)
 	{
 		this.seedsProfile = seedsProfile;
 		this.profileApiClient = profileApiClient;
@@ -51,7 +52,7 @@ public class ProfileRepository :IProfileRepository
 		this.seedsBillings = seedsBillings;
 		this.seedsCreditCards = seedsCreditCards;
 		this.seedsPlans = seedsPlans;
-		this.seedsUserSubscriptionsPlans = seedsUserSubscriptionsPlans;
+		this.seedsSubscriptionsData = seedsSubscriptionsData;
 	}
 
 	public Task<Result<ProfileResponse>> CreateProfileAsync(ProfileRequest profileRequest)
@@ -80,14 +81,14 @@ public class ProfileRepository :IProfileRepository
                           var billing = seedsBillings.GetBillingDetailsByEmail(email);
                           var cards = seedsCreditCards.GetCardDetailsByEmail(email);
                           var user = await seedsUsers.getUserByEmailAsync(email);
-                          var subscriptionsPlans =  seedsUserSubscriptionsPlans.GetAllSubscriptionsPlansByEmail(email);
+                          var subscriptionsPlans =  seedsSubscriptionsData.getActiveSubscriptions(email);
 
 
                           var bilRes = _mapper.Map<BillingDetailsResponseModel>(billing);
                           var billingData = _mapper.Map<BillingDetailsResponse>(bilRes);
 
                           var cardsRes = _mapper.Map<List<CardDetailsResponseModel>>(cards);
-                          var subscriptionsPlansRes = _mapper.Map<List<SubscriptionPlan>>(subscriptionsPlans);
+                          var subscriptionsPlansRes = _mapper.Map<List<SubscriptionResponse>>(subscriptionsPlans);
                           var cardsData = _mapper.Map<List<CardDetailsResponse>>(cardsRes);
 
                           if (user != null)
@@ -101,7 +102,7 @@ public class ProfileRepository :IProfileRepository
                                   Active = user?.Active,
                                   CreditCards = cardsData,
                                   BillingDetails = billingData,
-                                  SubscriptionsPlans = subscriptionsPlansRes,
+                                  Subscriptions = subscriptionsPlansRes,
                               };
                               return Result<ProfileResponse>.Success(profile);
                           }

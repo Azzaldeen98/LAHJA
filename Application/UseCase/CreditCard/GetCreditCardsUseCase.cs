@@ -7,6 +7,7 @@ using Domain.Entities.Payment.Request;
 using Domain.Entities.Payment.Response;
 using Domain.Entities.Plans.Response;
 using Domain.Repository.Billing;
+using Domain.Repository.CreditCard;
 using Domain.Repository.Payment;
 using Domain.ShareData.Base;
 using Domain.Wrapper;
@@ -17,8 +18,8 @@ namespace Application.Services.Plans
     public class GetCreditCardsUseCase
     {
 
-        private readonly IBillingRepository repository;
-        public GetCreditCardsUseCase(IBillingRepository repository)
+        private readonly ICreditCardRepository repository;
+        public GetCreditCardsUseCase(ICreditCardRepository repository)
         {
 
             this.repository = repository;
@@ -28,7 +29,7 @@ namespace Application.Services.Plans
         public async Task<Result<List<CardDetailsResponse>>> ExecuteAsync()
         {
 
-            return await repository.GetSubscriptionCreditCardsAsync();
+            return await repository.GetAllAsync();
 
         }
 

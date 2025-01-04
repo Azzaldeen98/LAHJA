@@ -6,7 +6,12 @@ using Infrastructure.Models.User;
 namespace Infrastructure.DataSource.Seeds
 {
 
- 
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.Json.Serialization;
+
+
     public class SeedsUsers
     {
 

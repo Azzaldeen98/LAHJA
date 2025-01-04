@@ -14,6 +14,8 @@ using Infrastructure.Models.Subscriptions.Request;
 using Infrastructure.Models.Subscriptions.Response;
 using Domain.Entities.Subscriptions.Request;
 using Infrastructure.DataSource.Seeds.Models;
+using Domain.ShareData;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace Infrastructure.Repository.Subscription
@@ -21,17 +23,19 @@ namespace Infrastructure.Repository.Subscription
 
     public class SubscriptionsRepository : ISubscriptionsRepository
     {
-        private readonly SeedsPlans seedsPlans;
+        private readonly SeedsSubscriptionsPlans seedsPlans;
         private readonly SeedsSubscriptionsData seedsSubscriptionsData;
         private readonly SubscriptionsApiClient subscriptionApiClient;
         private readonly IMapper _mapper;
+        private readonly ISessionUserManager _sessionUserManager;
         private readonly ApplicationModeService appModeService;
         public SubscriptionsRepository(
             IMapper mapper,
-            SeedsPlans seedsPlans,
+            SeedsSubscriptionsPlans seedsPlans,
             ApplicationModeService appModeService,
             SubscriptionsApiClient subscriptionApiClient,
-            SeedsSubscriptionsData seedsSubscriptionsData)
+            SeedsSubscriptionsData seedsSubscriptionsData,
+            ISessionUserManager sessionUserManager)
         {
 
             //seedsPlans = new SeedsPlans();
@@ -41,14 +45,59 @@ namespace Infrastructure.Repository.Subscription
 
             this.subscriptionApiClient = subscriptionApiClient;
             this.seedsSubscriptionsData = seedsSubscriptionsData;
+            _sessionUserManager = sessionUserManager;
         }
 
+        public async Task<Result<bool>> HasActiveSubscriptionAsync()
+        {
+            var response = await ExecutorAppMode.ExecuteAsync<Result<List<SubscriptionResponseModel>>>(
+                 async () => await subscriptionApiClient.getAllAsync(),
+                  async () => {
+                      var email = await _sessionUserManager.GetEmailAsync();
+                      if (email == null)
+                          return Result<List<SubscriptionResponseModel>>.Fail();
 
+                      var data = seedsSubscriptionsData.getActiveSubscriptions(email);
+                      if(data != null)
+                      {
+                          var items=_mapper.Map<List<SubscriptionResponseModel>>(data);
+                          return Result<List<SubscriptionResponseModel>>.Success(items);
+                      }
+                  
+                    
+                      return Result<List<SubscriptionResponseModel>>.Fail();
+                  });
+
+            if (response.Succeeded)
+            {
+                return Result<bool>.Success(true);
+            }
+            else
+            {
+                return Result<bool>.Fail();
+            }
+
+
+        }
         public async Task<Result<List<SubscriptionResponse>>> getAllAsync()
         {
             var response = await ExecutorAppMode.ExecuteAsync<Result<List<SubscriptionResponseModel>>>(
                  async () => await subscriptionApiClient.getAllAsync(),
-                  async () => Result<List<SubscriptionResponseModel>>.Success());
+                  async () => {
+                      var email = await _sessionUserManager.GetEmailAsync();
+                      if (email == null)
+                          return Result<List<SubscriptionResponseModel>>.Fail();
+
+                      var data = seedsSubscriptionsData.getAllUserSubscriptions(email);
+                      if (data != null)
+                      {
+                          var items = _mapper.Map<List<SubscriptionResponseModel>>(data);
+                          return Result<List<SubscriptionResponseModel>>.Success(items);
+                      }
+
+
+                      return Result<List<SubscriptionResponseModel>>.Fail();
+                  });
 
             if (response.Succeeded)
             {
@@ -89,10 +138,30 @@ namespace Infrastructure.Repository.Subscription
                   async () => Result<SubscriptionResponseModel>.Success(),
                   async () =>
                   {
-                      var model=_mapper.Map<SubscriptionModel>(request);
-                       seedsSubscriptionsData.AddSubscription(model);
+                      var email = await _sessionUserManager.GetEmailAsync();
+                      if(email == null)
+                          return Result<SubscriptionResponseModel>.Fail();
 
-                    return  Result<SubscriptionResponseModel>.Success();
+                      var plan= seedsPlans.getOne(request.PlanId);
+                      if (plan == null)
+                          return Result<SubscriptionResponseModel>.Fail();
+
+                      var model=_mapper.Map<SubscriptionModel>(request);
+                      model.UserId = email;
+                      model.PlanId = plan.Id;
+                      model.SubscriptionPlan = plan;
+                      model.SubscriptionPlan.Active = true; 
+                      model.StartDate = DateTime.Now;
+                      model.CancelAtPeriodEnd = true;
+
+                      seedsSubscriptionsData.AddSubscription(model);
+                      var res = seedsSubscriptionsData.SearchSubscriptions(x => x.UserId == email).FirstOrDefault();
+                      if (res != null)
+                      {
+                          var data = _mapper.Map<SubscriptionResponseModel>(res);
+                          return Result<SubscriptionResponseModel>.Success(data);
+                      }
+                      return Result<SubscriptionResponseModel>.Fail();
                   });
 
             if (response.Succeeded)
@@ -123,11 +192,58 @@ namespace Infrastructure.Repository.Subscription
 
         }
 
-        public async Task<Result<SubscriptionResponse>> DeleteAsync(string id)
+        public async Task<Result<DeleteResponse>> DeleteAsync(string id)
         {
             var response = await ExecutorAppMode.ExecuteAsync<Result<SubscriptionResponseModel>>(
                  async () => await subscriptionApiClient.DeleteAsync(id),
                   async () => Result<SubscriptionResponseModel>.Success());
+
+            if (response.Succeeded)
+            {
+                //var result = (response.Data != null) ? _mapper.Map<DeleteResponse>(response.Data) : null;
+                return Result<DeleteResponse>.Success();
+            }
+            else
+            {
+                return Result<DeleteResponse>.Fail(response.Messages);
+            }
+        }
+
+        public async Task<Result<SubscriptionResponse>> UpdateAsync(SubscriptionRequest request)
+        {
+            var response = await ExecutorAppMode.ExecuteAsync<Result<SubscriptionResponseModel>>(
+                   async () => Result<SubscriptionResponseModel>.Success(),
+                   async () =>
+                   {
+                       var email = await _sessionUserManager.GetEmailAsync();
+                       if (email == null)
+                           return Result<SubscriptionResponseModel>.Fail();
+
+                       var plan = seedsPlans.getOne(request.PlanId);
+                       if (plan == null)
+                           return Result<SubscriptionResponseModel>.Fail();
+
+                       var model = _mapper.Map<SubscriptionModel>(request);
+                       model.UserId = email;
+                       model.PlanId = plan.Id;
+                       model.SubscriptionPlan = plan;
+                       model.StartDate = DateTime.Now;
+                       model.CancelAtPeriodEnd = true;
+
+                       if (seedsSubscriptionsData.UpdateSubscription(model.Id, model))
+                       {
+                           var res= seedsSubscriptionsData.SearchSubscriptions(x=>x.UserId==email).FirstOrDefault();
+                           if (res != null)
+                           {
+                               var data=_mapper.Map<SubscriptionResponseModel>(res);
+                               return Result<SubscriptionResponseModel>.Success(data);
+                           }
+                              
+                       }
+                            
+                       
+                       return Result<SubscriptionResponseModel>.Fail();
+                   });
 
             if (response.Succeeded)
             {
@@ -139,10 +255,5 @@ namespace Infrastructure.Repository.Subscription
                 return Result<SubscriptionResponse>.Fail(response.Messages);
             }
         }
-
-
-   
-
-      
     } 
 }

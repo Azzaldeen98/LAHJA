@@ -39,6 +39,11 @@ using Infrastructure.Models.Service.Request;
 using Domain.Entities.Service.Request;
 using Domain.Entities.Service.Response;
 using Infrastructure.Models.Subscriptions.Response;
+using Infrastructure.Models.Subscriptions.Request;
+using Infrastructure.Models.Request.Response;
+using Domain.Entities.Request.Response;
+using Infrastructure.Models.Request.Request;
+using Domain.Entities.Request.Request;
 
 
 namespace Infrastructure.Mappings.Plans
@@ -107,7 +112,9 @@ namespace Infrastructure.Mappings.Plans
 
             //// Subscriptions 
             CreateMap<SubscriptionResponseModel, SubscriptionResponse>().ReverseMap();
-
+            CreateMap<SubscriptionModel, SubscriptionResponseModel>().ReverseMap();
+            CreateMap<SubscriptionModel, SubscriptionResponse>().ReverseMap();
+            CreateMap<SubscriptionRequestModel, SubscriptionModel>().ReverseMap();
 
             // Billing
             CreateMap<CardDetailsResponseModel,CardDetailsResponse>().ReverseMap();  
@@ -132,7 +139,7 @@ namespace Infrastructure.Mappings.Plans
             //// Profile
             CreateMap<ProfileResponseModel, ProfileResponse>()
                  .ForMember(dest => dest.CreditCards, opt => opt.Ignore())
-                 .ForMember(dest => dest.SubscriptionsPlans, opt => opt.Ignore())
+                 .ForMember(dest => dest.Subscriptions, opt => opt.Ignore())
                  .ForMember(dest => dest.BillingDetails, opt => opt.Ignore())
                  .ReverseMap();   
             CreateMap<UserSubscriptionPlanModel, UserSubscriptionPlan>().ReverseMap();   
@@ -141,6 +148,12 @@ namespace Infrastructure.Mappings.Plans
             //// Service
             CreateMap<ServiceResponseModel, ServiceResponse>().ReverseMap();
             CreateMap<ServiceRequestModel, ServiceRequest>().ReverseMap();
+
+
+            //// Request
+            CreateMap<RequestResponseModel, RequestResponse>().ReverseMap();
+            CreateMap<RequestCreateModel, RequestCreate>().ReverseMap();
+            CreateMap<RequestAllowedModel, RequestAllowed>().ReverseMap();
 
 
         }

@@ -1,4 +1,6 @@
 ﻿using Application.UseCase.Service;
+using Domain.Entities.Event.Request;
+using Domain.Entities.Event.Response;
 using Domain.Entities.Service.Request;
 using Domain.Entities.Service.Response;
 using Domain.ShareData.Base;
@@ -52,6 +54,18 @@ namespace Application.Services.Service
         public async Task<Result<DeleteResponse>> DeleteAsync(string id)
         {
             return await deleteServiceUseCase.ExecuteAsync(id);
+        }
+
+        public async Task<Result<EventResponse>> CreateEventAsync(EventRequest request)
+        {
+            throw new NotImplementedException();
+
+            //return await voiceBotService.TextToSpeechAsync(request);
+        }
+        public async Task<Result<ServiceResponse>> ResultRequestAsync(ResultRequest request)
+        {
+            throw new NotImplementedException();
+            //return await voiceBotService.TextToSpeechAsync(request);
         }
     }
 }

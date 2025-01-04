@@ -8,6 +8,7 @@ using Application.UseCase;
 using Application.UseCase.Auth;
 using Application.UseCase.Plans;
 using Application.UseCase.Plans.Get;
+using Application.UseCase.Request;
 using Application.UseCase.Service;
 using Infrastructure.DataSource.ApiClient.Plans;
 using Infrastructure.Mappings.Plans;
@@ -94,10 +95,13 @@ namespace Infrastructure
 
 
             /// Subscription
+            serviceCollection.AddScoped<HasActiveSubscriptionUseCase>();
             serviceCollection.AddScoped<PauseSubscriptionUseCase>();
             serviceCollection.AddScoped<DeleteSubscriptionUseCase>();
             serviceCollection.AddScoped<ResumeSubscriptionUseCase>();
             serviceCollection.AddScoped<GetAllSubscriptionsUseCase>();
+            serviceCollection.AddScoped<CreateSubscriptionUseCase>();
+            serviceCollection.AddScoped<UpdateSubscriptionUseCase>();
 
             //// Credit Card
             serviceCollection.AddScoped<ActiveCreditCardUseCase>();
@@ -119,6 +123,10 @@ namespace Infrastructure
             serviceCollection.AddScoped<UpdateServiceUseCase>();
             serviceCollection.AddScoped<DeleteServiceUseCase>();
 
+            // Request
+            serviceCollection.AddScoped<CreateRequestUseCase>();
+            serviceCollection.AddScoped<RequestAllowedUseCase>();
+
         }
 
         private static void InstallServices(this IServiceCollection serviceCollection)
@@ -134,6 +142,7 @@ namespace Infrastructure
             serviceCollection.AddScoped<BillingService>();
             serviceCollection.AddScoped<CreditCardService>();
             serviceCollection.AddScoped<LAHJAService>();
+            serviceCollection.AddScoped<RequestService>();
 
         }
 

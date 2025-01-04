@@ -1,10 +1,12 @@
 ﻿using Domain.Repository.Auth;
 using Domain.Repository.Billing;
+using Domain.Repository.CreditCard;
 using Domain.Repository.Payment;
 using Domain.Repository.Plans;
 using Domain.Repository.Price;
 using Domain.Repository.Product;
 using Domain.Repository.Profile;
+using Domain.Repository.Request;
 using Domain.Repository.Service;
 using Domain.Repository.Setting;
 using Domain.Repository.Subscriptions;
@@ -21,6 +23,7 @@ using Infrastructure.DataSource.ApiClientFactory;
 using Infrastructure.DataSource.Seeds;
 using Infrastructure.Mappings.Plans;
 using Infrastructure.Repository.Auth;
+using Infrastructure.Repository.CreditCard;
 using Infrastructure.Repository.Plans;
 using Infrastructure.Repository.Price;
 using Infrastructure.Repository.Product;
@@ -91,8 +94,9 @@ namespace Infrastructure
             serviceCollection.AddSingleton<SeedsBillings>();
             serviceCollection.AddSingleton<SeedsCreditCards>();
             serviceCollection.AddSingleton<SeedsProfile>();
-            serviceCollection.AddSingleton<SeedsUserSubscriptionsPlans>();
+            serviceCollection.AddSingleton<SeedsSubscriptionsPlans>();
             serviceCollection.AddSingleton<SeedsSubscriptionsData>();
+            serviceCollection.AddSingleton<SeedsServiceAiModelsData>();
 
 
 
@@ -120,6 +124,8 @@ namespace Infrastructure
             serviceCollection.AddScoped<ISettingRepository, SettingRepository>();
             serviceCollection.AddScoped<IBillingRepository, BillingRepository>();
             serviceCollection.AddScoped<IServiceRepository, ServiceRepository>();
+            serviceCollection.AddScoped<ICreditCardRepository, CreditCardRepository>();
+            serviceCollection.AddScoped<IRequestRepository, RequestRepository>();
         }    
       
     }

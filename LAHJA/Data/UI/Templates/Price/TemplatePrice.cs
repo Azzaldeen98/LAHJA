@@ -23,15 +23,10 @@ namespace LAHJA.Data.UI.Templates.Price
 
     public interface IBuilderPriceComponent<T> : IBuilderComponents<T>
     {
-
-
-    
-
         public Func<T, Task> SubmitSearch { get; set; }
         public Func<T, Task> SubmitCreate { get; set; }
         public Func<T, Task> SubmitDelete { get; set; }
         public Func<T, Task> SubmitUpdate { get; set; }
-
 
     }
 

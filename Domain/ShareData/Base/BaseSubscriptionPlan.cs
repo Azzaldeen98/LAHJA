@@ -14,7 +14,7 @@
         public decimal? AnnualPrice { get; set; }
         public decimal? WeeklyPrice { get; set; }
 
-        public BaseContainerPlans? ContainerPlan { get; set; }
+        //public BaseContainerPlans? ContainerPlan { get; set; }
 
     }
 

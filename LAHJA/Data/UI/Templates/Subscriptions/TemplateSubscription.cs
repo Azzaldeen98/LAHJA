@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using Domain.Entities.Subscriptions.Request;
 using Domain.Entities.Subscriptions.Response;
+using Domain.ShareData.Base;
 using Domain.Wrapper;
 using LAHJA.ApplicationLayer.Subscription;
 using LAHJA.ApplicationLayer.Subscription;
+using LAHJA.Data.UI.Components.Subscription;
 using LAHJA.Data.UI.Templates.Base;
 using LAHJA.Data.UI.Templates.Subscription;
 using LAHJA.Helpers.Services;
@@ -16,7 +19,15 @@ namespace LAHJA.Data.UI.Templates.Subscription
 
     public class DataBuildSubscriptionBase
     {
-        public string Id { get; set; }
+   
+        public string? Id { get; set; }
+        public string? UserId { get; set; }
+        public string? PlanId { get; set; }
+        public string? CustomerId { get; set; }
+        public string? BillingPeriod { get; set; }
+        public DateTimeOffset? StartDate { get; set; }
+        public string? Status { get; set; }
+        public bool? CancelAtPeriodEnd { get; set; }
     }
 
 
@@ -39,12 +50,14 @@ namespace LAHJA.Data.UI.Templates.Subscription
 
 
         //Task<Result<List<SubscriptionResponse>>> SearchAsync(T data);
-        Task<Result<List<SubscriptionResponse>>> GetAllAsync();
+        Task<Result<List<UserSubscription>>> GetAllAsync();
+        Task<Result<bool>> HasActiveSubscriptionAsync();
         //Task<Result<SubscriptionResponse>> CreateAsync(T data);
-        Task<Result<SubscriptionResponse>> ResumeAsync(T data);
-        Task<Result<SubscriptionResponse>> PauseAsync(T data);
-        Task<Result<SubscriptionResponse>> DeleteAsync(T data);
-        //Task<Result<SubscriptionResponse>> UpdateAsync(T data);
+        Task<Result<UserSubscription>> ResumeAsync(T data);
+        Task<Result<UserSubscription>> PauseAsync(T data);
+        Task<Result<DeleteResponse
+            >> DeleteAsync(T data);
+        Task<Result<UserSubscription>> UpdateAsync(T data);
 
 
     }
@@ -59,16 +72,19 @@ namespace LAHJA.Data.UI.Templates.Subscription
 
         //public abstract Task<Result<SubscriptionResponse>> CreateAsync(E data);
 
-        public abstract Task<Result<SubscriptionResponse>> DeleteAsync(E dataId);
+    
 
-        public abstract Task<Result<List<SubscriptionResponse>>> GetAllAsync();
+        public abstract Task<Result<List<UserSubscription>>> GetAllAsync();
+        public abstract Task<Result<bool>> HasActiveSubscriptionAsync();
 
-        public abstract Task<Result<SubscriptionResponse>> PauseAsync(E data);
-        public abstract Task<Result<SubscriptionResponse>> ResumeAsync(E data);
+        public abstract Task<Result<UserSubscription>> CreateAsync(E data);
+        public abstract Task<Result<UserSubscription>> PauseAsync(E data);
+        public abstract Task<Result<UserSubscription>> ResumeAsync(E data);
+        public abstract Task<Result<DeleteResponse>> DeleteAsync(E dataId);
 
-        //public abstract Task<Result<SubscriptionResponse>> UpdateAsync(E data);
+        public abstract Task<Result<UserSubscription>> UpdateAsync(E data);
 
-       
+
     }
     public class BuilderSubscriptionComponent<T> : IBuilderSubscriptionComponent<T>
     {
@@ -129,7 +145,7 @@ namespace LAHJA.Data.UI.Templates.Subscription
 
         }
 
-        public override async Task<Result<SubscriptionResponse>> PauseAsync(DataBuildSubscriptionBase data)
+        public override async Task<Result<UserSubscription>> PauseAsync(DataBuildSubscriptionBase data)
         {
             //var model = Mapper.Map<SubscriptionCreate>(data);
             var res = await Service.PauseAsync(data.Id);
@@ -137,22 +153,22 @@ namespace LAHJA.Data.UI.Templates.Subscription
             {
                 try
                 {
-                    var map = Mapper.Map<SubscriptionResponse>(res.Data);
-                    return Result<SubscriptionResponse>.Success(map);
+                    var map = Mapper.Map<UserSubscription>(res.Data);
+                    return Result<UserSubscription>.Success(map);
 
                 }
                 catch (Exception e)
                 {
-                    return Result<SubscriptionResponse>.Fail();
+                    return Result<UserSubscription>.Fail();
                 }
             }
             else
             {
-                return Result<SubscriptionResponse>.Fail(res.Messages);
+                return Result<UserSubscription>.Fail(res.Messages);
             }
         }
 
-        public override async Task<Result<SubscriptionResponse>> DeleteAsync(DataBuildSubscriptionBase data)
+        public override async Task<Result<DeleteResponse>> DeleteAsync(DataBuildSubscriptionBase data)
         {
 
             var res = await Service.DeleteAsync(data.Id);
@@ -160,22 +176,21 @@ namespace LAHJA.Data.UI.Templates.Subscription
             {
                 try
                 {
-                    var map = Mapper.Map<SubscriptionResponse>(res.Data);
-                    return Result<SubscriptionResponse>.Success(map);
+                    return Result<DeleteResponse>.Success(res.Data);
 
                 }
                 catch (Exception e)
                 {
-                    return Result<SubscriptionResponse>.Fail();
+                    return Result<DeleteResponse>.Fail();
                 }
             }
             else
             {
-                return Result<SubscriptionResponse>.Fail(res.Messages);
+                return Result<DeleteResponse>.Fail(res.Messages);
             }
         }
 
-        public override async Task<Result<List<SubscriptionResponse>>> GetAllAsync()
+        public override async Task<Result<List<UserSubscription>>> GetAllAsync()
         {
             //var model = Mapper.Map<FilterResponseData>(filter);
             var res = await Service.GetAllAsync();
@@ -183,23 +198,23 @@ namespace LAHJA.Data.UI.Templates.Subscription
             {
                 try
                 {
-                    var map = Mapper.Map<List<SubscriptionResponse>>(res.Data);
-                    return Result<List<SubscriptionResponse>>.Success(map);
+                    var map = Mapper.Map<List<UserSubscription>>(res.Data);
+                    return Result<List<UserSubscription>>.Success(map);
 
                 }
                 catch (Exception e)
                 {
-                    return Result<List<SubscriptionResponse>>.Fail();
+                    return Result<List<UserSubscription>>.Fail();
                 }
             }
             else
             {
-                return Result<List<SubscriptionResponse>>.Fail(res.Messages);
+                return Result<List<UserSubscription>>.Fail(res.Messages);
             }
 
         }
 
-        public override async Task<Result<SubscriptionResponse>> ResumeAsync(DataBuildSubscriptionBase data)
+        public override async Task<Result<UserSubscription>> ResumeAsync(DataBuildSubscriptionBase data)
         {
             //var model = Mapper.Map<SubscriptionSearchRequest>(data);
             var res = await Service.ResumeAsync(data.Id);
@@ -207,56 +222,84 @@ namespace LAHJA.Data.UI.Templates.Subscription
             {
                 try
                 {
-                    var map = Mapper.Map<SubscriptionResponse>(res.Data);
-                    return Result<SubscriptionResponse>.Success(map);
+                    var map = Mapper.Map<UserSubscription>(res.Data);
+                    return Result<UserSubscription>.Success(map);
 
                 }
                 catch (Exception e)
                 {
-                    return Result<SubscriptionResponse>.Fail();
+                    return Result<UserSubscription>.Fail();
                 }
             }
             else
             {
-                return Result<SubscriptionResponse>.Fail(res.Messages);
+                return Result<UserSubscription>.Fail(res.Messages);
+            }
+        }
+
+        public override async Task<Result<UserSubscription>> CreateAsync(DataBuildSubscriptionBase data)
+        {
+            var model = Mapper.Map<SubscriptionRequest>(data);
+            var res = await Service.CreateAsync(model);
+            if (res.Succeeded)
+            {
+                try
+                {
+                    var map = Mapper.Map<UserSubscription>(res.Data);
+                    return Result<UserSubscription>.Success(map);
+
+                }
+                catch (Exception e)
+                {
+                    return Result<UserSubscription>.Fail();
+                }
+            }
+            else
+            {
+                return Result<UserSubscription>.Fail(res.Messages);
             }
         }
 
 
-        //public override async Task<Result<SubscriptionResponse>> UpdateAsync(DataBuildSubscriptionBase data)
-        //{
-        //    //var model = Mapper.Map<SubscriptionUpdate>(data);
-        //    var res = await Service.UpdateAsync(model);
-        //    if (res.Succeeded)
-        //    {
-        //        try
-        //        {
-        //            var map = Mapper.Map<SubscriptionResponse>(res.Data);
-        //            return Result<SubscriptionResponse>.Success(map);
+        public override async Task<Result<UserSubscription>> UpdateAsync(DataBuildSubscriptionBase data)
+        {
+            var model = Mapper.Map<SubscriptionRequest>(data);
+            var res = await Service.UpdateAsync(model);
+            if (res.Succeeded)
+            {
+                try
+                {
+                    var map = Mapper.Map<UserSubscription>(res.Data);
+                    return Result<UserSubscription>.Success(map);
 
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            return Result<SubscriptionResponse>.Fail();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return Result<SubscriptionResponse>.Fail(res.Messages);
-        //    }
-        //}
+                }
+                catch (Exception e)
+                {
+                    return Result<UserSubscription>.Fail();
+                }
+            }
+            else
+            {
+                return Result<UserSubscription>.Fail(res.Messages);
+            }
+        }
+
+        public override async Task<Result<bool>> HasActiveSubscriptionAsync()
+        {
+            return await Service.HasActiveSubscriptionAsync();
+        }
     }
 
 
     public class TemplateSubscription : TemplateSubscriptionShare<SubscriptionClientService, DataBuildSubscriptionBase>
     {
    
-        public List<SubscriptionResponse> Subscriptions { get => _Subscriptions; }
+        public List<UserSubscription> Subscriptions { get => _Subscriptions; }
      
         public List<string> Errors { get => _errors; }
 
 
-        private List<SubscriptionResponse> _Subscriptions = new List<SubscriptionResponse>();
+        private List<UserSubscription> _Subscriptions = new List<UserSubscription>();
 
 
         public TemplateSubscription(
@@ -318,7 +361,6 @@ namespace LAHJA.Data.UI.Templates.Subscription
             }
 
         }
-
         private async Task OnSubmitUResumeSubscription(DataBuildSubscriptionBase dataBuildSubscriptionBase)
         {
 
@@ -339,8 +381,6 @@ namespace LAHJA.Data.UI.Templates.Subscription
         private async Task OnSubmitGetAllSubscriptions()
         {
 
-        
-            
                 var response = await builderApi.GetAllAsync();
                 if (response.Succeeded)
                 {
@@ -352,7 +392,18 @@ namespace LAHJA.Data.UI.Templates.Subscription
             }
         }
 
-   
+        public async Task<Result<List<UserSubscription>>> GetAllSubscriptions()
+        {
+            return await builderApi.GetAllAsync();
+        }
+
+        public async Task<Result<bool>> HasActiveSubscriptionAsync()
+        {
+            return await builderApi.HasActiveSubscriptionAsync();
+        }
+
+
+
     }
 }
 

@@ -77,12 +77,10 @@ namespace Infrastructure.Mappings.Plans
 
 
             //// Subscriptions 
-
             CreateMap<SubscriptionResponse, SubscriptionResponseModel>().ReverseMap();
             CreateMap<PlanResponse, SubscriptionPlanModel>().ReverseMap();
-            //CreateMap<PlanServicesResponse, SubscriptionPlanModel>().ReverseMap();
-
-            //// Settings 
+      
+ 
 
             //// Settings 
             //CreateMap<object, SettingResponseModel>().ReverseMap();
@@ -103,8 +101,6 @@ namespace Infrastructure.Mappings.Plans
 
 
 
-            CreateMap<SubscriptionModel, SubscriptionResponseModel>().ReverseMap();
-            CreateMap<SubscriptionRequestModel, SubscriptionModel>().ReverseMap();
         }
     }
 }

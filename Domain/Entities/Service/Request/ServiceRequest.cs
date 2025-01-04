@@ -3,4 +3,5 @@
 namespace Domain.Entities.Service.Request
 {
     public class ServiceRequest: ServiceRequestBase { }
+
 }

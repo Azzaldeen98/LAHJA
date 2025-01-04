@@ -1,11 +1,12 @@
 ﻿
 @using Domain.ShareData
 @using LAHJA.Data.UI.Components.Plan
+@using LAHJA.Data.UI.Components.Subscription
 @using LAHJA.Helpers.Services
 @using LAHJA.UI.Components.Plan
-@inject LanguageService languageService
+
 @inject IManageLanguageService _manageLanguageService
-@inject LAHJA.Data.UI.Templates.Profile.TemplateProfile Template
+@inject LAHJA.Data.UI.Templates.Subscription.TemplateSubscription Template
 @inject NavigationManager Navigation
 
 
@@ -20,13 +21,13 @@
 	<div class="container relative max-w-full flex-1   md:pb-12 md:pt-8  ">
 
 
-		<h1 class="text-center">@GetTranslation("SubscribeToPro")</h1>
+		<MudText Typo="Typo.h3" Align="Align.Center" Class="text-center">@GetTranslation("SubscribeToPro")</MudText>
 			@if(_dataBuild != null && _dataBuild.Count()>0){
 
 				@foreach (var item in _dataBuild)
 				{
 					<MudContainer  Class="p-3">
-						<TemplatePlan Params="item" SubmitUpgrade="OnSubmitUpgradePlan" IsUpgrade="true" AllowUpdate="true" IsDisplaySelectButton="false" IsExpanded="true" />
+					<TemplatePlan Params="@item.SubscriptionPlan" SubmitUpgrade="OnSubmitUpgradePlan" IsUpgrade="true" AllowUpdate="true" IsDisplaySelectButton="false" IsExpanded="true" />
 					</MudContainer>
 				}
 
@@ -50,40 +51,25 @@
 @code{
 
 
-	[Parameter] public List<SubscriptionPlanInfo> DataBuild { get => _dataBuild; set => _dataBuild = value; }
+	[Parameter] public List<UserSubscription> DataBuild { get => _dataBuild; set => _dataBuild = value; }
 
-	private List<SubscriptionPlanInfo> _dataBuild = new List<SubscriptionPlanInfo>();
+	private List<UserSubscription> _dataBuild = new List<UserSubscription>();
 
 	private  string CurrentLanguage = "ar";
-	protected override void OnInitialized()
-	{
 
-		languageService.OnLanguageChanged += ChangeLanguage;
-		ChangeLanguage(CurrentLanguage);
-
-	}
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 
 		if (firstRender)
 		{
-			if (firstRender)
-			{
-				CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
-				InvokeAsync(StateHasChanged);
-			}
+	
+			CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+			InvokeAsync(StateHasChanged);
 
-			var result = await Template.GetUserSubscriptionsPlanAsync();
-
-			if (result.Succeeded)
-			{
-				_dataBuild = result.Data.ToList();
-
-			}
 
 		}
 
-		StateHasChanged();
+		
 
 	}
 	private void ChangeLanguage(string language)

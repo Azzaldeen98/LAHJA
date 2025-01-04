@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.Subscriptions.Response;
 using Domain.Repository.Subscriptions;
+using Domain.ShareData.Base;
 using Domain.Wrapper;
 
 namespace Application.UseCase.Plans.Get
@@ -13,7 +14,7 @@ namespace Application.UseCase.Plans.Get
             this.repository = repository;
         }
 
-        public async Task<Result<SubscriptionResponse>> ExecuteAsync(string id)
+        public async Task<Result<DeleteResponse>> ExecuteAsync(string id)
         {
             return await repository.DeleteAsync(id);
         }

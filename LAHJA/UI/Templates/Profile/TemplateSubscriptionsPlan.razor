@@ -13,35 +13,35 @@
 
 
 
-@if(Template!=null){
-    <Subscription DataBuild="buildData" />
-}
+@*  @if(Template!=null){
+     <Subscription DataBuild="buildData" />
+ } *@
 
 @code{
 
-    private List<SubscriptionPlanInfo> buildData;
+    // private List<SubscriptionPlanInfo> buildData;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
 
-        if (firstRender)
-        {
-            var result = await Template.GetUserSubscriptionsPlanAsync();
+    //     if (firstRender)
+    //     {
+    //         var result = await Template.GetUserSubscriptionsPlanAsync();
 
-            if (result.Succeeded)
-            {
-                buildData = result.Data.ToList();
+    //         if (result.Succeeded)
+    //         {
+    //             buildData = result.Data.ToList();
 
-            }
-            else
-            {
+    //         }
+    //         else
+    //         {
 
-            }
-        }
+    //         }
+    //     }
 
-        StateHasChanged();
+    //     StateHasChanged();
 
-    }
+    // }
 
     
 

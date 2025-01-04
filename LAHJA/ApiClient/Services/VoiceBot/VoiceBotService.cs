@@ -9,7 +9,7 @@ namespace LAHJA.ApiClient.Services.VoiceBot
 
     public interface IVoiceBotService
     {
-        Task<Result<QueryResponse>> TextToSpeechAsync(QueryRequest request);
+        Task<Result<ServiceAIResponse>> TextToSpeechAsync(QueryRequest request);
  
     }
     public class VoiceBotService : IVoiceBotService
@@ -22,11 +22,11 @@ namespace LAHJA.ApiClient.Services.VoiceBot
             _queryTextToSpeechService = queryTextToSpeechService;
         }
 
-        public async Task<Result<QueryResponse>> TextToSpeechAsync(QueryRequest request)
+        public async Task<Result<ServiceAIResponse>> TextToSpeechAsync(QueryRequest request)
         {
             var resText = await _T2TService.T2TClientJSAsync(request.QueryRequestTextToText);
             if (resText.Succeeded)
-            {   string text= resText.Data.Text;
+            {   string text= resText.Data.Result;
                 if (!string.IsNullOrEmpty(text))
                 {
                     request.QueryRequestTextToSpeech.Data = text;
@@ -35,7 +35,7 @@ namespace LAHJA.ApiClient.Services.VoiceBot
                 } 
 
             }
-            return Result<QueryResponse>.Fail();
+            return Result<ServiceAIResponse>.Fail();
         }
     }
 }

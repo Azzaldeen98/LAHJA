@@ -9,8 +9,6 @@
   <ItemGroup>
     <Folder Include="Entities\RequestEvent\Request\" />
     <Folder Include="Entities\RequestEvent\Response\" />
-    <Folder Include="Entities\Request\Request\" />
-    <Folder Include="Entities\Request\Response\" />
     <Folder Include="Entities\Roles\Request\" />
     <Folder Include="Entities\Roles\Response\" />
     <Folder Include="Entities\ServiceMethod\Request\" />
@@ -18,7 +16,6 @@
     <Folder Include="Entities\User\Request\" />
     <Folder Include="Entities\User\Response\" />
     <Folder Include="Repository\RequestEvent\" />
-    <Folder Include="Repository\Request\" />
     <Folder Include="Repository\Roles\" />
     <Folder Include="Repository\ServiceMethod\" />
     <Folder Include="ShareData\Base\Payment\" />

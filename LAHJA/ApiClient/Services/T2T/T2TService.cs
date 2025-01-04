@@ -12,9 +12,9 @@ namespace LAHJA.ApiClient.Services
 {
     public interface IT2TService
     {
-        Task<Result<T2TResponse>> T2TAsync(QueryRequestTextToText model);
+        Task<Result<ServiceAIResponse>> T2TAsync(QueryRequestTextToText model);
     
-        Task<Result<T2TResponse>> T2TClientJSAsync(QueryRequestTextToText model);
+        Task<Result<ServiceAIResponse>> T2TClientJSAsync(QueryRequestTextToText model);
     }
     public class T2TService: IT2TService
     {
@@ -29,7 +29,7 @@ namespace LAHJA.ApiClient.Services
             _JSRuntime = jSRuntime;
         }
 
-        public async Task<Result<T2TResponse>> T2TAsync(QueryRequestTextToText data)
+        public async Task<Result<ServiceAIResponse>> T2TAsync(QueryRequestTextToText data)
         {
             //var res= await _t2TRepository.T2TAsync(model);
             //return res;
@@ -87,11 +87,11 @@ namespace LAHJA.ApiClient.Services
                     {
                         var resText = decodedArray[0];
 
-                        return Result<T2TResponse>.Success(new T2TResponse { Text= resText });
+                        return Result<ServiceAIResponse>.Success(new ServiceAIResponse { Result= resText });
                     }
                 }
 
-                return  Result<T2TResponse>.Fail("null Response !!");
+                return  Result<ServiceAIResponse>.Fail("null Response !!");
 
 
             }
@@ -99,12 +99,12 @@ namespace LAHJA.ApiClient.Services
             {
                 // Handle exceptions (e.g., log errors)
                 Console.WriteLine($"Error: {ex.Message}");
-                return  Result<T2TResponse>.Fail(ex.Message);
+                return  Result<ServiceAIResponse>.Fail(ex.Message);
             }
 
         }
 
-        public async Task<Result<T2TResponse>> T2TClientJSAsync(QueryRequestTextToText model)
+        public async Task<Result<ServiceAIResponse>> T2TClientJSAsync(QueryRequestTextToText model)
         {
             try
             {
@@ -115,14 +115,14 @@ namespace LAHJA.ApiClient.Services
                     string[] decodedArray = JsonSerializer.Deserialize<string[]>(response);
                     string decodedText = decodedArray[0];
                     if (!string.IsNullOrEmpty(decodedText))
-                        return Result<T2TResponse>.Success(new T2TResponse { Text = decodedText });
+                        return Result<ServiceAIResponse>.Success(new ServiceAIResponse { Result = decodedText });
                 }
 
-                return Result<T2TResponse>.Fail();
+                return Result<ServiceAIResponse>.Fail();
             }
             catch (Exception ex)
             {
-                return Result<T2TResponse>.Fail(ex.Message);
+                return Result<ServiceAIResponse>.Fail(ex.Message);
             }
     
         }

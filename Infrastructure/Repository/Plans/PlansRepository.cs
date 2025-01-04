@@ -24,6 +24,8 @@ namespace Infrastructure.Repository.Plans
         private readonly IManageLanguageService manageLanguageService;
 
         private readonly SeedsPlansContainers seedsPlansContainers;
+        private readonly SeedsSubscriptionsPlans seedsSubscriptionsPlans;
+
         private readonly IMapper _mapper;
         private readonly ApplicationModeService appModeService;
         public PlansRepository(
@@ -32,7 +34,8 @@ namespace Infrastructure.Repository.Plans
             ApplicationModeService appModeService,
             SeedsPlansContainers seedsPlansContainers,
             PlansApiClient plansApiClient,
-            IManageLanguageService manageLanguageService)
+            IManageLanguageService manageLanguageService,
+            SeedsSubscriptionsPlans seedsSubscriptionsPlans)
         {
 
             //seedsPlans = new SeedsPlans();
@@ -42,6 +45,7 @@ namespace Infrastructure.Repository.Plans
             this.seedsPlansContainers = seedsPlansContainers;
             this.plansApiClient = plansApiClient;
             this.manageLanguageService = manageLanguageService;
+            this.seedsSubscriptionsPlans = seedsSubscriptionsPlans;
         }
         /// <summary>
         /// Work
@@ -55,8 +59,8 @@ namespace Infrastructure.Repository.Plans
             async () => await plansApiClient.getAllSubscriptionsPlansAsync(),
             async () =>
             {
-                seedsPlansContainers.Language = await manageLanguageService.GetLanguageAsync();
-                return Result<IEnumerable<SubscriptionPlanModel>>.Success(await seedsPlansContainers.getAllSubscriptionsPlansAsync());
+                seedsSubscriptionsPlans.Language = await manageLanguageService.GetLanguageAsync();
+                return Result<IEnumerable<SubscriptionPlanModel>>.Success(seedsSubscriptionsPlans.GetAll());
             });
 
 
@@ -70,6 +74,25 @@ namespace Infrastructure.Repository.Plans
                 return Result<IEnumerable<SubscriptionPlan>>.Fail(response.Messages);
             }
         }
+
+        public async Task<Result<SubscriptionPlan>> getOneSubscriptionsPlanAsync(string planId)
+        {
+            var response = await ExecutorAppMode.ExecuteAsync<Result<SubscriptionPlanModel>>(
+              async () => Result<SubscriptionPlanModel>.Success(new SubscriptionPlanModel { Id = planId }),
+              async () => Result<SubscriptionPlanModel>.Success(seedsSubscriptionsPlans.getOne(planId)));
+
+
+            if (response.Succeeded)
+            {
+                var result = (response.Data != null) ? _mapper.Map<SubscriptionPlan>(response.Data) : null;
+                return Result<SubscriptionPlan>.Success(result);
+            }
+            else
+            {
+                return Result<SubscriptionPlan>.Fail(response.Messages);
+            }
+        }
+
 
         /// <summary>
         /// work
@@ -174,23 +197,7 @@ namespace Infrastructure.Repository.Plans
             }
         }
 
-        public async Task<Result<SubscriptionPlan>> getOneSubscriptionsPlanAsync(string planId)
-        {
-            var response = await ExecutorAppMode.ExecuteAsync<Result<SubscriptionPlanModel>>(
-              async () => Result<SubscriptionPlanModel>.Success(new SubscriptionPlanModel { Id = planId }),
-              async () => Result<SubscriptionPlanModel>.Success(await seedsPlansContainers.getOneSubscriptionPlanAsync(planId)));
 
-
-            if (response.Succeeded)
-            {
-                var result = (response.Data != null) ? _mapper.Map<SubscriptionPlan>(response.Data) : null;
-                return Result<SubscriptionPlan>.Success(result);
-            }
-            else
-            {
-                return Result<SubscriptionPlan>.Fail(response.Messages);
-            }
-        }
 
 
         public async Task<Result<PlanResponse>> createPlanAsync(PlanCreate request)

@@ -244,7 +244,7 @@
 
                 if (response.Succeeded)
                 {
-                    string decodedText = response.Data.Text;
+                    string decodedText = response.Data.Result;
 
                     OnDataResult obj = new OnDataResult()
                         {
@@ -282,7 +282,7 @@
                 var response = await T2TService.T2TClientJSAsync(new QueryRequestTextToText { Text = textSpeech });
                 if (response.Succeeded)
                 {
-                    string decodedText = response.Data.Text;
+                    string decodedText = response.Data.Result;
 
                     OnDataResult obj = new OnDataResult()
                         {

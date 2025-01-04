@@ -20,7 +20,7 @@ namespace Application.UseCase.Plans.Get
             return await repository.PauseAsync(id);
 
         }
-    }
+    }  
 
 
 

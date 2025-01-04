@@ -11,7 +11,7 @@ namespace LAHJA.ApiClient.Services.Query
 
     public interface IQueryTextToSpeechService
     {
-         Task<Result<QueryResponse>> TextToSpeechAsync(QueryRequestTextToSpeech requestData);
+         Task<Result<ServiceAIResponse>> TextToSpeechAsync(QueryRequestTextToSpeech requestData);
     }
     public class QueryTextToSpeechService: IQueryTextToSpeechService
     {
@@ -26,7 +26,7 @@ namespace LAHJA.ApiClient.Services.Query
 
 
 
-        public async Task<Result<QueryResponse>> TextToSpeechAsync(QueryRequestTextToSpeech requestData)
+        public async Task<Result<ServiceAIResponse>> TextToSpeechAsync(QueryRequestTextToSpeech requestData)
         {
             try
             {
@@ -38,18 +38,18 @@ namespace LAHJA.ApiClient.Services.Query
                     if (response != null)
                     {
                         if (response == "222")
-                            return Result<QueryResponse>.Success(new QueryResponse { Result= response });
+                            return Result<ServiceAIResponse>.Success(new ServiceAIResponse { Result= response });
                         else
-                            return Result<QueryResponse>.Fail("333");
+                            return Result<ServiceAIResponse>.Fail("333");
                     }
                 }
         
-                return Result<QueryResponse>.Fail("Error !!");
+                return Result<ServiceAIResponse>.Fail("Error !!");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
-                return Result<QueryResponse>.Fail(ex.Message);
+                return Result<ServiceAIResponse>.Fail(ex.Message);
             }
 
         }

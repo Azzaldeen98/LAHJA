@@ -41,7 +41,7 @@ namespace Infrastructure.DataSource.Seeds
                             BillingPeriod = "Monthly",
                             CancelAt = null,
                             CancelAtPeriodEnd = false,
-                            CanceledAt = null
+                           
                         }
                     }
                 },
@@ -67,7 +67,7 @@ namespace Infrastructure.DataSource.Seeds
                             BillingPeriod = "Monthly",
                             CancelAt = null,
                             CancelAtPeriodEnd = false,
-                            CanceledAt = null
+                       
                         }
                     }
                 },
@@ -93,7 +93,7 @@ namespace Infrastructure.DataSource.Seeds
                             BillingPeriod = "Yearly",
                             CancelAt = DateTime.Now.AddDays(-10),
                             CancelAtPeriodEnd = true,
-                            CanceledAt = DateTime.Now.AddDays(-5)
+                       
                         }
                     }
                 }

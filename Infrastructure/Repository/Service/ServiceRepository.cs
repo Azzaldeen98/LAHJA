@@ -12,6 +12,7 @@ using Infrastructure.Models.Service.Response;
 using Domain.Entities.Service.Response;
 using Domain.Entities.Service.Request;
 using Infrastructure.Models.Service.Request;
+using System.Text.Json.Serialization;
 
 
 namespace Infrastructure.Repository.Services

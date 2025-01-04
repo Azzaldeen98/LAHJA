@@ -1,6 +1,7 @@
 ﻿
 
 
+@using Domain.ShareData
 @using LAHJA.Data.UI.Components.Payment.DataBuildBillingBase
 @using LAHJA.Data.UI.Components.Payment.CreditCard
 @using LAHJA.Data.UI.Components.Plan
@@ -12,6 +13,7 @@
 @inject IDialogService DialogService
 @using LAHJA.UI.Components.Payment.CreditCard
 @using MudBlazor
+@inject IManageLanguageService _manageLanguageService
 
 @inject AuthService AuthService
 <MudLayout Class="w-100">
@@ -36,7 +38,8 @@
                     <PaymentMethodsSection SelectedCard="OnSelectedCardData" BuildData="BuildCreditCardData"  EditCard="OnEditCard" CreateCard="OnCreateCard" />
                 </div>
                 @* </div> *@
-                <MudButton Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" m-5")" Variant="Variant.Filled" Size="Size.Large" OnClick="Payment" Color="@AppColors.BASE_COLOR_ENUM">Continue to Payment</MudButton>
+                <MudButton Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" m-5")" Variant="Variant.Filled"
+                           Size="Size.Large" OnClick="Payment" Color="@AppColors.BASE_COLOR_ENUM">@GetTranslation("ContinueToPayment")</MudButton>
             </MudPaper>
         }
     </div>
@@ -66,17 +69,26 @@
     private CardDetails card { get; set; }
     private bool isConfirm = false;
 
+    private string CurrentLanguage { get; set; } = "ar";
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+            StateHasChanged();
+        }
+    }
     private async Task OnCreateCard(CardDetails input)
     {
 
     }
     private async Task OnEditCard(CardDetails data)
     {
-        
+
     }
 
- 
+
     private async Task OnSubmitConfirmPlan(SubscriptionPlanInfo input)
     {
         if (input != null)
@@ -90,7 +102,7 @@
     {
         if ( input != null)
         {
-           
+
         }
     }
 
@@ -98,7 +110,7 @@
     {
         if (input != null)
         {
-           
+
         }
     }
 
@@ -120,6 +132,7 @@
         }
 
     }
+    
 
 
     public async void Payment()
@@ -130,13 +143,32 @@
         }
         else
         {
-            
+          
         }
 
         @* Snackbar.Add(BuildPlanData.TotalPrice.ToString(), Severity.Error); *@
     }
 
     private List<SubscriptionPlanInfo> planInfos;
+    private string GetTranslation(string key)
+    {
+        return CurrentLanguage == "ar"
+            ? TransAr.GetValueOrDefault(key, key)
+            : TransEn.GetValueOrDefault(key, key);
+    }
 
+    private Dictionary<string, string> TransEn = new Dictionary<string, string>()
+    {
+        { "ContinueToPayment", "Continue to Payment" },
+  
+
+    };
+
+    private Dictionary<string, string> TransAr = new Dictionary<string, string>()
+    {
+        { "ContinueToPayment", "متابعة الدفع" },
+  
+
+    };
  
 }

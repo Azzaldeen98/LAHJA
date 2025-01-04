@@ -1,11 +1,12 @@
-﻿@using LAHJA.Data.UI.Components.Base
+﻿@using Domain.ShareData
+@using LAHJA.Data.UI.Components.Base
 @using LAHJA.Data.UI.Components.Plan
 
 
 @inject NavigationManager Navigation
 @inherits CardPlan<SubscriptionPlanInfo>
 @inject ISnackbar Snackbar
-
+@inject IManageLanguageService _manageLanguageService
 @using LAHJA.Them
 
 @if (Params != null)
@@ -62,13 +63,16 @@
                         @if (_isUpgrade)
                         {
 
-                            <MudButton Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" w-100")" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM" OnClick="@(()=>OnSubmitUpgrade(@Params))">Upgrade</MudButton>
+                            <MudButton Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+" w-100")" Variant="Variant.Filled"
+                                       Color="@AppColors.BASE_COLOR_ENUM" OnClick="@(()=>OnSubmitUpgrade(@Params))">@GetTranslation("Upgrade")</MudButton>
                             
                         }
                         else if (_allowUpdate)
                         {
 
-                            <MudButton Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+"  w-100")" Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM" OnClick="@(()=>OnSubmitConfirm(@Params))">Confirm</MudButton>
+                           @*  <MudButton Class="@(@AppTextStyle.TEXT_TRANSFORM_NORMAL+"  w-100")"
+                            Variant="Variant.Filled" Color="@AppColors.BASE_COLOR_ENUM"
+                                       OnClick="@(()=>OnSubmitConfirm(@Params))">@GetTranslation("Confirm")</MudButton> *@
 
                         }
 
@@ -110,8 +114,16 @@
     private bool _allowUpdate = false;
 
     private bool _isUpgrade { get; set; } = false;
+    private string CurrentLanguage { get; set; } = "ar";
 
-
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+            StateHasChanged();
+        }
+    }
 
     private Color GetChipColor(bool status)
 
@@ -320,20 +332,25 @@
 
     }
 
+    private string GetTranslation(string key)
+    {
+        return CurrentLanguage == "ar"
+            ? TransAr.GetValueOrDefault(key, key)
+            : TransEn.GetValueOrDefault(key, key);
+    }
+
+    private Dictionary<string, string> TransEn = new Dictionary<string, string>()
+    {
+        { "Confirm", "Confirm" },
+        { "Upgrade", "Upgrade" },
+
+    };
+
+    private Dictionary<string, string> TransAr = new Dictionary<string, string>()
+    {
+        { "Confirm", "تأكيد" },
+        { "Upgrade", "تحديث" },
+
+    };
+
 }
-       @* <MudListSubheader> Services </MudListSubheader>  *@
-                        @*        <MudListItem Text="Technical Features" @bind-Expanded="_expanded" >
-                            <NestedList >
-                            @foreach (var featur in Params.Features.Where(x => x.IsFixed).ToList())
-                            {
-                            <MudListItem style="padding:0% !important" >
-
-                            <TechnologyFeture  Params="featur" />
-
-                            </MudListItem>
-
-                            }
-                            </NestedList>
-                            </MudListItem>
-                            <MudDivider /> *@
-

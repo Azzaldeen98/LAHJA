@@ -44,36 +44,7 @@ namespace Infrastructure.Repository.Price
             this.sessionUserManager = sessionUserManager;
         }
 
-        public async Task<Result<List<CardDetailsResponse>>> GetSubscriptionCreditCardsAsync()
-        {
-            
 
-            var response = await ExecutorAppMode.ExecuteAsync<Result<List<CardDetailsResponseModel>>>(
-                 async () => {
-                     var email = await sessionUserManager.GetEmailAsync();
-                     var res = seedsCardit.GetCardDetailsByEmail(email);
-                     var model = _mapper.Map<List<CardDetailsResponseModel>>(res);
-
-                     return Result<List<CardDetailsResponseModel>>.Success(model);
-                 },
-                  async () => {
-                      var email = await sessionUserManager.GetEmailAsync();
-                      var res = seedsCardit.GetCardDetailsByEmail(email);
-                      var model = _mapper.Map<List<CardDetailsResponseModel>>(res);
-
-                      return Result<List<CardDetailsResponseModel>>.Success(model);
-                  });
-
-            if (response.Succeeded)
-            {
-                var result = (response.Data != null) ? _mapper.Map<List<CardDetailsResponse>>(response.Data) : null;
-                return Result<List<CardDetailsResponse>>.Success(result);
-            }
-            else
-            {
-                return Result<List<CardDetailsResponse>>.Fail(response.Messages);
-            }
-        }
 
         public async Task<Result<BillingDetailsResponse>> GetBillingDetailsAsync()
         {
@@ -172,76 +143,5 @@ namespace Infrastructure.Repository.Price
             }
         }
 
-        public async Task<Result<CardDetailsResponse>> CreateCardAsync(CardDetailsRequest request)
-        {
-            var model = _mapper.Map<CardDetailsRequestModel>(request);
-            var response = await ExecutorAppMode.ExecuteAsync<Result<CardDetailsResponseModel>>(
-                 async () => await apiClient.CreateCardAsync(model),
-                  async ()=>{
-                      seedsCardit.AddCardDetails(model);
-                     return Result<CardDetailsResponseModel>.Success();
-                  });
-
-            if (response.Succeeded)
-            {
-                var result = (response.Data != null) ? _mapper.Map<CardDetailsResponse>(response.Data) : null;
-                return Result<CardDetailsResponse>.Success(result);
-            }
-            else
-            {
-                return Result<CardDetailsResponse>.Fail(response.Messages);
-            }
-        }
-
-        public async Task<Result<DeleteResponse>> DeleteCardAsync(string id)
-        {
-            var response = await ExecutorAppMode.ExecuteAsync<Result<DeleteResponseModel>>(
-              async () => await apiClient.DeleteCardAsync(id),
-            async () => {
-                   if(seedsCardit.DeleteCardDetails(id))
-                        return Result<DeleteResponseModel>.Success();
-                   else 
-                        return Result<DeleteResponseModel>.Fail();
-            });
-
-            if (response.Succeeded)
-            {
-                var result = (response.Data != null) ? _mapper.Map<DeleteResponse>(response.Data) : null;
-                return Result<DeleteResponse>.Success(result);
-            }
-            else
-            {
-                return Result<DeleteResponse>.Fail(response.Messages);
-            }
-        }
-
-
-        public async Task<Result<CardDetailsResponse>> UpdateCardAsync(CardDetailsRequest request)
-        {
-            var model = _mapper.Map<CardDetailsRequestModel>(request);
-            var response = await ExecutorAppMode.ExecuteAsync<Result<CardDetailsResponseModel>>(
-                 async () => await apiClient.UpdateCardAsync(model),
-                  async () => {
-                      if (seedsCardit.UpdateCardDetails(model))
-                          return Result<CardDetailsResponseModel>.Success();
-                      else
-                          return Result<CardDetailsResponseModel>.Fail();
-                  });
-
-            if (response.Succeeded)
-            {
-                var result = (response.Data != null) ? _mapper.Map<CardDetailsResponse>(response.Data) : null;
-                return Result<CardDetailsResponse>.Success(result);
-            }
-            else
-            {
-                return Result<CardDetailsResponse>.Fail(response.Messages);
-            }
-        }
-
-        public Task<Result<CardDetailsResponse>> ActiveCreditCardAsync(CardDetailsRequest request)
-        {
-            throw new NotImplementedException();
-        }
     } 
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.Subscriptions.Response
 {
-    public partial class SubscriptionResponse: BaseSubscriptionResponse
+    public partial class SubscriptionResponse: BaseSubscription
     {
         public SubscriptionPlan? SubscriptionPlan { get; set; }
     }

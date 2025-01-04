@@ -1,4 +1,5 @@
 ﻿using Domain.Repository.Billing;
+using Domain.Repository.CreditCard;
 using Domain.ShareData.Base;
 using Domain.Wrapper;
 
@@ -6,9 +7,9 @@ namespace Application.Services.Plans
 {
     public class DeleteCreditCardUseCase
     {
-        private readonly IBillingRepository repository;
+        private readonly ICreditCardRepository repository;
 
-        public DeleteCreditCardUseCase(IBillingRepository repository)
+        public DeleteCreditCardUseCase(ICreditCardRepository repository)
         {
             this.repository = repository;
         }
@@ -16,7 +17,7 @@ namespace Application.Services.Plans
         public async Task<Result<DeleteResponse>> ExecuteAsync(string cardId)
         {
    
-            return await repository.DeleteBillingAsync(cardId);
+            return await repository.DeleteAsync(cardId);
         }
     }
 

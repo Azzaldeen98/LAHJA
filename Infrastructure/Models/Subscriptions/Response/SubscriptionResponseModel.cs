@@ -1,4 +1,5 @@
-﻿using Domain.ShareData.Base.Response;
+﻿using Domain.ShareData.Base;
+using Domain.ShareData.Base.Response;
 using Infrastructure.Models.Plans;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 namespace Infrastructure.Models.Subscriptions.Response
 {
 
-    public partial class SubscriptionResponseModel : BaseSubscriptionResponse
+    public partial class SubscriptionResponseModel : BaseSubscription
     {
-        public SubscriptionPlanModel? Plan { get; set; }
+        public SubscriptionPlanModel? SubscriptionPlan { get; set; }
     }
 
 

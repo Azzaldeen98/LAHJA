@@ -307,7 +307,7 @@ namespace LAHJA.Data.UI.Templates.Profile
             var response = await builderApi.GetProfileAsync();
             if (response.Succeeded)
             {
-                var data = mapper.Map<IEnumerable<SubscriptionPlanInfo>>(response.Data.SubscriptionsPlans);
+                var data = mapper.Map<IEnumerable<SubscriptionPlanInfo>>(response.Data.Subscriptions);
                 return Result<IEnumerable<SubscriptionPlanInfo>>.Success(data);
             }
             else

@@ -1,12 +1,14 @@
 ﻿
 @page "/settings/{*Url}"
+@using MudBlazor
 @using Domain.ShareData
 @using LAHJA.Data.UI.Components.ProFileModel
 @using LAHJA.Helpers.Services
 @using LAHJA.UI.Components.ProFile.Cards
 @using LAHJA.UI.Components.ProFile.Settings
 @using LAHJA.UI.Components.ProFile.USettings
-
+@using LAHJA.UI.Templates.Subscription
+  
 @inherits ComponentBase
 @inject NavigationManager NavigationManager
 @inject LanguageService languageService
@@ -15,77 +17,85 @@
 @* <ResendConfirmationemail />   *@
 
 
-    @using MudBlazor
+
     @if(DataBuild!=null)
     {
 
-    <div style="overflow:hidden;position:relative;height:100%" class=" m-0 relative flex flex-wrap   justify-content-around align-items-start md:grid md:space-y-0 w-full md:grid-cols-12 space-y-4 md:gap-6 py-6">
+    <div style="overflow:hidden;position:relative;height:100%" class=" m-0 relative flex flex-wrap justify-content-around align-items-start md:grid md:space-y-0 w-full md:grid-cols-12 space-y-4 md:gap-6 py-6">
            
   
         <div class="nav-menu-continer-items-lg md:col-span-3 lg:col-span-3">
             <MudContainer Class="w-100" >
-            <MudContainer Class="pt-6 border px-3 border-gray-100 rounded-xl bg-gradient-to-l overflow-hidden p-0" style="background-color:none!important">
+                <MudContainer Class="pt-6 border px-3 border-gray-100 rounded-xl bg-gradient-to-l overflow-hidden p-0" style="background-color:none!important">
           
-                <UserAvaterCard Name="@data.Name" PhoneNumber="@data.Phone" ImageUrl="@data.ImageUrl" />
+                    <UserAvaterCard Name="@data.Name" PhoneNumber="@data.Phone" ImageUrl="@data.ImageUrl" />
        
-                <MudDivider Class="my-3 py-1" />
-                <MudList T="string" >
-                    @foreach (var item in NavItems)
-                    {
+                    <MudDivider Class="my-3 py-1" />
+                    <MudList T="string" >
+                        @foreach (var item in NavItems)
+                        {
                          
-                        <MudNavLink style="padding:0% !important; margin:0px !important" Icon="@item.Icon"  Href="@item.Url" Match="NavLinkMatch.All" OnClick="() => SetActiveTab(item.Url)">
-                                <MudText Typo="Typo.body2">@item.Label</MudText>
-                                @if (!string.IsNullOrEmpty(item.Badge))
-                                {
-                                    <MudText Typo="Typo.caption" Class="ml-auto mr-1.5 rounded text-xs font-semibold leading-tight bg-blue-500/10 text-blue-700 dark:text-blue-200">@item.Badge</MudText>
-                                }
-                        </MudNavLink>
+                            <MudNavLink style="padding:0% !important; margin:0px !important" Icon="@item.Icon"  Href="@item.Url" Match="NavLinkMatch.All" OnClick="() => SetActiveTab(item.Url)">
+                                    <MudText Typo="Typo.body2">@item.Label</MudText>
+                                    @if (!string.IsNullOrEmpty(item.Badge))
+                                    {
+                                        <MudText Typo="Typo.caption" Class="ml-auto mr-1.5 rounded text-xs font-semibold leading-tight bg-blue-500/10 text-blue-700 dark:text-blue-200">@item.Badge</MudText>
+                                    }
+                            </MudNavLink>
                         
-                    }
-                </MudList>
+                        }
+                    </MudList>
              
 
        
+                </MudContainer>
+                <MudContainer Class="mt-3 flex items-center gap-2 text-sm text-gray-400">
+                    Upgrade to
+                    <MudLink Href="/settings/billing/subscription#subscribe" Class="flex items-center">
+                        <MudIcon Icon="mdi-crown" Class="mr-1" />
+                        Pro
+                    </MudLink>
             </MudContainer>
-            <MudContainer Class="mt-3 flex items-center gap-2 text-sm text-gray-400">
-                Upgrade to
-                <MudLink Href="/settings/billing/subscription#subscribe" Class="flex items-center">
-                    <MudIcon Icon="mdi-crown" Class="mr-1" />
-                    Pro
-                </MudLink>
-            </MudContainer>
-        </MudContainer>
+           </MudContainer>
         </div>
 
         <div class="nav-menu-continer-items-sm w-100">
             <div class="d-flex flex-row justify-content-start align-items-start w-100" style="justify-content:end !important;">
                 <MudIconButton Icon="@Icons.Material.Filled.MoreVert" OnClick="ToggleMenu" />
             </div>
-        </div>
-        <MudMainContent Class="nav-profile-menu-continer-items-sm" style="justify-content:end !important;align-items:end !important">
-            <MudDrawer @bind-Open="@_open" Fixed="true" Elevation="0" Class="h-100" Anchor="Anchor.End" Variant="@DrawerVariant.Temporary">
-                <MudNavMenu Class="font-size-nav-v2">
+        
+            <MudMainContent Class="nav-profile-menu-continer-items-sm w-100 ">
+                <MudDrawer @bind-Open="@_open" Fixed="true" Elevation="0" Class="h-100" Anchor="Anchor.End" Variant="@DrawerVariant.Temporary">
+                    <MudNavMenu Class="font-size-nav-v2" >
 
-                    <UserAvaterCard Name="@data.Name" PhoneNumber="@data.Phone" ImageUrl="@data.ImageUrl" />
+                        <UserAvaterCard Name="@data.Name" PhoneNumber="@data.Phone" ImageUrl="@data.ImageUrl" />
+                        <MudDivider Class="my-3 py-1" />
+                        @foreach (var item in NavItems)
+                        {
+                            <MudNavLink Icon="@item.Icon" Match="NavLinkMatch.All"  OnClick="() => SetActiveTab(item.Url)">
+                                <MudText Typo="Typo.body2">@item.Label</MudText>
+                                @if (!string.IsNullOrEmpty(item.Badge))
+                                {
+                                    <MudText Typo="Typo.caption" Class="ml-auto mr-1.5 rounded text-xs font-semibold leading-tight bg-blue-500/10 text-blue-700 dark:text-blue-200">@item.Badge</MudText>
+                                }
+                            </MudNavLink>
+
+                        }
+                    </MudNavMenu>
                     <MudDivider Class="my-3 py-1" />
-                    @foreach (var item in NavItems)
-                    {
-                        <MudNavLink Icon="@item.Icon" Match="NavLinkMatch.All" OnClick="() => SetActiveTab(item.Url)">
-                            <MudText Typo="Typo.body2">@item.Label</MudText>
-                            @if (!string.IsNullOrEmpty(item.Badge))
-                            {
-                                <MudText Typo="Typo.caption" Class="ml-auto mr-1.5 rounded text-xs font-semibold leading-tight bg-blue-500/10 text-blue-700 dark:text-blue-200">@item.Badge</MudText>
-                            }
-                        </MudNavLink>
-
-                    }
-                </MudNavMenu>
-            </MudDrawer>
-        </MudMainContent>
-      
+                    <MudContainer Class="mt-3 flex items-center gap-2 text-sm text-gray-400">
+                    Upgrade to
+                    <MudLink Href="/settings/billing/subscription#subscribe" Class="flex items-center">
+                        <MudIcon Icon="mdi-crown" Class="mr-1" />
+                        Pro
+                    </MudLink>
+            </MudContainer>
+                </MudDrawer>
+            </MudMainContent>
+        </div>
         @* Container *@
-        <MudContainer style="overflow:hidden;position:relative;" Class="md:col-span-9  sm:col-span-12 lg:col-span-9 w-full border-1">
-            <MudDrawerContainer Class="mud-height-full" Style="min-height:500px">
+        <MudContainer style="overflow:hidden;position:relative;" Class="md:col-span-9  sm:col-span-12 lg:col-span-9 mt-0  border-1">
+            <MudDrawerContainer Class="mud-height-full" >
          
 
                 @*     <MudMenu Class="mr-2">
@@ -131,6 +141,7 @@
         </MudContainer>
 
     </div>
+
 }
 else
 {
@@ -232,10 +243,10 @@ else
             new NavItem { Label = GetLabel("Statistics"),Icon=@Icons.Material.Filled.QueryStats, Url = "settings/Statistics" },
             new NavItem { Label = GetLabel("Profile"),Icon=@Icons.Material.Filled.Person, Url = "settings/profile" },
             new NavItem { Label = GetLabel("Account"),Icon=@Icons.Material.Filled.ManageAccounts, Url = "settings/Account" },
-            new NavItem { Label = GetLabel("Subscriptions"),Icon=@Icons.Material.Filled.Subscriptions, Url = "settings/Subscriptions" },
+            new NavItem { Label = GetLabel("Subscriptions"),Icon=@Icons.Material.Filled.Subscriptions, Url = "settings/SubscriptionTemplate" },
+            new NavItem { Label = GetLabel("Billing"), Url = "settings/billing" },
             new NavItem { Label = GetLabel("Authentication"), Url = "settings/authentication" },
             new NavItem { Label = GetLabel("Organizations"), Url = "settings/organizations" },
-            new NavItem { Label = GetLabel("Billing"), Url = "settings/billing" },
             new NavItem { Label = GetLabel("Access Tokens"), Url = "settings/AccessTokens" },
             new NavItem { Label = GetLabel("SSH and GPG Keys"), Url = "settings/keys" },
             new NavItem { Label = GetLabel("Webhooks"), Url = "settings/webhooks" },
@@ -276,10 +287,10 @@ else
                 { "Statistics", typeof(Dashboard) },
                 { "profile", typeof(ProfileForm) },
                 { "Account", typeof(AccountTemplate) },
-                { "Subscriptions", typeof(Subscription) },
+                { "SubscriptionTemplate", typeof(SubscriptionTemplate) },
+                { "billing", typeof(BillingSection) },
                 { "authentication", typeof(AuthenticationTemplate) },
                 { "organizations", typeof(OrganizationsTemplate) },
-                { "billing", typeof(BillingSection) },
                 { "AccessTokens", typeof(AccessTokensTemplate) },
                 { "keys", typeof(SSHandGPGKeysTemplate) },
                 { "keys/addtype=ssh", typeof(KeysAddaSSHkey) },
