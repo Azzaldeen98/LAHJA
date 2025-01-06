@@ -68,6 +68,8 @@ async function queryT2S(data) {
 
 async function queryModelTextToSpeech(data) {
 
+
+  
              data = JSON.parse(data);
 
             if (!data) {
@@ -89,7 +91,34 @@ async function queryModelTextToSpeech(data) {
 
         return "222";
    
-    }
+}
+
+
+//async function queryModelTextToSpeech2(data) {
+
+//    alert(777)
+//             data = JSON.parse(data);
+
+//            if (!data) {
+//                alert("Please enter some text");
+//                return "333";
+//            }
+
+//            const audioData = await queryT2S(data);
+
+//            // Create a URL for the audio Blob
+//            const audioUrl = URL.createObjectURL(audioData);
+
+//            // Get the audio player element and set the source
+//    const audioPlayer = document.getElementById(data.TagId);
+//            audioPlayer.src = audioUrl;
+
+//            // Play the audio
+//        audioPlayer.play();
+
+//        return "222";
+   
+//    }
 
 async function queryT2S1(inputText) {
 
@@ -110,67 +139,67 @@ async function queryT2S1(inputText) {
 
 
 
-async function queryModelTextToSpeech1(inputText) {
+//async function queryModelTextToSpeech1(inputText) {
 
-    if (!inputText) {
-        alert("Please enter some text");
-        return "333";
-    }
+//    if (!inputText) {
+//        alert("Please enter some text");
+//        return "333";
+//    }
 
-    const audioData = await queryT2S1(inputText);
+//    const audioData = await queryT2S1(inputText);
 
-    // Create a URL for the audio Blob
-    const audioUrl = URL.createObjectURL(audioData);
+//    // Create a URL for the audio Blob
+//    const audioUrl = URL.createObjectURL(audioData);
 
-    // Get the audio player element and set the source
-    const audioPlayer = document.getElementById("OutputPlayerId");
-    audioPlayer.src = audioUrl;
+//    // Get the audio player element and set the source
+//    const audioPlayer = document.getElementById("OutputPlayerId");
+//    audioPlayer.src = audioUrl;
 
-    // Play the audio
-    audioPlayer.play();
+//    // Play the audio
+//    audioPlayer.play();
 
-}
-
-
-
-async function getEventIdAndData() {
-    // Make the first POST request to get the EVENT_ID
-    const response = await fetch('https://wasmdashai-lahja-ai.hf.space/call/predict', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            data: [
-                "Hello!!",
-                "wasmdashai/vits-ar-sa-huba-v1",
-                0
-            ]
-        })
-    });
-
-    // Parse the response and extract the EVENT_ID
-    const data = await response.json();
-    const eventId = data?.event_id || '';  // Extract the event ID if available
-
-    if (!eventId) {
-        console.error('EVENT_ID not found');
-        return;
-    }
-
-    // Make the second request to get the result using the EVENT_ID
-    const finalResponse = await fetch(`https://wasmdashai-lahja-ai.hf.space/call/predict/${eventId}`, {
-        method: 'GET'
-    });
-
-    // Parse and log the result
-    const result = await finalResponse.json();
-    console.log(result);
-}
+//}
 
 
 
+//async function getEventIdAndData() {
+//    // Make the first POST request to get the EVENT_ID
+//    const response = await fetch('https://wasmdashai-lahja-ai.hf.space/call/predict', {
+//        method: 'POST',
+//        headers: {
+//            'Content-Type': 'application/json',
+//        },
+//        body: JSON.stringify({
+//            data: [
+//                "Hello!!",
+//                "wasmdashai/vits-ar-sa-huba-v1",
+//                0
+//            ]
+//        })
+//    });
 
+//    // Parse the response and extract the EVENT_ID
+//    const data = await response.json();
+//    const eventId = data?.event_id || '';  // Extract the event ID if available
+
+//    if (!eventId) {
+//        console.error('EVENT_ID not found');
+//        return;
+//    }
+
+//    // Make the second request to get the result using the EVENT_ID
+//    const finalResponse = await fetch(`https://wasmdashai-lahja-ai.hf.space/call/predict/${eventId}`, {
+//        method: 'GET'
+//    });
+
+//    // Parse and log the result
+//    const result = await finalResponse.json();
+//    console.log(result);
+//}
+
+
+
+   
 
 //import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js"; // ÊÍãíá ãßÊÈÉ Gradio ãä CDN
 
@@ -338,3 +367,203 @@ async function t2t(data) {
 //        return null;
 //    }
 //}
+window.playerAudioSource = (audioUrl, audioElementId = "audioPlayer") => {
+
+    const audioElement = document.getElementById(audioElementId);
+    audioElement.src = audioUrl;
+    audioElement.play();
+}
+//function playerAudioSource(audioUrl) {
+
+//    //const audioPlayer = document.getElementById("audioPlayer");
+//    //audioPlayer.src = audioUrl;
+
+//    //// Play the audio
+//    //audioPlayer.play();
+
+//    //fetch(audioUrl)
+//    //    .then(response => {
+//    //        if (!response.ok) throw new Error("Failed to fetch audio data");
+//    //        return response.blob();
+//    //    })
+//    //    .then(blob => {
+//            //const audioUrl = URL.createObjectURL(blob);
+//            const audioElement = document.getElementById("audioPlayer");
+//            audioElement.src = audioUrl;
+//            audioElement.play();
+//        //})
+//        //.catch(error => {
+//        //    console.error("Error:", error);
+//        //});
+//}
+ function extractData(data) {
+    // Split the data based on the keyword "data:"
+    const parts = data.split('data: ');
+    
+    if (parts.length > 1) {
+       
+        const jsonData = JSON.parse(parts[1].trim());
+
+
+                            const audioUrl = jsonData[0].url;
+
+                            const audioPath = jsonData[0].path;
+                            const originalName = jsonData[0].orig_name;
+
+
+                            return {
+                                audioUrl,
+                                audioPath,
+                                originalName
+                            };
+    } else {
+        throw new Error("Data format incorrect.");
+    }
+}
+
+//function convertTextToSpeech(text2) {
+
+    ////data = JSON.parse(data);
+    //var text = "ÇáÓáÇã Úáíßã";
+    //if (!data) {
+    //    alert("Please enter some text");
+    //    return "333";
+    //}
+      
+
+    //                        // Define the payload and headers
+    //const payload = {
+    //    data:
+    //        [    text, // The text to convert to speech
+    //            "wasmdashai/vits-ar-sa-huba-v2", // Model identifier
+    //             0.6 // Speaker ID or variation
+    //        ]
+    //};
+
+    //const headers = {
+    //     "Content-Type": "application/json"
+    //};
+
+    //                        // Step 1: Send the POST request
+    //      fetch("https://wasmdashai-runtasking.hf.space/call/predict", {
+    //                         method: "POST",
+    //                        headers: headers,
+    //                        body: JSON.stringify(payload)
+    //        }) .then(response => response.json())
+    //            .then(data => {
+    //                // Extract the EVENT_ID from the response
+    //                const eventId = data.event_id; // Assuming the response format contains event ID here
+    //                        console.log("Event ID:", eventId);
+
+    //                        // Step 2: Use the EVENT_ID in the next request to fetch the audio file
+    //                        return fetch(https://wasmdashai-runtasking.hf.space/call/predict/${eventId}, {
+    //                            method: "GET"
+    //                });
+    //            })
+    //            .then(response => {
+    //                if (!response.ok) {
+    //                    throw new Error("Failed to fetch audio data");
+    //                }
+    //                        // Parse the audio data as a Blob
+    //                        return response.text();
+    //            })
+    //            .then(blob => {
+    //                // Convert Blob to Object URL
+    //                const extractedData = extractData(blob);
+    //                        console.log(extractedData)
+
+    //                        console.log("Event ID:",extractedData.audioUrl );
+
+    //                        // Set the audio source to the Blob URL and play
+    //                const audioElement = document.getElementById("audioPlayer");
+    //                        audioElement.src ='https://wasmdashai-runtasking.hf.space/file='+extractedData.audioPath;
+    //                        audioElement.play();
+    //            })
+    //            .catch(error => {
+    //                            console.error("Error:", error);
+    //            });
+
+    //            return "222"
+    //    }
+
+
+
+function convertTextToSpeech() {
+
+
+    alert("convertTextToSpeech")
+
+ 
+    const text = "ÇáÓáÇã Úáíßã"; // ÇáäÕ ÇáÇÝÊÑÇÖí
+    if (!text) {
+        alert("Please enter some text");
+        return "Input is required.";
+    }
+
+    // ÅÚÏÇÏ ÇáÈíÇäÇÊ ÇááÇÒãÉ
+    const payload = {
+        data: [
+            text, // ÇáäÕ ÇáãÏÎá
+            "wasmdashai/vits-ar-sa-huba-v2", // ãÚÑÝ ÇáäãæÐÌ
+            0.6 // ID ÇáãÊÍÏË Ãæ ÇáÊäæíÚ
+        ]
+    };
+
+    const headers = {
+        "Content-Type": "application/json"
+    };
+
+    // ÇáÎØæÉ 1: ÅÑÓÇá ÇáØáÈ ÇáÃæá
+    fetch("https://wasmdashai-runtasking.hf.space/call/predict", {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(payload)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to send POST request");
+            }
+            return response.json();
+        })
+        .then(data => {
+            const eventId = data.event_id; // ÇÓÊÎÑÇÌ event_id ãä ÇáÇÓÊÌÇÈÉ
+            console.log("Event ID:", eventId);
+
+            // ÇáÎØæÉ 2: ÅÑÓÇá ÇáØáÈ ÇáËÇäí ááÍÕæá Úáì ÇáãáÝ ÇáÕæÊí
+            return fetch(`https://wasmdashai-runtasking.hf.space/call/predict/${eventId}`, {
+                method: "GET"
+            });
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to fetch audio data");
+            }
+            return response.json(); // ÊÍæíá ÇáÇÓÊÌÇÈÉ Åáì JSON
+        })
+        .then(data => {
+
+            console.log("dataL:", data);
+            // ÇáÊÃßÏ ãä ÇáÈíÇäÇÊ ÇáãÓÊáãÉ
+            const audioUrl = data.audioPath; // ÊÃßÏ ãä ÊäÓíÞ ÇáÈíÇäÇÊ Ýí ÇáÇÓÊÌÇÈÉ
+            if (!audioUrl) {
+                throw new Error("Audio URL not found in response");
+            }
+
+        
+            console.log("Audio URL:", audioUrl);
+
+            // ÊÔÛíá ÇáãáÝ ÇáÕæÊí
+            const audioElement = document.getElementById("audioPlayer");
+            if (audioElement) {
+                audioElement.src = `https://wasmdashai-runtasking.hf.space/file=${audioUrl}`;
+                audioElement.play();
+            } else {
+                console.error("Audio element not found in the DOM");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+
+    return "222";
+}

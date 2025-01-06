@@ -1,4 +1,5 @@
 ﻿@page "/Login"
+@using LAHAJ.Loading
 @using LAHJA.ApplicationLayer.Auth
 @using LAHJA.UI.Templates.Auth
 @using LAHJA.VitsModel.Auth
@@ -19,7 +20,7 @@
 
         if (isAuth)
         {
-            <LoaderComponent ViewProgress="true" />
+            <Loading IsLoading="true" />
         }
         else
         {
@@ -30,7 +31,8 @@
     }
     else
     {
-        <LoaderComponent ViewProgress="true" />
+        <Loading IsLoading="true" />
+      
 
     }
 

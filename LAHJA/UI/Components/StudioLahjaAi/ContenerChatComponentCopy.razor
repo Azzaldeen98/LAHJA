@@ -106,7 +106,8 @@
                             </NestedList>
                         </MudListItem>
                         <MudDivider />
-                        <MudListItem Text="@GetText("Models")" @bind-Expanded="_expandedModelRelease">
+                        <MudListItem Text="@GetText("Models")"> 
+                            @* @bind-Expanded="_expandedModelRelease"> *@
                             <NestedList>
                                 @if (selectedModelsReleases != null && selectedModelsReleases?.Count() > 0)
                                 {

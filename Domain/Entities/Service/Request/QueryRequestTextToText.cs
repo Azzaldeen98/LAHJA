@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.Service.Request
 {
-    public class QueryRequestTextToText : AiModelBase
+    public class QueryRequestTextToText2 : AiModelBase
     {
 
     }

@@ -1,5 +1,6 @@
 ﻿
 @using Domain.ShareData
+@using LAHAJ.Loading
 @using LAHJA.UI.Components.Category
 @using LAHJA.UI.Components.Plan
 @using LAHJA.UI.Templates.Plans
@@ -9,19 +10,39 @@
 
 @inject LAHJA.Data.UI.Templates.Plans.TemplatePlans Template
 
-@if (Template != null)
+
+
+@if (isLoading)
+
 {
 
-    <MainCategory    DataBuild="Template.Categories" OnSubmit="Template.BuilderComponents.SubmitContainerPlans" />
+    <Loading IsLoading="isLoading" />
+
+}
+
+else
+{
 
 
-    @if (Template.SubscriptionPlans != null && Template.SubscriptionPlans.Count()>0)
 
+    @if (Template != null)
     {
 
-        <MainPlan DataBuilds="Template.SubscriptionPlans" IsDialog="true"  OnSubmit="Template.BuilderComponents.SubmitSubscriptionPlan" />
+        <MainCategory  DataBuild="Template.Categories" OnSubmit="Template.BuilderComponents.SubmitContainerPlans" />
+
+        @if (Template.SubscriptionPlans != null && Template.SubscriptionPlans.Count() > 0)
+        {
+
+            <MainPlan DataBuilds="Template.SubscriptionPlans" IsDialog="true"  OnSubmit="Template.BuilderComponents.SubmitSubscriptionPlan" />
+
+
+
+        }
+
 
     }
+
+
 }
 
  
@@ -31,6 +52,7 @@
 
 
 
+    private bool isLoading = true;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -46,8 +68,7 @@
 
             await Template.OnInitialize();
 
-
-
+            isLoading = false;
             StateHasChanged();
 
         }

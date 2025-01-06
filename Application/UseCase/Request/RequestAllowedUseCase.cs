@@ -15,6 +15,7 @@ namespace Application.UseCase.Request
 
         public async Task<Result<RequestResponse>> ExecuteAsync(string serviceId)
         {
+
             return await repository.RequestAllowedAsync(serviceId);
         }
     }

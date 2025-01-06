@@ -9,50 +9,111 @@ namespace Infrastructure.DataSource.Seeds
 {
     public class SeedsPlansContainers
     {
+        List<Service> ServicesAR = new List<Service>
+        {
+            new Service
+            {
+                Id = "1",
+                Name = "تحويل النص إلى صوت",
+                Description = "تحويل النصوص المكتوبة إلى صوت باستخدام تقنيات الذكاء الاصطناعي المتقدمة.",
+                Active = true,
+                Image = "/chatbot-03.png",
+                Price = 50.0m,
+                Amount = 100.0m,
+                Token = "TOKEN123",
+                NumberRequests = 1000,
+                NumberOfRequestsUsed = 0
+            },
+            new Service
+            {
+                Id = "2",
+                Name = "تحويل النص إلى لهجة",
+                Description = "تحويل النص إلى لهجة محددة بدقة عالية.",
+                Active = true,
+                Image = "/chatbot-03.png",
+                Price = 30.0m,
+                Amount = 50.0m,
+                Token = "TOKEN456",
+                NumberRequests = 500,
+                NumberOfRequestsUsed = 0
+            },
+            new Service
+            {
+                Id = "3",
+                Name = "روبوت تفاعلي (API)",
+                Description = "دمج روبوت تفاعلي من خلال API للعديد من المهام.",
+                Active = true,
+                Image = "/chatbot-03.png",
+                Price = 100.0m,
+                Amount = 200.0m,
+                Token = "TOKEN789",
+                NumberRequests = 2000,
+                NumberOfRequestsUsed = 0
+            }
+        };
+        List<Service> ServicesEN = new List<Service>
+{
+    new Service
+    {
+        Id = "1",
+        Name = "Text-to-Speech Conversion",
+        Description = "Convert written text into speech using advanced artificial intelligence technologies.",
+        Active = true,
+        Image = "/chatbot-03.png",
+        Price = 50.0m,
+        Amount = 100.0m,
+        Token = "TOKEN123",
+        NumberRequests = 1000,
+        NumberOfRequestsUsed = 0
+    },
+    new Service
+    {
+        Id = "2",
+        Name = "Text-to-Dialect Conversion",
+        Description = "Convert text into a specific dialect with high precision.",
+        Active = true,
+        Image = "/chatbot-03.png",
+        Price = 30.0m,
+        Amount = 50.0m,
+        Token = "TOKEN456",
+        NumberRequests = 500,
+        NumberOfRequestsUsed = 0
+    },
+    new Service
+    {
+        Id = "3",
+        Name = "Interactive Bot (API)",
+        Description = "Integrate an interactive bot via API for various tasks.",
+        Active = true,
+        Image = "/chatbot-03.png",
+        Price = 100.0m,
+        Amount = 200.0m,
+        Token = "TOKEN789",
+        NumberRequests = 2000,
+        NumberOfRequestsUsed = 0
+    }
+};
 
-      public string Language { get; set; } = "ar";
-      private static List<ContainerPlansModel> db= new List<ContainerPlansModel>();
-      public static List<PlansContainerModel> Data = new List<PlansContainerModel>{
-                new PlansContainerModel
-                {
-                    Id = "1",
-                    Name = "Basic Plan",
-                    Description = "This is a basic plan with minimal features.",
-                    Price = 19.99m,
-                    ImageUrl = "/ai-hand.png",
+        public static List<Service> dbServices = new List<Service>();
+        public string Language { get; set; } = "ar";
+        private static List<ContainerPlansModel> db= new List<ContainerPlansModel>();
 
-                },
-                new PlansContainerModel
-                {
-                    Id = "2",
-                    Name = "Standard Plan",
-                    Description = "This is a standard plan with more features.",
-                    Price = 49.99m,
-                    ImageUrl = "/ai-hand.png",
-
-                },
-                new PlansContainerModel
-                {
-                    Id = "3",
-                    Name = "Premium Plan",
-                    Description = "This is a premium plan with all features.",
-                    Price = 99.99m,
-                    ImageUrl = "/ai-hand.png",
-
-
-                }
-         };
 
 
         public SeedsPlansContainers()
         {
 
             db =(Language=="ar")? SeedsPlansContainersAR(): SeedsPlansContainersEN();
+            dbServices = (Language == "ar") ? ServicesAR : ServicesEN;
             //db = SeedsPlansContainersEN();
-        
 
 
-         }
+
+        }
+        public   List<Service> GetServices()
+        {
+           return dbServices = (Language == "ar") ? ServicesAR : ServicesEN;
+        }
 
         public List<ContainerPlansModel> SeedsPlansContainersEN()
         {
@@ -297,6 +358,7 @@ namespace Infrastructure.DataSource.Seeds
                         MonthlyPrice = 0m,
                         AnnualPrice = 0m,
                         WeeklyPrice = 0m,
+                        Services =new List<Domain.ShareData.Base.Service>{ ServicesEN[0] },
                         Features = new List<PlanFeatureModel>
                         {
                             new PlanFeatureModel { Id = "1", Name = "AI Models", Description = "3", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 0m, Active = true },
@@ -328,6 +390,7 @@ namespace Infrastructure.DataSource.Seeds
                         MonthlyPrice = 29.99m,
                         AnnualPrice = 299.99m,
                         WeeklyPrice = 7.49m,
+                            Services =new List<Domain.ShareData.Base.Service>{ ServicesEN[0], ServicesEN[1] },
                         Features = new List<PlanFeatureModel>
                         {
                             new PlanFeatureModel { Id = "1", Name = "AI Models", Description = "3", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 9.99m, Active = true },
@@ -360,6 +423,7 @@ namespace Infrastructure.DataSource.Seeds
                         MonthlyPrice = 49.99m,
                         AnnualPrice = 499.99m,
                         WeeklyPrice = 12.49m,
+                           Services =new List<Domain.ShareData.Base.Service>{ ServicesEN[2], ServicesEN[1] },
                         Features = new List<PlanFeatureModel>
                         {
                             new PlanFeatureModel { Id = "1", Name = "AI Models", Description = "12", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 9.99m, Active = true },
@@ -392,6 +456,7 @@ namespace Infrastructure.DataSource.Seeds
                         MonthlyPrice = 99.99m,
                         AnnualPrice = 999.99m,
                         WeeklyPrice = 24.99m,
+                           Services =new List<Domain.ShareData.Base.Service>{ ServicesEN[1], ServicesEN[0] },
                         Features = new List<PlanFeatureModel>
                         {
                             new PlanFeatureModel { Id = "1", Name = "AI Models", Description = "12", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 9.99m, Active = true },
@@ -434,8 +499,7 @@ namespace Infrastructure.DataSource.Seeds
                         MonthlyPrice = 0m,
                         AnnualPrice = 0m,
                         WeeklyPrice = 0m,
-                        //Services =new List<PlanFeatureModel>{
-                        //},
+                          Services =new List<Domain.ShareData.Base.Service>{ ServicesAR[0] },
                         Features = new List<PlanFeatureModel>
                         {
                             new PlanFeatureModel { Id = "1", Name = "عدد النماذج AI", Description = "3", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 0m, Active = true },
@@ -468,6 +532,7 @@ namespace Infrastructure.DataSource.Seeds
                         MonthlyPrice = 29.99m,
                         AnnualPrice = 299.99m,
                         WeeklyPrice = 7.49m,
+                           Services =new List<Domain.ShareData.Base.Service>{ ServicesAR[0], ServicesAR[1] },
                         Features = new List<PlanFeatureModel>
                         {
                             new PlanFeatureModel { Id = "1", Name = "عدد النماذج AI", Description = "3", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 9.99m, Active = true },
@@ -500,6 +565,7 @@ namespace Infrastructure.DataSource.Seeds
                         MonthlyPrice = 49.99m,
                         AnnualPrice = 499.99m,
                         WeeklyPrice = 12.49m,
+                          Services =new List<Domain.ShareData.Base.Service>{ ServicesAR[2], ServicesAR[1] },
                         Features = new List<PlanFeatureModel>
                         {
                             new PlanFeatureModel { Id = "1", Name = "عدد النماذج AI", Description = "12", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 9.99m, Active = true },
@@ -532,6 +598,7 @@ namespace Infrastructure.DataSource.Seeds
         MonthlyPrice = 99.99m,
         AnnualPrice = 999.99m,
         WeeklyPrice = 24.99m,
+         Services =new List<Domain.ShareData.Base.Service>{ ServicesAR[1], ServicesAR[0] },
         Features = new List<PlanFeatureModel>
         {
             new PlanFeatureModel { Id = "1", Name = "عدد النماذج AI", Description = "12", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 9.99m, Active = true },

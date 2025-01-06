@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Domain.ShareData
+@using LAHAJ.Loading
 @using LAHJA.Helpers.Services
 @using LAHJA.UI.Components
 @using LAHJA.UI.Components.FAQ
@@ -10,9 +11,15 @@
 @using LAHJA.UI.Templates.CategoriesPlan
 @using LAHJA.UI.Templates.Plans
 
- @inject LanguageService languageService
- @inject IManageLanguageService _manageLanguageService
+@inject NavigationManager navigation;
+@inject LanguageService languageService
+@inject IManageLanguageService _manageLanguageService
 
+@if (isLoading)
+{
+    <Loading IsLoading="isLoading" />
+
+}else{
 
 <CardStart />
 <CardShowExperience  />
@@ -26,7 +33,7 @@
 
 
 
-<div class="d-flex flex-column justify-content-center align-items-center" style="padding:5% !important">
+<div class="d-flex flex-column justify-content-center align-items-center" style="padding:5% !important ;background:linear-gradient(90deg, rgba(240, 150, 255, 0.15) 0%, rgba(191, 200, 252, 0.15) 51%, rgba(187, 148, 255, 0.15) 100%);">
     <MudText Typo="Typo.h3">
         @GetTranslation("OurServices")
     </MudText>
@@ -62,11 +69,16 @@
 
 
 <Footer />
+}
 @code {
+
+
 
     // A dictionary to store translations for both Arabic and English
 
 
+
+    private bool isLoading = true;
 
     private static readonly Dictionary<string, Dictionary<string, string>> Translations = new()
 
@@ -116,8 +128,6 @@
     protected override void OnInitialized()
     {
 
-  
-
         languageService.OnLanguageChanged += UpdateContent;
 
     }
@@ -126,13 +136,13 @@
     {
         if (firstRender)
         {
-                CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+            CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
 
-                InvokeAsync(StateHasChanged);
+            isLoading = false;
+            InvokeAsync(StateHasChanged);
 
         }
-
-
+     
 
     }
     protected async void UpdateContent(string currentLangCode)

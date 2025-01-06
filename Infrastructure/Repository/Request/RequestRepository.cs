@@ -95,7 +95,7 @@ namespace Infrastructure.Repository.Subscription
                               if (email == null)
                                   return Result<bool>.Fail();
                               
-                              seedsSubscriptionsData.CreateRequest(email);
+                              seedsSubscriptionsData.CreateRequest(email, request.ServiceId);
                               return Result<bool>.Success();
                           }
                       }
@@ -129,7 +129,7 @@ namespace Infrastructure.Repository.Subscription
                               if (email == null)
                                   return Result<RequestAllowedModel>.Fail();
 
-                              seedsSubscriptionsData.CreateRequest(email);
+                              seedsSubscriptionsData.CreateRequest(email, request.ServiceId);
                               return Result<RequestAllowedModel>.Success();
                           }
                       }
@@ -163,7 +163,8 @@ namespace Infrastructure.Repository.Subscription
                               if (email == null)
                                   return Result<bool>.Fail();
 
-                              seedsSubscriptionsData.CreateRequest(email);
+                             var flag= seedsSubscriptionsData.CreateRequest(email,request.ServiceId);
+                              if(flag)
                               return Result<bool>.Success();
                           }
                       }
@@ -197,7 +198,7 @@ namespace Infrastructure.Repository.Subscription
                                if (email == null)
                                    return Result<RequestResponse>.Fail();
 
-                               seedsSubscriptionsData.CreateRequest(email);
+                               seedsSubscriptionsData.CreateRequest(email, serviceId);
                                return Result<RequestResponse>.Success();
                            }
                        }
@@ -215,14 +216,14 @@ namespace Infrastructure.Repository.Subscription
             }
         }
 
-        public Task<Result<EventResponse>> CreateEventAsync(EventRequest request)
+        public async Task<Result<EventResponse>> CreateEventAsync(EventRequest request)
         {
-            throw new NotImplementedException();
+            return Result<EventResponse>.Success();
         }
 
-        public Task<Result<ServiceResponse>> ResultRequestAsync(ResultRequest request)
+        public async Task<Result<ServiceResponse>> ResultRequestAsync(ResultRequest request)
         {
-            throw new NotImplementedException();
+            return Result<ServiceResponse>.Success();
         }
     }
 }

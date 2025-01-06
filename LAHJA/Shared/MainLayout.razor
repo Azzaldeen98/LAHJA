@@ -1,4 +1,5 @@
 ﻿@using Domain.ShareData
+@using LAHAJ.Loading
 @using LAHJA.Data.UI.Components.Base
 @using LAHJA.Them
 @using LAHJA.UI.Components.Auth
@@ -35,8 +36,9 @@
 <MudLayout>
     <MudAppBar   Elevation="_themeManager.AppBarElevation" style="@((_isDarkMode?"":"background:#fff")+";" )" class="navbar-light">
 
-
+            @if(_isAuth){
             <MudIconButton Class="mx-3 nav-menu-continer-items-lg"  Icon="@Icons.Material.Filled.Menu" Size="Size.Medium" Style="@("color:" + iconfill + "!important;")" Edge="Edge.Start" OnClick="@((e) => DrawerToggle(false))" />
+            }
             <MudIconButton Class="mx-3 nav-menu-continer-items-sm" Icon="@Icons.Material.Filled.Menu" Size="Size.Medium" Style="@("color:" + iconfill + "!important;")" Edge="Edge.Start" OnClick="@((e) => DrawerToggle(true))" />
 
             <span style="direction:ltr !important;" class="d-flex justify-content-center  align-items-center w-100">
@@ -124,7 +126,7 @@
     </MudDrawer>
     }
     <MudMainContent>
-        
+        <Loading IsLoading="isLoading" />
             @Body
        
     </MudMainContent>
@@ -138,11 +140,13 @@
 
 @code {
 
+    private bool isLoading = false;
+
     private bool isMobile;
     private bool isHome=false;
     protected override async void OnInitialized()
     {
-       
+
     }
     private void OnMobileMatch(bool match)
     {
@@ -160,7 +164,7 @@
     private bool _isDarkMode;
     private bool _drawerOpen = false;
 
-    bool _isauth = false;
+    bool _isAuth = false;
 
     private bool flagauth = true;
 
@@ -245,7 +249,7 @@
             iconfill = "#000";
         }
         StateHasChanged();
-       
+
     }
     private string iconfill = "#fff";
     private void UpdateTheme(ThemeManagerTheme value)
@@ -269,14 +273,15 @@
 
 
     async void logout(bool isauth)
-
     {
-
+        isLoading=true;
+        StateHasChanged();
 
         flagauth = isauth;
         await pass.DeleteAsync("accessToken");
         StateHasChanged();
         Task.FromResult(templateAuth.LogoutAsync());
+        isLoading = false;
         StateHasChanged();
         // await templateAuth.LogoutAsync();
         // 
@@ -285,7 +290,7 @@
         // templateAuth.BuilderComponents.
 
 
-        // loginOrlogout(_isauth);
+        // loginOrlogout(_isAuth);
         // NavigationManager.NavigateTo("/Login", forceLoad: true);
 
 
@@ -298,16 +303,12 @@
         {
             if (firstRender)
             {
-                CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
-                _rightToLeft = CurrentLanguage == LanguagesCode.AR.ToString().ToLower();
-                StateHasChanged();
-                _isDarkMode = await _mudThemeProvider.GetSystemPreference();
-                StateHasChanged();
+
                 tokenn = await _tokenService.GetTokenAsync();
-         
+
                 if (!string.IsNullOrEmpty(tokenn))
                 {
-
+                    _isAuth = true;
                     await pass.SetAsync("accessToken", tokenn);
                     flagauth = false;
                 }
@@ -317,7 +318,14 @@
                     await pass.SetAsync("accessToken", "$$$$$");
 
                 }
-           
+
+
+                CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+                _rightToLeft = CurrentLanguage == LanguagesCode.AR.ToString().ToLower();
+                StateHasChanged();
+                _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+                StateHasChanged();
+               
                 if (_isDarkMode)
                 {
                     iconfill = "#fff";

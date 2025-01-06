@@ -16,6 +16,7 @@ namespace Application.UseCase.Request
 
         public async Task<Result<ServiceResponse>> ExecuteAsync(ResultRequest request)
         {
+
             return await repository.ResultRequestAsync(request);
         }
     }

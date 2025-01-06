@@ -2,6 +2,7 @@
 @using LAHJA.ApiClient.Services.Query
 @using LAHJA.ApiClient.Services.VoiceBot
 @using LAHJA.Data.UI.Models
+@using LAHJA.Data.UI.Templates.Services
 @using LAHJA.Them
  @using MudBlazor
  @using LAHJA.Data.UI.Components.ServiceCard
@@ -10,6 +11,10 @@
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
 @inject IQueryTextToSpeechService _queryTextToSpeechService
+@inject TemplateServices _TemplateServices;
+@inject ISnackbar Snackbar;
+
+
 
 <style>
 
@@ -320,14 +325,16 @@
             {
                 isAudioPlayingIsEnd = true;
                 StateHasChanged();
-                var request = new QueryRequestTextToSpeech { Data = textSpeech, TagId = "audioPlayer", Url = "https://api-inference.huggingface.co/models/wasmdashai/" + ModelId };
-                var response = await _queryTextToSpeechService.TextToSpeechAsync(request);
+                // var request = new QueryRequestTextToSpeech { Data = textSpeech, TagId = "audioPlayer", Url = "https:api-inference.huggingface.co/models/wasmdashai/" + ModelId };
+                // var response = await _queryTextToSpeechService.TextToSpeechAsync(request);
+                var response = await _TemplateServices.Text2Speech(new DataBuildServiceBase { Text = textSpeech, ServiceId = "2",Method="POST", TagId = "audioPlayer", URL =  "https://api-inference.huggingface.co/models/wasmdashai/" + ModelId });
                 if (response.Succeeded)
                 {
-
+                    _processing = false;
                 }
                 else
                 {
+                    Snackbar.Add("·«ÌÊÃœ ·œÌﬂ —’Ìœ ﬂ«›Ì „‰ «·ÿ·»« ", Severity.Warning);
                     _processing = false;
                 }
             }

@@ -149,8 +149,10 @@ namespace LAHJA.Mappings
             
             
                CreateMap< DataBuildServiceBase, Data.UI.Models.QueryRequestTextToText>()
-                //.ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text))
+                .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Text))
                 .ReverseMap();  
+            
+   
             
              CreateMap<RequestResponse, Data.UI.Models.QueryRequestTextToText>()
                 .ForMember(dest => dest.Key, opt => opt.MapFrom(src => src.Token))
@@ -160,8 +162,8 @@ namespace LAHJA.Mappings
                 //.ForMember(dest => dest.Key, opt => opt.MapFrom(src => src.Token))/
                 .ReverseMap();   
             
-                CreateMap< DataBuildServiceBase, Data.UI.Models.QueryRequestTextToSpeech>()
-                //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Image))
+                CreateMap<DataBuildServiceBase, Data.UI.Models.QueryRequestTextToSpeech>()
+                .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Text))
                 .ReverseMap();
             
                CreateMap<DataBuildServiceBase, RequestCreate>()

@@ -21,15 +21,25 @@
 
 @if (templatePayment != null && templateCreditCard!=null  )
 {
-    <PaymentComponts BuildPlanData="buildPlanData" BuildBillingData="buildBillingData" SubmitPayment="onSubmitPaymentCheckOut" BuildCreditCardData="buildCreditCardData" OnSelect="onSubmitActiveCreditCard" />
-    
+        @if (isLoading)
+        {
+
+            <Loading IsLoading="isLoading" />
+
+        }
+
+        else
+        {
+
+            <PaymentComponts BuildPlanData="buildPlanData" BuildBillingData="buildBillingData" SubmitPayment="onSubmitPaymentCheckOut" BuildCreditCardData="buildCreditCardData" OnSelect="onSubmitActiveCreditCard" />
+        }
 }
 
 
 @code{
 
     [Parameter] public string planId { get; set; }
-
+    private bool isLoading = true;
     private SubscriptionPlanInfo buildPlanData;
     private DataBuildBillingBase? buildBillingData;
     private List<CardDetails>? buildCreditCardData;
@@ -47,7 +57,11 @@
                     await initializePlanAsync();
                     await initializeBillingDetailsAsync();
                     await initializeCreditCardDetailsAsync();
+
                 }
+
+                isLoading = false;
+                StateHasChanged();
             }
         }
 

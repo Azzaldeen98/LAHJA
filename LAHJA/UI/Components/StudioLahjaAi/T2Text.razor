@@ -11,6 +11,7 @@
 @inject LAHJA.ApiClient.Services.IT2TService _T2TService
 @inject IQueryTextToSpeechService _queryTextToSpeechService
 @inject TemplateServices _TemplateServices;
+@inject ISnackbar Snackbar;
 
 @* <MudCard Elevation="25" Class="rounded-lg pb-4 ">
 
@@ -287,16 +288,20 @@
 
 
 
-                await _TemplateServices.BuilderComponents.SubmitText2Text(new DataBuildServiceBase { Text = textSpeech });
+                var resService = await _TemplateServices.Text2Text(new DataBuildServiceBase { Text = textSpeech, ServiceId = "1" });
                 // _processing = _TemplateServices.IsEndProcessing;
-                StateHasChanged();
-                 if (!string.IsNullOrWhiteSpace(_TemplateServices.Response))
+                // StateHasChanged();
+                if (resService.Succeeded)
+                {
+
+                    var text = resService.Data.Result;
+                    if (!string.IsNullOrWhiteSpace(text))
                     {
-                        addTextToChatMessage(_TemplateServices.Response, "#eeeeee");
+                        // addTextToChatMessage(text, "#eeeeee");
 
                         var msg = new ChatMessage
                             {
-                                Content = _TemplateServices.Response,
+                                Content = text,
                                 IsUser = "System",
                                 BubbleColor = ""
                             };
@@ -308,6 +313,14 @@
                         _processing = false;
 
                     }
+                }
+                else
+                {
+                    Snackbar.Add("·«ÌÊÃœ ·œÌﬂ —’Ìœ ﬂ«›Ì „‰ «·ÿ·»« ", Severity.Warning);
+                    _processing = false; // Snackbar.Add(resService.Messages?[0] ?? "null", Severity.Warning);
+                }
+
+       
                 StateHasChanged();
                 // var response = await _T2TService.T2TAsync(new QueryRequestTextToText { Text = textSpeech });
 

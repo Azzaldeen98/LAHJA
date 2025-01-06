@@ -16,6 +16,7 @@ namespace Application.UseCase.Request
 
         public async Task<Result<EventResponse>> ExecuteAsync(EventRequest request)
         {
+            //return Result<EventResponse>.Success();
             return await repository.CreateEventAsync(request);
         }
     }

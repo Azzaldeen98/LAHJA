@@ -1,5 +1,4 @@
-﻿@inject NavigationManager Navigation;
-
+﻿@inject NavigationManager Navigation
 
         <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="200px" />
         <MudCardContent>
@@ -13,7 +12,7 @@
         </MudCardActions>
         <MudOverlay Visible="true" DarkBackground="true" Absolute="true">
             <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
-        </MudOverlay>
+        </MudOverlay> 
 
 
 @code {
@@ -26,10 +25,10 @@
     }
     bool _viewProgress = true;
   
-    // protected override async Task OnInitializedAsync()
-    // {
-    //   await  Task.Delay(100);
-    // }
+    protected override async Task OnInitializedAsync()
+    {
+      await  Task.Delay(2000);
+    }
  
 
 

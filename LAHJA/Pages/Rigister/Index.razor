@@ -1,5 +1,6 @@
 ﻿@page "/Rigist"
 
+@using LAHAJ.Loading
 @using LAHJA.UI.Templates.Auth
 @inherits BaseInitializationComponent
 @using LAHJA.UI.Components
@@ -12,7 +13,7 @@
 
         if (isAuth)
         {
-            <LoaderComponent ViewProgress="true" />
+            <Loading IsLoading="true" />
         }
         else
         {
@@ -23,7 +24,8 @@
     }
     else
     {
-        <LoaderComponent ViewProgress="true" />
+        <Loading IsLoading="true" />
+      
 
     }
 

@@ -24,7 +24,7 @@ namespace LAHJA.Data.UI.Models
         public string Method { get; set; } = "POST";
 
         [JsonPropertyName("Data")]
-        public string Data { get; set; } = "السلام عليكم ورحمة الله";
+        public string Data { get; set; } 
 
         [JsonPropertyName("TagId")]
         public string TagId { get; set; } = "LAHJAAudioPlayerId";

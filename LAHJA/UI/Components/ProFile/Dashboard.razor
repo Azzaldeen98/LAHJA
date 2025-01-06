@@ -1,8 +1,9 @@
 ﻿@using LAHJA.UI.Components.ProFile.Charts
+@using LAHJA.UI.Components.Statistics
 <div class="d-flex p-2 flex-wrap justify-content-around align-items-start">
 
-
-    <div class="mt-4" />
+    <MainPieChart />
+    @* < div class="mt-4" />
     <LineChart />
 
     <div class="mt-5" />
@@ -16,9 +17,9 @@
     <MudPaper Class="pa-4">
         <MudChart ChartType="ChartType.Pie" InputData="@ValuesRequest" @bind-SelectedIndex="Index"
                   InputLabels="@labels" Width="300px" Height="300px" />
-    </MudPaper>
-  
-</div>
+    </MudPaper>*@
+   
+</div>  
 
 
 

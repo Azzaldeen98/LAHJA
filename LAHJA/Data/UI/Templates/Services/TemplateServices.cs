@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using ApexCharts;
+using AutoMapper;
 using Domain.Entities.Event.Request;
 using Domain.Entities.Event.Response;
 using Domain.Entities.Request.Request;
@@ -6,17 +7,17 @@ using Domain.Entities.Request.Response;
 using Domain.Entities.Service.Request;
 using Domain.Entities.Service.Response;
 using Domain.ShareData.Base;
-using Domain.ShareData.Base.Request;
 using Domain.Wrapper;
 using LAHJA.ApiClient.Models;
 using LAHJA.ApplicationLayer.Request;
 using LAHJA.ApplicationLayer.Service;
 using LAHJA.ApplicationLayer.Subscription;
+using LAHJA.Data.UI.Models;
 using LAHJA.Data.UI.Templates.Base;
 using LAHJA.Helpers.Services;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using MudBlazor.Interfaces;
+
 
 
 namespace LAHJA.Data.UI.Templates.Services
@@ -166,15 +167,18 @@ namespace LAHJA.Data.UI.Templates.Services
             var res = await requestClientService.CreateRequestAsync(mapReq);
             if(res.Succeeded)
             {
-                var req = new Data.UI.Models.QueryRequestTextToText { Text = data.Text };
+                var req = new QueryRequestTextToText { Text = data.Text };
                 //req.URL += data.ModelAi;
-                var map = Mapper.Map<Data.UI.Models.QueryRequestTextToText>(req);
+                //var map = Mapper.Map<Data.UI.Models.QueryRequestTextToText>(data);
+                //map.Key = "AIzaSyC85_3TKmiXtOpwybhSFThZdF1nGKlxU5c"; 
+                //map.Method = "AIzaSyC85_3TKmiXtOpwybhSFThZdF1nGKlxU5c"; 
                 var servRes= await Service.Text2TextAsync(req);
                 if (servRes.Succeeded)
                 {
                     var _event = Mapper.Map<EventRequest>(res.Data);
                     _event.RequestId = res.Data.Id;
                     await requestClientService.CreateEventAsync(_event);
+                    return Result<ServiceAIResponse>.Success(servRes.Data);
                 }
                 else
                 {
@@ -187,24 +191,85 @@ namespace LAHJA.Data.UI.Templates.Services
             }
             else
             {
+          
                 return Result<ServiceAIResponse>.Fail("لايوجد لديك رصيد كافي من الطلبات");
    
             }
 
-            return Result<ServiceAIResponse>.Fail("Finished Request!!");
+       
 
         }
 
         public override async Task<Result<ServiceAIResponse>> Text2Speech(DataBuildServiceBase data)
         {
-            var map = Mapper.Map<Models.QueryRequestTextToSpeech>(data);
-            return await Service.Text2SpeechAsync(map);
+            //var map = Mapper.Map<Models.QueryRequestTextToSpeech>(data);
+            //return await Service.Text2SpeechAsync(map);
+
+            var mapReq = Mapper.Map<RequestCreate>(data);
+            var res = await requestClientService.CreateRequestAsync(mapReq);
+            if (res.Succeeded)
+            {
+                //var req = new Data.UI.Models.QueryRequestTextToSpeech { Data = data.Text ,TagId=data.TagId,U};
+                //req.URL += data.ModelAi;
+                var map = Mapper.Map<Data.UI.Models.QueryRequestTextToSpeech>(data);
+                //map.Headers = new QueryRequestTextToSpeechHeader();
+                var servRes = await Service.Text2SpeechAsync(map);
+                if (servRes.Succeeded)
+                {
+                    var _event = Mapper.Map<EventRequest>(res.Data);
+                    _event.RequestId = res.Data.Id;
+                    await requestClientService.CreateEventAsync(_event);
+                    return Result<ServiceAIResponse>.Success(servRes.Data);
+                }
+                else
+                {
+                    var _event = Mapper.Map<EventRequest>(res);
+                    _event.RequestId = res.Data.Id;
+
+                    await requestClientService.CreateEventAsync(_event);
+                    return Result<ServiceAIResponse>.Fail(servRes.Messages[0]);
+                }
+            }
+            else
+            {
+                return Result<ServiceAIResponse>.Fail("لايوجد لديك رصيد كافي من الطلبات");
+
+            }
+
+  
         }
 
         public override async Task<Result<ServiceAIResponse>> VoiceBot(DataBuildServiceBase data)
         {
-            var map = Mapper.Map<QueryRequest>(data);
-            return await Service.VoiceBotAsync(map);
+         
+
+            var res =await Text2Text(data);
+         
+            if (res.Succeeded)
+            {
+                data.Text = res.Data.Result;
+                var response = await Text2Speech(data);
+                if (response.Succeeded)
+                {
+                    //var _event = Mapper.Map<EventRequest>(res.Data);
+                    ////_event.RequestId = sph.Data.Id;
+                    //await requestClientService.CreateEventAsync(_event);
+                    return Result<ServiceAIResponse>.Success(response.Data);
+                }
+                else
+                {
+                    //var _event = Mapper.Map<EventRequest>(res);
+                    ////_event.RequestId = res.Data.Id;
+
+                    //await requestClientService.CreateEventAsync(_event);
+                    return Result<ServiceAIResponse>.Fail(response.Messages[0]);
+                }
+            }
+            else
+            {
+                return Result<ServiceAIResponse>.Fail(res.Messages[0]);
+            }
+           
         }
 
         public override Task<Result<RequestAllowed>> AllowedAsync(DataBuildServiceBase data)
@@ -296,7 +361,7 @@ namespace LAHJA.Data.UI.Templates.Services
     public class TemplateServices : TemplateServicesShare<LAHJAClientService, DataBuildServiceBase>
     {
         
-        //private List<string> _errors = new List<string>();
+  
         public  bool IsEndProcessing { get => _isResponse; }
         public  string Response { get => _response; }
  
@@ -321,74 +386,45 @@ namespace LAHJA.Data.UI.Templates.Services
             this.BuilderComponents.SubmitDelete = OnDelete;
             this.BuilderComponents.SubmitGetOne = GetOne;
             this.BuilderComponents.SubmitGetAll = GetAll;
-            this.BuilderComponents.SubmitText2Text = OnSubmitText2Text;
-            this.BuilderComponents.SubmitText2Speech = OnSubmitText2Speech;
-            this.BuilderComponents.SubmitVoiceBot = OnSubmitVoiceBot;
+            this.BuilderComponents.SubmitText2Text = Text2Text;
+            this.BuilderComponents.SubmitText2Speech = Text2Speech;
+            this.BuilderComponents.SubmitVoiceBot = VoiceBot;
 
             this.builderApi = new BuilderServiceApiClient(mapper, client, requestClientService);
             this.builderRequestApi = new BuilderServiceApiClient(mapper, client, requestClientService);
         }
 
-        private async Task OnSubmitText2Speech(DataBuildServiceBase data) {
-        
-        
-        }
-        private async Task OnSubmitText2Text(DataBuildServiceBase data) {
+        public async Task<Result<ServiceAIResponse>> Text2Speech(DataBuildServiceBase data) {
 
-            //var response = await builderRequestApi.CreateRequestAsync(data);
-            //if (response.Succeeded)
-            //{
-            //    var map = mapper.Map<DataBuildServiceBase>(response.Data);
-            //    map.Text = data.Text;
-                var resService = await builderApi.Text2Text(data);
-                if (resService.Succeeded)
-                {
-                     _response = resService.Data.Result;
-                    Snackbar.Add("Success", Severity.Success);
-                      // await builderRequestApi.CreateEventAsync(new DataBuildServiceBase { PublicKey= "pifgigdfgidf", Token=""});
-                 }
-                else
-                {
-                     Snackbar.Add(resService.Messages?[0]??"null", Severity.Warning);
-                }   
-            _isResponse = true;
-       
-            //}
-            //else
-            //{
-            //    Snackbar.Add("لايوجد لديك رصيد كافي من الطلبات", Severity.Warning);
-            //}
+            var resService = await builderApi.Text2Speech(data);
+            if (!resService.Succeeded)
+                navigation.NavigateTo("/Plans");
+            return resService;
+        }
+        public async Task<Result<ServiceAIResponse>> Text2Text(DataBuildServiceBase data) {
+
+             var resService = await builderApi.Text2Text(data);
+            if (!resService.Succeeded)
+                navigation.NavigateTo("/Plans");
+            return resService;
+              
 
         }
-        private async Task OnSubmitVoiceBot(DataBuildServiceBase data)
+        public async Task<Result<ServiceAIResponse>> VoiceBot(DataBuildServiceBase data)
         {
-            //var response=await builderRequestApi.AllowedAsync(data);
-            var response=await builderRequestApi.CreateRequestAsync(data);
-            if (response.Succeeded)
+            var resService = await builderApi.VoiceBot(data);
+            if (!resService.Succeeded)
             {
-                var map = mapper.Map<DataBuildServiceBase>(response.Data);
-                map.Text=data.Text;
-                var resService = await builderApi.Text2Text(map);
-                if (resService.Succeeded)
-                {
-                    var resSpeech = await builderApi.Text2Speech(map);
-                    if (resSpeech.Succeeded)
-                    {
-                    }
-                    else
-                    {
-
-                    }
-                }
-                else
-                {
-
-                }
+                navigation.NavigateTo("/Plans");
+                return Result<ServiceAIResponse>.Fail(resService.Messages[0]);
             }
             else
             {
-                Snackbar.Add("لايوجد لديك رصيد كافي من الطلبات",Severity.Warning);
+                return Result<ServiceAIResponse>.Success(resService.Data);
             }
+              
+            //return resService;
+
         }
         private async Task OnCreate(DataBuildServiceBase data)
         {

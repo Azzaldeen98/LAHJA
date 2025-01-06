@@ -43,8 +43,44 @@ namespace Infrastructure.DataSource.Seeds
                         MonthlyPrice = 0m,
                         AnnualPrice = 0m,
                         WeeklyPrice = 0m,
-                        //Services =new List<PlanFeatureModel>{
-                        //},
+                        Services =new List<Domain.ShareData.Base.Service>{     new Domain.ShareData.Base.Service
+                        {
+                         Id = "1",
+                        Name = "Text-to-Speech Conversion",
+                        Description = "Convert written text into speech using advanced artificial intelligence technologies.",
+                        Active = true,
+                        Image = "/chatbot-03.png",
+                        Price = 50.0m,
+                        Amount = 100.0m,
+                        Token = "TOKEN123",
+                        NumberRequests = 1000,
+                        NumberOfRequestsUsed = 0
+                        },new Domain.ShareData.Base.Service
+                        {
+                            Id = "2",
+                            Name = "Text-to-Dialect Conversion",
+                            Description = "Convert text into a specific dialect with high precision.",
+                            Active = true,
+                            Image = "/chatbot-03.png",
+                            Price = 30.0m,
+                            Amount = 50.0m,
+                            Token = "TOKEN456",
+                            NumberRequests = 1000,
+                            NumberOfRequestsUsed = 0
+                        },new Domain.ShareData.Base.Service
+                        {
+                            Id = "3",
+                            Name = "Interactive Bot (API)",
+                            Description = "Integrate an interactive bot via API for various tasks.",
+                            Active = true,
+                            Image = "/chatbot-03.png",
+                            Price = 100.0m,
+                            Amount = 200.0m,
+                            Token = "TOKEN789",
+                            NumberRequests = 1000,
+                            NumberOfRequestsUsed = 0
+                                            },
+                        },
                         Features = new List<PlanFeatureModel>
                         {
                             new PlanFeatureModel { Id = "1", Name = "AI Models", Description = "3", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 0m, Active = true },
@@ -87,6 +123,20 @@ namespace Infrastructure.DataSource.Seeds
                         MonthlyPrice = 0m,
                         AnnualPrice = 0m,
                         WeeklyPrice = 0m,
+                                  Services =new List<Domain.ShareData.Base.Service>{     new Domain.ShareData.Base.Service
+                        {
+                            Id = "2",
+                            Name = "Text-to-Dialect Conversion",
+                            Description = "Convert text into a specific dialect with high precision.",
+                            Active = true,
+                            Image = "/chatbot-03.png",
+                            Price = 30.0m,
+                            Amount = 50.0m,
+                            Token = "TOKEN456",
+                            NumberRequests = 500,
+                            NumberOfRequestsUsed = 0
+                        },
+                        },
                         Features = new List<PlanFeatureModel>
                         {
                             new PlanFeatureModel { Id = "1", Name = "AI Models", Description = "3", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 0m, Active = true },
@@ -111,6 +161,7 @@ namespace Infrastructure.DataSource.Seeds
                 StartDate =DateTime.Now,
                 Status = "Pending",
                 CancelAtPeriodEnd = false,
+                //Services=new List<PlanFeatureModel>{},/**/
                 SubscriptionPlan =  new SubscriptionPlanModel
                     {
                         Id = "price_1Pst3IKMQ7LabgRTZV9VgPex",
@@ -129,6 +180,20 @@ namespace Infrastructure.DataSource.Seeds
                         MonthlyPrice = 0m,
                         AnnualPrice = 0m,
                         WeeklyPrice = 0m,
+                        Services =new List<Domain.ShareData.Base.Service>{     new Domain.ShareData.Base.Service
+                        {
+                      Id = "3",
+        Name = "Interactive Bot (API)",
+        Description = "Integrate an interactive bot via API for various tasks.",
+        Active = true,
+        Image = "/chatbot-03.png",
+        Price = 100.0m,
+        Amount = 200.0m,
+        Token = "TOKEN789",
+        NumberRequests = 2000,
+        NumberOfRequestsUsed = 0
+                        },
+                        },
                         Features = new List<PlanFeatureModel>
                         {
                             new PlanFeatureModel { Id = "1", Name = "AI Models", Description = "3", BillingPeriod = "Monthly", NumberRequests = 1000, TotalAmount = 0m, Active = true },
@@ -202,11 +267,22 @@ namespace Infrastructure.DataSource.Seeds
             return subscriptions.FirstOrDefault(x => x.UserId == userId && x?.SubscriptionPlan?.Active == true);
 
         }
+        public bool AllowedRequest(string userId,string serviceId)
+        {
+            var item = subscriptions.FirstOrDefault(x => x.UserId == userId && x?.SubscriptionPlan?.Active == true);
+            return item.SubscriptionPlan.Services.FirstOrDefault(x => x.Id == serviceId && x.NumberOfRequestsUsed < x.NumberRequests) != null ;
 
-        public void CreateRequest(string userId)
+        }
+        public bool CreateRequest(string userId,string serviceId)
         {
             var res= subscriptions.FirstOrDefault(x => x.UserId == userId && x?.SubscriptionPlan?.Active == true);
-            res.SubscriptionPlan.NumberOfRequestsUsed += 1;
+            var tem= res.SubscriptionPlan.Services.FirstOrDefault(x=>x.Id== serviceId);
+            if (tem != null && tem.NumberOfRequestsUsed < tem.NumberRequests)
+            {
+                tem.NumberOfRequestsUsed += 1;
+                return true;
+            }
+            return false;
 
         }
 
