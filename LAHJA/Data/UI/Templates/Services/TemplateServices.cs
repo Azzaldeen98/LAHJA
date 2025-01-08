@@ -229,7 +229,7 @@ namespace LAHJA.Data.UI.Templates.Services
                     await requestClientService.CreateEventAsync(_event);
                     return Result<ServiceAIResponse>.Fail(servRes.Messages[0]);
                 }
-            }
+            }   
             else
             {
                 return Result<ServiceAIResponse>.Fail("لايوجد لديك رصيد كافي من الطلبات");

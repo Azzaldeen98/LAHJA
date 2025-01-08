@@ -195,12 +195,14 @@
     }
     private void DrawerToggle(bool value)
     {
+         _drawerOpen = !_drawerOpen;
+
         if (!value)
             isHome = NavigationManager.Uri != NavigationManager.BaseUri;
         else
             isHome = true;
 
-        _drawerOpen = !_drawerOpen;
+       
         StateHasChanged();
     }
     private void OpenThemeManager(bool value)
@@ -275,11 +277,11 @@
     async void logout(bool isauth)
     {
         isLoading=true;
-        StateHasChanged();
+      
 
         flagauth = isauth;
         await pass.DeleteAsync("accessToken");
-        StateHasChanged();
+      
         Task.FromResult(templateAuth.LogoutAsync());
         isLoading = false;
         StateHasChanged();

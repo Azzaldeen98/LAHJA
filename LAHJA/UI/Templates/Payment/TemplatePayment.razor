@@ -1,5 +1,6 @@
 ﻿@page "/payment"
 @page "/payment/{planId}"
+@using LAHAJ.Loading
 @using LAHJA.Data.UI.Components
 @using LAHJA.Data.UI.Components.Payment.DataBuildBillingBase
 @using LAHJA.Data.UI.Components.Payment.CreditCard
@@ -26,9 +27,7 @@
 
             <Loading IsLoading="isLoading" />
 
-        }
-
-        else
+        } else
         {
 
             <PaymentComponts BuildPlanData="buildPlanData" BuildBillingData="buildBillingData" SubmitPayment="onSubmitPaymentCheckOut" BuildCreditCardData="buildCreditCardData" OnSelect="onSubmitActiveCreditCard" />

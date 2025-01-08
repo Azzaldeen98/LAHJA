@@ -22,6 +22,7 @@ namespace LAHJA.Data.UI.Models
 
         [JsonPropertyName("Method")]
         public string Method { get; set; } = "POST";
+        public string ModelAi { get; set; } = "vits-ar-sa-huba-v2";
 
         [JsonPropertyName("Data")]
         public string Data { get; set; } 

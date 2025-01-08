@@ -10,7 +10,7 @@
 
     <MudDrawerContainer Class="mud-height-full" Style="height:100%">
         <!-- Top Action Bar -->
-        <MudList T="string" Dense="true" Class="d-flex flex-grow-1 py-0 mb-3" Style="@("background-color:"+@AppColors.BASE_COLOR_FOUCS)">
+        <MudList T="string" Dense="true" Class="d-flex flex-grow-1 py-0" Style="@("background-color:"+@AppColors.BASE_COLOR_FOUCS)">
             @* <MudCheckBox   Class="text-light" /> *@
             <MudIconButton Class="text-light display-mobile-mode" OnClick="@(()=>IsMenuOpen=!IsMenuOpen)" Icon="@Icons.Material.Filled.MoreVert" />
             <MudIconButton Class="text-light" Icon="@Icons.Material.Filled.Refresh" />
@@ -25,18 +25,26 @@
         <MudDivider />
    
         <!-- Left Drawer Menu -->
-        <MudContainer Class="display-computer-mode">
-        <MudDrawer @bind-Open="@IsMenuOpen"  Fixed="true" Elevation="1" Variant="@DrawerVariant.Mini">
+        <MudContainer >
+            <MudDrawer Open="false" Fixed="true" Elevation="1" Variant="@DrawerVariant.Mini">
             <MudNavMenu Class="font-size-nav-v2">
                 @foreach (var item in Categories)
-                {   
-                    <MudNavLink Match="NavLinkMatch.All" OnClick="@(() => SelectMenuItem(item))" Icon="@item.Icon">@item.Text[CurrentLanguage]</MudNavLink>
+                {
+
+                        <MudButton Class="m-0 p-0" OnClick="@(() => SelectMenuItem(item))">
+                            <div class="d-flex flex-column " style="justify-content:center;align-items:center;padding:20%">
+
+                                <MudIconButton Icon="@item.Icon"  Class="m-0 p-0" Size="Size.Medium" OnClick="@(() => SelectMenuItem(item))" />
+                                <MudText Class="m-0 p-0" Style="font-size:9px">@item.Text[CurrentLanguage].Split()[0] </MudText>
+
+                            </div>
+                        </MudButton>
                 }
             </MudNavMenu>
         </MudDrawer>
         </MudContainer>
 
-         <MudContainer Class="display-mobile-mode">
+       @*   <MudContainer Class="display-mobile-mode">
         <MudDrawer @bind-Open="@IsMenuOpen" Class="display-mobile-mode" Fixed="true" Elevation="1" Variant="@DrawerVariant.Temporary">
             <MudNavMenu Class="font-size-nav-v2">
                 @foreach (var item in Categories)
@@ -48,7 +56,7 @@
 
         </MudContainer>
         <!-- Main Content Area -->
-
+ *@
         <MudMainContent  Class="h-100 " style="min-height:500px !important">
 
 
@@ -125,7 +133,7 @@
                 </MudNavMenu>
             </MudDrawer>
 
-            <MudPaper Class="pa-4 border h-100">
+            <MudPaper Class="pa-4 " Elevation="0">
              
 
                 @if (SelectedComponent != null)
@@ -148,7 +156,8 @@
 @code {
 
     private string CurrentLanguage = "ar";
-    private bool IsMenuOpen = false; 
+    private bool IsMenuOpen = true; 
+    private bool IsMenuOpenTag = false;
     private bool IsSettingsMenuVisible = false; 
     private bool _expandedLanguage = false;
     private bool _expandedTypeSound = false;

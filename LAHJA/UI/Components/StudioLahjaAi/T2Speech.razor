@@ -19,7 +19,7 @@
   
 
 </style>
-<MudCard Elevation="25" Class="rounded-lg pb-4">
+<MudCard Elevation="0" Class="rounded-lg pb-4">
     
 
 
@@ -219,7 +219,7 @@
                 //     _processing = false;
                 // }
 
-                var response = await _TemplateServices.VoiceBot(new DataBuildServiceBase { Text = textSpeech, ServiceId = "3", Method = "POST", TagId = "audioPlayer", URL = "https://api-inference.huggingface.co/models/wasmdashai/" + ModelId });
+                var response = await _TemplateServices.VoiceBot(new DataBuildServiceBase { Text = textSpeech, ServiceId = "3", Method = "POST", TagId = "audioPlayer", URL = "https://api-inference.huggingface.co/models/wasmdashai/" + ModelId, ModelAi=ModelId });
                 if (response.Succeeded)
                 {
                     // audioUrl = response.Data.Result;

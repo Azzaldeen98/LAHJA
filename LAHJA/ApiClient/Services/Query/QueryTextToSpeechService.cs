@@ -1,5 +1,6 @@
 ﻿using ApexCharts;
 using Blazorise;
+using Blazorise.Extensions;
 using Domain.Wrapper;
 using LAHJA.ApiClient.Models;
 using LAHJA.Data.UI.Models;
@@ -30,10 +31,10 @@ namespace LAHJA.ApiClient.Services.Query
         }
 
 
-        static async Task<string> TextToSpeechHttpAsync(string text)
+        static async Task<string> TextToSpeechHttpAsync(QueryRequestTextToSpeech body)
         {
           
-            if (string.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(body.Data))
             {
                 Console.WriteLine("Please enter some text");
                 throw new NullReferenceException("Null");
@@ -43,9 +44,9 @@ namespace LAHJA.ApiClient.Services.Query
             {
                 data = new object[]
                 {
-                    text, // The text to convert to speech
-                    "wasmdashai/vits-ar-sa-huba-v2", // Model identifier
-                    0.6 // Speaker ID or variation
+                    body.Data, // The text to convert to speech vits-ar-sa-huba-v2
+                    $"wasmdashai/{body.ModelAi}", // Model identifier
+                    0.9 // Speaker ID or variation
                 }
             };
 
@@ -60,7 +61,7 @@ namespace LAHJA.ApiClient.Services.Query
                 {
                     // Step 1: Send the POST request
                     var response = await client.PostAsync(
-                        "https://wasmdashai-runtaskingCPU.hf.space/call/predict",
+                        "https://wasmdashai-runtasking.hf.space/call/predict",
                         new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json")
                     );
 
@@ -74,7 +75,7 @@ namespace LAHJA.ApiClient.Services.Query
                     Console.WriteLine("Event ID: " + eventId);
 
                     // Step 2: Use the EVENT_ID in the next request to fetch the audio file
-                    var audioResponse = await client.GetAsync($"https://wasmdashai-runtaskingCPU.hf.space/call/predict/{eventId}");
+                    var audioResponse = await client.GetAsync($"https://wasmdashai-runtasking.hf.space/call/predict/{eventId}");
 
                     if (!audioResponse.IsSuccessStatusCode)
                     {
@@ -86,7 +87,7 @@ namespace LAHJA.ApiClient.Services.Query
                     // Simulate extracting the audio URL from the response data (modify according to actual response format)
                     var extractedData = ExtractData2(audioData);
 
-                    return extractedData.audioPath;
+                    return "https://wasmdashai-runtasking.hf.space/file="+extractedData.audioPath;
                     //return Result<dynamic>.Success(extractedData);
 
                     //Console.WriteLine("Audio URL: " + extractedData.audioUrl);
@@ -220,11 +221,11 @@ namespace LAHJA.ApiClient.Services.Query
         {
             try
             {
-                var res = await TextToSpeechHttpAsync(requestData.Data);
+                var res = await TextToSpeechHttpAsync(requestData);
                 if (res!=null)
                 {
 
-                    res = "https://wasmdashai-runtaskingCPU.hf.space/file=" + res;
+                    //res = "" + res;
                    
                 
 

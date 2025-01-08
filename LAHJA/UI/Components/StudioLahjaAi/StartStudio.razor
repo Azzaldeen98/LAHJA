@@ -9,20 +9,19 @@
 
 
     <MudText Typo="Typo.body1">@Title</MudText>
-    <MudGrid Justify="Justify.Center">
+    <MudGrid  Justify="Justify.Center">
         @foreach (var item in listt)
         {
 
             <MudItem>
-                <MudCard Outlined="true" Class="mb-3">
+                <MudCard Elevation="0"  Class="mb-3">
                     <MudCardContent>
 
                         <MudStack Direction="Row" AlignItems="AlignItems.Center" Spacing="2">
                             <MudIcon Icon="@item.Icon" Color="Color.Primary" />
                             <MudText Typo="Typo.h6">@item.Name</MudText>
-                            <MudText Typo="Typo.body2" Class="mt-2">
-                                @item.Description
-                            </MudText>
+                            <MudAlert Severity="Severity.Normal" Class="mt-2" Variant="Variant.Outlined"> @item.Description</MudAlert>
+                        
                         </MudStack>
 
 

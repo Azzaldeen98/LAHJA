@@ -1,28 +1,117 @@
 ﻿ 
 
-
-
- @page "/metrics"
+ 
 @using Domain.ShareData
 @using LAHJA.Helpers.Services
 @using LAHJA.Them
 @using MudBlazor
+
+@page "/ShowTriningInformation"
 @inject ISnackbar Snackbar
 @inject LanguageService languageService
 @inject IManageLanguageService _manageLanguageService
+ 
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="pa-8">
 
 
 
-@inject NavigationManager Navigation;
-<FormTrainning TypeLanguage="@currentLanguage" />
+    <MudText Typo="Typo.body1">@title</MudText>
+
+    <MudGrid>
+         
+        
+     
+        <MudItem xs="12" sm="6" md="4">
+            <MudCard Class="pa-3">
+                <MudText Typo="Typo.body1" Class="mb-2">@bestScoreText</MudText>
+                <MudText Typo="Typo.body2" Align="Align.Center" Color="@AppColors.BASE_COLOR_ENUM">@metrics.BestScore</MudText>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudCard Class="pa-3">
+                <MudText Typo="Typo.body1" Class="mb-2"  >@restoredEpochText</MudText>
+                <MudText Typo="Typo.body2" Align="Align.Center" Color="@AppColors.BASE_COLOR_ENUM">@metrics.RestoredEpoch</MudText>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudCard Class="pa-3">
+                <MudText Typo="Typo.body1" Class="mb-2" >@stoppedEpochText</MudText>
+                <MudText Typo="Typo.body2" Align="Align.Center" Color="@AppColors.BASE_COLOR_ENUM">@metrics.StoppedEpoch</MudText>
+            </MudCard>
+        </MudItem>
 
 
 
-<TabelStateTinning/>
 
-   
 
-<CategryTrinning/>
+
+
+
+
+
+        <MudItem xs="12" sm="6" md="6">
+            <MudCard Class="pa-3">
+                <MudText Typo="Typo.body1" Class="mb-2" >@validationLossText</MudText>
+                <MudChart ChartType="ChartType.Bar" ChartSeries="@Series" Class="ma-2" Style="height: 250px;" />
+            </MudCard>
+
+
+
+
+        </MudItem>
+        <MudItem xs="12" sm="6" md="6">
+            <MudCard Class="pa-3">
+                <MudText Typo="Typo.body1" Class="mb-2"  >@accuracyText</MudText>
+                <MudChart ChartType="ChartType.StackedBar" ChartSeries="@Serieserutey" Class="ma-2" Style="height: 250px;" />
+            </MudCard>
+        </MudItem>
+
+
+        <MudItem xs="12">
+            <MudCard Class="pa-3">
+                <MudText Typo="Typo.body1" Class="mb-2">@accuracyVsValidationLossText</MudText>
+                <MudChart ChartType="ChartType.Line" ChartSeries="@Seriess" Width="100%" Height="350px" />
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -79,45 +168,6 @@
         new ChartSeries() { Name = "Fossil", Data = new double[] { 90, 79, 72, 69, 62, 62, 55, 65, 70 } },
         new ChartSeries() { Name = "Renewable", Data = new double[] { 10, 41, 35, 51, 49, 62, 69, 91, 148 } },
     };
-
-
-
-
-
-    public void OnclickCard()
-
-    {
-
-        try
-
-        {
-
-
-
-
-
-            Navigation.NavigateTo("/TextToText");
-
-
-
-        }
-
-        catch (Exception ex)
-
-        {
-
-
-
-            Snackbar.Add(ex.Message, Severity.Error);
-
-
-
-        }
-
-
-
-    }
-
 
 
 

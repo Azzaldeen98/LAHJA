@@ -17,8 +17,8 @@
             <div class="col-lg-6 ms-auto">
                 <!-- Skill set -->
                 <div class="d-flex align-items-center" style="max-width: 30rem;">
-                    <h2 class="display-4 text-primary-grad mb-0" style="color:@AppColors.BASE_COLOR_FOUCS">@GeneralData.ProductsCount</h2>
-                    <h6 class="mb-0 ms-3 tser" style="color:@AppColors.BASE_COLOR_FOUCS">@GeneralData.ProductsDescription</h6>
+                    <h2 class="display-4 textHeader mb-0" style="    font-size: 3rem !important;">@GeneralData.ProductsCount</h2>
+                    <h6 class="mb-0 ms-3 tser" >@GeneralData.ProductsDescription</h6>
                 </div>
 
                 <hr class="border-primary border-opacity-50 mt-4 mb-5"> <!-- Divider -->
@@ -29,7 +29,7 @@
                         <ul class="list-group list-group-borderless mb-3" style="background-color:transparent !important">
                             @foreach (var feature in ApiTabData.Features)
                             {
-                                <li class="list-group-item d-flex pb-0" style="background-color:transparent !important;color:@AppColors.BASE_COLOR_FOUCS">
+                                <li class="list-group-item d-flex pb-0" style="background-color:transparent !important">
                                     <i class="bi bi-patch-check me-2"></i>@feature
                                 </li>
                             }
@@ -42,7 +42,7 @@
                         <ul class="list-group list-group-borderless mb-3">
                             @foreach (var feature in BuildTabData.Features)
                             {
-                                <li class="list-group-item d-flex pb-0" style="background-color:transparent !important;color:@AppColors.BASE_COLOR_FOUCS">
+                                <li class="list-group-item d-flex pb-0" style="background-color:transparent !important">
                                     <i class="bi bi-patch-check text-success me-2"></i>@feature
                                 </li>
                             }
@@ -55,7 +55,7 @@
                         <ul class="list-group list-group-borderless mb-3">
                             @foreach (var feature in BugReportTabData.Features)
                             {
-                                <li class="list-group-item d-flex pb-0" style="background-color:transparent !important;color:@AppColors.BASE_COLOR_FOUCS">
+                                <li class="list-group-item d-flex pb-0" style="background-color:transparent !important;">
                                     <i class="bi bi-patch-check text-success me-2"></i>@feature
                                 </li>
                             }
