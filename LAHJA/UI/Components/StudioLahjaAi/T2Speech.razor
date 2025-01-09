@@ -1,8 +1,11 @@
+@using Domain.ShareData
 @using LAHJA.ApiClient.Models
 @using LAHJA.ApiClient.Services.VoiceBot
+@using LAHJA.Data.UI.Components.StudioLahjaAiVM
 @using LAHJA.Data.UI.Models
 @using LAHJA.Data.UI.Templates.Services
 @using LAHJA.Them
+@using LAHJA.UI.Components.StudioLahjaAi.Component
  @using MudBlazor
  @using LAHJA.Data.UI.Components.ServiceCard
  @using Microsoft.AspNetCore.Components
@@ -12,69 +15,81 @@
 @inject IVoiceBotService _VoiceBotService
 @inject ISnackbar Snackbar
 @inject TemplateServices _TemplateServices;
-
+@inject IManageLanguageService _manageLanguageService
 <style>
 
-   
-  
+
+
 
 </style>
-<MudCard Elevation="0" Class="rounded-lg pb-4">
-    
+<MudCard Elevation="25" Class="rounded-lg pb-4">
+
+    <div class="d-flex flex-row justify-content-around ">
+        <FilterItemSelected Filter="CategoriesFilter" CurrentLanguage="@CurrentLanguage" />
+        <FilterItemSelected Filter="LanguagesFilter" CurrentLanguage="@CurrentLanguage" />
+        <FilterItemSelected Filter="ModelTypesFilter" CurrentLanguage="@CurrentLanguage" />
+        <FilterItemSelected Filter="DialectsFilter" CurrentLanguage="@CurrentLanguage" />
+        <FilterItemSelected Filter="SpeakerGendersFilter" CurrentLanguage="@CurrentLanguage" />
+
+    </div>
+
+    <MudCardHeader>
+        <CardHeaderContent>
+
+        </CardHeaderContent>
+        <CardHeaderActions>
+
+        </CardHeaderActions>
+    </MudCardHeader>
 
 
-        <MudCardHeader>
-            <CardHeaderContent>
-               
-            </CardHeaderContent>
-            <CardHeaderActions>
-               
-            </CardHeaderActions>
-        </MudCardHeader>
-
-
-        <MudCardContent>
+    <MudCardContent>
         <div class="d-flex  flex-wrap ">
             <MudForm @ref="form" Class="w-chat-t2s" ValidationDelay="300" OnValidSubmit="Onsubmit" OnInvalidSubmit="Onsubmit">
 
-               
-            <MudTextField @ref="multilineReference" T="string" Label="Manual focus" Variant="Variant.Filled" @bind-Value="@textSpeech" Lines="10" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.CenterFocusWeak"
-                          OnAdornmentClick="@(() => multilineReference.FocusAsync())" />
-         
+
+                <MudTextField @ref="multilineReference" T="string" Label="Manual focus" Variant="Variant.Filled" @bind-Value="@textSpeech" Lines="10" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.CenterFocusWeak"
+                              OnAdornmentClick="@(() => multilineReference.FocusAsync())" />
+
                 @if (_processing)
                 {
-                   <MudButton EndIcon="@Icons.Material.Filled.Cancel" Class="mb-3" OnClick="OnCancel" FullWidth="true" >Cancel</MudButton>
+                    <MudButton EndIcon="@Icons.Material.Filled.Cancel" Class="mb-3" OnClick="OnCancel" FullWidth="true">Cancel</MudButton>
                 }
-                else 
+                else
                 {
-                    <MudButton  Disabled="@_processing" Color="@AppColors.BASE_COLOR_ENUM" Variant="Variant.Outlined" FullWidth="true"
-                               EndIcon="@Icons.Material.Filled.Send" Class="mb-3" OnClick="Onsubmit">
-                        @if (_processing)
-                        {
-                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                            <MudText Class="ms-2">...</MudText>
+                    <div class="d-flex flex-row justify-content-center align-items-center">
 
-                        }
-                        else
-                        {
+                        <FilterItemSelected Filter="ModelReleasesFilter" CurrentLanguage="@CurrentLanguage" />
 
-                            <MudText>Click me</MudText>
-                        }
+                        <MudButton Disabled="@_processing" Color="@AppColors.BASE_COLOR_ENUM" Variant="Variant.Outlined" FullWidth="true"
+                                   EndIcon="@Icons.Material.Filled.Send" Class="mb-3" OnClick="Onsubmit">
+                            @if (_processing)
+                            {
+                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                <MudText Class="ms-2">...</MudText>
 
-                    </MudButton>
+                            }
+                            else
+                            {
+
+                                <MudText>Send</MudText>
+                            }
+
+                        </MudButton>
+                    </div>
                 }
 
             </MudForm>
-                 
+
 
             <div class="w-chat-t2s">
                 <MudCard Class="m-0 p-0  " Elevation="0">
                     <MudCardHeader>
                         <CardHeaderContent>
-                           
+
                         </CardHeaderContent>
                         <CardHeaderActions>
-                            <MudButtonGroup Color="@AppColors.BASE_COLOR_ENUM" Style="height: 26px" >
+                            <MudButtonGroup Color="@AppColors.BASE_COLOR_ENUM" Style="height: 26px">
 
                                 <MudIconButton Icon="@Icons.Material.Filled.Download" OnClick="DownloadAudio" Disabled="@isAudioPlayingIsEnd" Color="@AppColors.BASE_COLOR_ENUM" aria-label="github" />
                                 <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Secondary" aria-label="add to favorite" />
@@ -82,30 +97,35 @@
                             </MudButtonGroup>
                         </CardHeaderActions>
                     </MudCardHeader>
-                    <MudCardContent> 
+                    <MudCardContent>
                         <div class="activ-speech-ai">
-                            @if (isAudioPlaying){
+                            @if (isAudioPlaying)
+                            {
                                 <div id="logo-icon-animate-id" class="icon-xxl text-center shadow-primary rounded-circle flex-shrink-0 ripple-anim" style="line-height: 6.8rem;">
-                          
-                                <MudIcon Size="Size.Large" style="direction:ltr !important;margin:8px !important" Color="@AppColors.BASE_COLOR_ENUM" Icon="@Icons.Material.Filled.BlurOn" Title="API" />
 
-                            </div>
-                            }else{
+                                    <MudIcon Size="Size.Large" style="direction:ltr !important;margin:8px !important" Color="@AppColors.BASE_COLOR_ENUM" Icon="@Icons.Material.Filled.BlurOn" Title="API" />
 
-                            <div id="logo-icon-static-id" class="icon-xxl text-center shadow-primary rounded-circle flex-shrink-0" style="line-height: 6.8rem;">
-                               
-                                <MudIcon Size="Size.Large" style="direction:ltr !important;margin:8px !important" Color="@AppColors.BASE_COLOR_ENUM" Icon="@Icons.Material.Filled.BlurOn" Title="API" />
+                                </div>
+                            }
+                            else
+                            {
 
-                            </div>
+                                <div id="logo-icon-static-id" class="icon-xxl text-center shadow-primary rounded-circle flex-shrink-0" style="line-height: 6.8rem;">
+
+                                    <MudIcon Size="Size.Large" style="direction:ltr !important;margin:8px !important" Color="@AppColors.BASE_COLOR_ENUM" Icon="@Icons.Material.Filled.BlurOn" Title="API" />
+
+                                </div>
                             }
                         </div>
+
+
                     </MudCardContent>
                     <MudCardActions>
                         @* @if (!string.IsNullOrEmpty(audioUrl)) *@
                         @* { *@
-                            <audio id="audioPlayer" controls @onplay="OnPlay" @onended="OnEnded" @onpause="OnPause"   style="width:100%;margin:2%"></audio>
+                        <audio id="audioPlayer" controls @onplay="OnPlay" @onended="OnEnded" @onpause="OnPause" style="width:100%;margin:2%"></audio>
                         @* } *@
-                       
+
                     </MudCardActions>
                 </MudCard>
 
@@ -113,18 +133,39 @@
             </div>
 
         </div>
-   
-        </MudCardContent>
+
+    </MudCardContent>
 
 </MudCard>
 
 
 @code {
 
-
+    private string CurrentLanguage = "ar";
     private bool isAudioPlaying = false;
     private bool isAudioPlayingIsEnd = true;
 
+    private FilterItemData SelectedSpeakerGenders;
+    private FilterItemData SelectedLangague;
+    private FilterItemData SelectedTypeLahaga;
+    private FilterItemData SelectedTypeModel;
+    private FilterItemData SelectedDialectType;
+    private FilterItemData SelectedSpeaker;
+    private FilterItemData SelectedModelRelease;
+
+    public StudioFilterDefinition<FilterItemData> CategoriesFilter { get; set; } = new();
+    public StudioFilterDefinition<FilterItemData> LanguagesFilter { get; set; } = new();
+    public StudioFilterDefinition<FilterItemData> ModelTypesFilter { get; set; } = new();
+    public StudioFilterDefinition<FilterItemData> DialectsFilter { get; set; } = new();
+    public StudioFilterDefinition<FilterItemData> SpeakerGendersFilter { get; set; } = new();
+    public StudioFilterDefinition<FilterItemData> ModelReleasesFilter { get; set; } = new();
+    public StudioFilterDefinition<FilterItemData> ModelSpeakerFilter { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        SelectedSpeakerGenders = GetSpeakerGenders().Options[0];
+        SelectedLangague = GetLanguages().Options[0];
+    }
     private async Task OnPlay()
     {
         isAudioPlayingIsEnd = true;
@@ -147,13 +188,330 @@
         StateHasChanged();
     }
 
+    // œÊ«· «·«Œ Ì«—
+    private void SelectCategory(FilterItemData item)
+    { /* „‰ÿﬁ «Œ Ì«— «·›∆… */
+
+
+        var t = item;
+
+    }
+    private void SelectLanguage(FilterItemData item)
+    { /* „‰ÿﬁ «Œ Ì«— «··€… */
+
+        var t = item;
+
+        SelectedLangague = item;
+        DialectsFilter = GetDialects();
+        // ModelReleasesFilter = getListArabicModelRelease(SelectedSpeakerGenders.Identifier);
+        StateHasChanged();
+    }
+    private void SelectModelType(FilterItemData item)
+    { /* „‰ÿﬁ «Œ Ì«— ‰Ê⁄ «·‰„Ê–Ã */
+
+        SelectedTypeModel = item;
+
+        if (item.TypeModel == "LAHJA")
+        {
+            DialectsFilter = GetDialects();
+            ModelReleasesFilter = getListArabicModelRelease(SelectedSpeakerGenders.Identifier);
+        }
+
+        StateHasChanged();
+    }
+    private void SelectDialectType(FilterItemData item)
+    {
+        SelectedDialectType = item;
+        if (SelectedLangague.Identifier == "ar")
+            ModelReleasesFilter = getListArabicModelRelease(SelectedSpeakerGenders.Identifier);
+        else
+        {
+            ModelReleasesFilter = getListEnglishModelRelease(SelectedSpeakerGenders.Identifier);
+        }
+        StateHasChanged();
+    }
+    private void SelectSpeakerGender(FilterItemData item)
+    { /* „‰ÿﬁ «Œ Ì«— Ã‰” «·„ ÕœÀ */
+        SelectedSpeakerGenders = item;
+        if (SelectedLangague.Identifier == "ar")
+            ModelReleasesFilter = getListArabicModelRelease(SelectedSpeakerGenders.Identifier);
+        else
+        {
+            ModelReleasesFilter = getListEnglishModelRelease(SelectedSpeakerGenders.Identifier);
+        }
+        StateHasChanged();
+
+    }
+    private void SelectSpeaker(FilterItemData item)
+    { /* „‰ÿﬁ «Œ Ì«— «”„ «·„ ÕœÀ */
+
+        SelectedSpeaker = item;
+
+        StateHasChanged();
+
+    }
+    private void SelectModelRelease(FilterItemData item)
+    { /* „‰ÿﬁ «Œ Ì«— ≈’œ«— «·‰„Ê–Ã */
+
+        SelectedModelRelease = item;
+
+
+    }
+
+    private Dictionary<string, string> TranslationLabels = new();
+
+    private Dictionary<string, string> EnglishLabels = new()
+{
+    { "Category", "Category" },
+    { "Language", "Language" },
+    { "Model Type", "Model Type" },
+    { "Type LAHJA", "Type LAHJA" },
+    { "Gender", "Gender" },
+    { "Model Version", "Model Version" }  // ≈÷«›… "≈’œ«— «·‰„Ê–Ã"
+};
+
+    // ﬁ«„Ê” »«··€… «·⁄—»Ì…
+    private Dictionary<string, string> ArabicLabels = new()
+{
+    { "Category", "«·›∆…" },
+    { "Language", "«··€…" },
+    { "Model Type", "‰Ê⁄ «·‰„Ê–Ã" },
+    { "Type LAHJA", "‰Ê⁄ «··ÂÃ…" },
+    { "Gender", "«·Ã‰”" },
+    { "Model Version", "≈’œ«— «·‰„Ê–Ã" }  // ≈÷«›… "≈’œ«— «·‰„Ê–Ã"
+};
+    // œ«·… ··Õ’Ê· ⁄·Ï »Ì«‰«  «·›∆«  (Categories)
+    private StudioFilterDefinition<FilterItemData> GetCategories()
+    {
+        return new StudioFilterDefinition<FilterItemData>
+            {
+                Title = GetText("Category"),
+                Icon = Icons.Material.Filled.Category,
+                Options = new List<FilterItemData>
+        {
+            new FilterItemData { Id = 1, Icon = Icons.Material.Filled.Newspaper, Identifier = "news", Text = new Dictionary<string, string> { { "ar", "√Œ»«—" }, { "en", "News" } } },
+            new FilterItemData { Id = 2, Identifier = "general", Text = new Dictionary<string, string> { { "ar", "⁄«„" }, { "en", "General" } } },
+            new FilterItemData { Id = 3, Identifier = "questions", Text = new Dictionary<string, string> { { "ar", "√”∆·…" }, { "en", "Questions" } } },
+            new FilterItemData { Id = 4, Identifier = "sports", Text = new Dictionary<string, string> { { "ar", "—Ì«÷…" }, { "en", "Sports" } } },
+            new FilterItemData { Id = 5, Identifier = "technology", Text = new Dictionary<string, string> { { "ar", " ﬂ‰Ê·ÊÃÌ«" }, { "en", "Technology" } } }
+        },
+                OnSelectionChanged = EventCallback.Factory.Create<FilterItemData>(this, SelectCategory)
+            };
+    }
+
+    // œ«·… ··Õ’Ê· ⁄·Ï »Ì«‰«  «··€«  (Languages)
+    private StudioFilterDefinition<FilterItemData> GetLanguages()
+    {
+        return new StudioFilterDefinition<FilterItemData>
+            {
+                Title = GetText("Language"),
+                Icon = Icons.Material.Filled.Language,
+                Options = new List<FilterItemData>
+        {
+            new FilterItemData { Id = 1, Identifier = "en", Text = new Dictionary<string, string> { { "ar", "«·≈‰Ã·Ì“Ì…" }, { "en", "English" } } },
+            new FilterItemData { Id = 2, Identifier = "ar", Text = new Dictionary<string, string> { { "ar", "«·⁄—»Ì…" }, { "en", "Arabic" } } }
+        },
+                OnSelectionChanged = EventCallback.Factory.Create<FilterItemData>(this, SelectLanguage)
+            };
+    }
+
+    // œ«·… ··Õ’Ê· ⁄·Ï »Ì«‰«  √‰Ê«⁄ «·‰„«–Ã (Model Types)
+    private StudioFilterDefinition<FilterItemData> GetModelTypes()
+    {
+        return new StudioFilterDefinition<FilterItemData>
+            {
+                Title = GetText("Model Type"),
+                Icon = Icons.Material.Filled.ModelTraining,
+                Options = new List<FilterItemData>
+        {
+            new FilterItemData { Id = 1, Identifier = "Official", Text = new Dictionary<string, string> { { "ar", "«·—”„Ì…" }, { "en", "Official" } } },
+            new FilterItemData { Id = 2, Identifier = "LAHJA", Text = new Dictionary<string, string> { { "ar", "·ÂÃ…" }, { "en", "LAHJA" } } }
+        },
+                OnSelectionChanged = EventCallback.Factory.Create<FilterItemData>(this, SelectModelType)
+            };
+    }
+
+    // œ«·… ··Õ’Ê· ⁄·Ï »Ì«‰«  «··ÂÃ«  (Dialects)
+    private StudioFilterDefinition<FilterItemData> GetDialects()
+    {
+        return (SelectedLangague.Identifier == "ar") ?
+
+        new StudioFilterDefinition<FilterItemData>
+            {
+                Title = GetText("Type LAHJA"),
+                Icon = Icons.Material.Filled.SignLanguage,
+                Options = new List<FilterItemData>
+            {
+            new FilterItemData
+            {
+                Id = 1,
+                Identifier = "NA",
+                Text = new Dictionary<string, string>
+                {
+                    { "ar", "«··ÂÃ… «·‰ÃœÌ…" },
+                    { "en", "Najdi Accent" }
+                }
+            },
+            new FilterItemData
+            {
+                Id = 2,
+                Identifier = "HA",
+                Text = new Dictionary<string, string>
+                {
+                    { "ar", "«··ÂÃ… «·ÕÃ«“Ì…" },
+                    { "en", "Hejaz Accent" }
+                }
+            },
+            new FilterItemData
+            {
+                Id = 3,
+                Identifier = "SH",
+                Text = new Dictionary<string, string>
+                {
+                    { "ar", "«··ÂÃ… «·Ã‰Ê»Ì…" },
+                    { "en", "Southern Accent" }
+                }
+            },
+            new FilterItemData
+            {
+                Id = 4,
+                Identifier = "EA",
+                Text = new Dictionary<string, string>
+                {
+                    { "ar", "«··ÂÃ… «·‘—ﬁÌ…" },
+                    { "en", "Eastern Accent" }
+                }
+            }
+            },
+                OnSelectionChanged = EventCallback.Factory.Create<FilterItemData>(this, SelectDialectType)
+            }
+            : new StudioFilterDefinition<FilterItemData>
+                {
+                    Title = GetText("Type LAHJA"),
+                    Icon = Icons.Material.Filled.SignLanguage,
+                    Options = new List<FilterItemData>
+                {
+                    new FilterItemData
+                    {
+                        Id = 1,
+                        Identifier = "EN",
+                        Text = new Dictionary<string, string>
+                        {
+                            { "ar", "«·ÂÃ… «·—”„Ì…" },
+                            { "en", "Official dialect" }
+                        }
+                    },
+                 },
+                    OnSelectionChanged = EventCallback.Factory.Create<FilterItemData>(this, SelectDialectType)
+            };
+    }
+
+    // œ«·… ··Õ’Ê· ⁄·Ï »Ì«‰«  «·Ã‰” (Speaker Genders)
+    private StudioFilterDefinition<FilterItemData> GetSpeakerGenders()
+    {
+        return new StudioFilterDefinition<FilterItemData>
+            {
+                Title = GetText("Gender"),
+                Icon = Icons.Material.Filled.Male,
+                Options = new List<FilterItemData>
+        {
+            new FilterItemData { Id = 1, Icon = Icons.Material.Filled.Male, Identifier = "male", Text = new Dictionary<string, string> { { "ar", "–ﬂ—" }, { "en", "Male" } } },
+            new FilterItemData { Id = 2, Icon = Icons.Material.Filled.Female, Identifier = "female", Text = new Dictionary<string, string> { { "ar", "√‰ÀÏ" }, { "en", "Female" } } }
+        },
+                OnSelectionChanged = EventCallback.Factory.Create<FilterItemData>(this, SelectSpeakerGender)
+            };
+    }
+
+    // œ«·… ··Õ’Ê· ⁄·Ï »Ì«‰«  «·≈’œ«—«  (Model Releases)
+    private StudioFilterDefinition<FilterItemData> GetModelReleases()
+    {
+        return getListArabicModelRelease(SelectedSpeakerGenders.Identifier ?? "ar");
+    }
+
+    protected async void changeLanguage(string currentLangCode)
+    {
+        CurrentLanguage = currentLangCode;
+        TranslationLabels = currentLangCode == "ar" ? ArabicLabels : EnglishLabels;
+        InvokeAsync(StateHasChanged);
+    }
+    private string GetText(string key)
+    {
+
+        if (TranslationLabels.ContainsKey(key))
+        {
+            return TranslationLabels[key];
+        }
+        return key;
+    }
+
+
+    private StudioFilterDefinition<FilterItemData> getListEnglishModelRelease(string gender)
+    {
+        return new StudioFilterDefinition<FilterItemData>
+            {
+                Title = GetText("Model Version"),
+                Icon = Icons.Material.Filled.SignLanguage,
+                Options = new List<FilterItemData>
+            {
+                // ≈÷«›… «·≈’œ«—«  «·≈‰Ã·Ì“Ì…
+                new FilterItemData
+                {
+                    Id = 1,
+                    Identifier = "vits-en-v1",  // ‰›” «·‹ Identifier
+                    Text = new Dictionary<string, string>
+                    {
+                        { "ar", "·ÂÃ… 2.3 «‰Ã·Ì“Ì" },
+                        { "en", "Lahja English 2.3" }
+                    },
+                    Icon = Icons.Material.Filled.Group
+                }
+            },
+                OnSelectionChanged = EventCallback.Factory.Create<FilterItemData>(this, SelectModelRelease)
+            };
+    }
+    private StudioFilterDefinition<FilterItemData> getListArabicModelRelease(string gender)
+    {
+        return new StudioFilterDefinition<FilterItemData>
+            {
+                Title = GetText("Model Version"),
+                Icon = Icons.Material.Filled.SignLanguage,
+                Options = new List<FilterItemData>
+        {
+
+
+            // ≈÷«›… «·≈’œ«—«  «·⁄—»Ì… »‰«¡ ⁄·Ï «·Ã‰”
+            gender == "male" ? new FilterItemData
+            {
+                Id = 2,
+                Identifier = "vits-ar-sa-A",
+                Text = new Dictionary<string, string>
+                {
+                    { "ar", "·ÂÃ… «Õ„œ 2.1" },
+                    { "en", "Lahja Ahmed 2.1" }
+                },
+                Icon = Icons.Material.Filled.Group
+            } : new FilterItemData
+            {
+                Id = 3,
+                Identifier = "vits-ar-sa-huba-v2",
+                Text = new Dictionary<string, string>
+                {
+                    { "ar", "·ÂÃ… Â»… 2.5" },
+                    { "en", "Lahja Huba 2.5" }
+                },
+                Icon = Icons.Material.Filled.Group
+            }
+        },
+                OnSelectionChanged = EventCallback.Factory.Create<FilterItemData>(this, SelectModelRelease)
+            };
+    }
 
 }
 
 
 
 
-@code 
+@code
 {
 
     private MudTextField<string> multilineReference;
@@ -197,7 +555,7 @@
             StateHasChanged();
 
             if (!string.IsNullOrEmpty(textSpeech))
-            {   
+            {
                 isAudioPlayingIsEnd = true;
                 StateHasChanged();
                 // var request = new QueryRequest
@@ -219,7 +577,7 @@
                 //     _processing = false;
                 // }
 
-                var response = await _TemplateServices.VoiceBot(new DataBuildServiceBase { Text = textSpeech, ServiceId = "3", Method = "POST", TagId = "audioPlayer", URL = "https://api-inference.huggingface.co/models/wasmdashai/" + ModelId, ModelAi=ModelId });
+                var response = await _TemplateServices.VoiceBot(new DataBuildServiceBase { Text = textSpeech, ServiceId = "3", Method = "POST", TagId = "audioPlayer", URL = "https://api-inference.huggingface.co/models/wasmdashai/" + ModelId, ModelAi = SelectedModelRelease.Identifier });
                 if (response.Succeeded)
                 {
                     // audioUrl = response.Data.Result;
@@ -234,7 +592,8 @@
             }
 
 
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
 
         }
@@ -260,9 +619,37 @@
     private async Task DownloadAudio()
     {
         if (!isAudioPlayingIsEnd)
-                await JSRuntime.InvokeVoidAsync("downloadAudioFromElement", "audioPlayer", "downloaded-audio.mp3");
+            await JSRuntime.InvokeVoidAsync("downloadAudioFromElement", "audioPlayer", "downloaded-audio.mp3");
     }
-   
+
+    protected override async void OnAfterRender(bool firstRender)
+
+    {
+        if (firstRender)
+        {
+            CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
+            changeLanguage(CurrentLanguage);
+            // LoadData();
+            LoadFilters();
+            StateHasChanged();
+
+        }
+
+
+    }
+
+    private void LoadFilters()
+    {
+        CategoriesFilter = GetCategories();
+        LanguagesFilter = GetLanguages();
+        ModelTypesFilter = GetModelTypes();
+        DialectsFilter = GetDialects();
+        SpeakerGendersFilter = GetSpeakerGenders();
+        ModelReleasesFilter = GetModelReleases();
+
+
+    }
+
 
 }
 

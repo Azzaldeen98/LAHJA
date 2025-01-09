@@ -1,0 +1,38 @@
+﻿@using LAHJA.Data.UI.Components.StudioLahjaAiVM
+
+<MudSelect T="FilterItemData" Label="@Filter.Title" OpenIcon="@Filter.Icon" AdornmentColor="Color.Secondary" Variant="Variant.Outlined" ValueChanged="@(Filter.OnSelectionChanged)" Class="w18 display-computer-mode nav-bar_font p-2" Style="border-radius:15px !important;">
+    @foreach (var option in Filter.Options)
+    {
+
+        <MudSelectItem T="FilterItemData" Value="@option"  Class="nav-bar_font p-2">
+      @*        @if (!string.IsNullOrEmpty(option.Icon)){
+                 <MudIcon Icon="@option.Icon" Size="Size.Small" />
+             }  *@
+            @option.Text[CurrentLanguage]
+        </MudSelectItem>
+    }
+</MudSelect>
+
+
+<MudSelect T="FilterItemData" OpenIcon="@Filter.Icon" CloseIcon="@Icons.Material.Filled.Flag"  AdornmentColor="Color.Secondary" Variant="Variant.Outlined" ValueChanged="@(Filter.OnSelectionChanged)" Class="nav-bar_font p-0 mb-2 display-mobile-mode" style="border-radius:20px !important;height:20px !important">
+    @foreach (var option in Filter.Options)
+    {
+
+        <MudSelectItem T="FilterItemData" Value="@option" Class="nav-bar_font p-0">
+            @*       @if (!string.IsNullOrEmpty(option.Icon)){
+        <MudIcon Icon="@option.Icon" Size="Size.Small" />
+        } *@
+            @option.Text[CurrentLanguage]
+        </MudSelectItem>
+    }
+</MudSelect>
+
+
+@code {
+
+    [Parameter]
+    public string CurrentLanguage { get; set; } = "en";
+
+    [Parameter]
+    public StudioFilterDefinition<FilterItemData> Filter { get; set; } = new();
+}
