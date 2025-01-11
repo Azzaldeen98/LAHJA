@@ -1,5 +1,6 @@
 ﻿using ApexCharts;
 using AutoMapper;
+using Blazorise;
 using Domain.Entities.Event.Request;
 using Domain.Entities.Event.Response;
 using Domain.Entities.Request.Request;
@@ -163,6 +164,8 @@ namespace LAHJA.Data.UI.Templates.Services
 
         public override async Task<Result<ServiceAIResponse>> Text2Text(DataBuildServiceBase data)
         {
+
+            try { 
             var mapReq = Mapper.Map<RequestCreate>(data);
             var res = await requestClientService.CreateRequestAsync(mapReq);
             if(res.Succeeded)
@@ -182,7 +185,7 @@ namespace LAHJA.Data.UI.Templates.Services
                 }
                 else
                 {
-                    var _event = Mapper.Map<EventRequest>(res);
+                    var _event = Mapper.Map<EventRequest>(res.Data);
                     _event.RequestId = res.Data.Id;
             
                     await requestClientService.CreateEventAsync(_event);
@@ -196,44 +199,55 @@ namespace LAHJA.Data.UI.Templates.Services
    
             }
 
-       
+        }catch(Exception ex)
+            {
+                return Result<ServiceAIResponse>.Fail(ex.Message);
+            }
 
-        }
 
-        public override async Task<Result<ServiceAIResponse>> Text2Speech(DataBuildServiceBase data)
+
+
+}
+
+public override async Task<Result<ServiceAIResponse>> Text2Speech(DataBuildServiceBase data)
         {
             //var map = Mapper.Map<Models.QueryRequestTextToSpeech>(data);
             //return await Service.Text2SpeechAsync(map);
-
-            var mapReq = Mapper.Map<RequestCreate>(data);
-            var res = await requestClientService.CreateRequestAsync(mapReq);
-            if (res.Succeeded)
+            try
             {
-                //var req = new Data.UI.Models.QueryRequestTextToSpeech { Data = data.Text ,TagId=data.TagId,U};
-                //req.URL += data.ModelAi;
-                var map = Mapper.Map<Data.UI.Models.QueryRequestTextToSpeech>(data);
-                //map.Headers = new QueryRequestTextToSpeechHeader();
-                var servRes = await Service.Text2SpeechAsync(map);
-                if (servRes.Succeeded)
+                var mapReq = Mapper.Map<RequestCreate>(data);
+                var res = await requestClientService.CreateRequestAsync(mapReq);
+                if (res.Succeeded)
                 {
-                    var _event = Mapper.Map<EventRequest>(res.Data);
-                    _event.RequestId = res.Data.Id;
-                    await requestClientService.CreateEventAsync(_event);
-                    return Result<ServiceAIResponse>.Success(servRes.Data);
+                    //var req = new Data.UI.Models.QueryRequestTextToSpeech { Data = data.Text ,TagId=data.TagId,U};
+                    //req.URL += data.ModelAi;
+                    var map = Mapper.Map<Models.QueryRequestTextToSpeech>(data);
+                    //map.Headers = new QueryRequestTextToSpeechHeader();
+                    var servRes = await Service.Text2SpeechAsync(map);
+                    if (servRes.Succeeded)
+                    {
+                        var _event = Mapper.Map<EventRequest>(res.Data);
+                        _event.RequestId = res.Data.Id;
+                        await requestClientService.CreateEventAsync(_event);
+                        return Result<ServiceAIResponse>.Success(servRes.Data);
+                    }
+                    else
+                    {
+                        var _event = Mapper.Map<EventRequest>(res.Data);
+                        _event.RequestId = res.Data.Id;
+
+                        await requestClientService.CreateEventAsync(_event);
+                        return Result<ServiceAIResponse>.Fail(servRes.Messages[0]);
+                    }
                 }
                 else
                 {
-                    var _event = Mapper.Map<EventRequest>(res);
-                    _event.RequestId = res.Data.Id;
+                    return Result<ServiceAIResponse>.Fail("لايوجد لديك رصيد كافي من الطلبات");
 
-                    await requestClientService.CreateEventAsync(_event);
-                    return Result<ServiceAIResponse>.Fail(servRes.Messages[0]);
                 }
-            }   
-            else
+            }catch(Exception ex)
             {
-                return Result<ServiceAIResponse>.Fail("لايوجد لديك رصيد كافي من الطلبات");
-
+                return Result<ServiceAIResponse>.Fail(ex.Message);
             }
 
   
@@ -241,38 +255,60 @@ namespace LAHJA.Data.UI.Templates.Services
 
         public override async Task<Result<ServiceAIResponse>> VoiceBot(DataBuildServiceBase data)
         {
-         
+            try {
 
-            var res =await Text2Text(data);
          
-            if (res.Succeeded)
-            {
-                data.Text = res.Data.Result;
-                var response = await Text2Speech(data);
-                if (response.Succeeded)
+                var mapReq = Mapper.Map<RequestCreate>(data);
+                var res = await requestClientService.CreateRequestAsync(mapReq);
+                if (res.Succeeded)
                 {
-                    //var _event = Mapper.Map<EventRequest>(res.Data);
-                    ////_event.RequestId = sph.Data.Id;
-                    //await requestClientService.CreateEventAsync(_event);
-                    return Result<ServiceAIResponse>.Success(response.Data);
-                }
-                else
-                {
-                    //var _event = Mapper.Map<EventRequest>(res);
-                    ////_event.RequestId = res.Data.Id;
+                    var req = new QueryRequestTextToText { Text = data.Text };
+   
+                    var servRes = await Service.Text2TextAsync(req);
+                    if (servRes.Succeeded)
+                    {
+                        
+                        var map = Mapper.Map<Models.QueryRequestTextToSpeech>(data);
+                        map.Data = servRes.Data.Result;
+                        var response = await Service.Text2SpeechAsync(map);
 
-                    //await requestClientService.CreateEventAsync(_event);
-                    return Result<ServiceAIResponse>.Fail(response.Messages[0]);
-                }
+                        if (response.Succeeded)
+                        {
+                            var _event = Mapper.Map<EventRequest>(res.Data);
+                            _event.RequestId = res.Data.Id;
+                            await requestClientService.CreateEventAsync(_event);
+                            return Result<ServiceAIResponse>.Success(response.Data);
+                        }
+                        else
+                        {
+                            var _event = Mapper.Map<EventRequest>(res.Data);
+                            _event.RequestId = res.Data.Id;
+                            await requestClientService.CreateEventAsync(_event);
+                            return Result<ServiceAIResponse>.Fail(servRes.Messages[0]);
+                        }
+                    }
+                    else
+                    {
+                        var _event = Mapper.Map<EventRequest>(servRes);
+                        _event.RequestId = res.Data.Id;
+                        await requestClientService.CreateEventAsync(_event);
+                        return Result<ServiceAIResponse>.Fail();
+                    }
+
+                    
             }
             else
             {
                 return Result<ServiceAIResponse>.Fail(res.Messages[0]);
             }
-           
-        }
+        }catch(Exception ex)
+            {
+                return Result<ServiceAIResponse>.Fail(ex.Message);
+            }
 
-        public override Task<Result<RequestAllowed>> AllowedAsync(DataBuildServiceBase data)
+}
+
+public override Task<Result<RequestAllowed>> AllowedAsync(DataBuildServiceBase data)
         {
             throw new NotImplementedException();
         }

@@ -222,15 +222,15 @@ namespace LAHJA.ApiClient.Services.Query
             try
             {
                 var res = await TextToSpeechHttpAsync(requestData);
-                if (res!=null)
+                if (!string.IsNullOrEmpty(res))
                 {
 
                     //res = "" + res;
                    
                 
 
-                //await _JSRuntime.InvokeVoidAsync("playerAudio", res);
-               await _JSRuntime.InvokeVoidAsync("playerAudioSource", res, requestData.TagId);
+                   //await _JSRuntime.InvokeVoidAsync("playerAudio", res);
+                   await _JSRuntime.InvokeVoidAsync("playerAudioSource", res, requestData.TagId);
                     //if (response != null)
                     //{
                     //    if (response == "222")

@@ -1,3 +1,5 @@
+
+
 window.reloadPage = function () {
     location.reload();
 };
@@ -17,6 +19,13 @@ window.downloadAudioFromElement = (audioElementId, fileName) => {
         console.error("Audio source not found or invalid audio element.");
     }
 };
+
+
+
+
+
+
+
 
 
 function typeText(elementId, text, typingSpeed) {
@@ -368,7 +377,7 @@ async function t2t(data) {
 //    }
 //}
 window.playerAudioSource = (audioUrl, audioElementId = "audioPlayer") => {
-
+    //alert(audioUrl)
     const audioElement = document.getElementById(audioElementId);
     audioElement.src = audioUrl;
     audioElement.play();

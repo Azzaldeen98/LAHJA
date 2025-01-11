@@ -95,7 +95,55 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
 
+        document.addEventListener("DOMContentLoaded", function () {
+            const panel = document.getElementById('resizablePanel');
+            const handle = document.getElementById('resizeHandle');
+            let isResizing = false;
+
+            // بدء السحب (الفأرة)
+            handle.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                e.preventDefault();
+            });
+
+            // بدء السحب (اللمس)
+            handle.addEventListener('touchstart', (e) => {
+                isResizing = true;
+                e.preventDefault(); // منع السلوك الافتراضي
+            });
+
+            // السحب أثناء التحريك (الفأرة)
+            document.addEventListener('mousemove', (e) => {
+                if (!isResizing) return;
+                const newWidth = window.innerWidth - e.clientX;
+                if (newWidth > 200) {
+                    panel.style.width = ${ newWidth } px;
+                }
+            });
+
+            // السحب أثناء التحريك (اللمس)
+            document.addEventListener('touchmove', (e) => {
+                if (!isResizing) return;
+                const touch = e.touches[0]; // أخذ أول نقطة لمس
+                const newWidth = window.innerWidth - touch.clientX;
+                if (newWidth > 200) {
+                    panel.style.width = ${ newWidth } px;
+                }
+            });
+
+            // إنهاء السحب (الفأرة)
+            document.addEventListener('mouseup', () => {
+                isResizing = false;
+            });
+
+            // إنهاء السحب (اللمس)
+            document.addEventListener('touchend', () => {
+                isResizing = false;
+            });
+        });
+    </script>
 </body>
 </html>
 

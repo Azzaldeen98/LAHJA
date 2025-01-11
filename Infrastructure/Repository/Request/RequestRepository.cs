@@ -165,7 +165,7 @@ namespace Infrastructure.Repository.Subscription
 
                              var flag= seedsSubscriptionsData.CreateRequest(email,request.ServiceId);
                               if(flag)
-                              return Result<bool>.Success();
+                                 return Result<bool>.Success();
                           }
                       }
                       return Result<bool>.Fail();

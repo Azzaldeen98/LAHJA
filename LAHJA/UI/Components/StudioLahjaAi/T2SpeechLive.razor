@@ -1,275 +1,50 @@
 @using LAHJA.ApiClient.Models
 @using LAHJA.ApiClient.Services.Query
 @using LAHJA.ApiClient.Services.VoiceBot
+@using LAHJA.Data.UI.Components.StudioLahjaAiVM
 @using LAHJA.Data.UI.Models
 @using LAHJA.Data.UI.Templates.Services
 @using LAHJA.Them
  @using MudBlazor
  @using LAHJA.Data.UI.Components.ServiceCard
  @using Microsoft.AspNetCore.Components
- @inject IDialogService DialogService
-@inject NavigationManager Navigation
-@inject IJSRuntime JSRuntime
-@inject IQueryTextToSpeechService _queryTextToSpeechService
-@inject TemplateServices _TemplateServices;
-@inject ISnackbar Snackbar;
+ @* @inherits StudioAi *@
+@inject TemplateServices templateServices
+@inject NavigationManager Navigation 
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
 
+<T2Speech SubmitSend="@OnSubmit" />
 
-
-<style>
-
-    /* Icons Section */
-    .icon-md, .icon-lg, .icon-xl, .icon-xxl {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50%;
-        /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
-    }
-
-    .icon-md {
-        /*  width: 40px;
-            height: 40px; */
-        width: 4.6rem;
-        height: 2.6rem;
-        line-height: 2.6rem;
-        text-align: center !important;
-        font-size: 0.8rem;
-    }
-
-    .icon-lg {
-        width: 4.5rem;
-        height: 3.5rem;
-        line-height: 3.5rem;
-        text-align: center !important;
-        font-size: 1.2rem;
-    }
-    /* .icon-lg {
-            width: 60px;
-            height: 60px;
-        }
-         */
-    .icon-xl {
-        width: 80px;
-        height: 80px;
-        line-height: 4.3rem;
-    }
-
-    .icon-xxl {
-        width: 120px;
-        height: 120px;
-        line-height: 6.8rem;
-    }
-
-    .shadow-primary {
-        /* box-shadow: 0 4px 8px rgba(0, 123, 255, 0.25); */
-    }
-
-    /* Ripple Animation */
-    .ripple-anim {
-        position: relative;
-        animation: ripple 2s infinite;
-    }
-
-
-
-    /* Title Section */
-    .h {
-        font-size: 2.5rem;
-        font-weight: 700;
-        line-height: 1.5;
-        color: #212529;
-    }
-
-    .text-primary {
-        color: #007bff;
-    }
-
-    p {
-        font-size: 1rem;
-        color: #6c757d;
-    }
-
-    img {
-        max-width: 100%;
-        height: auto;
-    }
-    /* Button Styling */
-    .btn-primary-grad {
-        /* background: linear-gradient(90deg, #007bff, #0056b3); */
-        color: #fff;
-        padding: 0.75rem 1.5rem;
-        border: none;
-        border-radius: 5px;
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-
-        .btn-primary-grad:hover {
-            /* background: linear-gradient(90deg, #0056b3, #007bff); */
-            transform: scale(1.05);
-        }
-
-    /* Features Section */
-    .card {
-        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-        border: none;
-        transition: transform 0.3s ease;
-    }
-
-        .card:hover {
-            transform: translateY(-10px);
-        }
-
-    .card-body {
-        padding: 1.5rem;
-        border-radius: 0.75rem;
-    }
-
-    .text-pink {
-        color: #ff6b6b;
-    }
-
-    .text-info {
-        color: #17a2b8;
-    }
-
-    .text-success {
-        color: #28a745;
-    }
-
-    .Ic {
-        margin-top: -144%;
-    }
-
-    /* Responsive Design */
-    .w-30px {
-        width: 30px !important;
-    }
-</style>
-<MudCard Elevation="25" Class="rounded-lg pb-4">
-    <MudCardHeader>
-        <CardHeaderContent>
-
-        </CardHeaderContent>
-        <CardHeaderActions>
-
-        </CardHeaderActions>
-    </MudCardHeader>
-
-
-    <MudCardContent>
-        <div class="d-flex  flex-wrap ">
-            <MudForm @ref="form" Class="w-chat-t2s" ValidationDelay="300" OnValidSubmit="Onsubmit" OnInvalidSubmit="Onsubmit">
-
-
-                <MudTextField @ref="multilineReference" T="string" Label="Manual focus" Variant="Variant.Filled" @bind-Value="@textSpeech" Lines="10" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.CenterFocusWeak"
-                              OnAdornmentClick="@(() => multilineReference.FocusAsync())" />
-
-                @if (_processing)
-                {
-                    <MudButton EndIcon="@Icons.Material.Filled.Cancel" Class="mb-3" OnClick="OnCancel" FullWidth="true">Cancel</MudButton>
-                }
-                else
-                {
-                    <MudButton Disabled="@_processing" Color="@AppColors.BASE_COLOR_ENUM" Variant="Variant.Outlined" FullWidth="true"
-                               EndIcon="@Icons.Material.Filled.Send" Class="mb-3" OnClick="Onsubmit">
-                        @if (_processing)
-                        {
-                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                            <MudText Class="ms-2">...</MudText>
-
-                        }
-                        else
-                        {
-
-                            <MudText>Click me</MudText>
-                        }
-
-                    </MudButton>
-                }
-
-            </MudForm>
-
-
-            <div class="w-chat-t2s">
-                <MudCard Class="m-0 p-0  " Elevation="0">
-                    <MudCardHeader>
-                        <CardHeaderContent>
-
-                        </CardHeaderContent>
-                        <CardHeaderActions>
-                            <MudButtonGroup Color="@AppColors.BASE_COLOR_ENUM" Style="height: 26px">
-
-                                <MudIconButton Icon="@Icons.Material.Filled.Download" OnClick="DownloadAudio" Disabled="@isAudioPlayingIsEnd" Color="@AppColors.BASE_COLOR_ENUM" aria-label="github" />
-                                <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Secondary" aria-label="add to favorite" />
-                                <MudIconButton Icon="@Icons.Material.Filled.Share" Disabled="true" aria-label="share" />
-                            </MudButtonGroup>
-                        </CardHeaderActions>
-                    </MudCardHeader>
-                    <MudCardContent>
-                        <div class="activ-speech-ai">
-                            @if (isAudioPlaying)
-                            {
-                                <div id="logo-icon-animate-id" class="icon-xxl text-center shadow-primary rounded-circle flex-shrink-0 ripple-anim" style="line-height: 6.8rem;">
-
-                                    <MudIcon Size="Size.Large" style="direction:ltr !important;margin:8px !important" Color="@AppColors.BASE_COLOR_ENUM" Icon="@Icons.Material.Filled.BlurOn" Title="API" />
-
-                                </div>
-                            }
-                            else
-                            {
-
-                                <div id="logo-icon-static-id" class="icon-xxl text-center shadow-primary rounded-circle flex-shrink-0" style="line-height: 6.8rem;">
-
-                                    <MudIcon Size="Size.Large" style="direction:ltr !important;margin:8px !important" Color="@AppColors.BASE_COLOR_ENUM" Icon="@Icons.Material.Filled.BlurOn" Title="API" />
-
-                                </div>
-                            }
-                        </div>
-                    </MudCardContent>
-                    <MudCardActions>
-                        <audio id="audioPlayer" controls @onplay="OnPlay" @onended="OnEnded" @onpause="OnPause" style="width:100%;margin:2%"></audio>
-                    </MudCardActions>
-                </MudCard>
-
-
-            </div>
-
-        </div>
-
-    </MudCardContent>
-
-</MudCard>
 
 
 @code {
 
 
-    private bool isAudioPlaying = false;
-    private bool isAudioPlayingIsEnd = true;
+    // private bool isAudioPlaying = false;
+    // private bool isAudioPlayingIsEnd = true;
 
-    private async Task OnPlay()
-    {
-        isAudioPlayingIsEnd = true;
-        isAudioPlaying = true;
-        StateHasChanged();
-    }
+    // private async Task OnPlay()
+    // {
+    //     isAudioPlayingIsEnd = true;
+    //     isAudioPlaying = true;
+    //     StateHasChanged();
+    // }
 
-    private async Task OnPause()
-    {
-        isAudioPlaying = false;
-        _processing = false;
-        StateHasChanged();
-    }
+    // private async Task OnPause()
+    // {
+    //     isAudioPlaying = false;
+    //     _processing = false;
+    //     StateHasChanged();
+    // }
 
-    private async Task OnEnded()
-    {
-        isAudioPlayingIsEnd = false;
-        isAudioPlaying = false;
-        _processing = false;
-        StateHasChanged();
-    }
+    // private async Task OnEnded()
+    // {
+    //     isAudioPlayingIsEnd = false;
+    //     isAudioPlaying = false;
+    //     _processing = false;
+    //     StateHasChanged();
+    // }
 
 
 }
@@ -280,54 +55,45 @@
 @code
 {
 
-    private MudTextField<string> multilineReference;
-    private MudForm form;
-    private bool _processing = false;
-    [Parameter] public DataBuildServicePage DataBuild { get; set; }
-    [Parameter] public TextToSpeechComponent? Param { get; set; } = null;
-    [Parameter] public EventCallback<string> PlayTextToSpeech { get; set; }
-    [Parameter] public EventCallback SaveAudio { get; set; }
-    [Parameter] public string OnTextSpeech { get; set; } = "";
-    [Parameter] public string? OnResultUrl { get; set; } = "";
-    [Parameter] public string? ModelId { get; set; } = "vits-ar-sa-A";
-    private string Textt;
-    private bool flag = false;
+    // private MudTextField<string> multilineReference;
+    // private MudForm form;
+    // private bool _processing = false;
+    // [Parameter] public DataBuildServicePage DataBuild { get; set; }
+    // [Parameter] public TextToSpeechComponent? Param { get; set; } = null;
+    // [Parameter] public EventCallback<string> PlayTextToSpeech { get; set; }
+    // [Parameter] public EventCallback SaveAudio { get; set; }
+    // [Parameter] public string OnTextSpeech { get; set; } = "";
+    // [Parameter] public string? OnResultUrl { get; set; } = "";
+    // [Parameter] public string? ModelId { get; set; } = "vits-ar-sa-A";
+    // private string Textt;
+    // private bool flag = false;
 
-    private string SelectedLanguage { get; set; }
-    private string textSpeech = "";
-    private string SelectedDialect = "";
+    // private string SelectedLanguage { get; set; }
+    // private string textSpeech = "";
+    // private string SelectedDialect = "";
 
-    [Parameter] public EventCallback<OnDataResult> OnSubmit { get; set; }
+    // [Parameter] public EventCallback<OnDataResult> OnSubmit { get; set; }
 
-    [Parameter] public OnDataResult? OnResult { get; set; } = null;
+    // [Parameter] public OnDataResult? OnResult { get; set; } = null;
 
-    private IEnumerable<string> TextStrength(string value)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-            yield return "Text cannot be empty.";
+    // private IEnumerable<string> TextStrength(string value)
+    // {
+    //     if (string.IsNullOrWhiteSpace(value))
+    //         yield return "Text cannot be empty.";
 
 
-        if (value.Length < 6)
-            yield return "Password must be at least 8 characters long.";
-        if (!value.Any(ch => "!@#$%^&*()".Contains(ch)))
-            yield return "Password must include at least one special character (!@#$%^&*()).";
-    }
+    //     if (value.Length < 6)
+    //         yield return "Password must be at least 8 characters long.";
+    //     if (!value.Any(ch => "!@#$%^&*()".Contains(ch)))
+    //         yield return "Password must include at least one special character (!@#$%^&*()).";
+    // }
 
-    private async Task Onsubmit()
+    private async Task OnSubmit(DataBuildServiceBase data)
     {
         try
         {
-
-            _processing = true;
-            StateHasChanged();
-
-            if (!string.IsNullOrEmpty(textSpeech))
-            {
-                isAudioPlayingIsEnd = true;
-                StateHasChanged();
-                // var request = new QueryRequestTextToSpeech { Data = textSpeech, TagId = "audioPlayer", Url = "https:api-inference.huggingface.co/models/wasmdashai/" + ModelId };
-                // var response = await _queryTextToSpeechService.TextToSpeechAsync(request);
-                var response = await _TemplateServices.Text2Speech(new DataBuildServiceBase { Text = textSpeech, ServiceId = "2", Method = "POST", TagId = "audioPlayer", URL = "https://api-inference.huggingface.co/models/wasmdashai/" + ModelId, ModelAi = ModelId });
+            data.ServiceId = "2";
+                var response = await templateServices.Text2Speech(data);
                 if (response.Succeeded)
                 {
 
@@ -337,9 +103,7 @@
                     Snackbar.Add("·«ÌÊÃœ ·œÌﬂ —’Ìœ ﬂ«›Ì „‰ «·ÿ·»« ", Severity.Warning);
 
                 }
-            }
-
-
+            
 
 
         }
@@ -348,31 +112,22 @@
         {
 
         }
-        finally
-        {
-            _processing = false;
-            StateHasChanged();
-        }
-
+     
 
     }
 
-    private void testing()
-    {
-        Navigation.NavigateTo("/ShowInSound");
-    }
+    // private void testing()
+    // {
+    //     Navigation.NavigateTo("/ShowInSound");
+    // }
 
-    private async Task OnCancel()
-    {
-        _processing = false;
-        StateHasChanged();
-    }
+    // private async Task OnCancel()
+    // {
+    //     _processing = false;
+    //     StateHasChanged();
+    // }
 
-    private async Task DownloadAudio()
-    {
-        if (!isAudioPlayingIsEnd)
-            await JSRuntime.InvokeVoidAsync("downloadAudioFromElement", "audioPlayer", "downloaded-audio.mp3");
-    }
+
 
 
 }

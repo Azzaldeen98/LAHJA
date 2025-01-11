@@ -4,6 +4,7 @@
 @using LAHJA.Them
 @using LAHJA.UI.Components.Auth
 @using LAHJA.Helpers.Services
+@using LAHJA.UI.Components.StudioLahjaAi
 @using MudBlazor
 
 
@@ -21,9 +22,6 @@
 @using Microsoft.Extensions.Localization
 @using System.Globalization
 
- @* @inject IStringLocalizer<Resources> localizer *@
-
-@* <PageTitle>@localizer["Home"]</PageTitle> *@
 
 <MudRTLProvider RightToLeft="@_rightToLeft">
 <MudThemeProvider @ref="@_mudThemeProvider" Theme="_themeManager.Theme" @bind-IsDarkMode="@_isDarkMode" />
@@ -31,7 +29,93 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
+<header>
+    <style>
+            /* الزر لإظهار الواجهة */
+            .show-panel-button {
+                position: fixed;
+                bottom: 45%;
+                right: 0px;
+                padding: 7px 13px;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                z-index: 999;
+            }
 
+            /*     .show-panel-button:hover {
+                    background-color: #0056b3;
+                }
+ */
+            /* الطبقة الخارجية */
+            .overlay {
+                 position: fixed;
+                 top: 0;
+                 left: 0;
+                width: 100% !important;
+                height: 100% !important;
+                /* background-color: transparent; */
+                z-index: 1000;
+            /*     display: flex;
+                justify-content: flex-end; */
+            }
+
+            /* اللوحة القابلة للسحب */
+            .resizable-panel {
+                width: 100% !important;
+                height: 100% !important;
+                /* background-color: #007bff; */
+                position: relative;
+                cursor: ew-resize;
+   /*              display: flex;
+                flex-direction: column; */
+                overflow: hidden;
+            }
+
+            /* مقبض السحب */
+            .resize-handle {
+                width: 10px;
+                height: 100% !important;
+                background-color: lightgray;
+                position: absolute;
+                left: 0;
+                top: 0;
+                cursor: ew-resize;
+            }
+
+            /* زر الإغلاق */
+            .close-button {
+                
+                /* padding: 5px 10px; */
+                /* background-color: #cc0000; */
+                color: white !important; 
+                /* border: none; */
+                /* border-radius: 10px; */
+                /* cursor: pointer; */
+                /* align-self: flex-end; */
+                position:absolute !important;
+                top:10px;
+                right:10px;
+                z-index:100;
+            }
+
+                 .close-button:hover {
+                    color: red !important;
+                }
+
+            /* محرر النصوص */
+            .content {
+                position: relative;
+                flex-grow: 1;
+                /* padding: 10px; */
+                margin-top:50px;
+                /* color: white; */
+            }
+
+   
+    </style>
+</header>
 
 <MudLayout>
     <MudAppBar   Elevation="_themeManager.AppBarElevation" style="@((_isDarkMode?"":"background:#fff")+";" )" class="navbar-light">
@@ -126,17 +210,106 @@
     </MudDrawer>
     }
     <MudMainContent>
-        <Loading IsLoading="isLoading" />
-            @Body
+
+
+        <div> @Body </div>
+
+            @if (NavigationManager.Uri != NavigationManager.BaseUri+"/studio"){
+
+                <MudIconButton class="show-panel-button"   Style="@("background-color:"+AppColors.BASE_COLOR_FOUCS)" Icon="@Icons.Material.Filled.GroupWork" @onclick="ShowPanel" />
+
+
+                @if (isPanelVisible)  
+                {
+                    <MudCard @bind-Open="isPanelVisible" Class="overlay"  Elevation="0" >
+                        <div class="resizable-panel" id="resizablePanel">
+                            @* <div class="resize-handle" id="resizeHandle"></div> *@
+                      
+                            <div class="content p-2">
+                                <MudIconButton Icon="@Icons.Material.Filled.Close" Class="close-button" @onclick="ClosePanel"/>
+                                 <MainStudio />
+                            </div>
+                        </div>
+                    </MudCard>
+                }
+            }
+
+@code {
+    private bool isPanelVisible = false;
+
+    private void ShowPanel()
+    {
+            isPanelVisible = !isPanelVisible;
+            StateHasChanged();
+    }
+
+    private void ClosePanel()
+    {
+        isPanelVisible = false;
+    }
+}
+
+            @* @Body *@
+            
        
     </MudMainContent>
     <MudThemeManagerButton OnClick="@((e) => OpenThemeManager(true))" />
     <MudThemeManager Open="_themeManagerOpen" OpenChanged="OpenThemeManager" Theme="_themeManager" ThemeChanged="UpdateTheme" IsDarkMode="@_isDarkMode" />
 </MudLayout>
 
-    <audio style="visibility:hidden;position:fixed" id="LAHJAAudioPlayerId" controls></audio>
+ <audio style="visibility:hidden;position:fixed" id="LAHJAAudioPlayerId" controls></audio>
 
 </MudRTLProvider>
+
+<script>
+
+       
+
+    // const drawer = document.getElementById('drawer');
+    // const drawerBorder = document.getElementById('drawer-border');
+    // const toggleButton = document.getElementById('toggle-btn');
+    // let isResizing = false;
+    // let initialMouseX = 0;
+
+    // // Toggle Drawer Open/Close
+    // toggleButton.addEventListener('click', () => {
+    //     if (drawer.style.width === '0px' || drawer.style.width === '') {
+    //         drawer.style.width = '200px';
+    //     } else {
+    //         drawer.style.width = '0px';
+    //     }
+    // });
+
+    // // Start Resizing
+    // drawerBorder.addEventListener('mousedown', (e) => {
+    //     isResizing = true;
+    //     initialMouseX = e.clientX;
+    //     document.body.style.cursor = 'ew-resize';
+    // });
+
+
+    // // Resize Drawer
+    // document.addEventListener('mousemove', (e) => {
+    //     if (!isResizing) return;
+
+    //     const offset = window.innerWidth - e.clientX;
+    //     const minWidth = 200; // Minimum drawer width
+    //     const maxWidth = 1500; // Maximum drawer width
+
+    //     if (offset >= minWidth && offset <= maxWidth) {
+    //         drawer.style.width = `${offset}px`;
+    //     }
+    // });
+
+    // // Stop Resizing
+    // document.addEventListener('mouseup', () => {
+    //     if (isResizing) {
+    //         isResizing = false;
+    //         document.body.style.cursor = '';
+    //     }
+    // });
+</script>
+
 
 @code {
 

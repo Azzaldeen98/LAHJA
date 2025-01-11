@@ -15,11 +15,11 @@
 @inject LanguageService languageService
 @inject IManageLanguageService _manageLanguageService
 
-@if (isLoading)
+@* @if (isLoading)
 {
     <Loading IsLoading="isLoading" />
 
-}else{
+}else{ *@
 
 <CardStart />
 <CardShowExperience  />
@@ -69,7 +69,9 @@
 
 
 <Footer />
-}
+
+
+@* } *@
 @code {
 
 
@@ -77,11 +79,9 @@
     // A dictionary to store translations for both Arabic and English
 
 
-
     private bool isLoading = true;
 
     private static readonly Dictionary<string, Dictionary<string, string>> Translations = new()
-
         {
 
             ["en"] = new()
@@ -109,10 +109,6 @@
                 ["ChoosePlan"] = "اختر خطتك المثالية",
 
                 ["PlanDescription"] = "ابدأ بثقة كاملة. ضمان استرداد رسوم التسجيل لمدة 30 يومًا يعني تجربة بدون مخاطر."
-
-
-
-
 
             }
 

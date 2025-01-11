@@ -10,7 +10,6 @@ namespace LAHJA.Data.UI.Models
         [JsonPropertyName("Content-Type")]
         public string ContentType { get; set; } = "application/json";
     }
-
     public class QueryRequestTextToSpeech
     {
         [JsonPropertyName("Url")]

@@ -5,7 +5,8 @@
 
 
 
-<MudContainer >
+
+<MudContainer Class="h-100" >
 
 
     <MudText Typo="Typo.body1">@Title</MudText>
@@ -32,9 +33,91 @@
         }
 
     </MudGrid>
-</MudContainer>
+</MudContainer> 
+@code {
+
+
+    @inject IJSRuntime JS
+
+    @code {
+        private bool IsResizing = false;
+        private double LastMouseX = 0;
+        private string DrawerStyle = "width: 300px;"; // Default width
+
+        private async Task StartResizing(MouseEventArgs e)
+        {
+            IsResizing = true;
+            LastMouseX = e.ClientX;
+
+            // Add global event listeners for mousemove and mouseup
+            await JS.InvokeVoidAsync("addResizableDrawerListeners", DotNetObjectReference.Create(this));
+        }
+
+        [JSInvokable]
+        public async Task ResizeDrawer(MouseEventArgs e)
+        {
+            if (!IsResizing) return;
+
+            // Calculate the new drawer width
+
+            double clientWidth = await JS.InvokeAsync<double>("getBodyClientWidth");
+            double offsetRight = clientWidth - e.ClientX;
+            const double MinWidth = 50;
+            const double MaxWidth = 600;
+
+            if (offsetRight > MinWidth && offsetRight < MaxWidth)
+            {
+                DrawerStyle = $"width: {offsetRight}px;";
+                StateHasChanged();
+            }
+        }
+
+        [JSInvokable]
+        public async Task StopResizing()
+        {
+            IsResizing = false;
+
+            // Remove global event listeners
+            await JS.InvokeVoidAsync("removeResizableDrawerListeners");
+        }
+}
+
+}
 
 @code {
+
+    private string SidebarWidth { get; set; } = "200px"; // العرض الافتراضي
+    // private bool IsResizing { get; set; } = false;
+
+    // private void StartResizing(MouseEventArgs e)
+    // {
+    //     // التحقق إذا كان الزر الأيمن هو المستخدم
+    //     if (e.Buttons == 2)
+    //     {
+    //         IsResizing = true;
+    //         StateHasChanged();
+    //     }
+    // }
+
+    // private void StopResizing()
+    // {
+    //     IsResizing = false;
+    // }
+
+    // private void ResizeSidebar(MouseEventArgs e)
+    // {
+    //     if (IsResizing)
+    //     {
+    //         var newWidth = e.ClientX; // موقع الماوس بالنسبة للصفحة
+    //         if (newWidth > 100 && newWidth < 500) // تحديد الحدود
+    //         {
+    //             SidebarWidth = $"{newWidth}px";
+    //             StateHasChanged();
+    //         }
+    //     }
+    // }
+
+
     [Parameter]
     public bool Typelangauge { get; set; } = true;
 

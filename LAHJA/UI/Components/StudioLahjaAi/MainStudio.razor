@@ -6,21 +6,21 @@
 @inject ISnackbar snackbar
 
 
-<MudPaper Style="overflow:hidden;position:relative;height:100%">
+<MudPaper Style="overflow:hidden;height:100%">
 
     <MudDrawerContainer Class="mud-height-full" Style="height:100%">
         <!-- Top Action Bar -->
         <MudList T="string" Dense="true" Class="d-flex flex-grow-1 py-0" Style="@("background-color:"+@AppColors.BASE_COLOR_FOUCS)">
             @* <MudCheckBox   Class="text-light" /> *@
-            <MudIconButton Class="text-light display-mobile-mode" OnClick="@(()=>IsMenuOpen=!IsMenuOpen)" Icon="@Icons.Material.Filled.MoreVert" />
-            <MudIconButton Class="text-light" Icon="@Icons.Material.Filled.Refresh" />
+            @* <MudIconButton Class="text-light display-mobile-mode" OnClick="@(()=>IsMenuOpen=!IsMenuOpen)" Icon="@Icons.Material.Filled.MoreVert" />
+            <MudIconButton Class="text-light" Icon="@Icons.Material.Filled.Refresh" /> *@
             @* <MudIconButton class="text-light" Icon="@Icons.Material.Filled.MoreVert" /> *@
             <MudSpacer />
             <MudText Typo="Typo.h5" class="text-light" Align="Align.Center">@GetText("Studio")</MudText>
             <MudSpacer />
        @*      <MudIconButton class="text-light" Icon="@Icons.Material.Filled.ChevronLeft" />
             <MudIconButton class="text-light" Icon="@Icons.Material.Filled.ChevronRight" /> *@
-            <MudIconButton class="text-light" Icon="@Icons.Material.Filled.Settings" OnClick="ToggleSettingsMenu" />
+            @* <MudIconButton class="text-light" Icon="@Icons.Material.Filled.Settings" OnClick="ToggleSettingsMenu" /> *@
         </MudList>
         <MudDivider />
    
