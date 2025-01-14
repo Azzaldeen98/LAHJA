@@ -7,6 +7,7 @@
         public string IsUser { get; set; }
         public string BubbleColor { get; set; }
         public bool IsProcessing { get; set; } = false;
+        public bool IsSpeaking { get; set; } = false;
     }
 
 

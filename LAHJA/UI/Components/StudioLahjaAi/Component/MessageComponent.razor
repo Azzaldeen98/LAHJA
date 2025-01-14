@@ -5,7 +5,8 @@
 @if (Message!=null)
 {
 
-<div class="chat-bubble py-0">
+<div class="chat-bubble py-0 my-1">
+
         <MudCard Class="px-3 py-0 d-flex flex-row justify-content-around align-items-center" Style="@("background-color:"+Message.BubbleColor)">
 
         <MudText Class="mb-1" style="font-size:12px !important; font-weight:normal !important">
@@ -15,7 +16,11 @@
             {
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
             }
-            else
+            else if (Message.IsSpeaking)
+            {
+                <MudImage Src="icons/audio_wave.gif" Width="50"  Height="20"  />
+            }
+            else 
             {
                 <MudIconButton class="mx-2" Size="Size.Medium" style="height:30px" Icon="@Icons.Material.Filled.SurroundSound" Color="@AppColors.BASE_COLOR_ENUM" OnClick="@messageToSpeech" Edge="Edge.End" />
             }

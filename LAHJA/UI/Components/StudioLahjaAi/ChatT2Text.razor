@@ -11,7 +11,7 @@
 
 @inherits StudioAi
 
-<MudCard Elevation="25" Class="rounded-lg p-0 h-100 d-flex flex-column" Style="max-width: 100%; margin: auto;">
+<MudCard Elevation="25" Class="rounded-lg p-0 border-0  h-100 d-flex flex-column" Style="max-width: 100%; margin: auto;">
     @if (DataBuild != null)
     {
          <div class="d-flex flex-wrap justify-content-around ">
@@ -22,7 +22,7 @@
              <FilterItemSelected Filter="DataBuild.DialectsFilter" CurrentLanguage="@CurrentLanguage" />
          </div>
     }
-    <MudCardContent Class="flex-grow-1 p-0 w-100 p-2 overflow-auto" Style="max-height:300px;min-height:300px">
+    <MudCardContent Class="flex-grow-1 p-0 border-0 w-100 p-2 overflow-auto" Style="max-height:300px;min-height:300px">
         <div id="chat-messages" class="d-flex flex-column gap-2">
             @if (ChatMessages != null && ChatMessages.Any())
             {
@@ -40,16 +40,16 @@
         </div>
     </MudCardContent>
 
-    <MudCard Style="width:100%" Class="mb-3 d-flex flex-column justify-content-start align-items-start">
+    <MudCard Style="width:100%" Class="mb-3 border-0 d-flex flex-column justify-content-start align-items-start">
       
 
    @*      @if (DataBuild.ModelReleasesFilter != null)
         {
             <FilterItemSelected Filter="DataBuild.ModelReleasesFilter" CurrentLanguage="@CurrentLanguage" />
         } *@
-    <MudCard Style="width:100%" Class="mb-3 d-flex flex-row-reverse">
-   
-        <MudCardContent Style="width:100%">
+    <MudCard Style="width:100%" Class="mb-3 d-flex  flex-row-reverse">
+
+            <MudCardContent Style="width:100%" Class="border-0">
 
             <MudTextField T="string"
                           Required="true"
@@ -92,31 +92,6 @@
         border-color: rgba(11,186,131,1) !important;
     }
 
-    .chat-bubble {
-        display: flex;
-        justify-content: flex-start;
-        margin-bottom: 10px;
-    }
-
-        .chat-bubble.User {
-            justify-content: flex-end;
-        }
-
-        .chat-bubble .mud-paper {
-            border-radius: 10px;
-            max-width: 75%;
-        }
-
-        /* Dynamic Chat Bubble Colors */
-        .chat-bubble.User .mud-paper {
-            background-color: #e3f2fd; /* Light blue for user messages */
-        }
-
-        .chat-bubble.System .mud-paper {
-            background-color: #eeeeee; /* Light gray for system messages */
-        }
-
-
 
 </style>
 
@@ -138,20 +113,6 @@
     }
 
 
-    // private async void speechText(string message)
-    // {
-
-
-    //     if (!string.IsNullOrEmpty(message))
-    //     {
-
-    //         var res = await _queryTextToSpeechService.TextToSpeechAsync(new QueryRequestTextToSpeech
-    //             {
-    //                 Url = "https:api-inference.huggingface.co/models/wasmdashai/vits-ar-sa-huba-v2",
-    //                 Data = message,
-    //             });
-    //     }
-    // }
 
     private async Task TriggerTypingEffect(ChatMessage message)
     {

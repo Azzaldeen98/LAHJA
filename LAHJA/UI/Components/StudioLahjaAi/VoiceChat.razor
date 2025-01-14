@@ -1,0 +1,168 @@
+﻿
+@using LAHJA.Data.UI.Components.StudioLahjaAiVM
+@using LAHJA.Data.UI.Templates.Services
+@using LAHJA.Them
+@using Microsoft.JSInterop
+@inherits StudioAi
+
+
+<MudContainer Class="mt-4" Style="text-align: center;">
+    <MudText Typo="Typo.h4">Speech to Text Converter</MudText>
+    <MudSpacer />
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="StartListening" Disabled="@isListening">
+        Start Listening
+    </MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="StopListening" Disabled="@(isListening == false)" Class="ml-2">
+        Stop Listening
+    </MudButton>
+    <MudSpacer />
+
+     <MudTextField T="string" id="displayTranscript" Variant="Variant.Outlined" FullWidth  Value="@transcribedText" /> 
+    <MudButton id="btnTranscript"  OnClick="onSubmit"></MudButton>
+    <MudCardContent>
+        <div class="activ-speech-ai">
+            @if (isAudioPlaying)
+            {
+                <div id="logo-icon-animate-id" class="icon-xxl text-center shadow-primary rounded-circle flex-shrink-0 ripple-anim" style="line-height: 6.8rem;">
+
+                    <MudIcon Size="Size.Large" style="direction:ltr !important;margin:8px !important" Color="@AppColors.BASE_COLOR_ENUM" Icon="@Icons.Material.Filled.BlurOn" Title="API" />
+
+                </div>
+            }
+            else
+            {
+
+                <div id="logo-icon-static-id" class="icon-xxl text-center shadow-primary rounded-circle flex-shrink-0" style="line-height: 6.8rem;">
+
+                    <MudIcon Size="Size.Large" style="direction:ltr !important;margin:8px !important" Color="@AppColors.BASE_COLOR_ENUM" Icon="@Icons.Material.Filled.BlurOn" Title="API" />
+
+                </div>
+            }
+        </div>
+
+
+    </MudCardContent>
+    <audio id="audioPlayer" controls @onplay="OnPlay" @onended="OnEnded" @onpause="OnPause" style="width:100%;margin:2%"></audio>
+    @* <p>Current Text: @currentText</p> *@
+</MudContainer>
+
+
+
+@code {
+    private  string transcribedText ;
+    private bool isAudioPlaying = false;
+    private bool isAudioPlayingIsEnd = true;
+    private bool isListening = false;
+    private bool continuousListening = true;
+    private string currentText = "";
+    public void OnValueChanged(string? value)
+    {
+        // transcribedText = currentText = value ?? "";
+        // StateHasChanged();
+        Console.WriteLine($"Text Changed: {value}");
+    }
+    private async Task StartListening()
+    {
+        isListening = true;
+        // var dotNetRef = DotNetObjectReference.Create(this);
+        await JSRuntime.InvokeVoidAsync("startSpeechRecognition");
+        // await JSRuntime.InvokeVoidAsync("startSpeechRecognition");
+    }
+    private async Task OnPlay()
+    {
+        isAudioPlayingIsEnd = true;
+        isAudioPlaying = true;
+        // StateHasChanged();
+    }
+
+    private async Task OnPause()
+    {
+        isAudioPlaying = false;
+        // _processing = false;
+        // StateHasChanged();
+    }
+
+    private async Task OnEnded()
+    {
+        isAudioPlayingIsEnd = false;
+        isAudioPlaying = false;
+        // _processing = false;
+        // StateHasChanged();
+        if (continuousListening)
+        {
+            await StartListening();
+        }
+      
+
+    }
+    private async Task onSubmit()
+    {
+
+        if (isListening)
+        {
+            isListening = false;
+            var res = await JSRuntime.InvokeAsync<string>("getSpeechRecognitionResult");
+            currentText = res;
+            await TextToSpeech(res);
+            transcribedText = "";
+            StateHasChanged();
+
+
+        }
+
+    }
+
+
+    private async Task TextToSpeech(string text)
+    {
+        if (!string.IsNullOrEmpty(text) )
+        {
+            // isAudioPlayingIsEnd = true;
+            // StateHasChanged();
+     
+
+               var data = new DataBuildServiceBase { Text = text, ServiceId = "3", Method = "POST", TagId = "audioPlayer", URL = "https:api-inference.huggingface.co/models/wasmdashai/", ModelAi = "vits-ar-sa-A" };
+     
+                var response = await templateServices.VoiceBot(data);
+                if (response.Succeeded)
+                {
+                    // audioUrl = response.Data.Result;
+                    // StateHasChanged();
+                }
+                else
+                {
+
+                    Snackbar.Add("لايوجد لديك رصيد كافي من الطلبات", Severity.Warning);
+
+                }
+            
+        }
+   
+    
+}
+    private async Task StopListening()
+    {
+        isListening = false;
+        await JSRuntime.InvokeVoidAsync("stopSpeechRecognition");
+    }
+
+    [JSInvokable]
+    public async Task UpdateTranscription(string text)
+    {
+        // transcribedText = text;
+        Console.WriteLine($"Print: {text}");
+        // StateHasChanged();-+
+    }
+    [JSInvokable]
+    public async Task TriggerOnSubmit()
+    {
+        await onSubmit();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // await JSRuntime.InvokeVoidAsync("onInputFinished", DotNetObjectReference.Create(this));
+        }
+    }
+}

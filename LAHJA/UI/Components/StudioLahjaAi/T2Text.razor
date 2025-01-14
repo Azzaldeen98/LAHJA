@@ -21,100 +21,8 @@
         border-color: rgba(11,186,131,1) !important;
     }
 
-    .chat-bubble {
-        display: flex;
-        justify-content: flex-start;
-        margin-bottom: 10px;
-    }
-
-        .chat-bubble.User {
-            justify-content: flex-end;
-        }
-
-        .chat-bubble .mud-paper {
-            border-radius: 10px;
-            max-width: 75%;
-        }
-
-
-        .chat-bubble.User .mud-paper {
-            background-color: #e3f2fd;
-        }
-
-        .chat-bubble.System .mud-paper {
-            background-color: #eeeeee;
-        }
 
 </style>
-@* <MudCard Elevation="25" Class="rounded-lg pb-4 ">
-
-
-
-        <MudCardHeader>
-            <CardHeaderContent>
-
-            </CardHeaderContent>
-            <CardHeaderActions>
-            </CardHeaderActions>
-        </MudCardHeader>
-        <MudCardContent>
-
-            <div class="d-flex  flex-wrap ">
-
-
-            <MudForm @ref="form" Class="w-chat-t2s" ValidationDelay="300" OnValidSubmit="Onsubmit" OnInvalidSubmit="Onsubmit" Style="height:250px">
-
-                <MudTextField T="string"
-                              Label="Text"
-                              HelperText="Choose a Text"
-                              InputType="InputType.Text"
-
-                              @bind-Value="@textSpeech" />
-
-
-
-
-                <MudButton Disabled="@_processing"   FullWidth="true"
-                           EndIcon="@Icons.Material.Filled.Send" Variant="Variant.Filled" Class="mb-3" OnClick="Onsubmit">
-                    @if (_processing)
-                    {
-
-                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                        <MudText Class="ms-2">Processing</MudText>
-                    }
-                    else
-                    {
-                        <MudText>Click me</MudText>
-                    }
-                </MudButton>
-            </MudForm>
-
-
-            <div class="w-chat-t2s">
-
-            @if (OnResult != null && OnResult.Sccess && OnResult.OperationType == "TextToDialect")
-            {
-                <MudTextField   T="string" Label="Single Select" Variant="Variant.Outlined" Text="@OnResult.Text"
-                              Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Api" />
-                <MudButton OnClick="ShareResult" EndIcon="@Icons.Material.Filled.Send"   FullWidth="true"
-                           Variant="Variant.Filled">Share</MudButton>
-            }
-
-            </div>
-            </div>
-        </MudCardContent>
-
-
-
-
-
-
-
-
-
-
-
-</MudCard> *@
 
 
 <MudCard Elevation="25" Class="rounded-lg p-0 h-100 d-flex flex-column" Style="max-width: 100%; margin: auto;">
@@ -156,7 +64,7 @@
         </div>
     </MudCardContent>
     <MudCard Style="width:100%" Class="mb-3 d-flex flex-column justify-content-start align-items-start">
-        @* <FilterOptions CurrentLanguage="@CurrentLanguage" Filters="@FilterModels" /> *@
+ 
 
    @*      @if (DataBuild.ModelReleasesFilter != null)
         {
@@ -227,347 +135,12 @@
         StateHasChanged();
     }
 
-    // private FilterItemData SelectedCategory;
-    // private FilterItemData SelectedServiceType;
-    // private FilterItemData SelectedLangague;
-    // private FilterItemData SelectedTypeLahaga;
-    // private FilterItemData SelectedTypeModel;
-    // private FilterItemData SelectedDialectType;
-    // private FilterItemData SelectedModelRelease;
 
-
-    // public StudioFilterDefinition CategoriesFilter { get; set; } = new();
-    // public StudioFilterDefinition LanguagesFilter { get; set; } = new();
-    // public StudioFilterDefinition ModelTypesFilter { get; set; } = new();
-    // public StudioFilterDefinition ServiceTypeFilter { get; set; } = new();
-    // public StudioFilterDefinition DialectsFilter { get; set; } = new();
-    // public StudioFilterDefinition ModelReleasesFilter { get; set; } = new();
-
-
-    // [Parameter]
-    // public BuildDataStudioFilter BuildDataStudioFilters{ get => DataBuild; set => DataBuild=value; } 
-
-    // [Parameter]
-    // public SelectedStudioFilter SelectedStudioFilter { get => _SelectedStudioFilter; set => _SelectedStudioFilter = value; }
-
-    // private BuildDataStudioFilter DataBuild=new();
-
-    // private GroupFilters    groupStudioFilter;
-    // private SelectedStudioFilter _SelectedStudioFilter;
-
-    // private List<StudioFilterDefinition> Filters = new();
-    // private List<StudioFilterDefinition> FilterModels = new();
-
-
-    // œÊ«· «·«Œ Ì«—
-    // private void SelectCategory(FilterItemData item)
-    // { /* „‰ÿﬁ «Œ Ì«— «·›∆… */
-
-
-    //     SelectedCategory = item;
-
-    // }
-    // private void SelectLanguage(FilterItemData item)
-    // {
-
-
-    //     SelectedLangague = item;
-    //     StateHasChanged();
-    // }
-    // private void SelectModelType(FilterItemData item)
-    // {
-
-    //     SelectedTypeModel = item;
-
-    //     if (item.TypeModel == "LAHJA")
-    //     {
-    //         DialectsFilter = GetDialects();
-    //     }
-
-    //     StateHasChanged();
-    // }
-    // private void SelectDialectType(FilterItemData item)
-    // {
-    //     SelectedDialectType = item;
-    //     StateHasChanged();
-    // }
-
-    // private void SelectServiceType(FilterItemData item)
-    // {
-    //     SelectedServiceType = item;
-    // }
-
-    // private void SelectModelRelease(FilterItemData item)
-    // { /* „‰ÿﬁ «Œ Ì«— ≈’œ«— «·‰„Ê–Ã */
-
-    //     SelectedModelRelease = item;
-
-
-    // }
-
-    //     private Dictionary<string, string> TranslationLabels = new();
-
-    //     private Dictionary<string, string> EnglishLabels = new()
-    // {
-    //     { "Category", "Category" },
-    //     { "Language", "Language" },
-    //     { "Model Type", "Model Type" },
-    //     { "Type LAHJA", "Type LAHJA" },
-    //     { "Gender", "Gender" },
-    //     { "Model Version", "Model Version" }  ≈÷«›… "≈’œ«— «·‰„Ê–Ã"
-    // };
-
-    //     ﬁ«„Ê” »«··€… «·⁄—»Ì…
-    //     private Dictionary<string, string> ArabicLabels = new()
-    // {
-    //     { "Category", "«·›∆…" },
-    //     { "Language", "«··€…" },
-    //     { "Model Type", "‰Ê⁄ «·‰„Ê–Ã" },
-    //     { "Type LAHJA", "‰Ê⁄ «··ÂÃ…" },
-    //     { "Gender", "«·Ã‰”" },
-    //     { "Model Version", "≈’œ«— «·‰„Ê–Ã" }  ≈÷«›… "≈’œ«— «·‰„Ê–Ã"
-    // };
-    // œ«·… ··Õ’Ê· ⁄·Ï »Ì«‰«  «·›∆«  (Categories)
-
-    // private StudioFilterDefinition GetCategories()
-    // {
-    //     return new StudioFilterDefinition
-    //         {
-    //             Title = GetText("Category"),
-    //             Icon = Icons.Material.Filled.Category,
-    //             Options = new List<FilterItemData>
-    //     {
-    //         new FilterItemData { Id = 1, Icon = Icons.Material.Filled.Newspaper, Identifier = "news", Text = new Dictionary<string, string> { { "ar", "√Œ»«—" }, { "en", "News" } } },
-    //         new FilterItemData { Id = 2, Identifier = "general", Text = new Dictionary<string, string> { { "ar", "⁄«„" }, { "en", "General" } } },
-    //         new FilterItemData { Id = 3, Identifier = "questions", Text = new Dictionary<string, string> { { "ar", "√”∆·…" }, { "en", "Questions" } } },
-    //         new FilterItemData { Id = 4, Identifier = "sports", Text = new Dictionary<string, string> { { "ar", "—Ì«÷…" }, { "en", "Sports" } } },
-    //         new FilterItemData { Id = 5, Identifier = "technology", Text = new Dictionary<string, string> { { "ar", " ﬂ‰Ê·ÊÃÌ«" }, { "en", "Technology" } } }
-    //     },
-    //             OnSelectionChanged = EventCallback.Factory.Create<FilterItemData>(this, SelectCategory)
-    //         };
-    // }
-
-    // // œ«·… ··Õ’Ê· ⁄·Ï »Ì«‰«  «··€«  (Languages)
-    // private StudioFilterDefinition GetLanguages()
-    // {
-    //     return new StudioFilterDefinition
-    //         {
-    //             Title = GetText("Language"),
-    //             Icon = Icons.Material.Filled.Language,
-    //             Options = new List<FilterItemData>
-    //     {
-    //         new FilterItemData { Id = 1, Identifier = "en", Text = new Dictionary<string, string> { { "ar", "«·≈‰Ã·Ì“Ì…" }, { "en", "English" } } },
-    //         new FilterItemData { Id = 2, Identifier = "ar", Text = new Dictionary<string, string> { { "ar", "«·⁄—»Ì…" }, { "en", "Arabic" } } }
-    //     },
-    //             OnSelectionChanged = EventCallback.Factory.Create<FilterItemData>(this, SelectLanguage)
-    //         };
-    // }
-
-    // // œ«·… ··Õ’Ê· ⁄·Ï »Ì«‰«  √‰Ê«⁄ «·‰„«–Ã (Model Types)
-    // private StudioFilterDefinition GetModelTypes()
-    // {
-    //     return new StudioFilterDefinition
-    //         {
-    //             Title = GetText("Model Type"),
-    //             Icon = Icons.Material.Filled.ModelTraining,
-    //             Options = new List<FilterItemData>
-    //     {
-    //         new FilterItemData { Id = 1, Identifier = "Official", Text = new Dictionary<string, string> { { "ar", "«·—”„Ì…" }, { "en", "Official" } } },
-    //         new FilterItemData { Id = 2, Identifier = "LAHJA", Text = new Dictionary<string, string> { { "ar", "·ÂÃ…" }, { "en", "LAHJA" } } }
-    //     },
-    //             OnSelectionChanged = EventCallback.Factory.Create<FilterItemData>(this, SelectModelType)
-    //         };
-    // }
-
-    // // œ«·… ··Õ’Ê· ⁄·Ï »Ì«‰«  «··ÂÃ«  (Dialects)
-    // private StudioFilterDefinition GetDialects()
-    // {
-    //     return new StudioFilterDefinition
-    //         {
-    //             Title = GetText("Type LAHJA"),
-    //             Icon = Icons.Material.Filled.SignLanguage,
-    //             Options = new List<FilterItemData>
-    //     {
-    //         new FilterItemData
-    //         {
-    //             Id = 1,
-    //             Identifier = "NA",
-    //             Text = new Dictionary<string, string>
-    //             {
-    //                 { "ar", "«··ÂÃ… «·‰ÃœÌ…" },
-    //                 { "en", "Najdi Accent" }
-    //             }
-    //         },
-    //         new FilterItemData
-    //         {
-    //             Id = 2,
-    //             Identifier = "HA",
-    //             Text = new Dictionary<string, string>
-    //             {
-    //                 { "ar", "«··ÂÃ… «·ÕÃ«“Ì…" },
-    //                 { "en", "Hejaz Accent" }
-    //             }
-    //         },
-    //         new FilterItemData
-    //         {
-    //             Id = 3,
-    //             Identifier = "SH",
-    //             Text = new Dictionary<string, string>
-    //             {
-    //                 { "ar", "«··ÂÃ… «·Ã‰Ê»Ì…" },
-    //                 { "en", "Southern Accent" }
-    //             }
-    //         },
-    //         new FilterItemData
-    //         {
-    //             Id = 4,
-    //             Identifier = "EA",
-    //             Text = new Dictionary<string, string>
-    //             {
-    //                 { "ar", "«··ÂÃ… «·‘—ﬁÌ…" },
-    //                 { "en", "Eastern Accent" }
-    //             }
-    //         }
-    //     },
-    //             OnSelectionChanged = EventCallback.Factory.Create<FilterItemData>(this, SelectDialectType)
-    //         };
-    // }
-
-
-    // // œ«·… ··Õ’Ê· ⁄·Ï »Ì«‰«  «·≈’œ«—«  (Model Releases)
-    // private StudioFilterDefinition GetModelReleases()
-    // {
-    //     return new StudioFilterDefinition
-    //         {
-    //             Title = GetText("Model Version"),
-    //             Icon = Icons.Material.Filled.ModelTraining,
-    //             Options = new List<FilterItemData>{
-    //                 ≈÷«›… «·≈’œ«—«  «·≈‰Ã·Ì“Ì…
-    //                 new FilterItemData
-    //                 {
-    //                     Id = 1,
-    //                     Identifier = "gpt",  ‰›” «·‹ Identifier
-    //                     Text = new Dictionary<string, string>
-    //                     {
-    //                         { "ar", "chat gpt " },
-    //                         { "en", "chat gpt" }
-    //                     },
-    //                     Icon = Icons.Material.Filled.Group
-    //                 },
-    //                        new FilterItemData
-    //                 {
-    //                     Id = 2,
-    //                     Identifier = "gemini flash 1.5 pro",  ‰›” «·‹ Identifier
-    //                     Text = new Dictionary<string, string>
-    //                     {
-    //                         { "ar", "gemini flash 1.5 pro" },
-    //                         { "en", "gemini flash 1.5 pro" }
-    //                     },
-    //                     Icon = Icons.Material.Filled.Group
-    //                 },
-
-    //             }
-    //         };
-    // }
-
-
-
-
-    // private StudioFilterDefinition getGPTServices()
-    // {
-    //     return new StudioFilterDefinition
-    //         {
-    //             Title = GetText("GPT Services"),
-    //             Icon = Icons.Material.Filled.ModelTraining,
-    //             Options = new List<FilterItemData> {
-
-    //             new FilterItemData
-    //             {
-    //                 Id = 1,
-    //                 Identifier = "gpt",  // ‰›” «·‹ Identifier
-    //                 Text = new Dictionary<string, string>
-    //                 {
-    //                     { "ar", "chat gpt " },
-    //                     { "en", "chat gpt" }
-    //                 },
-    //                 Icon = Icons.Material.Filled.Group
-    //             },
-    //                new FilterItemData
-    //             {
-    //                 Id = 2,
-    //                 Identifier = "gpt",  // ‰›” «·‹ Identifier
-    //                 Text = new Dictionary<string, string>
-    //                 {
-    //                     { "ar", "Bing " },
-    //                     { "en", "Bing" }
-    //                 },
-    //                 Icon = Icons.Material.Filled.Group
-    //             }
-    //        },
-    //             OnSelectionChanged = EventCallback.Factory.Create<FilterItemData>(this, SelectServiceType)
-    //         };
-    // }
-
-
-
-    // private void LoadFilters()
-    // {
-    //     DataBuild.CategoriesFilter = GetCategories();
-    //     DataBuild.LanguagesFilter = GetLanguages();
-    //     DataBuild.ModelTypesFilter = GetModelTypes();
-    //     DataBuild.DialectsFilter = GetDialects();
-    //     DataBuild.ModelReleasesFilter = GetModelReleases();
-    //     DataBuild.ServiceTypeFilter = getGPTServices();
-    // }
-
-    // private MudForm form;
     private string textSpeech;
-    // private bool _processing = false;
-
+  
     private List<ChatMessage> ChatMessages = new();
 
-    // protected async void changeLanguage(string currentLangCode)
-    // {
-    //     CurrentLanguage = currentLangCode;
-    //     TranslationLabels = currentLangCode == "ar" ? ArabicLabels : EnglishLabels;
-    //     InvokeAsync(StateHasChanged);
-    // }
-    // private string GetText(string key)
-    // {
-
-    //     if (TranslationLabels.ContainsKey(key))
-    //     {
-    //         return TranslationLabels[key];
-    //     }
-    //     return key;
-    // }
-
-    // protected override async void OnAfterRender(bool firstRender)
-
-    // {
-    //     if (firstRender)
-    //     {
-    //         CurrentLanguage = await _manageLanguageService.GetLanguageAsync();
-    //         changeLanguage(CurrentLanguage);
-    //         LoadData();
-    //         LoadFilters();
-    //         StateHasChanged();
-
-    //     }
-
-
-    // }
-
-    // protected override void OnInitialized()
-    // {
-
-    //     TranslationLabels = ArabicLabels;
-
-
-
-    // }
-
-
+   
 
     private async Task TriggerTypingEffect(ChatMessage message)
     {
@@ -628,16 +201,7 @@
         StateHasChanged();
     }
 
-    // private async Task HandleRequestedData(SelectedStudioFilter item)
-    // {
-    //     _SelectedStudioFilter = item;
-    // }
 
-    // private async Task FetchData()
-    // {
-
-    //     await groupStudioFilter.RequestDataAsync();
-    // }
     private async Task OnSubmit()
     {
         try
@@ -667,7 +231,7 @@
                     var text = resService.Data.Result;
                     if (!string.IsNullOrWhiteSpace(text))
                     {
-                        // addTextToChatMessage(text, "#eeeeee");
+                    
 
                         var msg = new ChatMessage
                             {
@@ -750,6 +314,7 @@
 
 
     }
+
     // private Task OpenDialogAsyncS()
     // {
 

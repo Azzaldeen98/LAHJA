@@ -576,3 +576,90 @@ function convertTextToSpeech() {
 
     return "222";
 }
+
+
+
+window.speechRecognition = {
+    recognition: null,
+    lang: "ar-AR", 
+    
+    isSupported: function () {
+        return ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window);
+    },
+
+    setLanguage: function (language) {
+        this.lang = language;
+    },
+
+    startSpeechRecognition: function () {
+
+        //this.tagId = tagId;
+        if (!this.isSupported()) {
+            alert('Your browser does not support Speech Recognition. Please use Chrome or another modern browser.');
+            return;
+        }
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!this.recognition) {
+            this.recognition = new SpeechRecognition();
+            this.recognition.lang = this.lang; // «” Œœ«„ «··€… «·Õ«·Ì…
+            this.recognition.interimResults = true;
+            this.recognition.continuous = true;
+
+            this.recognition.onresult =async (event) => {
+                const transcript = Array.from(event.results)
+                    .map(result => result[0].transcript)
+                    .join('');
+                //DotNet.invokeMethodAsync('UpdateTranscription', transcript);
+           
+
+                document.getElementById("displayTranscript").value = transcript;
+                const btn = document.getElementById("btnTranscript");
+                if (btn) {
+                    btn.click();
+                } else {
+                    console.error("Element with id 'btnTranscript' not found.");
+                }
+
+                //await DotNet.invokeMethodAsync('LAHJA', 'TriggerOnSubmit');
+
+                //await dotNetObjectReference.invokeMethodAsync('LAHJA', 'UpdateTranscription', transcript);
+            };
+
+            this.recognition.onerror = (event) => {
+                console.error(`Speech Recognition Error: ${event.error}`);
+            };
+
+            this.recognition.onend = () => {
+                console.log("Speech recognition stopped.");
+            };
+        }
+        this.recognition.lang = this.lang; //  ÕœÌÀ «··€… ⁄‰œ «· ‘€Ì·
+        this.recognition.start();
+    },
+
+    stopSpeechRecognition: function () {
+        if (this.recognition) {
+            this.recognition.stop();
+        }
+    }
+};
+
+function startSpeechRecognition(lang="ar-AR"){
+
+    window.speechRecognition.setLanguage(lang); 
+    window.speechRecognition.startSpeechRecognition(); // »œ¡ «·«” „«⁄
+
+}
+
+function getSpeechRecognitionResult() {
+    var result = document.getElementById("displayTranscript").value;
+    stopSpeechRecognition();
+    return result;
+}
+function stopSpeechRecognition() {
+
+    window.speechRecognition.stopSpeechRecognition(); // »œ¡ «·«” „«⁄
+
+}
+
