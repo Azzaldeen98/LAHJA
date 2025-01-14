@@ -2,6 +2,7 @@
 @using Domain.ShareData
 @using LAHJA.Data.UI.Components.ServiceCard
  
+@using LAHJA.Data.UI.Components.ServiceVM
 @using LAHJA.UI.Components.Plan
 @using LAHJA.UI.Components.SoundShow
 @using LAHJA.UI.Components.StudioLahjaAi
@@ -14,112 +15,161 @@
 
 
 
+<MudDivider Class="my-4" />
+
+
+
+
+
 <MudContainer MaxWidth="MaxWidth.Large" >
 
+
+
+
+
+
+    <AddFormTextOrSpeech TypeLanguage="@IsEnglish" DataBuild="@addformdatabuild" />
+    @*   <AddFormTextOrSpeechh/> *@
+
+  
+  
+
+
+</MudContainer>
+
+<MudDivider Class="my-4" />
+<MudDivider Class="my-4" />
+<MudContainer MaxWidth="MaxWidth.Medium" >
+
+
+    <PlanServiceCompoent DataBuild="dataBuildplan" IsArabic="@IsEnglish" />
+
+</MudContainer>
+
+
+<MudDivider Class="my-4" />
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+
+
+ <InformationService/>
+
+
+
+
+
+</MudContainer>
+  <MudDivider Class="my-4" />
+<MudDivider Class="my-4" />
+<MudContainer MaxWidth="MaxWidth.Medium">
+
+
     <HeaderTextAndSpeechCompoent IsArabic="@IsEnglish" />
-    <MudGrid Class="mt-3" Style="font-size:12px!important">
-       
-       
 
-        <MudItem xs="12" md="7">
-            <MudPaper Class="p-3">
-                <MudText Typo="Typo.body1">@Param.TableOfContents.Title</MudText>
-                <MudDivider Class="mb-2" />
-
-                <MudText Typo="Typo.body2" Class="mt-3" Id="ModelSummary">@Param.ModelSummary.Title</MudText>
-                <MudText Typo="Typo.body2">@Param.ModelSummary.Description</MudText>
-
-                <MudText Typo="Typo.body2" Class="mt-3">Inference Examples</MudText>
-                <MudPaper Class="p-3">
-                    <MudText Typo="Typo.body2">@Param.InferenceExamples.Description</MudText>
-                </MudPaper>
-
-
-                <MudText Typo="Typo.body1" Class="mt-3">Model Tree</MudText>
-                <MudExpansionPanels>
-                    @foreach (var item in Param.ModelTree)
-                    {
-                        <MudExpansionPanel Text="@item.Title">
-                            <MudText Typo="Typo.body2">@item.Description</MudText>
-                        </MudExpansionPanel>
-                    }
-                </MudExpansionPanels>
-                <MudText Typo="Typo.body2" Class="mt-3">@Param.DownloadsTrend.Title</MudText>
-            </MudPaper>
-        </MudItem>
-        <MudItem xs="12" md="5">
-            
-            <MudDivider Class="mb-3" />
- 
-            <MudGrid>
-                <MudItem>
-            <main style="
-			width: 100%;
-			margin: 0;
-			padding: 0;
-			display: flex;
-			flex-direction: column;
-			flex-grow: 1;
-            margin-top: 6%;
-        ">
-
-
-
-                        <AddFormTextOrSpeech TypeLanguage="@IsEnglish" />
-
-                   
-                    </main>
-
-                </MudItem>
-
-            </MudGrid>
-
-
- 
-        </MudItem>
-    </MudGrid>
+</MudContainer>
 
    
-</MudContainer>
-
- 
- <MudContainer MaxWidth="MaxWidth.Large" Style="padding:3%" >  
 
 
-    <LAHJA.UI.Templates.Plans.TemplatePlans   />
- 
-</MudContainer>
 
- 
  
  @code
 {
 
 
-
-
     [Parameter]
     public bool IsEnglish { get; set; } = true;
 
-
-
-
     [Parameter] public EventCallback<OnDataResult> Submit { get; set; }
+
     [Parameter]
     public ContentServiceInformationModelPige? Param { get; set; } = new ContentServiceInformationModelPige();
+
+
     [Parameter] public OnDataResult DataBuildReturn { get; set; } = null;
-    public  class ContentServiceInformationModelPige
+
+
+
+
+
+
+
+    List<LanguageModel> addformdatabuild;
+    List<ServiceaAppModel> dataBuildplan;
+
+    private List<LanguageModel> languages = new List<LanguageModel>
     {
-        public ContentItemT2T TableOfContents { get; set; }
-        public ContentItemT2T ModelSummary { get; set; }
-        public ContentItemT2T InferenceExamples { get; set; }
-        public List<ContentItemT2T> ModelTree { get; set; }
-        public ContentItemT2T DownloadsTrend { get; set; }
+
+
+
+
+
+        new LanguageModel { Id = 1, Name = "Arabic",TypeFeture="TextToSPeech", Dialects = new List<DialectModel>
+            {
+
+
+
+
+                new DialectModel { Id = 1, Name = "Najdi", Services = new List<ServiceaAppModel>
+                {
+                    new ServiceaAppModel { Id = "1", IdFetureApp = "F001", Name = " Text Service A", Descrption = "This is Service A Text To Text", Price = 100.50m,Type="TxT" },
+                 
+ 
+                    new ServiceaAppModel { Id = "2", IdFetureApp = "F002", Name = "Speech  Service D", Descrption = "This is Service B Speech ", Price = 150.00m,Type="Sound" }
+
+                }},
+
+
+
+
+                new DialectModel { Id = 2, Name = "Hijazi", Services = new List<ServiceaAppModel>
+                {
+                     new ServiceaAppModel { Id = "1", IdFetureApp = "F001", Name = "Service H_A", Descrption = "This is Service A", Price = 100.50m,Type="TXT" },
+                    new ServiceaAppModel { Id = "2", IdFetureApp = "F002", Name = "Service H_B", Descrption = "This is Service B", Price = 150.00m,Type="Sound" }
+
+                }}
+            }
+        },
+
+         new LanguageModel { Id = 2, Name = "English", Dialects = new List<DialectModel>
+            {
+                new DialectModel { Id = 3, Name = "US", Services = new List<ServiceaAppModel>
+                {
+                    new ServiceaAppModel { Id = "5", Name = "Service US_A", Descrption = "This is Service E", Price = 200.75m,Type="Sound" }
+
+                }}
+
+            }
+        }
+    };
+
+
+    private List<LanguageModel> languagesar = new List<LanguageModel>
+{
+    new LanguageModel { Id = 1, Name = "العربية", Dialects = new List<DialectModel>
+        {
+            new DialectModel { Id = 1, Name = "نجدي", Services = new List<ServiceaAppModel>
+            {
+                new ServiceaAppModel { Id = "1", IdFetureApp = "F001", Name = "الخدمة أ", Descrption = "هذه هي الخدمة أ", Price = 100.50m, Type = "TxT" },
+            
+                new ServiceaAppModel { Id = "2", IdFetureApp = "F002", Name = "الخدمة د", Descrption = "هذه هي الخدمة ب", Price = 150.00m, Type = "Sound" }
+            }},
+            new DialectModel { Id = 2, Name = "حجازي", Services = new List<ServiceaAppModel>
+            {
+                new ServiceaAppModel { Id = "1", IdFetureApp = "F001", Name = "الخدمة ح_أ", Descrption = "هذه هي الخدمة أ", Price = 100.50m, Type = "TXT" },
+                new ServiceaAppModel { Id = "2", IdFetureApp = "F002", Name = "الخدمة ح_ب", Descrption = "هذه هي الخدمة ب", Price = 150.00m, Type = "Sound" }
+            }}
+        }
+    },
+    new LanguageModel { Id = 2, Name = "الإنجليزية", Dialects = new List<DialectModel>
+        {
+            new DialectModel { Id = 3, Name = "الأمريكية", Services = new List<ServiceaAppModel>
+            {
+                new ServiceaAppModel { Id = "5", Name = "الخدمة US_أ", Descrption = "هذه هي الخدمة هـ", Price = 200.75m, Type = "Sound" }
+            }}
+        }
     }
-
-    ContentServiceInformationModelPige obj = new ContentServiceInformationModelPige();
-
-
+};
 
     protected override async void OnAfterRender(bool firstRender)
     {
@@ -137,20 +187,30 @@
     }
 
 
+
+
     private async void changeLanguage(string language)
     {
 
         if (language == "en")
         {
-            IsEnglish = true;
-            Param = LoadEnglishContent();
+            IsEnglish = true; 
+            addformdatabuild = languages;
+            dataBuildplan = languages
+                     .SelectMany(language => language.Dialects)
+                     .SelectMany(dialect => dialect.Services)
+                    .ToList();
         }
         else
         {
             IsEnglish =false;
-            Param = LoadArabicContent();
 
-            
+            addformdatabuild = languagesar;
+            dataBuildplan = languagesar
+      .SelectMany(language => language.Dialects)
+  .SelectMany(dialect => dialect.Services)
+  .ToList();
+
 
         }
         InvokeAsync(StateHasChanged);
@@ -173,156 +233,15 @@
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
+}
 
 
 
 
      
-    private async void OnSubmitText(OnDataResult obj)
-    {
-        if (Submit.HasDelegate)
-        {
-            await Submit.InvokeAsync(obj);
-        }
-
-        DataBuildReturn = obj;
-        DataBuildReturn.Sccess = true;
-        StateHasChanged();
-
-
-    }
-
-    private ContentServiceInformationModelPige LoadEnglishContent()
-    {
-
-
-        obj = new ContentServiceInformationModelPige()
-        {
-
-
-
-
-
-                TableOfContents = new ContentItemT2T
-                {
-                    Title = "Table of Contents",
-                    Description = "A summary of the document structure."
-                },
-
-                ModelSummary = new ContentItemT2T
-                {
-                    Title = "Model Summary",
-                    Description = "ModernBERT is a modernized bidirectional encoder-only Transformer model (BERT-style) pre-trained on 2 trillion tokens of English and code data with a native context length of up to 8,192 tokens. ModernBERT leverages recent architectural improvements such as Rotary Positional Embeddings (RoPE) for long-context support."
-                },
-
-                InferenceExamples = new ContentItemT2T
-                {
-                    Description = "Fill-Mask inference and other capabilities are available. See detailed usage below."
-                },
-
-                ModelTree = new List<ContentItemT2T>
-        {
-            new ContentItemT2T { Title = "Adapters", Description = "10 models available for adapters." },
-            new ContentItemT2T { Title = "Finetunes", Description = "47 models available for fine-tuning." },
-            new ContentItemT2T { Title = "Quantizations", Description = "1 model available for quantization." }
-        },
-
-                DownloadsTrend = new ContentItemT2T
-                {
-                    Title = "Downloads Trend",
-                    Description = "Statistics on model downloads."
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        };
-        return obj;
-
-    }
-
-    private ContentServiceInformationModelPige LoadArabicContent()
-    {
-
-
-
-
-        obj = new ContentServiceInformationModelPige()
-            {
-
-                TableOfContents = new ContentItemT2T
-                {
-                    Title = "جدول المحتويات",
-                    Description = "ملخص هيكل المستند."
-                },
-
-                ModelSummary = new ContentItemT2T
-                {
-                    Title = "ملخص النموذج",
-                    Description = "ModernBERT هو نموذج Transformer حديث معتمد على التشفير المزدوج تم تدريبه مسبقًا على 2 تريليون من الرموز الإنجليزية وبيانات البرمجة بحد سياق أصلي يصل إلى 8,192 رمزًا. يستفيد ModernBERT من تحسينات معمارية حديثة مثل التضمينات الموضعية الدوارة (RoPE) لدعم السياقات الطويلة."
-                },
-
-                InferenceExamples = new ContentItemT2T
-                {
-                    Description = "التنبؤ بملء القناع والقدرات الأخرى متوفرة. انظر الاستخدام التفصيلي أدناه."
-                },
-
-                ModelTree = new List<ContentItemT2T>
-        {
-            new ContentItemT2T { Title = "المهايئات", Description = "10 نماذج متاحة للمهايئات." },
-            new ContentItemT2T { Title = "النماذج المعدلة", Description = "47 نموذجًا متاحًا للتعديل." },
-            new ContentItemT2T { Title = "التكميم", Description = "1 نموذج متاح للتكميم." }
-        },
-
-                DownloadsTrend = new ContentItemT2T
-                {
-                    Title = "اتجاهات التنزيل",
-                    Description = "إحصائيات عن تنزيل النموذج."
-                }
-            };
-        return obj;
-    }
-
-    public class ContentItemT2T
-    {
-        public string Title { get; set; }
-        public string Description { get; set; }
-    }
-
+     
+  
 
 
 
