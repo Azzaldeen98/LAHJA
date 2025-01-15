@@ -60,7 +60,7 @@
         <MudMainContent  Class="h-100 " style="min-height:500px !important">
 
 
-            <MudDrawer @bind-Open="@IsSettingsMenuVisible" Fixed="false" Anchor="Anchor.End"
+          @*   <MudDrawer @bind-Open="@IsSettingsMenuVisible" Fixed="false" Anchor="Anchor.End"
                        Elevation="0" Variant="@DrawerVariant.Temporary" Class="h-100 ">
                 <MudDrawerHeader>
                     <MudText Typo="Typo.h6">@GetText("Settings")</MudText>
@@ -115,7 +115,7 @@
                         </MudListItem>
                         <MudDivider />
                         <MudListItem Text="@GetText("Models")"> 
-                            @* @bind-Expanded="_expandedModelRelease"> *@
+                        
                             <NestedList>
                                 @if (selectedModelsReleases != null && selectedModelsReleases?.Count() > 0)
                                 {
@@ -131,9 +131,9 @@
                         </MudListItem>
                     </MudList>
                 </MudNavMenu>
-            </MudDrawer>
+            </MudDrawer> *@
 
-            <MudPaper Class="pa-4 " Elevation="0">
+            <MudPaper Class="pa-0 overflow-y-auto" Elevation="0">
              
 
                 @if (SelectedComponent != null)
@@ -144,7 +144,7 @@
                 {
                  
                         <T2Text />
-                      @* <MudText Typo="Typo.h6">Select an item from the menu to display content</MudText> *@
+                      
                     
                 }
             </MudPaper>

@@ -602,7 +602,7 @@ window.speechRecognition = {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!this.recognition) {
             this.recognition = new SpeechRecognition();
-            this.recognition.lang = this.lang; // «” Œœ«„ «··€… «·Õ«·Ì…
+            this.recognition.lang = this.lang; 
             this.recognition.interimResults = true;
             this.recognition.continuous = true;
 
@@ -611,16 +611,19 @@ window.speechRecognition = {
                     .map(result => result[0].transcript)
                     .join('');
                 //DotNet.invokeMethodAsync('UpdateTranscription', transcript);
-           
+                //console.log(transcript.length()+"\n");
 
                 document.getElementById("displayTranscript").value = transcript;
-                const btn = document.getElementById("btnTranscript");
-                if (btn) {
-                    btn.click();
-                } else {
-                    console.error("Element with id 'btnTranscript' not found.");
+                
+                if (event.results[0].isFinal) {
+                   
+                    const btn = document.getElementById("btnTranscript");
+                    if (btn) {
+                        btn.click();
+                    } else {
+                        console.error("Element with id 'btnTranscript' not found.");
+                    }
                 }
-
                 //await DotNet.invokeMethodAsync('LAHJA', 'TriggerOnSubmit');
 
                 //await dotNetObjectReference.invokeMethodAsync('LAHJA', 'UpdateTranscription', transcript);
@@ -631,10 +634,12 @@ window.speechRecognition = {
             };
 
             this.recognition.onend = () => {
-                console.log("Speech recognition stopped.");
+                
+               
+                //console.log("Speech recognition stopped.");
             };
         }
-        this.recognition.lang = this.lang; //  ÕœÌÀ «··€… ⁄‰œ «· ‘€Ì·
+        this.recognition.lang = this.lang;
         this.recognition.start();
     },
 
@@ -644,6 +649,89 @@ window.speechRecognition = {
         }
     }
 };
+
+
+//window.speechRecognition = {
+//    recognition: null,
+//    lang: "ar-AR",
+//    timeoutId: null, 
+//    inactivityTimeout: 10000, 
+
+//    isSupported: function () {
+//        return ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window);
+//    },
+
+//    setLanguage: function (language) {
+//        this.lang = language;
+//    },
+
+//    resetTimeout: function () {
+//        // ≈⁄«œ…  ⁄ÌÌ‰ «·„ƒﬁ 
+//        if (this.timeoutId) {
+//            clearTimeout(this.timeoutId);
+//        }
+//        this.timeoutId = setTimeout(() => {
+//            this.stopSpeechRecognition(); // «· Êﬁ› »⁄œ «‰ Â«¡ «·„Â·…
+//            console.log("Stopped listening due to inactivity.");
+//        }, this.inactivityTimeout);
+//    },
+
+//    startSpeechRecognition: function () {
+//        if (!this.isSupported()) {
+//            alert('Your browser does not support Speech Recognition. Please use Chrome or another modern browser.');
+//            return;
+//        }
+
+//        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+//        if (!this.recognition) {
+//            this.recognition = new SpeechRecognition();
+//            this.recognition.lang = this.lang;
+//            this.recognition.interimResults = true;
+//            this.recognition.continuous = true;
+
+//            this.recognition.onresult = async (event) => {
+//                const transcript = Array.from(event.results)
+//                    .map(result => result[0].transcript)
+//                    .join('');
+
+//                document.getElementById("displayTranscript").value = transcript;
+//                const btn = document.getElementById("btnTranscript");
+//                if (btn) {
+//                    btn.click();
+//                } else {
+//                    console.error("Element with id 'btnTranscript' not found.");
+//                }
+
+//                // ≈⁄«œ…  ⁄ÌÌ‰ «·„Â·… ⁄‰œ  ·ﬁÌ ‰ «∆Ã ÃœÌœ…
+//                this.resetTimeout();
+//            };
+
+//            this.recognition.onerror = (event) => {
+//                console.error(`Speech Recognition Error: ${event.error}`);
+//            };
+
+//            this.recognition.onend = () => {
+//                console.log("Speech recognition stopped.");
+//                clearTimeout(this.timeoutId); // „”Õ «·„Â·… ⁄‰œ «· Êﬁ›
+//            };
+//        }
+
+//        this.recognition.lang = this.lang; //  ÕœÌÀ «··€… ⁄‰œ «· ‘€Ì·
+//        this.recognition.start();
+//        console.log("Speech recognition started.");
+
+//        // ≈⁄œ«œ «·„Â·… ⁄‰œ »œ¡ «·«” „«⁄
+//        this.resetTimeout();
+//    },
+
+//    stopSpeechRecognition: function () {
+//        if (this.recognition) {
+//            this.recognition.stop();
+//            clearTimeout(this.timeoutId); // „”Õ «·„Â·… ⁄‰œ «·≈Ìﬁ«›
+//        }
+//    }
+//};
+
 
 function startSpeechRecognition(lang="ar-AR"){
 

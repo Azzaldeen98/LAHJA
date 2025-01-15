@@ -2,25 +2,47 @@
 @using LAHJA.Data.UI.Components.StudioLahjaAiVM
 @using LAHJA.Data.UI.Templates.Services
 @using LAHJA.Them
+@using LAHJA.UI.Components.StudioLahjaAi.Component
 @using Microsoft.JSInterop
 @inherits StudioAi
 
 
-<MudContainer Class="mt-4" Style="text-align: center;">
-    <MudText Typo="Typo.h4">Speech to Text Converter</MudText>
-    <MudSpacer />
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="StartListening" Disabled="@isListening">
-        Start Listening
-    </MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="StopListening" Disabled="@(isListening == false)" Class="ml-2">
-        Stop Listening
-    </MudButton>
-    <MudSpacer />
+<MudPaper Class="mt-0 p-2 overflow-y-auto" Style="text-align: center;">
+    <MudText Typo="Typo.h5">Voice Chat</MudText>
 
-     <MudTextField T="string" id="displayTranscript" Variant="Variant.Outlined" FullWidth  Value="@transcribedText" /> 
+      <MudCard class=" d-flex flex-row justify-content-around ">
+        <FilterItemSelected Filter="DataBuild.CategoriesFilter" CurrentLanguage="@CurrentLanguage" />
+        <FilterItemSelected Filter="DataBuild.LanguagesFilter" CurrentLanguage="@CurrentLanguage" />
+        <FilterItemSelected Filter="DataBuild.ModelTypesFilter" CurrentLanguage="@CurrentLanguage" />
+        <FilterItemSelected Filter="DataBuild.DialectsFilter" CurrentLanguage="@CurrentLanguage" />
+        <FilterItemSelected Filter="DataBuild.SpeakerGendersFilter" CurrentLanguage="@CurrentLanguage" />
+
+    </MudCard>
+    <MudSpacer />
+  
+
+
+     <MudTextField T="string" id="displayTranscript" ReadOnly Variant="Variant.Outlined" FullWidth  Value="@transcribedText" /> 
     <MudButton id="btnTranscript"  OnClick="onSubmit"></MudButton>
+   
+    <div class="d-flex  flex-wrap justify-content-around m-2  col-md-8 col-sm-12">
+        <MudButton Variant="Variant.Filled" Color="AppColors.BASE_COLOR_ENUM" OnClick="StartListening" Disabled="@isListening" Class="m-2">
+            Start Listening
+        </MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="OnStopListening" Disabled="@(isListening == false)" Class="m-2">
+            Stop Listening
+        </MudButton>
+        @if (DataBuild.ModelReleasesFilter != null)
+        {
+            <div class="m-2">
+              <FilterItemSelected Filter="DataBuild.ModelReleasesFilter" CurrentLanguage="@CurrentLanguage" />
+            </div>
+        }
+    </div>
+
+
     <MudCardContent>
-        <div class="activ-speech-ai">
+        <div class="activ-speech-ai mt-0 ">
             @if (isAudioPlaying)
             {
                 <div id="logo-icon-animate-id" class="icon-xxl text-center shadow-primary rounded-circle flex-shrink-0 ripple-anim" style="line-height: 6.8rem;">
@@ -44,7 +66,7 @@
     </MudCardContent>
     <audio id="audioPlayer" controls @onplay="OnPlay" @onended="OnEnded" @onpause="OnPause" style="width:100%;margin:2%"></audio>
     @* <p>Current Text: @currentText</p> *@
-</MudContainer>
+</MudPaper>
 
 
 
@@ -65,7 +87,7 @@
     {
         isListening = true;
         // var dotNetRef = DotNetObjectReference.Create(this);
-        await JSRuntime.InvokeVoidAsync("startSpeechRecognition");
+        await JSRuntime.InvokeVoidAsync("startSpeechRecognition",selectedStudioFilter.SelectedLangague.Identifier??"ar");
         // await JSRuntime.InvokeVoidAsync("startSpeechRecognition");
     }
     private async Task OnPlay()
@@ -88,17 +110,21 @@
         isAudioPlaying = false;
         // _processing = false;
         // StateHasChanged();
-        if (continuousListening)
-        {
-            await StartListening();
-        }
-      
+        // if (continuousListening)
+        // {
+        //     await StartListening();
+        // }
+        // else
+        // {
+        //     await  StopListening();
+        // }
 
+        await StartListening();
     }
     private async Task onSubmit()
     {
 
-        if (isListening)
+        // if (isListening)
         {
             isListening = false;
             var res = await JSRuntime.InvokeAsync<string>("getSpeechRecognitionResult");
@@ -119,27 +145,33 @@
         {
             // isAudioPlayingIsEnd = true;
             // StateHasChanged();
-     
 
-               var data = new DataBuildServiceBase { Text = text, ServiceId = "3", Method = "POST", TagId = "audioPlayer", URL = "https:api-inference.huggingface.co/models/wasmdashai/", ModelAi = "vits-ar-sa-A" };
-     
-                var response = await templateServices.VoiceBot(data);
-                if (response.Succeeded)
-                {
-                    // audioUrl = response.Data.Result;
-                    // StateHasChanged();
-                }
-                else
-                {
 
-                    Snackbar.Add("لايوجد لديك رصيد كافي من الطلبات", Severity.Warning);
+            var data = new DataBuildServiceBase { Text = text, ServiceId = "3", Method = "POST", TagId = "audioPlayer", URL = "https:api-inference.huggingface.co/models/wasmdashai/", ModelAi=selectedStudioFilter.SelectedModelRelease.Identifier  };
 
-                }
-            
+            var response = await templateServices.VoiceBot(data);
+            if (response.Succeeded)
+            {
+                // audioUrl = response.Data.Result;
+                // StateHasChanged();
+            }
+            else
+            {
+
+                Snackbar.Add("لايوجد لديك رصيد كافي من الطلبات", Severity.Warning);
+
+            }
+
         }
-   
-    
-}
+
+
+    }
+
+    private async Task OnStopListening()
+    {
+        // continuousListening = false;
+        await StopListening();
+    }
     private async Task StopListening()
     {
         isListening = false;
